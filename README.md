@@ -83,7 +83,7 @@ python -m pip install -r requirements-lock.txt
 python tests/verify_calls.py kimi qwen --report /tmp/model-manual-verification.json
 ```
 
-不发请求的检查覆盖目录、生成器、流式/截断和工具闭环，CI 使用相同命令：
+不发请求的检查覆盖目录、生成器、流式/截断和工具闭环；可复用的 [CI 模板](ci/offline-checks.yml)使用相同命令，当前尚未启用 GitHub Actions：
 
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
