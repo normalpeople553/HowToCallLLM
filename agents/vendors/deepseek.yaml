@@ -1,0 +1,41 @@
+# DeepSeek 调用卡（AI 速查）— 实测 2026-10-13 ✅
+vendor: deepseek
+name: DeepSeek
+verified_at: "2026-10-13"
+key:
+  env: DEEPSEEK_API_KEY
+  apply_url: "https://platform.deepseek.com/api_keys"
+  steps: "手机号注册 → 实名 → API keys → 创建"
+  free_quota: "新用户赠送余额（先扣赠送再扣充值）"
+api:
+  base_url: "https://api.deepseek.com"
+  openai_compatible: true
+  protocol_note: "另支持 Anthropic 格式：https://api.deepseek.com/anthropic"
+models:
+  - id: "deepseek-v4-flash"
+    role: "日常首选，便宜快"
+    context: "1M"
+    default_thinking: true
+    price_cny_per_mtok: { input: 1, input_cache_hit: 0.02, output: 2 }
+    verified: true
+  - id: "deepseek-v4-pro"
+    role: "高难任务旗舰"
+    context: "1M"
+    default_thinking: true
+    price_cny_per_mtok: { input: 3, input_cache_hit: 0.025, output: 6 }
+    verified: false
+thinking:
+  field: 'extra_body={"thinking": {"type": "disabled"}}'
+  default: enabled
+  reasoning_field: "message.reasoning_content"
+  notes: "思考模式下 temperature/top_p 传了也不生效；可用 reasoning_effort=high/max 调强度"
+deprecated:
+  - "deepseek-chat（2026-07-24 弃用，映射 v4-flash 非思考）"
+  - "deepseek-reasoner（2026-07-24 弃用，映射 v4-flash 思考）"
+gotchas:
+  - "国内直连，无需代理"
+  - "401=key错；402=余额不足；404=模型名错"
+docs:
+  pricing: "https://api-docs.deepseek.com/zh-cn/quick_start/pricing"
+  thinking: "https://api-docs.deepseek.com/zh-cn/guides/thinking_mode"
+snippet: "../snippets/deepseek.py"

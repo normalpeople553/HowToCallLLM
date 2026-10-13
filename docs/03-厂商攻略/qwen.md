@@ -2,7 +2,7 @@
 
 > 一句话定位：**背靠阿里云，新用户免费额度大方，生态/企业集成强。**
 > 📄 百炼平台：<https://bailian.console.aliyun.com/> ｜ 模型价格：<https://help.aliyun.com/zh/model-studio/model-pricing>
-> ⚠️ 信息核对于 **2026-10-13**（当前已到 qwen3.8 代际）。
+> ✅ 本文调用方式于 **2026-10-13 用真实 key 实测通过**（当前已到 qwen3.8 代际）。
 
 ---
 
@@ -54,9 +54,10 @@ print(resp.choices[0].message.content)
 ## 4. 新手易踩的坑
 
 - 🧩 **必须走"兼容模式"地址**：`base_url` 里的 `/compatible-mode/v1` 一段不能漏；老的 DashScope 原生接口参数风格不同，网上新旧教程混着，认准兼容模式。
+- 🧠 **思考开关百炼独一份**：别的四家是 `extra_body={"thinking":{"type":"disabled"}}`，百炼是 `extra_body={"enable_thinking": False}`（✅ 实测：`qwen3.6-flash` 默认开思考、有 500+ 字思考链，关掉后输出只有 2 token）。
+- 📛 **没有 `qwen3-flash` 这个模型**（实测 404）：要思考款就写带版本号的 `qwen3.6-flash` 这类全名；不思考的日常款直接用别名 `qwen-flash`。
 - 🪪 需要阿里云账号 + **实名**，并确认对应模型服务已开通（首次在控制台点一下开通/同意协议）。
 - ⏳ **免费额度有有效期和地域限制**，跨地域可能无法抵扣；想防止超额扣费，可在控制台开启"仅免费额度"模式（额度用完即停）。
-- 📛 `model not found`：模型名写错或该模型未开通，用别名或去模型列表核对。
 - 🌐 国内直连，无需代理。
 
 ## 5. 适合谁 / 小结

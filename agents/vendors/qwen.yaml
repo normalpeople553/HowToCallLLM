@@ -1,0 +1,45 @@
+# 通义千问（阿里云百炼）调用卡（AI 速查）— 实测 2026-10-13 ✅
+vendor: qwen
+name: "通义千问 / 阿里云百炼 Model Studio"
+verified_at: "2026-10-13"
+key:
+  env: DASHSCOPE_API_KEY
+  apply_url: "https://bailian.console.aliyun.com/?apiKey=1#/api-key"
+  steps: "阿里云账号 → 实名认证 → 百炼控制台 → API-KEY 管理 → 创建"
+  free_quota: "新用户免费额度（有有效期、可能限地域；建议开启『仅免费额度』用完即停）"
+api:
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  openai_compatible: true
+  protocol_note: "/compatible-mode/v1 一段不能漏；首次用某模型需在控制台开通"
+models:
+  - id: "qwen-flash"
+    role: "便宜快，别名自动跟随稳定版；本身不思考"
+    default_thinking: false
+    verified: true
+  - id: "qwen3.6-flash"
+    role: "带思考的 Flash（实测默认思考，567 字思考链）"
+    default_thinking: true
+    verified: true
+  - id: "qwen-plus"
+    role: "质量成本均衡（别名）"
+    default_thinking: false
+    verified: false
+  - id: "qwen3.8-max"
+    role: "当前旗舰"
+    default_thinking: true
+    verified: false
+thinking:
+  field: 'extra_body={"enable_thinking": False}'   # 百炼独一份，和其他四家不同
+  field_on: 'extra_body={"enable_thinking": True}'
+  reasoning_field: "message.reasoning_content"
+  verified_off: true   # qwen3.6-flash 关闭后 completion 2 token、无 reasoning
+deprecated:
+  - "qwen3-flash（实测 404 不存在；要用思考款写具体版本如 qwen3.6-flash）"
+gotchas:
+  - "思考开关参数是 enable_thinking，不是 thinking.type"
+  - "百炼平台还托管 deepseek/glm/kimi 等第三方模型（模型名带前缀），但那是走阿里计费"
+  - "国内直连，无需代理"
+docs:
+  pricing: "https://help.aliyun.com/zh/model-studio/model-pricing"
+  models: "https://help.aliyun.com/zh/model-studio/getting-started/models"
+snippet: "../snippets/qwen.py"

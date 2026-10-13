@@ -1,0 +1,52 @@
+# Kimi（月之暗面）调用卡（AI 速查）— 实测 2026-10-13 ✅
+vendor: kimi
+name: "Kimi / Moonshot"
+verified_at: "2026-10-13"
+key:
+  env: MOONSHOT_API_KEY
+  apply_url: "https://platform.moonshot.cn/console/api-keys"
+  steps: "手机号注册 → 实名 → API Key 管理 → 创建"
+  free_quota: "以平台当期活动为准"
+api:
+  base_url: "https://api.moonshot.cn/v1"
+  openai_compatible: true
+  protocol_note: "海外站 api.moonshot.ai 账号/key 不通用"
+models:  # 实测该账号可用列表仅此 4 个
+  - id: "kimi-k2.6"
+    role: "通用对话，当前最便宜的文本款"
+    context: "256K"
+    default_thinking: true
+    price_cny_per_mtok: { input: 6.5, input_cache_hit: 1.1, output: 27 }
+    verified: true
+  - id: "kimi-k3"
+    role: "旗舰，最强"
+    context: "1M"
+    default_thinking: true
+    price_cny_per_mtok: { input: 20, input_cache_hit: 2, output: 100 }
+    verified: true
+  - id: "kimi-k2.7-code"
+    role: "写代码"
+    context: "256K"
+    default_thinking: true
+    price_cny_per_mtok: { input: 6.5, input_cache_hit: 1.3, output: 27 }
+    verified: false
+  - id: "kimi-k2.7-code-highspeed"
+    role: "写代码（高速档，更贵）"
+    context: "256K"
+    default_thinking: true
+    price_cny_per_mtok: { input: 13, input_cache_hit: 2.6, output: 54 }
+    verified: true
+thinking:
+  field: 'extra_body={"thinking": {"type": "disabled"}}'
+  default: enabled
+  reasoning_field: "message.reasoning_content"
+  verified_off: true   # 关思考后 completion 4 token、无 reasoning
+deprecated:
+  - "moonshot-v1-8k / 32k / 128k（新账号实测 404：Not found the model or Permission denied）"
+gotchas:
+  - "网上大量教程仍写 moonshot-v1-*，2026 年新账号已不可用，别抄"
+  - "模型名不再带上下文长度后缀；要长文本直接用 k3（1M）"
+  - "国内用 .cn 域名直连"
+docs:
+  pricing: "https://platform.kimi.com/docs/pricing/chat"
+snippet: "../snippets/kimi.py"

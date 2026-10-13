@@ -2,7 +2,7 @@
 
 > 一句话定位：**价格屠夫 + 能打，综合最适合新手的第一家。**
 > 📄 官方平台：<https://platform.deepseek.com/> ｜ docs：<https://api-docs.deepseek.com/zh-cn/>
-> ⚠️ 信息核对于 **2026-10-13**，模型名/价格已更新至 V4 时代。
+> ✅ 本文调用方式于 **2026-10-13 用真实 key 实测通过**，模型名/价格为 V4 时代。
 
 ---
 
@@ -58,9 +58,22 @@ print(resp.choices[0].message.content)
 
 官方明确：`deepseek-chat` 和 `deepseek-reasoner` 两个老名字已于 **2026/07/24** 弃用，目前分别映射到 `deepseek-v4-flash` 的非思考 / 思考模式。**新项目直接写新名字**，别再抄网上的老教程。
 
-## 4. 思考模式（2026 新情况）
+## 4. 思考模式（✅ 实测 2026-10-13）
 
-V4 默认"先想再答"，更聪明但**思考过程也按输出 token 收费**。日常简单问答想省钱/提速，可以按官方[思考模式文档](https://api-docs.deepseek.com/zh-cn/guides/thinking_mode)关掉思考。新手先用默认跑通，不急着调。
+V4 默认"先想再答"，更聪明但**思考过程也按输出 token 收费**。实测同一道简单算术题：默认调用 41 个输出 token（含 79 字思考链），关闭思考后只有 1 个。
+
+关闭写法（OpenAI SDK 要放进 `extra_body`）：
+
+```python
+resp = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[{"role": "user", "content": "1+1=?"}],
+    extra_body={"thinking": {"type": "disabled"}},   # enabled=开（默认）/ disabled=关
+)
+# 思考链在 resp.choices[0].message.reasoning_content，正式回答在 .content
+```
+
+注意：思考模式下 `temperature`、`top_p` 等参数传了也不生效。新手先用默认跑通，日常简单问答再关掉省钱。📄 [官方思考模式文档](https://api-docs.deepseek.com/zh-cn/guides/thinking_mode)。
 
 ## 5. 新手易踩的坑
 

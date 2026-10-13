@@ -1,11 +1,12 @@
-# 四家厂商结构化对照数据（v0.1）
-# 价格单位：元 / 百万 tokens；核对日期：2026-10-13
-# 易变字段（价格/模型名/免费额度）以官方文档为准，更新时请同步修改本表与对应攻略页。
+# 五大厂商结构化对照数据（v0.2）
+# 价格单位：元 / 百万 tokens；实测日期：2026-10-13（tests/verify_calls.py 15 项全过）
+# 易变字段（价格/模型名/免费额度）以官方文档为准；机器速查版见 agents/vendors/*.yaml。
 
 meta:
-  version: "0.1"
+  version: "0.2"
   scope: "文本大模型对话调用"
   verified_at: "2026-10-13"
+  verified_by: "tests/verify_calls.py（默认调用/关思考/流式 共15项）"
   currency: "CNY"
   price_unit: "元/百万tokens"
 
@@ -13,116 +14,103 @@ vendors:
   - id: deepseek
     name: "DeepSeek"
     platform: "https://platform.deepseek.com/"
+    key_url: "https://platform.deepseek.com/api_keys"
     docs: "https://api-docs.deepseek.com/zh-cn/"
     pricing: "https://api-docs.deepseek.com/zh-cn/quick_start/pricing"
     base_url: "https://api.deepseek.com"
     key_env: "DEEPSEEK_API_KEY"
+    thinking_off: { extra_body: { thinking: { type: "disabled" } } }
     models:
-      - name: "deepseek-v4-flash"
-        role: "日常首选，默认思考"
-        context: "1M"
-        input: 1
-        input_cache_hit: 0.02
-        output: 2
-        recommended: true
-      - name: "deepseek-v4-pro"
-        role: "高难任务旗舰"
-        context: "1M"
-        input: 3
-        input_cache_hit: 0.025
-        output: 6
+      - { name: "deepseek-v4-flash", role: "日常首选", context: "1M", default_thinking: true,
+          input: 1, input_cache_hit: 0.02, output: 2, recommended: true, verified: true }
+      - { name: "deepseek-v4-pro", role: "旗舰", context: "1M", default_thinking: true,
+          input: 3, input_cache_hit: 0.025, output: 6, verified: false }
     free_quota: "新用户赠送余额（先扣赠送再扣充值）"
     notes:
-      - "deepseek-chat / deepseek-reasoner 旧名已于 2026-07-24 弃用，映射到 v4-flash"
-      - "国内直连，无需代理"
+      - "deepseek-chat / deepseek-reasoner 旧名 2026-07-24 弃用"
+      - "思考模式下 temperature/top_p 不生效"
 
   - id: kimi
     name: "Kimi（月之暗面）"
     platform: "https://platform.moonshot.cn/"
+    key_url: "https://platform.moonshot.cn/console/api-keys"
     docs: "https://platform.kimi.com/docs"
-    pricing: "https://platform.kimi.com/docs/pricing/chat-v1"
+    pricing: "https://platform.kimi.com/docs/pricing/chat"
     base_url: "https://api.moonshot.cn/v1"
     key_env: "MOONSHOT_API_KEY"
+    thinking_off: { extra_body: { thinking: { type: "disabled" } } }
     models:
-      - name: "moonshot-v1-8k"
-        role: "短问答，最便宜"
-        context: "8K"
-        input: 2
-        output: 10
-        recommended: true
-      - name: "moonshot-v1-32k"
-        role: "中等长度材料"
-        context: "32K"
-        input: 5
-        output: 20
-      - name: "moonshot-v1-128k"
-        role: "超长文档"
-        context: "128K"
-        input: 10
-        output: 30
+      - { name: "kimi-k2.6", role: "通用，文本款最便宜", context: "256K", default_thinking: true,
+          input: 6.5, input_cache_hit: 1.1, output: 27, recommended: true, verified: true }
+      - { name: "kimi-k2.7-code", role: "代码专项", context: "256K", default_thinking: true,
+          input: 6.5, input_cache_hit: 1.3, output: 27, verified: false }
+      - { name: "kimi-k3", role: "旗舰 1M 上下文", context: "1M", default_thinking: true,
+          input: 20, input_cache_hit: 2, output: 100, verified: true }
     free_quota: "以平台当期活动为准"
     notes:
-      - "模型名必须带上下文后缀，moonshot-v1 单独写无效"
-      - "国内用 .cn，海外 .ai 的 key 不通用"
+      - "实测大坑：moonshot-v1-8k/32k/128k 新账号 404 不可用"
+      - "国内 .cn 与海外 .ai 的 key 不通用"
 
   - id: zhipu
     name: "智谱 GLM"
     platform: "https://bigmodel.cn/"
+    key_url: "https://bigmodel.cn/usercenter/apikeys"
     docs: "https://docs.bigmodel.cn/cn/"
     pricing: "https://docs.bigmodel.cn/cn/guide/start/pricing"
     base_url: "https://open.bigmodel.cn/api/paas/v4"
     key_env: "ZHIPU_API_KEY"
+    thinking_off: { extra_body: { thinking: { type: "disabled" } } }
     models:
-      - name: "glm-4.7-flash"
-        role: "长期免费，练手首选"
-        context: "200K"
-        input: 0
-        output: 0
-        free: true
-        recommended: true
-      - name: "glm-z1-flash"
-        role: "免费推理模型"
-        context: "128K"
-        input: 0
-        output: 0
-        free: true
-      - name: "glm-5.3-flash"
-        role: "新一代高性价比多模态"
-        context: "1M"
-        input: 0.8
-        output: 2.8
-      - name: "glm-5.3"
-        role: "当前旗舰"
-        context: "1M"
-        input: 8
-        output: 28
-    free_quota: "GLM-4-Flash 系列长期免费（需实名）"
+      - { name: "glm-4.7-flash", role: "长期免费练手首选", context: "200K", default_thinking: true,
+          input: 0, output: 0, free: true, recommended: true, verified: true }
+      - { name: "glm-5.3-flash", role: "新一代高性价比", context: "1M", default_thinking: true,
+          input: 0.8, input_cache_hit: 0.23, output: 2.8, verified: false }
+      - { name: "glm-5.3", role: "旗舰", context: "1M", default_thinking: true,
+          input: 8, input_cache_hit: 2, output: 28, verified: false }
+    free_quota: "GLM-4-Flash 系列长期免费（需实名，有 RPM 限流）"
     notes:
-      - "代码里模型名用小写"
-      - "免费模型有 RPM/TPM 限流"
+      - "实测：免费模型默认思考，max_tokens 太小会导致 content 返回空串"
+      - "免费模型不在 /models 列表但可调；高峰 429 重试即可"
       - "国际版 api.z.ai 与国内 key 不通用"
 
   - id: qwen
     name: "通义千问（阿里云百炼）"
     platform: "https://bailian.console.aliyun.com/"
+    key_url: "https://bailian.console.aliyun.com/?apiKey=1#/api-key"
     docs: "https://help.aliyun.com/zh/model-studio/"
     pricing: "https://help.aliyun.com/zh/model-studio/model-pricing"
     base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
     key_env: "DASHSCOPE_API_KEY"
+    thinking_off: { extra_body: { enable_thinking: false } }   # 百炼独一份
     models:
-      - name: "qwen-flash"
-        role: "快、便宜，别名自动跟随稳定版"
-        recommended: true
-      - name: "qwen3.6-flash"
-        role: "锁定版本的 Flash"
-      - name: "qwen-plus"
-        role: "质量成本均衡（别名）"
-      - name: "qwen-max"
-        role: "旗舰（别名）"
-      - name: "qwen-long"
-        role: "超长文本"
+      - { name: "qwen-flash", role: "便宜快（别名，不思考）", default_thinking: false,
+          recommended: true, verified: true }
+      - { name: "qwen3.6-flash", role: "带思考的 Flash", default_thinking: true, verified: true }
+      - { name: "qwen-plus", role: "质量成本均衡（别名）", default_thinking: false, verified: false }
+      - { name: "qwen3.8-max", role: "旗舰", default_thinking: true, verified: false }
     free_quota: "新用户免费额度（有有效期、可能限地域）"
     notes:
+      - "实测：qwen3-flash 不存在（404），思考款写 qwen3.6-flash 全名"
+      - "思考开关参数是 enable_thinking，与其他四家不同"
       - "base_url 的 /compatible-mode/v1 不能漏"
-      - "需阿里云实名并在控制台开通模型"
-      - "可开启仅免费额度模式，用完即停"
+
+  - id: doubao
+    name: "豆包（火山方舟）"
+    platform: "https://console.volcengine.com/ark"
+    key_url: "https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey"
+    activate_url: "https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement"
+    docs: "https://www.volcengine.com/docs/82379/1399008"
+    pricing: "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+    base_url: "https://ark.cn-beijing.volces.com/api/v3"
+    key_env: "ARK_API_KEY"
+    thinking_off: { extra_body: { thinking: { type: "disabled" } } }
+    models:
+      - { name: "doubao-seed-2-1-pro-260628", role: "生产级旗舰", context: "256K",
+          default_thinking: true, input: 6, output: 30, recommended: true, verified: true }
+      - { name: "doubao-seed-2-1-turbo-260628", role: "速度档", default_thinking: true, verified: true }
+      - { name: "doubao-seed-2-1-lite-260915", role: "轻量便宜档", default_thinking: true, verified: true }
+    free_quota: "新用户免费 token 额度（以开通页为准）"
+    notes:
+      - "实测最大坑：模型必须先在开通管理里开通，否则 404 InvalidEndpointOrModel.NotFound"
+      - "模型名带日期版本戳，旧版本可能下线；也可建推理接入点用 ep-xxx"
+      - "方舟还托管 deepseek/kimi/glm/qwen，同样需逐个开通"

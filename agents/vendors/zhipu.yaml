@@ -1,0 +1,45 @@
+# 智谱 GLM 调用卡（AI 速查）— 实测 2026-10-13 ✅
+vendor: zhipu
+name: "智谱 GLM / BigModel"
+verified_at: "2026-10-13"
+key:
+  env: ZHIPU_API_KEY
+  apply_url: "https://bigmodel.cn/usercenter/apikeys"
+  steps: "手机号注册 → 实名认证 → API Keys → 添加"
+  free_quota: "glm-4.7-flash 等 Flash 系列长期免费（需实名，有 RPM 限流）"
+api:
+  base_url: "https://open.bigmodel.cn/api/paas/v4"
+  openai_compatible: true
+  protocol_note: "国际版 api.z.ai 的 key 不通用；代码里模型名一律小写"
+models:
+  - id: "glm-4.7-flash"
+    role: "免费练手首选（默认也带思考）"
+    context: "200K"
+    default_thinking: true
+    price_cny_per_mtok: { input: 0, output: 0 }
+    free: true
+    verified: true
+  - id: "glm-5.3-flash"
+    role: "新一代高性价比"
+    context: "1M"
+    default_thinking: true
+    price_cny_per_mtok: { input: 0.8, input_cache_hit: 0.23, output: 2.8 }
+    verified: false
+  - id: "glm-5.3"
+    role: "旗舰"
+    context: "1M"
+    default_thinking: true
+    price_cny_per_mtok: { input: 8, input_cache_hit: 2, output: 28 }
+    verified: false
+thinking:
+  field: 'extra_body={"thinking": {"type": "disabled"}}'
+  default: enabled
+  reasoning_field: "message.reasoning_content"
+  verified_off: true   # 关闭后 completion 2 token、无 reasoning
+gotchas:
+  - "实测大坑：glm-4.7-flash 默认思考，max_tokens=64 时思考链耗尽额度，content 返回空字符串；关思考或 max_tokens>=256"
+  - "免费模型高峰 429（code 1305 访问量过大），重试即可"
+  - "免费模型不在 /models 列表里返回，但可以直接调用（实测）"
+docs:
+  pricing: "https://docs.bigmodel.cn/cn/guide/start/pricing"
+snippet: "../snippets/zhipu.py"

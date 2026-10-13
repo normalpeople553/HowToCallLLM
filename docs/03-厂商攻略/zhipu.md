@@ -2,7 +2,7 @@
 
 > 一句话定位：**有长期免费的 Flash 模型，零成本练手首选。**
 > 📄 开放平台：<https://bigmodel.cn/> ｜ 定价：<https://docs.bigmodel.cn/cn/guide/start/pricing>
-> ⚠️ 信息核对于 **2026-10-13**（当前旗舰已到 GLM-5.3）。
+> ✅ 本文调用方式于 **2026-10-13 用真实 key 实测通过**（当前旗舰已到 GLM-5.3）。
 
 ---
 
@@ -32,9 +32,14 @@ client = OpenAI(api_key=os.environ["ZHIPU_API_KEY"],
 resp = client.chat.completions.create(
     model="glm-4.7-flash",                                # 免费模型
     messages=[{"role": "user", "content": "你好"}],
+    extra_body={"thinking": {"type": "disabled"}},        # 建议新手关掉：免费模型默认也思考
+    max_tokens=256,
 )
 print(resp.choices[0].message.content)
 ```
+
+> **实测大坑（2026-10-13）**：免费的 `glm-4.7-flash` **默认开启思考**。如果 `max_tokens` 设太小（比如 64），思考链会先把额度用光，导致 `content` 返回**空字符串**——看起来像"模型坏了"。对策二选一：① 加 `extra_body={"thinking": {"type": "disabled"}}` 关思考；② `max_tokens >= 256`。
+> 另外免费模型不会出现在 `/models` 列表接口里，但可以直接调用，这是正常的。
 
 ## 3. 模型怎么选
 
