@@ -3,7 +3,9 @@
   "model_id": "deepseek-flash",
   "vendor": "deepseek",
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/deepseek/deepseek-flash/verification/2026-10-13.json",
+  "verification": "../../../../models/deepseek/deepseek-flash/verification/2026-10-13-strict.json",
+  "verification_scope": "strict_workflow",
+  "historical_verification": ["../../../../models/deepseek/deepseek-flash/verification/2026-10-13.json"],
   "identity": {
     "api_model_id": {
       "value": "deepseek-flash",

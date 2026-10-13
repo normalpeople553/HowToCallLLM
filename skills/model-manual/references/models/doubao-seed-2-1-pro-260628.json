@@ -3,7 +3,9 @@
   "model_id": "doubao-seed-2-1-pro-260628",
   "vendor": "doubao",
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json",
+  "verification": "../../../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json",
+  "verification_scope": "strict_workflow",
+  "historical_verification": ["../../../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json"],
   "identity": {
     "api_model_id": {"value": "doubao-seed-2-1-pro-260628", "source": "models"},
     "lifecycle": {"value": "past_but_callable", "source": "models"}

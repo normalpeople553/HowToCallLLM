@@ -34,6 +34,8 @@ class ModelCardTests(unittest.TestCase):
                         parsed = urlparse(source["url"])
                         self.assertEqual(parsed.scheme, "https")
                         self.assertIn(parsed.hostname, OFFICIAL_HOSTS[card["vendor"]])
+                    else:
+                        self.assertTrue((MODEL_CARDS / source["url"]).resolve().is_file())
 
     def test_every_fact_references_a_known_source(self):
         def visit(node, path="root"):
@@ -71,6 +73,32 @@ class ModelCardTests(unittest.TestCase):
                 self.assertEqual(result["model_id"], card["model_id"])
                 self.assertFalse(result["privacy"]["api_key_saved"])
                 self.assertFalse(result["privacy"]["response_content_saved"])
+                if result["schema_version"] >= 2:
+                    self.assertEqual(self.card_scope(card), "strict_workflow")
+                    self.assertFalse(any(result["privacy"].values()))
+                    self.assertFalse(result["source_git_dirty"])
+                    self.assertRegex(result["source_git_commit"], r"^[0-9a-f]{40}$")
+                    self.assertRegex(result["source_git_diff_sha256"], r"^[0-9a-f]{64}$")
+                    for test in result["results"]:
+                        self.assertIn(test["status"], {"passed", "failed", "rate_limited", "skipped"})
+                        if test["status"] != "passed":
+                            continue
+                        self.assertTrue(test["requests"])
+                        for request in test["requests"]:
+                            self.assertTrue(request["response_received"])
+                            self.assertIn(request["response"]["finish_reason"], {"stop", "tool_calls"})
+                        final = test["requests"][-1]["response"]
+                        self.assertEqual(final["finish_reason"], "stop")
+                        self.assertGreater(final["content_chars"], 0)
+                        if test["id"] == "streaming":
+                            self.assertTrue(final["stream_completed"])
+                        if test["id"] == "tool_calling":
+                            self.assertGreaterEqual(len(test["requests"]), 2)
+                            self.assertTrue(test["requests"][0]["response"]["tool_arguments_validated"])
+
+    @staticmethod
+    def card_scope(card):
+        return card.get("verification_scope")
 
     def test_shell_example_uses_environment_key(self):
         source = (ROOT / "models/deepseek/deepseek-flash/examples/08_curl.sh").read_text(encoding="utf-8")

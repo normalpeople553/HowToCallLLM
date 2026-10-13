@@ -52,8 +52,8 @@
         }
       ],
       "model_card": "models/deepseek-flash.json",
-      "verification": "models/deepseek/deepseek-flash/verification/2026-10-13.json",
-      "verification_scope": "legacy_smoke"
+      "verification": "models/deepseek/deepseek-flash/verification/2026-10-13-strict.json",
+      "verification_scope": "strict_workflow"
     },
     "kimi": {
       "name": "Kimi（月之暗面）",
@@ -97,8 +97,8 @@
         }
       ],
       "model_card": "models/kimi-k2.6.json",
-      "verification": "models/kimi/kimi-k2.6/verification/2026-10-13.json",
-      "verification_scope": "legacy_smoke"
+      "verification": "models/kimi/kimi-k2.6/verification/2026-10-13-strict.json",
+      "verification_scope": "strict_workflow"
     },
     "zhipu": {
       "name": "智谱 GLM",
@@ -139,8 +139,8 @@
         }
       ],
       "model_card": "models/glm-4.7-flash.json",
-      "verification": "models/zhipu/glm-4.7-flash/verification/2026-10-13.json",
-      "verification_scope": "legacy_smoke"
+      "verification": "models/zhipu/glm-4.7-flash/verification/2026-10-13-strict.json",
+      "verification_scope": "strict_workflow"
     },
     "qwen": {
       "name": "通义千问（阿里云百炼）",
@@ -179,8 +179,8 @@
         }
       ],
       "model_card": "models/qwen-flash.json",
-      "verification": "models/qwen/qwen-flash/verification/2026-10-13.json",
-      "verification_scope": "legacy_smoke"
+      "verification": "models/qwen/qwen-flash/verification/2026-10-13-strict.json",
+      "verification_scope": "strict_workflow"
     },
     "doubao": {
       "name": "豆包（火山方舟）",
@@ -223,8 +223,8 @@
         }
       ],
       "model_card": "models/doubao-seed-2-1-pro-260628.json",
-      "verification": "models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json",
-      "verification_scope": "legacy_smoke"
+      "verification": "models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json",
+      "verification_scope": "strict_workflow"
     }
   }
 }

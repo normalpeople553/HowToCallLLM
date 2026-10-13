@@ -3,7 +3,9 @@
   "model_id": "glm-4.7-flash",
   "vendor": "zhipu",
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json",
+  "verification": "../../../../models/zhipu/glm-4.7-flash/verification/2026-10-13-strict.json",
+  "verification_scope": "strict_workflow",
+  "historical_verification": ["../../../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json"],
   "identity": {
     "api_model_id": {"value": "glm-4.7-flash", "source": "chat_api"},
     "lifecycle": {"value": "available", "source": "pricing"}
@@ -18,7 +20,7 @@
     "max_output_tokens": {"value": 131072, "display": "128K", "source": "chat_api"}
   },
   "capabilities": {
-    "chat_completions": {"status": "rate_limited_during_verification", "source": "chat_api"},
+    "chat_completions": {"status": "documented", "source": "chat_api"},
     "streaming": {"status": "documented", "source": "chat_api"},
     "thinking": {"status": "documented", "source": "thinking"},
     "json_object": {"status": "documented", "source": "chat_api"},

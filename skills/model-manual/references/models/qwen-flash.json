@@ -3,7 +3,9 @@
   "model_id": "qwen-flash",
   "vendor": "qwen",
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/qwen/qwen-flash/verification/2026-10-13.json",
+  "verification": "../../../../models/qwen/qwen-flash/verification/2026-10-13-strict.json",
+  "verification_scope": "strict_workflow",
+  "historical_verification": ["../../../../models/qwen/qwen-flash/verification/2026-10-13.json"],
   "identity": {
     "api_model_id": {"value": "qwen-flash", "source": "models"},
     "version_alias": {"value": "qwen-flash-2025-07-28", "source": "pricing"},

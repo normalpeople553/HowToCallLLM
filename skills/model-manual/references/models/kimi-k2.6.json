@@ -3,7 +3,9 @@
   "model_id": "kimi-k2.6",
   "vendor": "kimi",
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/kimi/kimi-k2.6/verification/2026-10-13.json",
+  "verification": "../../../../models/kimi/kimi-k2.6/verification/2026-10-13-strict.json",
+  "verification_scope": "strict_workflow",
+  "historical_verification": ["../../../../models/kimi/kimi-k2.6/verification/2026-10-13.json"],
   "identity": {
     "api_model_id": {"value": "kimi-k2.6", "source": "model_page"},
     "lifecycle": {"value": "available", "source": "models"}
