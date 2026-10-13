@@ -59,6 +59,15 @@ class ModelCardTests(unittest.TestCase):
             with self.subTest(path=path.name):
                 compile(path.read_text(encoding="utf-8"), str(path), "exec")
 
+    def test_verification_record_matches_card(self):
+        verification_path = (MODEL_CARDS / self.card["verification"]).resolve()
+        self.assertTrue(verification_path.is_file())
+        result = json.loads(verification_path.read_text(encoding="utf-8"))
+        self.assertEqual(result["model_id"], self.card["model_id"])
+        self.assertEqual(result["summary"], {"passed": 7, "failed": 0})
+        self.assertFalse(result["privacy"]["api_key_saved"])
+        self.assertFalse(result["privacy"]["response_content_saved"])
+
     def test_shell_example_uses_environment_key(self):
         source = (DEEPSEEK_EXAMPLES / "08_curl.sh").read_text(encoding="utf-8")
         self.assertIn("${DEEPSEEK_API_KEY}", source)

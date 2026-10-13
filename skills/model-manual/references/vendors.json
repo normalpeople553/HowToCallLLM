@@ -16,9 +16,9 @@
         "chat_completions": "verified",
         "streaming": "verified",
         "thinking_off": "verified",
-        "json_object": "documented",
-        "tool_calling": "documented",
-        "vision": "documented",
+        "json_object": "verified",
+        "tool_calling": "verified",
+        "vision": "verified",
         "responses_api": "documented"
       },
       "sources": {

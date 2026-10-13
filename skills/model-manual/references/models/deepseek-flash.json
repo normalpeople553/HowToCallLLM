@@ -3,6 +3,7 @@
   "model_id": "deepseek-flash",
   "vendor": "deepseek",
   "last_checked_at": "2026-10-13",
+  "verification": "../../../../models/deepseek/deepseek-flash/verification/2026-10-13.json",
   "identity": {
     "api_model_id": {
       "value": "deepseek-flash",
@@ -71,23 +72,23 @@
   },
   "capabilities": {
     "chat_completions": {
-      "status": "documented",
+      "status": "verified",
       "source": "chat_api"
     },
     "streaming": {
-      "status": "documented",
+      "status": "verified",
       "source": "chat_api"
     },
     "thinking": {
-      "status": "documented",
+      "status": "verified",
       "source": "thinking"
     },
     "json_object": {
-      "status": "documented",
+      "status": "verified",
       "source": "json_output"
     },
     "tool_calling": {
-      "status": "documented",
+      "status": "verified",
       "source": "tool_calls"
     },
     "strict_tool_calling": {
@@ -95,7 +96,7 @@
       "source": "tool_calls"
     },
     "vision": {
-      "status": "documented",
+      "status": "verified",
       "source": "vision"
     },
     "responses_api": {

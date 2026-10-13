@@ -308,6 +308,8 @@ print("缓存未命中：", usage.prompt_cache_miss_tokens)
 
 ## 16. 验证
 
+仓库在 **2026-10-13** 使用真实 DeepSeek Key 完成 7 项脱敏测试：普通调用、流式输出、开启思考、关闭思考、JSON Output、Tool Calling 和图片输入全部通过；记录只保存状态、token 数和内容长度。[脱敏验证记录](verification/2026-10-13.json) · [测试脚本](../../../tests/verify_deepseek_flash.py)
+
 静态检查不会发送请求：
 
 ```bash

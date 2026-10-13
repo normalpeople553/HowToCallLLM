@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "model_id": "deepseek-flash",
+  "tested_at": "2026-10-13",
+  "implementation_commit": "30b9dc2",
+  "test_script": "tests/verify_deepseek_flash.py",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "request_id_saved": false
+  },
+  "summary": {
+    "passed": 7,
+    "failed": 0
+  },
+  "tests": {
+    "chat_completions": {
+      "status": "passed",
+      "input_tokens": 34,
+      "output_tokens": 27,
+      "content_chars": 2
+    },
+    "streaming": {
+      "status": "passed",
+      "content_chars": 4
+    },
+    "thinking_enabled": {
+      "status": "passed",
+      "input_tokens": 43,
+      "output_tokens": 314,
+      "reasoning_chars": 301,
+      "content_chars": 162
+    },
+    "thinking_disabled": {
+      "status": "passed",
+      "input_tokens": 11,
+      "output_tokens": 9,
+      "reasoning_content_present": false
+    },
+    "json_object": {
+      "status": "passed",
+      "input_tokens": 46,
+      "output_tokens": 5
+    },
+    "tool_calling": {
+      "status": "passed",
+      "input_tokens": 270,
+      "output_tokens": 33,
+      "tool_calls": 1
+    },
+    "vision": {
+      "status": "passed",
+      "input_tokens": 198,
+      "output_tokens": 2,
+      "content_chars": 3
+    }
+  }
+}
