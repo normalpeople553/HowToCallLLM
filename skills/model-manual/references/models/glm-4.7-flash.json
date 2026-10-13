@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "model_id": "glm-4.7-flash",
+  "vendor": "zhipu",
+  "last_checked_at": "2026-10-13",
+  "verification": "../../../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json",
+  "identity": {
+    "api_model_id": {"value": "glm-4.7-flash", "source": "chat_api"},
+    "lifecycle": {"value": "available", "source": "pricing"}
+  },
+  "connection": {
+    "api_key_env": {"value": "ZHIPU_API_KEY", "source": "project_convention"},
+    "official_api_key_env": {"value": "ZAI_API_KEY", "source": "openai_compat"},
+    "openai_base_url": {"value": "https://open.bigmodel.cn/api/paas/v4/", "source": "openai_compat"}
+  },
+  "limits": {
+    "context_tokens": {"value": 204800, "display": "200K", "source": "pricing"},
+    "max_output_tokens": {"value": 131072, "display": "128K", "source": "chat_api"}
+  },
+  "capabilities": {
+    "chat_completions": {"status": "rate_limited_during_verification", "source": "chat_api"},
+    "streaming": {"status": "documented", "source": "chat_api"},
+    "thinking": {"status": "documented", "source": "thinking"},
+    "json_object": {"status": "documented", "source": "chat_api"},
+    "tool_calling": {"status": "documented", "source": "chat_api"},
+    "vision": {"status": "not_documented_for_this_model", "source": "chat_api"}
+  },
+  "thinking": {
+    "default": {"value": "enabled", "source": "thinking_mode"},
+    "toggle": {"value": {"thinking": {"type": "enabled|disabled"}}, "source": "thinking_mode"},
+    "reasoning_field": {"value": "reasoning_content", "source": "thinking"}
+  },
+  "pricing_snapshot": {
+    "currency": {"value": "CNY", "source": "pricing"},
+    "unit": {"value": "per 1M tokens", "source": "pricing"},
+    "input": {"value": 0, "source": "pricing"},
+    "output": {"value": 0, "source": "pricing"},
+    "volatile": true
+  },
+  "sources": {
+    "project_convention": {"title": "本仓库环境变量约定", "url": "../../SKILL.md"},
+    "pricing": {"title": "模型价格", "url": "https://docs.bigmodel.cn/cn/guide/start/pricing"},
+    "openai_compat": {"title": "OpenAI SDK 兼容", "url": "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction"},
+    "thinking": {"title": "深度思考", "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking"},
+    "thinking_mode": {"title": "思考模式", "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode"},
+    "chat_api": {"title": "对话补全 API", "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8"}
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "model_id": "kimi-k2.6",
+  "vendor": "kimi",
+  "last_checked_at": "2026-10-13",
+  "verification": "../../../../models/kimi/kimi-k2.6/verification/2026-10-13.json",
+  "identity": {
+    "api_model_id": {"value": "kimi-k2.6", "source": "model_page"},
+    "lifecycle": {"value": "available", "source": "models"}
+  },
+  "connection": {
+    "api_key_env": {"value": "MOONSHOT_API_KEY", "source": "quickstart"},
+    "openai_base_url": {"value": "https://api.moonshot.cn/v1", "source": "quickstart"},
+    "chat_completions_path": {"value": "/chat/completions", "source": "chat_api"}
+  },
+  "limits": {
+    "context_tokens": {"value": 262144, "display": "256K", "source": "model_page"}
+  },
+  "capabilities": {
+    "chat_completions": {"status": "verified", "source": "chat_api"},
+    "streaming": {"status": "verified", "source": "streaming"},
+    "thinking": {"status": "verified", "source": "thinking"},
+    "json_object": {"status": "verified", "source": "json"},
+    "tool_calling": {"status": "verified", "source": "tools"},
+    "vision": {"status": "verified", "source": "vision"},
+    "video_input": {"status": "documented", "source": "vision"},
+    "context_caching": {"status": "documented", "source": "cache"}
+  },
+  "thinking": {
+    "default": {"value": "enabled", "source": "parameters"},
+    "toggle": {"value": {"thinking": {"type": "enabled|disabled"}}, "source": "thinking"},
+    "reasoning_field": {"value": "reasoning_content", "source": "thinking"},
+    "reasoning_effort": {"value": "not_supported", "source": "parameters"}
+  },
+  "parameter_constraints": {
+    "thinking_temperature": {"value": 1.0, "source": "parameters"},
+    "non_thinking_temperature": {"value": 0.6, "source": "parameters"},
+    "top_p": {"value": 0.95, "source": "parameters"},
+    "n": {"value": 1, "source": "parameters"},
+    "tool_choice_required": {"value": "not_supported", "source": "tool_choice"}
+  },
+  "pricing_snapshot": {
+    "currency": {"value": "CNY", "source": "pricing"},
+    "unit": {"value": "per 1M tokens", "source": "pricing"},
+    "cache_hit_input": {"value": 1.1, "source": "pricing"},
+    "cache_miss_input": {"value": 6.5, "source": "pricing"},
+    "output": {"value": 27.0, "source": "pricing"},
+    "volatile": true
+  },
+  "sources": {
+    "quickstart": {"title": "快速开始", "url": "https://platform.kimi.com/docs/get-api-key"},
+    "models": {"title": "模型列表", "url": "https://platform.kimi.com/docs/models"},
+    "model_page": {"title": "Kimi K2.6", "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart"},
+    "parameters": {"title": "模型参数参考", "url": "https://platform.kimi.com/docs/api/models-overview"},
+    "chat_api": {"title": "Chat Completions API", "url": "https://platform.kimi.com/docs/api/chat"},
+    "streaming": {"title": "流式输出", "url": "https://platform.kimi.com/docs/guide/utilize-the-streaming-output-feature-of-kimi-api"},
+    "thinking": {"title": "思考模型", "url": "https://platform.kimi.com/docs/guide/use-thinking-models"},
+    "json": {"title": "JSON Mode", "url": "https://platform.kimi.com/docs/guide/use-json-mode-feature-of-kimi-api"},
+    "tools": {"title": "工具调用", "url": "https://platform.kimi.com/docs/guide/use-kimi-api-to-complete-tool-calls"},
+    "tool_choice": {"title": "工具调用约束", "url": "https://platform.kimi.com/docs/guide/use-tool-choice"},
+    "vision": {"title": "视觉模型", "url": "https://platform.kimi.com/docs/guide/use-kimi-vision-model"},
+    "cache": {"title": "上下文缓存", "url": "https://platform.kimi.com/docs/guide/context-caching"},
+    "pricing": {"title": "模型价格", "url": "https://platform.kimi.com/docs/pricing/chat"},
+    "errors": {"title": "错误码", "url": "https://platform.kimi.com/docs/api/errors"}
+  }
+}

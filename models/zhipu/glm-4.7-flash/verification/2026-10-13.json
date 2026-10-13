@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "model_id": "glm-4.7-flash",
+  "tested_at": "2026-10-13",
+  "implementation_commit": "e614377",
+  "test_script": "tests/verify_glm_4_7_flash.py",
+  "runtime": {"python": "3.11.15", "openai": "3.29.0"},
+  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false},
+  "summary": {"passed": 0, "failed": 0, "rate_limited": 6},
+  "tests": {
+    "chat_completions": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1302"]},
+    "streaming": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1302"]},
+    "thinking_enabled": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1305"]},
+    "thinking_disabled": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1302"]},
+    "json_object": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1305"]},
+    "tool_calling": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1305"]}
+  },
+  "interpretation": "The requests reached the provider, but this run cannot establish feature availability because every bounded retry ended in HTTP 429."
+}
