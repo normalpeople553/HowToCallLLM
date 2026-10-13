@@ -64,4 +64,3 @@ response = client.chat.completions.create(
     extra_body={"thinking": {"type": "disabled"}},
 )
 print(completed_text(response))
-
