@@ -1,50 +1,48 @@
 ---
 name: model-manual
-description: 为 DeepSeek、Kimi、智谱 GLM、通义千问和豆包生成、迁移或排查 OpenAI-compatible 文本模型调用代码。用户询问国产大模型的 API 地址、模型名、思考开关、流式调用或接入报错时使用。
+description: 为 DeepSeek、Kimi、智谱 GLM、通义千问和豆包接入、迁移或排查 OpenAI-compatible 模型调用代码。用户需要国产模型的接口配置、参数差异、流式/JSON/工具调用，或核对未收录型号时使用。
 ---
 
-# 模型说明书
+# 模型说明书 · Agent 入口
 
-帮助用户用尽可能少的步骤接入本 Skill 已收录的文本大模型。
+根据用户的项目完成模型调用任务。人类阅读入口是[仓库 README](../../README.md)；无需按顺序读取整套教程。
 
-## 工作流
+## 先定位任务与型号
 
-1. 确认用户指定的厂商、语言和调用方式；能从现有项目判断时，不重复提问。
-2. 读取 [references/vendors.json](references/vendors.json) 中对应厂商的记录。不要凭记忆补写模型名、地址或专属参数。
-   - 如果记录含 `model_manual`，继续读取对应模型说明书和 `references/models/` 下的机器卡片；模型级事实优先于厂商级摘要。
-3. 示例优先运行 `scripts/generate_snippet.py` 生成；它按具体型号检查任务能力、思考开关、输出参数和生命周期。未知型号需先核对官方资料并补型号卡片，不能仅覆盖名字后继承厂商参数。需要融入现有项目时，遵循项目已有语言、依赖和代码风格。
-4. 用户未指定语言时默认 Python；未指定模型时使用 `default_model`。
-5. 返回完整可运行代码，并给出依赖安装命令、所需环境变量和运行命令。
-6. 遇到错误时，保留原始状态码并结合厂商的 `notes` 排查；每条 note 自带来源，不要把所有 404 都归因于同一原因。
-7. 遇到正文为空、输出截断、JSON 卡住、工具循环、流式解析或 429 时，读取 [`../../docs/06-真实踩雷与生产检查.md`](../../docs/06-真实踩雷与生产检查.md)；先按具体模型确认参数语义，再给修复方案。
+1. 从用户要求和现有项目确定厂商、型号、语言及调用方式；缺少会影响实现的信息时再问。没有现有项目且用户未指定语言时使用 Python，未指定型号时读取厂商的 `default_model`。
+2. 从 [references/vendors.json](references/vendors.json) 定位对应厂商，再读取指定型号的 [references/models/](references/models/) 卡片。目录中的 `model_card` 和 `model_manual` 只指默认型号，用户指定其他型号时必须按准确 Model ID 查找。
+3. 型号参数读取卡片的 `generation`，能力读取 `capabilities`，每个事实的 `source` 在该卡片的 `sources` 中解析。需要解释限制或查看示例时读取 [models/](../../models/) 中对应说明书；需要声称“已实测”时继续读该卡片 `verification` 指向的原始报告。
+4. 按下表读取[任务流程](references/workflows.md)中相关部分，完成实现和检查。
 
-## 生成示例
+| 用户任务 | 任务流程中的部分 | 重点 |
+|---|---|---|
+| 新增调用、JSON 提取、流式或工具调用 | 接入 | 检查任务与语言组合，用型号参数生成代码 |
+| 换厂商、换型号、升级 SDK | 迁移 | 比较源与目标，保留业务行为，处理参数和消息差异 |
+| 报错、空正文、断流或工具循环 | 排错 | 结合实际响应和具体型号定位原因 |
+| 指定未收录型号 | 未知型号 | 核对官方资料，避免继承默认型号参数 |
+| 查能力或要求真实复测 | 证据与验证 | 分开说明官方声明、历史结果和本次检查 |
 
-在本 Skill 目录运行：
+## 生成调用代码
+
+在仓库根目录运行；脚本只生成代码，不发送模型请求：
 
 ```bash
-python scripts/generate_snippet.py --vendor kimi --language python
-python scripts/generate_snippet.py --vendor qwen --language typescript --thinking off
-python scripts/generate_snippet.py --vendor doubao --language curl --stream
-python scripts/generate_snippet.py --vendor kimi --task tool --thinking off
-python scripts/generate_snippet.py --vendor qwen --task json --thinking off --max-tokens 2048
+python skills/model-manual/scripts/generate_snippet.py --help
+python skills/model-manual/scripts/generate_snippet.py --vendor kimi --language python --thinking off
+python skills/model-manual/scripts/generate_snippet.py --vendor qwen --language typescript --stream
+python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool --thinking off
+python skills/model-manual/scripts/generate_snippet.py --vendor qwen --task json --thinking off --max-tokens 2048
 ```
 
-支持的语言是 `python`、`typescript` 和 `curl`；任务、语言组合以脚本帮助为准。`--thinking on/off` 只使用型号卡片登记的开关；`--max-tokens` 读取型号的预算参数和范围，不能假定所有厂商都把思考 token 计入同一个上限。生成器对未支持的组合明确报错。
+语言支持 `python`、`typescript` 和 `curl`，任务组合以脚本帮助和型号卡片为准。未知型号、未支持组合和生命周期限制必须先处理；不能通过换名、删除校验或沿用其他型号参数绕过。融入现有项目时保留其语言、依赖和代码风格。
 
-## 输出要求
+## 交付与边界
 
-- API Key 必须从厂商卡片规定的环境变量读取，禁止硬编码或在输出中回显完整 Key。
-- 明确区分“已实测”“官方文档说明”和“尚未验证”；对 `verified` 继续读取卡片的 `verification` 报告，说明测试日期与范围。历史基础验证不能描述成严格结束检查、工具闭环或图片内容识别；限流是运行状态，不是能力不支持。
-- 每个厂商事实都附上 `sources` 或 `notes.source` 中的官方链接；提到价格、免费额度时直接链接官方价格或额度页，不引用二手汇总。
-- 经验性选型或排查建议标注为“项目建议”，并链接仓库的 `docs/来源与核验规则.md`。
-- 不把 Chat Completions 兼容表述成完整 OpenAI API 兼容。
-- 普通/JSON 回答检查结束原因与空正文；流式处理空 `choices` 与结束状态；工具调用验证名称、完整参数并回传 `tool_call_id`，需要有限循环及完整 assistant 消息。模板中的天气为模拟数据，不能当成实时天气。
-- 用户只要代码时保持简洁；用户是新手时补充 Key 申请、安装和运行步骤。
-- 除非用户明确要求实际验证，否则只生成或修改代码，不主动发送可能计费的请求。
-- 若 `verified_at` 已明显过时，提醒用户先运行仓库中的体检脚本或复核官方文档。
-- 安装默认使用仓库锁定依赖，验证运行方式、自动报告和退出码见[验证与复现](../../docs/验证与复现.md)；摘要与原始报告不一致时以报告为准，并用 `scripts/sync_verification.py --check` 定位需同步项。
+- 交付可运行代码或项目修改、必要的环境变量与运行命令，说明实际完成的检查。用户只要代码时保持简洁。
+- 参数与能力的厂商结论附卡片中的官方来源；价格和额度直接链接官方页面。项目判断按[来源规则](../../docs/来源与核验规则.md)标为“项目建议”。
+- Key 从型号规定的环境变量读取，不硬编码、不回显。除非用户明确要求真实调用，否则只生成、修改代码或执行离线检查。
+- 保留输出完整性检查：普通/JSON 检查结束原因和空正文；流式处理空 `choices` 与结束状态；工具验证名称和参数、回传 `tool_call_id`、保留完整 assistant 消息并限制轮次。示例中的工具数据为模拟数据。
+- `verified` 仅代表报告中的日期、型号和测试范围；官方支持与本次失败分别说明。历史基础验证不证明完整工具闭环或图片内容识别，限流不代表不支持。
+- 以准确型号卡片和原始报告处理摘要冲突；维护或复测后按[验证与复现](../../docs/验证与复现.md)检查同步。源码编译、模拟测试和历史实测不能写成“本次线上通过”。
 
-## 当前边界
-
-默认只覆盖文本对话、思考开关和流式输出。模型级机器卡片可以声明 JSON、Tool Calling、图片或 Responses API；未在数据中声明的能力不要推断其兼容性。
+当前覆盖已收录型号的 Chat Completions；JSON、工具、图片或其他 API 仅在具体卡片声明的范围内使用。不能将 Chat Completions 兼容扩大为全部 OpenAI API 兼容。

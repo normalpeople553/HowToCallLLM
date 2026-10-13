@@ -1,14 +1,46 @@
 # 模型说明书
 
-> 给人和编程 Agent 共用的大模型 API 接入手册。
+> Agent 优先，人类可读的大模型 API 接入手册。
 
-本项目帮助新手跑通第一次调用，也帮助老手和 Agent 快速查找 Key、`base_url`、模型名与厂商扩展参数；当前边界记录在 [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md)。
+本项目把模型资料、调用代码和验证证据组织成编程 Agent 可以按任务使用的说明书：接入模型、迁移厂商、排查错误，以及核对尚未收录的型号。人类通过本页了解怎么使用、模型有什么差异、实测结果能证明什么。两种入口共用模型卡片与原始报告，维护规则见[来源与核验规则](docs/来源与核验规则.md)。
 
-## 三个入口
+## 两个入口
 
-- 新手：从 [`docs/01-5分钟跑通第一次调用.md`](docs/01-5分钟跑通第一次调用.md) 开始。
-- 老手：直接查下表或 [`skills/model-manual/references/vendors.json`](skills/model-manual/references/vendors.json)。
-- Agent：先读取 [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md)，再生成、迁移或排查代码。
+| 读者 | 入口 | 怎么使用 |
+|---|---|---|
+| Agent | [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md) | 按任务读取对应型号卡片、示例和报告，完成接入、迁移或排错 |
+| 人类 | 本页 | 给 Agent 一条具体指令；需要判断能力、费用或失败原因时查下面的资料 |
+
+## 让 Agent 使用
+
+把仓库地址和你的项目需求一起交给编程 Agent；本地已克隆时，直接提供 `skills/model-manual/SKILL.md` 的路径。以下指令可以复制后修改：
+
+**接入模型**
+
+> 阅读 https://github.com/normalpeople553/HowToCallLLM 的 skills/model-manual/SKILL.md，根据我的项目接入 Kimi。先检查现有语言、依赖和调用代码，再读取对应型号资料；给出可运行实现、运行命令和验证范围。
+
+**迁移厂商**
+
+> 按这个仓库的 Skill，把项目中的 Kimi 调用迁移到通义。逐项核对思考开关、输出预算、JSON、流式和工具消息，不要只替换 base_url 和模型名。说明哪些行为能保留、哪些需要修改，以及哪些尚未验证。
+
+**排查错误**
+
+> 按这个仓库的 Skill，排查我提供的错误和最小调用代码。先区分鉴权、限流、输出截断和参数问题，再给出有依据的修复与检查方法；不要回显 Key。
+
+Agent 的任务分支、未知型号处理和交付要求见[任务流程](skills/model-manual/references/workflows.md)。代码生成与离线检查不会调用模型；真实 API 验证需要单独明确要求。[验证与复现](docs/验证与复现.md)
+
+## 人类按问题查阅
+
+| 想了解什么 | 阅读位置 |
+|---|---|
+| 某个具体型号的能力、限制与示例 | [模型说明书](models/README.md) |
+| 哪些流程已验证，哪些仍是官方声明 | [验证状态](docs/验证状态.md)及其原始报告 |
+| 为什么同一套接口仍有参数差异 | [统一调用套路](docs/02-一个套路调遍所有模型.md) |
+| 空回复、JSON、工具循环和限流怎么处理 | [真实踩雷](docs/06-真实踩雷与生产检查.md) |
+| 怎么核对价格、额度和成本 | [价格与额度](docs/04-免费额度与省钱攻略.md) |
+| 自己手动运行一次调用 | [第一次调用](docs/01-5分钟跑通第一次调用.md)（辅助教程） |
+
+能力声明、实测结果和项目建议分别记录；`unknown` 表示没有足够结论，不能据此认定不支持。[来源规则](docs/来源与核验规则.md)
 
 ## 模型级说明书
 
@@ -90,12 +122,14 @@ python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
 ```
 
-## 文档
+## 完整资料索引
 
 | 章节 | 内容与依据 |
 |---|---|
-| [00 前言](docs/00-前言.md) | 项目范围与标记 |
-| [01 第一次调用](docs/01-5分钟跑通第一次调用.md) | 官方接口基础上的最短流程 |
+| [Agent Skill](skills/model-manual/SKILL.md) | 任务路由、必读资料与交付边界 |
+| [Agent 任务流程](skills/model-manual/references/workflows.md) | 接入、迁移、排错、未知型号和证据核对 |
+| [00 阅读说明](docs/00-前言.md) | 双入口、项目范围与可信度标记 |
+| [01 第一次调用](docs/01-5分钟跑通第一次调用.md) | 手动运行的辅助教程 |
 | [02 统一调用套路](docs/02-一个套路调遍所有模型.md) | 五家兼容接口与差异 |
 | [03 厂商资料卡](docs/03-厂商攻略/) | 每家官方链接、配置和仓库实测 |
 | [04 价格与额度](docs/04-免费额度与省钱攻略.md) | 直达官方价格、额度页面 |

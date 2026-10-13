@@ -63,7 +63,7 @@ def expected_outputs() -> dict[Path, str]:
             raise ValueError(f"型号与报告不一致：{card['model_id']}")
         observations = report_tests(report)
         cfg["model_card"] = f'models/{card_path.name}'
-        cfg["verification"] = str(report_path.relative_to(ROOT))
+        cfg["verification"] = report_path.relative_to(ROOT).as_posix()
         cfg["verification_scope"] = "strict_workflow" if report.get("schema_version", 1) >= 2 else "legacy_smoke"
         capability_states = {}
         for name, capability in card["capabilities"].items():
@@ -81,7 +81,7 @@ def expected_outputs() -> dict[Path, str]:
             capability_states["thinking_off"] = "verified" if observations.get("thinking_disabled", {}).get("status") == "passed" else "documented"
         cfg["capabilities"] = capability_states
         result_counts = counts(report)
-        report_link = "../" + str(report_path.relative_to(ROOT))
+        report_link = "../" + report_path.relative_to(ROOT).as_posix()
         manual_link = f'../models/{vendor}/{card["model_id"]}/README.md'
         scope = "严格流程验证" if cfg["verification_scope"] == "strict_workflow" else "历史基础验证"
         sdk = report.get("runtime", {}).get("openai", "未记录")

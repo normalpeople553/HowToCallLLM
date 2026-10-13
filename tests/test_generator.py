@@ -117,6 +117,12 @@ class ModelSelectionTests(unittest.TestCase):
 
     def test_generated_python_and_shell_are_valid_with_adversarial_question(self):
         question = "引号 '\"、换行\nMODEL_MANUAL_JSON\n$(not_a_command) `not_a_command`"
+        bash = shutil.which("bash")
+        if os.name == "nt" and (git := shutil.which("git")):
+            # Windows 的 bash.exe 可能是没有 Linux 发行版的 WSL 启动器。
+            git_bash = Path(git).resolve().parent.parent / "bin" / "bash.exe"
+            if git_bash.is_file():
+                bash = str(git_bash)
         for model, card in self.cards.items():
             tasks = ["chat", "json", "tool"]
             if generator._supported(card, "vision"):
@@ -136,7 +142,7 @@ class ModelSelectionTests(unittest.TestCase):
                             self.assertEqual(body["tool_choice"], "auto")
             for stream in (False, True):
                 source = generator.curl_snippet(card, model, question, stream, "off")
-                check = subprocess.run(["bash", "--noprofile", "--norc", "-n"], input=source, text=True, capture_output=True)
+                check = subprocess.run([bash or "bash", "--noprofile", "--norc", "-n"], input=source, encoding="utf-8", capture_output=True)
                 self.assertEqual(check.returncode, 0, check.stderr)
 
     def test_past_model_warning_is_stderr_only(self):
