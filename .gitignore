@@ -1,0 +1,16 @@
+# 密钥与环境变量（绝不提交）
+.env
+*.key
+*secret*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env/
+
+# 系统/编辑器
+.DS_Store
+.idea/
+.vscode/
