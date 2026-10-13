@@ -12,7 +12,7 @@
 
 ## 模型级说明书
 
-第一份完整型号说明书已经建立：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)。它覆盖普通调用、流式、思考、JSON、Tool Calling、图片、缓存、价格、错误处理和 Agent 规则，事实来源全部链接 DeepSeek 官方文档。
+已完成五份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)和[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)。每份均覆盖接口、思考、流式、结构化输出、工具调用、价格入口、Agent 配置和脱敏实测记录；不支持或未实测的能力会明确区分。
 
 ## 快速参数表
 

@@ -42,14 +42,16 @@
       "key_url": "https://platform.moonshot.cn/console/api-keys",
       "base_url": "https://api.moonshot.cn/v1",
       "default_model": "kimi-k2.6",
+      "model_manual": "../../../models/kimi/kimi-k2.6/README.md",
       "thinking_model": "kimi-k2.6",
       "thinking_off_body": {"thinking": {"type": "disabled"}},
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
         "thinking_off": "verified",
-        "json_object": "unknown",
-        "tool_calling": "unknown"
+        "json_object": "verified",
+        "tool_calling": "verified",
+        "vision": "verified"
       },
       "sources": {
         "api": "https://platform.kimi.com/docs/api/overview",
@@ -69,15 +71,16 @@
       "key_url": "https://bigmodel.cn/usercenter/apikeys",
       "base_url": "https://open.bigmodel.cn/api/paas/v4",
       "default_model": "glm-4.7-flash",
+      "model_manual": "../../../models/zhipu/glm-4.7-flash/README.md",
       "thinking_model": "glm-4.7-flash",
       "thinking_off_body": {"thinking": {"type": "disabled"}},
       "default_max_tokens": 512,
       "capabilities": {
-        "chat_completions": "verified",
-        "streaming": "verified",
-        "thinking_off": "verified",
-        "json_object": "unknown",
-        "tool_calling": "unknown"
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking_off": "documented",
+        "json_object": "documented",
+        "tool_calling": "documented"
       },
       "sources": {
         "api": "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction",
@@ -95,14 +98,15 @@
       "key_url": "https://bailian.console.aliyun.com/?apiKey=1#/api-key",
       "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
       "default_model": "qwen-flash",
-      "thinking_model": "qwen3.6-flash",
+      "model_manual": "../../../models/qwen/qwen-flash/README.md",
+      "thinking_model": "qwen-flash",
       "thinking_off_body": {"enable_thinking": false},
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
         "thinking_off": "verified",
-        "json_object": "unknown",
-        "tool_calling": "unknown"
+        "json_object": "verified",
+        "tool_calling": "verified"
       },
       "sources": {
         "api": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/",
@@ -122,14 +126,16 @@
       "activate_url": "https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement",
       "base_url": "https://ark.cn-beijing.volces.com/api/v3",
       "default_model": "doubao-seed-2-1-pro-260628",
+      "model_manual": "../../../models/doubao/doubao-seed-2-1-pro-260628/README.md",
       "thinking_model": "doubao-seed-2-1-pro-260628",
       "thinking_off_body": {"thinking": {"type": "disabled"}},
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
         "thinking_off": "verified",
-        "json_object": "unknown",
-        "tool_calling": "unknown"
+        "json_object": "verified",
+        "tool_calling": "verified",
+        "vision": "verified"
       },
       "sources": {
         "api": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh",
