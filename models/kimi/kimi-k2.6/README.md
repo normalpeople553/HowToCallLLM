@@ -97,3 +97,7 @@ thinking_off_extra_body:
 ```
 
 这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。实时结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `MOONSHOT_API_KEY=... python tests/verify_kimi_k2_6.py`。
+
+## 10. 必看踩雷
+
+K2.6 的思考 token 与正文 token 共同受 `max_tokens` 限制；预算太小可能先输出大量 `reasoning_content`，却没有足够空间生成最终答案。多步工具调用时官方建议 `max_tokens >= 16000`。[Kimi 思考模型](https://platform.kimi.com/docs/guide/use-thinking-models) 通用检测代码与更多问题见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。

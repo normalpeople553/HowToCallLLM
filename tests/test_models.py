@@ -77,6 +77,13 @@ class ModelCardTests(unittest.TestCase):
         self.assertIn("${DEEPSEEK_API_KEY}", source)
         self.assertNotIn("sk-", source)
 
+    def test_every_model_manual_links_the_pitfall_guide(self):
+        manuals = sorted((ROOT / "models").glob("*/*/README.md"))
+        self.assertEqual(len(manuals), 5)
+        for manual in manuals:
+            with self.subTest(manual=str(manual)):
+                self.assertIn("06-真实踩雷与生产检查.md", manual.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()

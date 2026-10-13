@@ -70,3 +70,7 @@ modalities: [text]
 ```
 
 模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；实时能力结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `DASHSCOPE_API_KEY=... python tests/verify_qwen_flash.py`。
+
+## 7. 必看踩雷
+
+百炼的 `max_tokens` 语义会随模型变化，而 `max_completion_tokens` 明确限制“思维链 + 回答”；新代码不能假定所有模型都按同一种方式计算思考预算。[OpenAI Chat Completions 兼容文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) Python SDK 的 `enable_thinking` 等扩展参数必须放进 `extra_body`。对照表和检测代码见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。

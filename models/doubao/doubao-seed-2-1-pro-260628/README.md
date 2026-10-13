@@ -77,3 +77,7 @@ lifecycle: past_but_callable
 ```
 
 连接信息来自[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)，生命周期来自[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)并由当天实测补充。实时能力结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `ARK_API_KEY=... python tests/verify_doubao_seed_2_1_pro.py`。
+
+## 8. 必看踩雷
+
+该 Model ID 已进入官方“往期模型”区域，但 2026-10-13 的七项实测仍通过；“仍能调用”和“适合作为新项目长期默认”是两个问题。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [实测记录](verification/2026-10-13.json) 迁移和生产检查建议见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。

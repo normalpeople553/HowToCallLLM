@@ -321,3 +321,7 @@ python -m unittest tests/test_models.py
 ```bash
 DEEPSEEK_API_KEY="你的Key" python tests/verify_deepseek_flash.py
 ```
+
+## 17. 必看踩雷
+
+不要只判断 HTTP 200：`finish_reason="length"` 表示生成达到限制，正文可能不完整；usage 还会在 `completion_tokens_details.reasoning_tokens` 中给出思考 token。[Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) JSON Mode 如果没有在提示词里明确要求 JSON，还可能持续生成空白直至达到 token 上限。[JSON Output](https://api-docs.deepseek.com/guides/json_mode/) 检测代码和工具、流式相关问题见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。
