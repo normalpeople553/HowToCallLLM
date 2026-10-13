@@ -1,12 +1,12 @@
 """智谱 GLM 最短调用片段（实测 2026-10-13）。export ZHIPU_API_KEY=...
-glm-4.7-flash 长期免费；默认开思考，不开思考时 max_tokens 别太小。"""
+glm-4.7-flash 在官方定价页标注免费；默认开思考，不开思考时 max_tokens 给足。"""
 import os
 from openai import OpenAI
 
 client = OpenAI(api_key=os.environ["ZHIPU_API_KEY"],
                 base_url="https://open.bigmodel.cn/api/paas/v4")
 
-# ① 默认（免费模型也带思考；max_tokens 给足，否则思考链吃光额度 content 为空）
+# ① 默认（免费模型也带思考；max_tokens 给足，否则思考链占满额度 content 为空）
 r = client.chat.completions.create(
     model="glm-4.7-flash",
     messages=[{"role": "user", "content": "你好"}],
@@ -14,7 +14,7 @@ r = client.chat.completions.create(
 )
 print(r.choices[0].message.content)
 
-# ② 关闭思考（实测有效，推荐免费练手时关掉）
+# ② 关闭思考（推荐免费练手时关掉）
 r = client.chat.completions.create(
     model="glm-4.7-flash",
     messages=[{"role": "user", "content": "你好"}],

@@ -6,7 +6,8 @@ key:
   env: MOONSHOT_API_KEY
   apply_url: "https://platform.moonshot.cn/console/api-keys"
   steps: "手机号注册 → 实名 → API Key 管理 → 创建"
-  free_quota: "以平台当期活动为准"
+  free_quota: "无（官方定价页无免费额度说明，按量计费）"
+  free_quota_url: "https://platform.kimi.com/docs/pricing/chat"
 api:
   base_url: "https://api.moonshot.cn/v1"
   openai_compatible: true
@@ -42,11 +43,10 @@ thinking:
   reasoning_field: "message.reasoning_content"
   verified_off: true   # 关思考后 completion 4 token、无 reasoning
 deprecated:
-  - "moonshot-v1-8k / 32k / 128k（新账号实测 404：Not found the model or Permission denied）"
+  - "moonshot-v1-8k / 32k / 128k 已下线，代码里不要使用；当前模型见 models 列表"
 gotchas:
-  - "网上大量教程仍写 moonshot-v1-*，2026 年新账号已不可用，别抄"
-  - "模型名不再带上下文长度后缀；要长文本直接用 k3（1M）"
-  - "国内用 .cn 域名直连"
+  - "模型名不带上下文长度后缀；要长文本用 k3（1M）"
+  - "国内用 .cn 域名直连；海外站 .ai 的账号/key 不通用"
 docs:
   pricing: "https://platform.kimi.com/docs/pricing/chat"
 snippet: "../snippets/kimi.py"

@@ -6,7 +6,8 @@ key:
   env: DEEPSEEK_API_KEY
   apply_url: "https://platform.deepseek.com/api_keys"
   steps: "手机号注册 → 实名 → API keys → 创建"
-  free_quota: "新用户赠送余额（先扣赠送再扣充值）"
+  free_quota: "账户有赠送余额，与充值余额并存时优先扣减赠送余额（是否发放以控制台为准）"
+  free_quota_url: "https://api-docs.deepseek.com/zh-cn/quick_start/pricing"
 api:
   base_url: "https://api.deepseek.com"
   openai_compatible: true

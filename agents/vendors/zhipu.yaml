@@ -6,7 +6,8 @@ key:
   env: ZHIPU_API_KEY
   apply_url: "https://bigmodel.cn/usercenter/apikeys"
   steps: "手机号注册 → 实名认证 → API Keys → 添加"
-  free_quota: "glm-4.7-flash 等 Flash 系列长期免费（需实名，有 RPM 限流）"
+  free_quota: "glm-4.7-flash 等 Flash 系列在定价页标注免费（需实名，有 RPM 限流）"
+  free_quota_url: "https://docs.bigmodel.cn/cn/guide/start/pricing"
 api:
   base_url: "https://open.bigmodel.cn/api/paas/v4"
   openai_compatible: true
@@ -37,9 +38,9 @@ thinking:
   reasoning_field: "message.reasoning_content"
   verified_off: true   # 关闭后 completion 2 token、无 reasoning
 gotchas:
-  - "实测大坑：glm-4.7-flash 默认思考，max_tokens=64 时思考链耗尽额度，content 返回空字符串；关思考或 max_tokens>=256"
-  - "免费模型高峰 429（code 1305 访问量过大），重试即可"
-  - "免费模型不在 /models 列表里返回，但可以直接调用（实测）"
+  - "glm-4.7-flash 默认思考，max_tokens 太小（如64）思考链占满额度会使 content 返回空字符串；关思考或 max_tokens>=256"
+  - "免费模型高峰可能 429（限流），加重试即可"
+  - "免费模型不在 /models 列表返回，但可直接调用"
 docs:
   pricing: "https://docs.bigmodel.cn/cn/guide/start/pricing"
 snippet: "../snippets/zhipu.py"

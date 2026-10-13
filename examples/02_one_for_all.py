@@ -30,7 +30,7 @@ VENDORS = {
     "zhipu": {
         "key_env": "ZHIPU_API_KEY",
         "base_url": "https://open.bigmodel.cn/api/paas/v4",
-        "model": "glm-4.7-flash",                    # 长期免费的 Flash 模型
+        "model": "glm-4.7-flash",                    # 官方定价页标注免费的 Flash 模型
         "extra": {"thinking": {"type": "disabled"}},  # 免费模型默认也思考，练手关掉
     },
     "qwen": {

@@ -44,7 +44,7 @@ extra_body={"enable_thinking": False}                 # 关；True 是开
 
 注意：
 - DeepSeek V4 是"同一模型 + 开关"；旧的 `deepseek-chat`/`deepseek-reasoner` 两个名字 2026-07-24 已弃用，别再写。
-- 智谱 `glm-4.7-flash` 默认思考，**思考链会吃光小额度的 max_tokens 导致 content 为空字符串**；用它要么关思考、要么 `max_tokens>=256`。
+- 智谱 `glm-4.7-flash` 默认思考，`max_tokens` 太小（如 64）时思考链占满输出额度，`content` 可能为空字符串；用它要么关思考、要么 `max_tokens>=256`。
 - 思考链从 `resp.choices[0].message.reasoning_content` 取（与 `content` 同级，可能为 None）。
 - 思考模式下 `temperature/top_p` 对部分厂商（DeepSeek）"传了也不生效"。
 
@@ -52,13 +52,21 @@ extra_body={"enable_thinking": False}                 # 关；True 是开
 
 四家+豆包全部支持标准 OpenAI 流式：`stream=True`，用 `extra_body={"thinking":{"type":"disabled"}}` 或 `{"enable_thinking": False}` 可在流式时关思考（智谱 free + 关思考已实测）。
 
-## 五大踩坑提醒（实测确认）
+## 五个关键注意点（实测确认）
 
-1. **Kimi 老模型名全灭**：`moonshot-v1-8k/32k/128k` 对 2026-10 的新账号返回 404 `Not found the model ... or Permission denied`，当前可用只有 `kimi-k3 / kimi-k2.6 / kimi-k2.7-code(-highspeed)`。
-2. **豆包要先开通模型**：有 key 不够，每个模型要先在控制台「开通管理」https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement 点开通，否则同样报 404（实测未开通报 `InvalidEndpointOrModel.NotFound`）。
-3. **百炼地址必须带 `/compatible-mode/v1`**；模型是否思考看型号：`qwen-flash` 不思考，`qwen3.x-flash` 默认思考；`qwen3-flash` 这个名字不存在，会 404。
+1. **Kimi 用新模型名**：代码里写 `kimi-k3 / kimi-k2.6 / kimi-k2.7-code(-highspeed)`；旧的 `moonshot-v1-8k/32k/128k` 已下线，不要使用。
+2. **豆包先开通模型再调用**：每个模型要先在控制台「开通管理」https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement 开通，未开通返回 404 `InvalidEndpointOrModel.NotFound`。
+3. **百炼地址必须带 `/compatible-mode/v1`**；模型是否思考看型号：`qwen-flash` 不思考，`qwen3.x-flash` 默认思考；`qwen3-flash` 这个名字不存在。
 4. **国内直连，不要挂代理**；key 一律 `os.environ[...]` 读取，禁止写死、禁止提交 `.env`。
-5. 401=key 问题；402=欠费；404=模型名错/未开通；429=限流（免费模型高峰常见，重试即可）。
+5. 401=key 问题；402=欠费；404=模型名错/未开通；429=限流（免费模型高峰常见，加重试）。
+
+## 免费政策（只有官方可查的才写）
+
+- DeepSeek：赠送余额优先扣减 — https://api-docs.deepseek.com/zh-cn/quick_start/pricing
+- 智谱：`glm-4.7-flash` 等 Flash 定价页标注免费 — https://docs.bigmodel.cn/cn/guide/start/pricing
+- 百炼：新人免费额度（仅北京地域、90 天、可开用完即停）— https://help.aliyun.com/zh/model-studio/new-free-quota
+- 豆包：新用户免费推理试用额度 — https://docs.volcengine.com/docs/ark/free-inference-quota?lang=zh
+- Kimi：官方定价页无免费额度说明，按量计费 — https://platform.kimi.com/docs/pricing/chat
 
 ## 给 AI 的输出规范
 

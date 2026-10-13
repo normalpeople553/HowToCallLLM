@@ -1,32 +1,16 @@
 # Kimi（月之暗面）攻略
 
-> 一句话定位：**长文本与代码能力强的新一代模型；但模型名已换代，老教程全过期了。**
+> 一句话定位：**长文本与代码能力强的新一代模型，模型名以本文表格为准。**
 > 📄 国内平台：<https://platform.moonshot.cn/> ｜ 定价：<https://platform.kimi.com/docs/pricing/chat>
 > ✅ 本文模型名与调用方式于 **2026-10-13 用真实 key 实测通过**。
 
 ---
 
-## 0. 先说最大的坑：moonshot-v1 已经不能用了
-
-网上 90% 的教程还在写 `moonshot-v1-8k`。实测：2026 年的新账号调用它会直接报错：
-
-```text
-404 - Not found the model moonshot-v1-8k or Permission denied
-```
-
-我们用 API 拉取了账号实际可用的模型，只有这四个：
-
-```text
-kimi-k3、kimi-k2.6、kimi-k2.7-code、kimi-k2.7-code-highspeed
-```
-
-**新项目请直接用下表的新名字。**
-
 ## 1. 注册与领 key
 
 1. 打开 <https://platform.moonshot.cn/>，手机号注册实名；
 2. 「API Key 管理」：<https://platform.moonshot.cn/console/api-keys> → 创建 → 复制 `sk-` 开头的 key；
-3. 免费额度以平台当期活动为准。
+3. 按量计费，📄 价格见官方[定价页](https://platform.kimi.com/docs/pricing/chat)。
 
 ```bash
 export MOONSHOT_API_KEY="sk-你的key"
@@ -53,7 +37,9 @@ resp = client.chat.completions.create(
 print(resp.choices[0].message.content)
 ```
 
-## 3. 模型怎么选（✅ 实测可用 / 📄 价格核于 2026-10）
+## 3. 模型怎么选
+
+旧的 `moonshot-v1-*` 系列模型名已下线，代码里不要使用。当前可用模型如下（✅ 实测可用 / 📄 价格核于 2026-10）：
 
 | 模型 | 定位 | 上下文 | 输入（未命中/命中缓存） | 输出 | 实测 |
 |---|---|---|---|---|---|
@@ -72,19 +58,17 @@ print(resp.choices[0].message.content)
 
 ## 4. 思考模式（✅ 实测）
 
-k2.6 / k3 默认都先输出思考链（`reasoning_content`）。关闭：
+k2.6 / k3 默认都先输出思考链（`reasoning_content`），思考过程按输出 token 计费，简单任务建议关闭：
 
 ```python
 extra_body={"thinking": {"type": "disabled"}}
 ```
 
-实测同一道算术题：默认 33 个输出 token（带思考），关闭后只 4 个。
+## 5. 注意事项
 
-## 5. 新手易踩的坑
-
-- ❌ **`moonshot-v1-8k/32k/128k`**：新账号 404，别再抄老教程。
+- ❌ `moonshot-v1-8k/32k/128k` 系列模型名已下线，代码里不要使用。
 - 🌐 国内用 `api.moonshot.cn`（`.cn`）；海外站 `api.moonshot.ai`（`.ai`）的账号和 key 不通用。
-- 💰 Kimi 现在没有早年那种 ¥2 的便宜档了，纯省钱练手不如[智谱免费模型](zhipu.md)。
+- 💰 零成本练手：用[智谱免费模型](zhipu.md)。
 - 🔑 `401` key 问题、`429` 限流、连接问题对照[报错速查](../05-新手必会与报错速查.md)。
 
 ## 6. 适合谁 / 小结

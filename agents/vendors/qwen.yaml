@@ -6,7 +6,8 @@ key:
   env: DASHSCOPE_API_KEY
   apply_url: "https://bailian.console.aliyun.com/?apiKey=1#/api-key"
   steps: "阿里云账号 → 实名认证 → 百炼控制台 → API-KEY 管理 → 创建"
-  free_quota: "新用户免费额度（有有效期、可能限地域；建议开启『仅免费额度』用完即停）"
+  free_quota: "新人免费额度：首次开通自动发放，仅北京地域、有效期90天，可开『免费额度用完即停』"
+  free_quota_url: "https://help.aliyun.com/zh/model-studio/new-free-quota"
 api:
   base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
   openai_compatible: true
@@ -17,7 +18,7 @@ models:
     default_thinking: false
     verified: true
   - id: "qwen3.6-flash"
-    role: "带思考的 Flash（实测默认思考，567 字思考链）"
+    role: "带思考的 Flash（默认思考）"
     default_thinking: true
     verified: true
   - id: "qwen-plus"
@@ -34,10 +35,10 @@ thinking:
   reasoning_field: "message.reasoning_content"
   verified_off: true   # qwen3.6-flash 关闭后 completion 2 token、无 reasoning
 deprecated:
-  - "qwen3-flash（实测 404 不存在；要用思考款写具体版本如 qwen3.6-flash）"
+  - "qwen3-flash 名字不存在；思考款写具体版本如 qwen3.6-flash，日常款用别名 qwen-flash"
 gotchas:
   - "思考开关参数是 enable_thinking，不是 thinking.type"
-  - "百炼平台还托管 deepseek/glm/kimi 等第三方模型（模型名带前缀），但那是走阿里计费"
+  - "百炼平台还托管 deepseek/glm/kimi 等第三方模型（模型名带前缀），走阿里计费"
   - "国内直连，无需代理"
 docs:
   pricing: "https://help.aliyun.com/zh/model-studio/model-pricing"

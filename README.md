@@ -3,7 +3,7 @@
 > 学会一套写法，调遍国产大模型。
 > 一份给新手的、按「性价比」组织的大模型 API 调用攻略。**每条调用方式都用真实 key 实测过。**
 
-[![version](https://img.shields.io/badge/version-0.2-orange)]()
+[![version](https://img.shields.io/badge/version-0.3-orange)]()
 [![vendors](https://img.shields.io/badge/厂商-5家-blue)]()
 [![tested](https://img.shields.io/badge/调用实测-2026--10--13%2015项全过-brightgreen)]()
 [![license](https://img.shields.io/badge/license-Unlicense-lightgrey)]()
@@ -16,7 +16,7 @@
 
 ### 🤖 你是 AI 编程助手（Codex / Claude Code / Trae…），或你只想抄答案
 
-直接读 **[`agents/SKILL.md`](agents/SKILL.md)**——那是给机器读的速查卡：五家的领 key 地址、base_url、模型名、思考开关、踩坑点一页全有；每家的 YAML 卡片在 [`agents/vendors/`](agents/vendors/)，可直接复制的代码在 [`agents/snippets/`](agents/snippets/)。
+直接读 **[`agents/SKILL.md`](agents/SKILL.md)**——那是给机器读的速查卡：五家的领 key 地址、base_url、模型名、思考开关、注意点一页全有；每家的 YAML 卡片在 [`agents/vendors/`](agents/vendors/)，可直接复制的代码在 [`agents/snippets/`](agents/snippets/)。
 
 > 给 Agent 主人的用法：把本仓库地址丢给你的 AI，说"读这个仓库里的 agents/SKILL.md，帮我调 Kimi"，它就能返回领密钥方法和全部调用技巧。
 
@@ -37,14 +37,14 @@
 
 国内能叫得上名字的大模型厂商有十几家，每家都有自己的平台、文档、模型名和计费规则。新手一上来就懵：**到底用哪家？key 去哪领？代码怎么写？会不会一不小心扣很多钱？**
 
-更坑的是，网上的教程大面积过期：Kimi 的 `moonshot-v1-*` 模型名新账号已经调不了了，DeepSeek 的 `deepseek-chat` 也弃用了，而"思考模式怎么关"五家里有四家一个写法、百炼另一个写法。
+更麻烦的是，网上教程容易过期：模型名会换代、旧参数会失效、免费政策各家有各自的规则。
 
-这份指南不做官方文档的搬运工。它的做法是：**把每个坑都亲自踩一遍，用真实 key 实测，然后把"此刻正确的答案"固化下来。**
+这份指南不做官方文档的搬运工。它的做法是：**每条调用方式都用真实 key 实测，每条免费政策都附官方出处，把"此刻正确的答案"固化下来。**
 
 - 🔰 新手：从零跑通第一次调用，5 分钟看到模型回你一句话；
 - 🎯 老手/AI：打开速查卡，3 秒抄走此刻可用的模型名和参数；
 - 💰 免费额度怎么薅、各家多少钱、新手第一家选谁；
-- 🧯 报错了怎么办、有哪些坑。
+- 🧯 报错了怎么自救、有哪些注意点。
 
 ## 一个最重要的事实
 
@@ -70,13 +70,13 @@ print(resp.choices[0].message.content)
 
 ## 五家速览（实测 2026-10-13）
 
-| 厂商 | base_url | 推荐模型 | 免费羊毛 | 实测 |
+| 厂商 | base_url | 推荐模型 | 免费政策（📄 官方可查） | 实测 |
 |---|---|---|---|---|
-| DeepSeek | `https://api.deepseek.com` | `deepseek-v4-flash` | 新用户赠送 | ✅ |
-| Kimi | `https://api.moonshot.cn/v1` | `kimi-k2.6` / `kimi-k3` | 以活动为准 | ✅ |
-| 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | `glm-4.7-flash`（**免费**） | Flash 长期免费 | ✅ |
-| 通义千问 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen-flash` / `qwen3.6-flash` | 新用户额度 | ✅ |
-| 豆包（方舟） | `https://ark.cn-beijing.volces.com/api/v3` | `doubao-seed-2-1-pro-260628` | 新用户额度 | ✅ |
+| DeepSeek | `https://api.deepseek.com` | `deepseek-v4-flash` | [赠送余额，优先扣减](https://api-docs.deepseek.com/zh-cn/quick_start/pricing) | ✅ |
+| Kimi | `https://api.moonshot.cn/v1` | `kimi-k2.6` / `kimi-k3` | —（官方无免费额度说明） | ✅ |
+| 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | `glm-4.7-flash` | [定价页标注免费](https://docs.bigmodel.cn/cn/guide/start/pricing) | ✅ |
+| 通义千问 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen-flash` / `qwen3.6-flash` | [新人免费额度](https://help.aliyun.com/zh/model-studio/new-free-quota) | ✅ |
+| 豆包（方舟） | `https://ark.cn-beijing.volces.com/api/v3` | `doubao-seed-2-1-pro-260628` | [新用户免费推理额度](https://docs.volcengine.com/docs/ark/free-inference-quota?lang=zh) | ✅ |
 
 ## 一键体检
 
@@ -89,7 +89,7 @@ python tests/verify_calls.py
 
 脚本会对五家各测「默认调用 / 关闭思考 / 流式」共 15 项，全程不打印 key。这也是本仓库"敢标实测"的底气——**不是我说它对，是脚本刚跑过。**
 
-## 当前覆盖范围（v0.2）
+## 当前覆盖范围（v0.3）
 
 - ✅ 只讲**文本大模型的对话调用**（embedding、生图、语音、视频、Agent 留待后续）
 - ✅ 5 家厂商：DeepSeek、Kimi、智谱 GLM、通义千问、豆包

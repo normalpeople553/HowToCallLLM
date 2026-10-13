@@ -7,7 +7,8 @@ key:
   apply_url: "https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey"
   steps: "注册火山引擎 → 个人实名认证 → 开通方舟 → 先开通模型 → 创建 API Key"
   activate_models_url: "https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement"
-  free_quota: "新用户通常有免费 token 额度，以开通页显示为准"
+  free_quota: "新用户免费推理试用额度：注册即得，不同模型分别计算"
+  free_quota_url: "https://docs.volcengine.com/docs/ark/free-inference-quota?lang=zh"
 api:
   base_url: "https://ark.cn-beijing.volces.com/api/v3"
   openai_compatible: true
@@ -33,8 +34,8 @@ thinking:
   reasoning_field: "message.reasoning_content"
   verified_off: true
 gotchas:
-  - "最大的坑：有 key 不够！必须先在『开通管理』里开通对应模型，否则 404 InvalidEndpointOrModel.NotFound（实测 doubao-seed-1-6-flash-250828 未开通即 404）"
-  - "模型名带版本日期戳（-260628），新版发布后旧日期可能下线，上线前来 /models 查或用模型广场"
+  - "调用前必须先在『开通管理』开通对应模型，未开通返回 404 InvalidEndpointOrModel.NotFound"
+  - "模型名带版本日期戳（-260628），新版发布后旧日期可能下线，以模型广场当前 Model ID 为准"
   - "方舟还托管 deepseek/kimi/glm 等第三方模型，同样需逐个开通"
 docs:
   pricing: "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
