@@ -1,4 +1,4 @@
-"""流式输出（打字机效果）。对应 book/02。
+"""流式输出（打字机效果）。对应 docs/02。
 
 运行前：
     export DEEPSEEK_API_KEY="sk-你的key"
@@ -16,7 +16,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model="deepseek-v4-flash",
+    model="deepseek-flash",
     messages=[{"role": "user", "content": "用30个字讲个冷笑话"}],
     stream=True,                                               # 关键：开启流式
 )

@@ -1,0 +1,7 @@
+interface:
+  display_name: "模型说明书"
+  short_description: "快速生成和排查国产大模型 API 调用代码"
+  default_prompt: "使用 $model-manual 帮我接入一个国产大模型。"
+
+policy:
+  allow_implicit_invocation: true

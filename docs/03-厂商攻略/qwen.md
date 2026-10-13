@@ -1,70 +1,35 @@
-# 通义千问（阿里云百炼）攻略
+# 通义千问（阿里云百炼）官方资料卡
 
-> 一句话定位：**背靠阿里云，有官方新人免费额度（📄 可查），生态/企业集成强。**
-> 📄 百炼平台：<https://bailian.console.aliyun.com/> ｜ 模型价格：<https://help.aliyun.com/zh/model-studio/model-pricing>
-> ✅ 本文调用方式于 **2026-10-13 用真实 key 实测通过**（当前已到 qwen3.8 代际）。
+核对日期：**2026-10-13**。厂商事实以阿里云百炼官方文档为准；仓库实测口径见[来源与核验规则](../来源与核验规则.md)。
 
----
-
-## 1. 注册与领 key
-
-1. 登录阿里云，进入**百炼大模型服务平台** <https://bailian.console.aliyun.com/>；
-2. 完成阿里云**实名认证**（个人实名即可）；
-3. 在控制台「API-KEY 管理」里创建 key（以 `sk-` 开头）；
-4. 📄 **新人免费额度**：首次开通百炼时平台自动发放，规则要点（[官方说明](https://help.aliyun.com/zh/model-studio/new-free-quota)）：
-   - 仅**华北2（北京）地域**模型享有免费额度，其他地域没有；
-   - 有效期 **90 天**（自开通/模型发布起算），过期作废不补发；
-   - 已认证用户额度用完后**自动转按量付费**，可在控制台开启**「免费额度用完即停」**防止意外扣费。
-
-```bash
-export DASHSCOPE_API_KEY="sk-你的key"
-```
-
-## 2. 两行关键配置
-
-| 参数 | 值 |
+| 项目 | 值与官方来源 |
 |---|---|
-| `base_url`（OpenAI 兼容模式） | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
-| 新手模型 | `qwen-flash`（或当期 `qwen3.x-flash`） |
+| Key | [`DASHSCOPE_API_KEY`；管理页面](https://bailian.console.aliyun.com/?apiKey=1#/api-key) |
+| `base_url` | [官方地域与 Workspace 地址表](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) |
+| 项目默认模型 | [`qwen-flash`](https://help.aliyun.com/zh/model-studio/getting-started/models) |
+| 模型 | [官方模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models) |
+| 价格 | [官方价格页](https://help.aliyun.com/zh/model-studio/model-pricing) |
+| 免费额度 | [官方新人额度规则](https://help.aliyun.com/zh/model-studio/new-free-quota) |
+
+项目示例暂用官方仍支持的旧兼容域名 `https://dashscope.aliyuncs.com/compatible-mode/v1`；官方当前推荐带 `WorkspaceId` 的地域域名，新项目应优先按官方表格选择。[官方兼容接口与迁移说明](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)
 
 ```python
-from openai import OpenAI
 import os
+from openai import OpenAI
 
-client = OpenAI(api_key=os.environ["DASHSCOPE_API_KEY"],
-                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
-resp = client.chat.completions.create(
+client = OpenAI(
+    api_key=os.environ["DASHSCOPE_API_KEY"],
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+)
+response = client.chat.completions.create(
     model="qwen-flash",
     messages=[{"role": "user", "content": "你好"}],
 )
-print(resp.choices[0].message.content)
+print(response.choices[0].message.content)
 ```
 
-## 3. 模型怎么选
+Python SDK 关闭支持该能力模型的思考时，官方写法是 `extra_body={"enable_thinking": False}`；cURL 与 Node.js 的字段位置不同，应照官方语言示例使用。[官方 OpenAI 兼容文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)
 
-📄 百炼模型更新很快，名字带代际号，官方[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)为准。截至核对日的家族大致是：
+免费额度只适用于官方规则列出的地域、模型与期限；额度用完后的计费行为也以[官方新人额度规则](https://help.aliyun.com/zh/model-studio/new-free-quota)为准。
 
-| 家族 | 示例模型 | 定位 |
-|---|---|---|
-| Max | `qwen3.8-max`、`qwen-max` | 旗舰，最强也最贵 |
-| Plus | `qwen3.6-plus`、`qwen-plus` | 质量与成本均衡 |
-| **Flash** | `qwen3.6-flash`、`qwen-flash` | **快、便宜，常带免费额度，新手默认** |
-| Turbo | `qwen-turbo` | 老牌便宜款 |
-| Long | `qwen-long` | 超长文本场景 |
-
-💡 不带具体版本号的别名（如 `qwen-flash`、`qwen-plus`、`qwen-max`）通常会**自动指向当前稳定版本**，新手用别名最省心，不用每次跟版本号；想锁死版本再写全 `qwen3.6-flash` 这种全名。
-
-## 4. 注意事项
-
-- 🧩 **必须走"兼容模式"地址**：`base_url` 里的 `/compatible-mode/v1` 一段不能漏；老的 DashScope 原生接口参数风格不同，网上新旧教程混着，认准兼容模式。
-- 🧠 **思考开关百炼独一份**：别的四家是 `extra_body={"thinking":{"type":"disabled"}}`，百炼是 `extra_body={"enable_thinking": False}`（✅ 已实测生效）。`qwen-flash` 别名本身不思考，无需设置。
-- 📛 模型名写**别名**（`qwen-flash` / `qwen-plus` / `qwen-max`）或**带版本号全名**（`qwen3.6-flash`）；`qwen3-flash` 这个名字不存在。
-- 🪪 需要阿里云账号 + **实名**，并确认对应模型服务已开通（首次在控制台点一下开通/同意协议）。
-- ⏳ 新人免费额度**有效期 90 天、仅北京地域**可用，跨地域无法抵扣；开启"免费额度用完即停"防超额（[官方说明](https://help.aliyun.com/zh/model-studio/new-free-quota)）。
-- 🌐 国内直连，无需代理。
-
-## 5. 适合谁 / 小结
-
-- ✅ 已经在用阿里云、或未来要做企业/云上部署：生态衔接最好；
-- ✅ 想靠**新人免费额度**比较系统地试一圈模型：合适（规则见[官方说明](https://help.aliyun.com/zh/model-studio/new-free-quota)）；
-- 想零成本长期练手：[智谱免费 Flash](zhipu.md) 更无压力；追求极致便宜主力：[DeepSeek](deepseek.md)。
+仓库于 2026-10-13 验证了目录中 `qwen-flash` 的普通与流式调用，以及 `qwen3.6-flash` 的关闭思考调用；测试实现与限制见 [`tests/verify_calls.py`](../../tests/verify_calls.py)。

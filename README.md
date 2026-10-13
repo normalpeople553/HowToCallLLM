@@ -1,123 +1,99 @@
-# 高性价比大模型指南
+# 模型说明书
 
-> 学会一套写法，调遍国产大模型。
-> 一份给新手的、按「性价比」组织的大模型 API 调用攻略。**每条调用方式都用真实 key 实测过。**
+> 给人和编程 Agent 共用的大模型 API 接入手册。
 
-[![version](https://img.shields.io/badge/version-0.3-orange)]()
-[![vendors](https://img.shields.io/badge/厂商-5家-blue)]()
-[![tested](https://img.shields.io/badge/调用实测-2026--10--13%2015项全过-brightgreen)]()
-[![license](https://img.shields.io/badge/license-Unlicense-lightgrey)]()
+本项目帮助新手跑通第一次调用，也帮助老手和 Agent 快速查找 Key、`base_url`、模型名与厂商扩展参数；当前边界记录在 [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md)。
 
----
+## 三个入口
 
-## 两条阅读路径
+- 新手：从 [`docs/01-5分钟跑通第一次调用.md`](docs/01-5分钟跑通第一次调用.md) 开始。
+- 老手：直接查下表或 [`skills/model-manual/references/vendors.json`](skills/model-manual/references/vendors.json)。
+- Agent：先读取 [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md)，再生成、迁移或排查代码。
 
-这个仓库有两个版本，**按你是谁选入口**：
+## 快速参数表
 
-### 🤖 你是 AI 编程助手（Codex / Claude Code / Trae…），或你只想抄答案
+下表的接口与模型链接均指向厂商官方文档；“仓库验证”指向可复现的在线体检脚本，结果只代表 **2026-10-13** 当日测试环境。[核验口径](docs/来源与核验规则.md)
 
-直接读 **[`agents/SKILL.md`](agents/SKILL.md)**——那是给机器读的速查卡：五家的领 key 地址、base_url、模型名、思考开关、注意点一页全有；每家的 YAML 卡片在 [`agents/vendors/`](agents/vendors/)，可直接复制的代码在 [`agents/snippets/`](agents/snippets/)。
+| 厂商 | Key 环境变量 | 官方接口文档 | 默认模型 / 官方模型页 | 关闭思考 | 官方价格 |
+|---|---|---|---|---|---|
+| DeepSeek | `DEEPSEEK_API_KEY` | [`https://api.deepseek.com`](https://api-docs.deepseek.com/) | [`deepseek-flash`](https://api-docs.deepseek.com/quick_start/pricing/) | [`thinking.type=disabled`](https://api-docs.deepseek.com/guides/thinking_mode/) | [价格页](https://api-docs.deepseek.com/quick_start/pricing/) |
+| Kimi | `MOONSHOT_API_KEY` | [`https://api.moonshot.cn/v1`](https://platform.kimi.com/docs/get-api-key) | [`kimi-k2.6`](https://platform.kimi.com/docs/models) | [`thinking.type=disabled`](https://platform.kimi.com/docs/guide/use-thinking-models) | [价格页](https://platform.kimi.com/docs/pricing/chat) |
+| 智谱 GLM | `ZHIPU_API_KEY` | [`https://open.bigmodel.cn/api/paas/v4`](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) | [`glm-4.7-flash`](https://docs.bigmodel.cn/cn/guide/start/pricing) | `thinking.type=disabled`（[仓库验证](tests/verify_calls.py)） | [价格页](https://docs.bigmodel.cn/cn/guide/start/pricing) |
+| 通义千问 | `DASHSCOPE_API_KEY` | [OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [`qwen-flash`](https://help.aliyun.com/zh/model-studio/getting-started/models) | [`enable_thinking=false`](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [价格页](https://help.aliyun.com/zh/model-studio/model-pricing) |
+| 豆包方舟 | `ARK_API_KEY` | [`https://ark.cn-beijing.volces.com/api/v3`](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh) | [`doubao-seed-2-1-pro-260628`](https://docs.volcengine.com/docs/ark/model-list?lang=zh) | `thinking.type=disabled`（[仓库验证](tests/verify_calls.py)） | [价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh) |
 
-> 给 Agent 主人的用法：把本仓库地址丢给你的 AI，说"读这个仓库里的 agents/SKILL.md，帮我调 Kimi"，它就能返回领密钥方法和全部调用技巧。
+> 通义官方当前推荐带 `WorkspaceId` 的地域域名；旧 `dashscope.aliyuncs.com/compatible-mode/v1` 仍可使用。两种地址与迁移说明见[官方兼容接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)。
 
-### 👤 你是新手小白，想搞懂自己在干嘛
+## 最小调用
 
-从 **[docs/00-前言.md](docs/00-前言.md)** 开始，按顺序读科普线：
-
-| 章节 | 内容 |
-|---|---|
-| [00 前言](docs/00-前言.md) | 这份指南怎么用、标记是什么意思 |
-| [01 5 分钟跑通第一次调用](docs/01-5分钟跑通第一次调用.md) | 从装环境到看到模型回你一句话 |
-| [02 一个套路调遍所有模型](docs/02-一个套路调遍所有模型.md) | 万能模板 + 四件套 + **五家思考开关实测对照** |
-| 03 厂商攻略 | DeepSeek · Kimi · 智谱 · 通义 · **豆包** |
-| [04 免费额度与省钱攻略](docs/04-免费额度与省钱攻略.md) | 五家价格对照、决策树、防翻车 |
-| [05 新手必会与报错速查](docs/05-新手必会与报错速查.md) | 多轮/流式/JSON + 常见报错自救 |
-
-## 这是什么
-
-国内能叫得上名字的大模型厂商有十几家，每家都有自己的平台、文档、模型名和计费规则。新手一上来就懵：**到底用哪家？key 去哪领？代码怎么写？会不会一不小心扣很多钱？**
-
-更麻烦的是，网上教程容易过期：模型名会换代、旧参数会失效、免费政策各家有各自的规则。
-
-这份指南不做官方文档的搬运工。它的做法是：**每条调用方式都用真实 key 实测，每条免费政策都附官方出处，把"此刻正确的答案"固化下来。**
-
-- 🔰 新手：从零跑通第一次调用，5 分钟看到模型回你一句话；
-- 🎯 老手/AI：打开速查卡，3 秒抄走此刻可用的模型名和参数；
-- 💰 免费额度怎么薅、各家多少钱、新手第一家选谁；
-- 🧯 报错了怎么自救、有哪些注意点。
-
-## 一个最重要的事实
-
-**国产大模型几乎全都兼容 OpenAI 的接口格式。**
-
-所以下面这段代码，改两行就能换成 DeepSeek、Kimi、智谱、通义、豆包……：
+DeepSeek 官方文档提供 OpenAI SDK 兼容调用方式；下面使用它当前推荐的 `deepseek-flash`。[官方接口与模型页](https://api-docs.deepseek.com/quick_start/pricing/)
 
 ```python
+import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="你的key",
-    base_url="https://api.deepseek.com",   # ① 改这一行：换厂商
+    api_key=os.environ["DEEPSEEK_API_KEY"],
+    base_url="https://api.deepseek.com",
 )
-resp = client.chat.completions.create(
-    model="deepseek-v4-flash",             # ② 改这一行：换模型
+
+response = client.chat.completions.create(
+    model="deepseek-flash",
     messages=[{"role": "user", "content": "你好"}],
 )
-print(resp.choices[0].message.content)
+print(response.choices[0].message.content)
 ```
 
-详见 [docs/02-一个套路调遍所有模型.md](docs/02-一个套路调遍所有模型.md)。
+五家厂商都在各自官方文档中提供 OpenAI-compatible Chat Completions 用法：[DeepSeek](https://api-docs.deepseek.com/)、[Kimi](https://platform.kimi.com/docs/api/chat)、[智谱](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)、[通义](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)、[豆包](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)。本项目因此统一使用 `openai` 客户端，但不声称这些厂商兼容 OpenAI 的全部 API。
 
-## 五家速览（实测 2026-10-13）
+## 让说明书生成代码
 
-| 厂商 | base_url | 推荐模型 | 免费政策（📄 官方可查） | 实测 |
-|---|---|---|---|---|
-| DeepSeek | `https://api.deepseek.com` | `deepseek-v4-flash` | [赠送余额，优先扣减](https://api-docs.deepseek.com/zh-cn/quick_start/pricing) | ✅ |
-| Kimi | `https://api.moonshot.cn/v1` | `kimi-k2.6` / `kimi-k3` | —（官方无免费额度说明） | ✅ |
-| 智谱 GLM | `https://open.bigmodel.cn/api/paas/v4` | `glm-4.7-flash` | [定价页标注免费](https://docs.bigmodel.cn/cn/guide/start/pricing) | ✅ |
-| 通义千问 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen-flash` / `qwen3.6-flash` | [新人免费额度](https://help.aliyun.com/zh/model-studio/new-free-quota) | ✅ |
-| 豆包（方舟） | `https://ark.cn-beijing.volces.com/api/v3` | `doubao-seed-2-1-pro-260628` | [新用户免费推理额度](https://docs.volcengine.com/docs/ark/free-inference-quota?lang=zh) | ✅ |
-
-## 一键体检
-
-换电脑、过段时间想确认本指南是否还能用？填好根目录 `.env`（模板见 `examples/.env.example`），跑：
+生成器读取统一厂商目录，支持 Python、TypeScript 和 cURL；支持范围由[脚本参数](skills/model-manual/scripts/generate_snippet.py)定义。
 
 ```bash
-pip install openai
-python tests/verify_calls.py
+python skills/model-manual/scripts/generate_snippet.py \
+  --vendor kimi --language python --thinking off
+
+python skills/model-manual/scripts/generate_snippet.py \
+  --vendor qwen --language typescript --stream
+
+python skills/model-manual/scripts/generate_snippet.py \
+  --vendor doubao --language curl
 ```
 
-脚本会对五家各测「默认调用 / 关闭思考 / 流式」共 15 项，全程不打印 key。这也是本仓库"敢标实测"的底气——**不是我说它对，是脚本刚跑过。**
+## 验证
 
-## 当前覆盖范围（v0.3）
+在线体检会向已配置 Key 的厂商发送真实请求，可能消耗额度或余额；具体测试项和退出码见 [`tests/verify_calls.py`](tests/verify_calls.py)。
 
-- ✅ 只讲**文本大模型的对话调用**（embedding、生图、语音、视频、Agent 留待后续）
-- ✅ 5 家厂商：DeepSeek、Kimi、智谱 GLM、通义千问、豆包
-- ✅ Python + 官方 `openai` 库一种写法；普通/思考开关/流式/多轮全部实测
-- ⏳ 计划中：文心、星火、MiniMax、混元；Function Calling 专题
+```bash
+cp examples/.env.example .env
+pip install -r requirements.txt
+python tests/verify_calls.py
+python tests/verify_calls.py kimi qwen
+```
 
-## 信息可信度与时效
+不发请求的目录校验见 [`tests/test_catalog.py`](tests/test_catalog.py)：
 
-模型名、价格、免费额度变得非常快。本指南：
+```bash
+python -m unittest tests/test_catalog.py
+```
 
-- 每条调用方式标注 ✅ **已实测**（附日期）/ 📄 **官方文档** / 💬 **社区经验**；
-- 实测脚本就是 [`tests/verify_calls.py`](tests/verify_calls.py)，你可以自己复现；
-- 价格等易变信息标 ⚠️ 并附官方链接，用前请复核。
+## 文档
 
-> 最近一次实测：**2026-10-13，五家 15 项全部通过**。发现过期欢迎提 Issue。
+| 章节 | 内容与依据 |
+|---|---|
+| [00 前言](docs/00-前言.md) | 项目范围与标记 |
+| [01 第一次调用](docs/01-5分钟跑通第一次调用.md) | 官方接口基础上的最短流程 |
+| [02 统一调用套路](docs/02-一个套路调遍所有模型.md) | 五家兼容接口与差异 |
+| [03 厂商资料卡](docs/03-厂商攻略/) | 每家官方链接、配置和仓库实测 |
+| [04 价格与额度](docs/04-免费额度与省钱攻略.md) | 直达官方价格、额度页面 |
+| [05 排错](docs/05-新手必会与报错速查.md) | 官方错误文档与项目排查流程 |
+| [来源与核验规则](docs/来源与核验规则.md) | 每类结论如何引用与复核 |
 
-## 密钥安全
+## Key 安全
 
-`.env` 已在 `.gitignore` 中，永远不会被提交。真实 key 不要写进代码、不要发群、不要截图；泄露了立刻去平台删除重建。
+本仓库的项目规则是：Key 只从环境变量或被 `.gitignore` 排除的 `.env` 读取，不写入代码、不回显完整值；疑似泄露就去对应厂商控制台删除并重建。[规则说明](docs/来源与核验规则.md) · [仓库忽略配置](.gitignore)
 
-## 免责声明
+## 致谢与协议
 
-个人学习整理的第三方攻略，与上述厂商无关联，不代表官方立场。商标、模型名称归各自所有者。请以官方文档为准，并留意账户计费设置。
-
-## 致谢与声明
-
-组织方式受开源电子书《高性价比人生指南》（HowToLiveBetter）启发，内容为针对大模型 API 主题独立撰写。
-
-## 开源协议
-
-[Unlicense](LICENSE)——公有领域，随意使用、修改、分发，包括商用，无需署名。
+项目组织方式受开源项目[《高性价比人生指南》](https://github.com/eternity4719/HowToLiveBetter)启发；本项目与各模型厂商及该项目无隶属关系。仓库采用 [Unlicense](LICENSE)。

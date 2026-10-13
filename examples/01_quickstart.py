@@ -1,4 +1,4 @@
-"""最小可运行示例：调用 DeepSeek 说一句话。对应 book/01。
+"""最小可运行示例：调用 DeepSeek 说一句话。对应 docs/01。
 
 运行前：
     export DEEPSEEK_API_KEY="sk-你的key"
@@ -17,7 +17,7 @@ client = OpenAI(
 )
 
 resp = client.chat.completions.create(
-    model="deepseek-v4-flash",                       # 模型名
+    model="deepseek-flash",                          # 官方当前推荐入口
     messages=[{"role": "user", "content": "用一句话介绍你自己"}],
 )
 

@@ -1,4 +1,4 @@
-"""一套代码切换五家厂商。对应 book/02。
+"""一套代码切换五家厂商。对应 docs/02。
 
 只需在 VENDORS 里登记每家的地址、模型和读取哪个环境变量，
 想调哪家就把名字传给 chat()，其余代码完全不变。
@@ -19,19 +19,19 @@ VENDORS = {
     "deepseek": {
         "key_env": "DEEPSEEK_API_KEY",
         "base_url": "https://api.deepseek.com",
-        "model": "deepseek-v4-flash",
+        "model": "deepseek-flash",
     },
     "kimi": {
         "key_env": "MOONSHOT_API_KEY",
         "base_url": "https://api.moonshot.cn/v1",
-        "model": "kimi-k2.6",                       # 注意：老的 moonshot-v1-* 已不可用
-        "extra": {"thinking": {"type": "disabled"}},  # 简单问题关思考更省
+        "model": "kimi-k2.6",
+        "extra": {"thinking": {"type": "disabled"}},
     },
     "zhipu": {
         "key_env": "ZHIPU_API_KEY",
         "base_url": "https://open.bigmodel.cn/api/paas/v4",
-        "model": "glm-4.7-flash",                    # 官方定价页标注免费的 Flash 模型
-        "extra": {"thinking": {"type": "disabled"}},  # 免费模型默认也思考，练手关掉
+        "model": "glm-4.7-flash",
+        "extra": {"thinking": {"type": "disabled"}},
     },
     "qwen": {
         "key_env": "DASHSCOPE_API_KEY",
@@ -41,7 +41,7 @@ VENDORS = {
     "doubao": {
         "key_env": "ARK_API_KEY",
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",
-        "model": "doubao-seed-2-1-pro-260628",       # 前提：控制台已开通该模型
+        "model": "doubao-seed-2-1-pro-260628",
         "extra": {"thinking": {"type": "disabled"}},
     },
 }
