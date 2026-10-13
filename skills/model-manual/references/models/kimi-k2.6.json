@@ -47,7 +47,30 @@
     "output": {"value": 27.0, "source": "pricing"},
     "volatile": true
   },
+  "generation": {
+    "schema_version": 1,
+    "key_env": {"value": "MOONSHOT_API_KEY", "source": "quickstart"},
+    "base_url": {"value": "https://api.moonshot.cn/v1", "source": "quickstart"},
+    "python_extra_body_fields": {"value": ["thinking"], "source": "thinking"},
+    "thinking": {
+      "on": {"value": {"thinking": {"type": "enabled"}}, "source": "thinking"},
+      "off": {"value": {"thinking": {"type": "disabled"}}, "source": "thinking"}
+    },
+    "token_budget": {
+      "parameter": {"value": "max_tokens", "source": "thinking"},
+      "min": {"value": 1, "source": "project_generation"},
+      "semantics": {"value": "thinking_and_answer", "source": "thinking"}
+    },
+    "stream_options": {"value": {"include_usage": true}, "source": "chat_api"},
+    "tool_choice": {"value": "auto", "source": "tools"},
+    "json_output": {
+      "capability": "json_object",
+      "response_format": {"value": {"type": "json_object"}, "source": "json"}
+    },
+    "verification_scope": {"value": "历史报告仅覆盖其中列出的请求；工具调用只验证提出调用、图片只验证非空回答。代码生成器的完整闭环和内容识别需以相应新报告为证。", "source": "project_generation"}
+  },
   "sources": {
+    "project_generation": {"title": "项目代码生成约定：预算必须为正整数，不设置默认预算，不声称新增流程已实测", "url": "../../scripts/generate_snippet.py"},
     "quickstart": {"title": "快速开始", "url": "https://platform.kimi.com/docs/get-api-key"},
     "models": {"title": "模型列表", "url": "https://platform.kimi.com/docs/models"},
     "model_page": {"title": "Kimi K2.6", "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart"},

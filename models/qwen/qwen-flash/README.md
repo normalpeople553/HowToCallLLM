@@ -51,7 +51,7 @@ response = client.chat.completions.create(
 
 JSON 对象模式使用 `response_format={"type":"json_object"}`，提示词必须明确要求 JSON；支持范围和 JSON Schema 写法以[结构化输出](https://help.aliyun.com/zh/model-studio/qwen-structured-output)为准。示例：[`examples/04_json_output.py`](examples/04_json_output.py)。
 
-Qwen Flash 系列支持 Function Calling；`tools` 定义函数，模型返回参数，应用负责执行并回传结果。Qwen 系列不支持 `tool_choice="required"`，可使用自动选择或文档支持的指定函数形式。[Function Calling](https://help.aliyun.com/zh/model-studio/qwen-function-calling) 示例：[`examples/05_tool_calling.py`](examples/05_tool_calling.py)。
+Qwen Flash 系列支持 Function Calling；`tools` 定义函数，模型返回参数，应用负责执行并回传结果。Qwen 系列不支持 `tool_choice="required"`，可使用自动选择或文档支持的指定函数形式。[Function Calling](https://help.aliyun.com/zh/model-studio/qwen-function-calling) 仓库的完整闭环示例包含整批参数校验、模拟天气执行、`tool_call_id` 回传和最终答复；天气数据仅供演示。[examples/05_tool_calling.py](examples/05_tool_calling.py)
 
 ## 5. 价格
 
@@ -69,8 +69,10 @@ thinking_off_extra_body:
 modalities: [text]
 ```
 
-模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；实时能力结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `DASHSCOPE_API_KEY=... python tests/verify_qwen_flash.py`。
+模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果，最新严格流程结果查[验证状态](../../../docs/验证状态.md)。使用锁定依赖复测：`python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`，环境变量与退出码见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 7. 必看踩雷
 
 百炼的 `max_tokens` 语义会随模型变化，而 `max_completion_tokens` 明确限制“思维链 + 回答”；新代码不能假定所有模型都按同一种方式计算思考预算。[OpenAI Chat Completions 兼容文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) Python SDK 的 `enable_thinking` 等扩展参数必须放进 `extra_body`。对照表和检测代码见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。
+
+具体到旧 `qwen-flash` 型号，官方当前把 `max_tokens` 归为只限制正文的范围；`max_completion_tokens` 的千问 Flash 支持列表从 Qwen3.5-Flash 起，因此生成器不会给 `qwen-flash` 自动替换这个参数。[OpenAI Chat Completions 兼容文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)

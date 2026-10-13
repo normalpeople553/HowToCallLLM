@@ -18,7 +18,7 @@
 
 ```bash
 export MOONSHOT_API_KEY="你的Key"
-python3 -m pip install openai
+python3 -m pip install -r requirements-lock.txt
 python models/kimi/kimi-k2.6/examples/01_basic.py
 ```
 
@@ -71,11 +71,13 @@ JSON Mode 使用 `response_format={"type":"json_object"}`，提示词仍应明�
 
 把函数的名称、描述和参数 Schema 放入 `tools`；模型返回 `tool_calls`，应用执行函数后再用 `role="tool"` 与对应 `tool_call_id` 回传结果。[工具调用](https://platform.kimi.com/docs/guide/use-kimi-api-to-complete-tool-calls)
 
-K2.6 不支持 `tool_choice="required"`；可让模型自动选择、禁止调用或按官方支持形式指定工具。[工具调用约束](https://platform.kimi.com/docs/guide/use-tool-choice) 完整首段调用见 [`examples/05_tool_calling.py`](examples/05_tool_calling.py)。
+K2.6 不支持 `tool_choice="required"`；可让模型自动选择、禁止调用或按官方支持形式指定工具。[工具调用约束](https://platform.kimi.com/docs/guide/use-tool-choice) 仓库的 [`examples/05_tool_calling.py`](examples/05_tool_calling.py)包含工具参数校验、模拟天气执行、`tool_call_id` 回传和最终答复；循环有上限，完整 assistant 消息会保留。
 
 ## 7. 图片、视频与缓存
 
 图片支持 JPEG、PNG、GIF、WebP、BMP、HEIC、HEIF；视频支持 MP4、MPEG、MOV、AVI、FLV、MPG、WebM、WMV、3GPP。内容必须传数组，不能把数组序列化成字符串；SVG 不作为图片格式接受。[视觉模型](https://platform.kimi.com/docs/guide/use-kimi-vision-model)
+
+可运行图片示例：[examples/06_vision.py](examples/06_vision.py)；输入方式和运行命令见文件说明。
 
 上下文缓存支持 5 分钟或 1 小时 TTL，命中条件、用量字段和价格以[上下文缓存](https://platform.kimi.com/docs/guide/context-caching)为准。
 
@@ -96,7 +98,7 @@ thinking_off_extra_body:
   thinking: {type: disabled}
 ```
 
-这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。实时结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `MOONSHOT_API_KEY=... python tests/verify_kimi_k2_6.py`。
+这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果；最新严格流程结果查[验证状态](../../../docs/验证状态.md)。使用锁定依赖复测：`python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`，环境变量、范围和退出码见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 10. 必看踩雷
 

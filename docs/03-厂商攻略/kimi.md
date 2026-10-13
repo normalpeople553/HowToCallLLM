@@ -31,4 +31,4 @@ print(response.choices[0].message.content)
 
 模型名、上下文长度和价格都直接从[官方模型页](https://platform.kimi.com/docs/models)与[官方价格页](https://platform.kimi.com/docs/pricing/chat)核对，本项目不维护二手数字表。
 
-仓库于 2026-10-13 验证了目录中 `kimi-k2.6` 的普通、流式和关闭思考调用；测试实现与限制见 [`tests/verify_calls.py`](../../tests/verify_calls.py)。
+`kimi-k2.6` 在 2026-10-13 的历史基础验证覆盖普通、流式、思考开关、JSON 对象、首段工具调用和图片请求格式；报告没有记录最终结束原因、工具结果回传或图片内容识别，因此这些项目不算完整闭环验证。[历史脱敏报告](../../models/kimi/kimi-k2.6/verification/2026-10-13.json) 最新结果统一查[验证状态](../验证状态.md)，完整代码查[型号说明书](../../models/kimi/kimi-k2.6/README.md)。

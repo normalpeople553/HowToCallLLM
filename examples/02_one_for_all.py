@@ -1,72 +1,83 @@
-"""一套代码切换五家厂商。对应 docs/02。
+"""从型号机器卡读取配置，用同一入口调用五家默认型号。
 
-只需在 VENDORS 里登记每家的地址、模型和读取哪个环境变量，
-想调哪家就把名字传给 chat()，其余代码完全不变。
-
-运行前（用到哪家就配哪家的 key）：
-    export DEEPSEEK_API_KEY=...  MOONSHOT_API_KEY=...
-    export ZHIPU_API_KEY=...     DASHSCOPE_API_KEY=...  ARK_API_KEY=...
-运行：
-    python3 02_one_for_all.py
+配置与官方来源见 skills/model-manual/references/models/*.json。
+本文件需要保留在仓库 examples/ 中；单独复制时请一并携带机器卡目录。
+运行前给需要调用的厂商配置环境变量，安装 openai 后执行本文件。
 """
 
+import copy
+import json
 import os
+from pathlib import Path
 
 from openai import OpenAI
 
-# 每家只在这张表里登记差异：环境变量名 / 地址 / 模型 / 可选参数
-VENDORS = {
-    "deepseek": {
-        "key_env": "DEEPSEEK_API_KEY",
-        "base_url": "https://api.deepseek.com",
-        "model": "deepseek-flash",
-    },
-    "kimi": {
-        "key_env": "MOONSHOT_API_KEY",
-        "base_url": "https://api.moonshot.cn/v1",
-        "model": "kimi-k2.6",
-        "extra": {"thinking": {"type": "disabled"}},
-    },
-    "zhipu": {
-        "key_env": "ZHIPU_API_KEY",
-        "base_url": "https://open.bigmodel.cn/api/paas/v4",
-        "model": "glm-4.7-flash",
-        "extra": {"thinking": {"type": "disabled"}},
-    },
-    "qwen": {
-        "key_env": "DASHSCOPE_API_KEY",
-        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-        "model": "qwen-flash",
-    },
-    "doubao": {
-        "key_env": "ARK_API_KEY",
-        "base_url": "https://ark.cn-beijing.volces.com/api/v3",
-        "model": "doubao-seed-2-1-pro-260628",
-        "extra": {"thinking": {"type": "disabled"}},
-    },
-}
+
+ROOT = Path(__file__).resolve().parent.parent
+REFERENCES = ROOT / "skills" / "model-manual" / "references"
+VENDORS = json.loads((REFERENCES / "vendors.json").read_text(encoding="utf-8"))["vendors"]
+
+
+def completed_text(response) -> str:
+    """应用检查：只有正常结束且非空的正文才能当作完整结果。"""
+    if not response.choices:
+        raise RuntimeError("响应没有 choices")
+    choice = response.choices[0]
+    if choice.finish_reason != "stop":
+        raise RuntimeError(
+            f"回答未正常完成：finish_reason={choice.finish_reason!r}；"
+            "length 表示达到生成或上下文限制，请检查思考与回答预算"
+        )
+    content = choice.message.content
+    if getattr(choice.message, "tool_calls", None):
+        raise RuntimeError("收到未处理的工具调用")
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
+    return content
+
+def model_card(vendor: str) -> dict:
+    """只调用仓库中有独立机器卡的型号。"""
+    model = VENDORS[vendor]["default_model"]
+    path = REFERENCES / "models" / f"{model}.json"
+    card = json.loads(path.read_text(encoding="utf-8"))
+    if card["vendor"] != vendor or card["model_id"] != model:
+        raise ValueError("厂商目录与型号机器卡不一致")
+    return card
 
 
 def chat(vendor: str, question: str) -> str:
-    cfg = VENDORS[vendor]                                      # 取出该家配置
+    card = model_card(vendor)
+    generation = card["generation"]
     client = OpenAI(
-        api_key=os.environ[cfg["key_env"]],                    # 同一份逻辑
-        base_url=cfg["base_url"],
+        api_key=os.environ[generation["key_env"]["value"]],
+        base_url=generation["base_url"]["value"],
+        timeout=120,
     )
-    resp = client.chat.completions.create(
-        model=cfg["model"],
-        messages=[{"role": "user", "content": question}],
-        extra_body=cfg.get("extra"),                           # 思考开关等差异参数
-    )
-    return resp.choices[0].message.content
+    params = {
+        "model": card["identity"]["api_model_id"]["value"],
+        "messages": [{"role": "user", "content": question}],
+    }
+    # 开关值与 Python 扩展字段位置均来自该型号的卡片，避免套用厂商级默认参数。
+    thinking_off = copy.deepcopy(generation["thinking"]["off"]["value"])
+    extra_fields = set(generation["python_extra_body_fields"]["value"])
+    extra_body = {key: value for key, value in thinking_off.items() if key in extra_fields}
+    params.update({key: value for key, value in thinking_off.items() if key not in extra_fields})
+    if extra_body:
+        params["extra_body"] = extra_body
+    response = client.chat.completions.create(**params)
+    return completed_text(response)
 
 
 if __name__ == "__main__":
-    for name in VENDORS:                                       # 依次问五家同一个问题
+    for vendor in VENDORS:
+        key_env = model_card(vendor)["generation"]["key_env"]["value"]
+        if not os.environ.get(key_env):
+            print(f"[{vendor}] 未配置 {key_env}，跳过")
+            continue
         try:
-            answer = chat(name, "用一句话证明你是你自己")
-            print(f"[{name}] {answer}\n")
-        except KeyError:
-            print(f"[{name}] 未配置 {VENDORS[name]['key_env']}，跳过\n")
-        except Exception as e:                                 # 其他错误先打印不中断
-            print(f"[{name}] 调用失败：{e}\n")
+            print(f"[{vendor}] {chat(vendor, '用一句话介绍你自己')}\n")
+        except Exception as exc:
+            # 仅显示错误类型和状态，避免原始请求/响应或异常文本泄露密钥。
+            status = getattr(exc, "status_code", None)
+            status = status if isinstance(status, int) else "未知"
+            print(f"[{vendor}] 调用失败：{type(exc).__name__}，HTTP 状态 {status}")

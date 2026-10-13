@@ -11,15 +11,25 @@
       "default_model": "deepseek-flash",
       "model_manual": "../../../models/deepseek/deepseek-flash/README.md",
       "thinking_model": "deepseek-flash",
-      "thinking_off_body": {"thinking": {"type": "disabled"}},
+      "thinking_off_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
-        "thinking_off": "verified",
+        "thinking": "verified",
         "json_object": "verified",
         "tool_calling": "verified",
+        "strict_tool_calling": "documented",
         "vision": "verified",
-        "responses_api": "documented"
+        "responses_api": "documented",
+        "anthropic_api": "documented",
+        "context_caching": "documented",
+        "chat_prefix_completion": "documented",
+        "fim_completion": "documented",
+        "thinking_off": "verified"
       },
       "sources": {
         "api": "https://api-docs.deepseek.com/",
@@ -32,9 +42,18 @@
         "changes": "https://api-docs.deepseek.com/updates/"
       },
       "notes": [
-        {"text": "deepseek-flash 是当前推荐入口；deepseek-v4-flash 仍可调用但旧版本已退役。", "source": "https://api-docs.deepseek.com/quick_start/pricing/"},
-        {"text": "思考模式下 temperature、presence_penalty 和 frequency_penalty 会被忽略。", "source": "https://api-docs.deepseek.com/guides/thinking_mode/"}
-      ]
+        {
+          "text": "deepseek-flash 是当前推荐入口；deepseek-v4-flash 仍可调用但旧版本已退役。",
+          "source": "https://api-docs.deepseek.com/quick_start/pricing/"
+        },
+        {
+          "text": "思考模式下 temperature、presence_penalty 和 frequency_penalty 会被忽略。",
+          "source": "https://api-docs.deepseek.com/guides/thinking_mode/"
+        }
+      ],
+      "model_card": "models/deepseek-flash.json",
+      "verification": "models/deepseek/deepseek-flash/verification/2026-10-13.json",
+      "verification_scope": "legacy_smoke"
     },
     "kimi": {
       "name": "Kimi（月之暗面）",
@@ -44,14 +63,21 @@
       "default_model": "kimi-k2.6",
       "model_manual": "../../../models/kimi/kimi-k2.6/README.md",
       "thinking_model": "kimi-k2.6",
-      "thinking_off_body": {"thinking": {"type": "disabled"}},
+      "thinking_off_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
-        "thinking_off": "verified",
+        "thinking": "verified",
         "json_object": "verified",
         "tool_calling": "verified",
-        "vision": "verified"
+        "vision": "verified",
+        "video_input": "documented",
+        "context_caching": "documented",
+        "thinking_off": "verified"
       },
       "sources": {
         "api": "https://platform.kimi.com/docs/api/overview",
@@ -61,9 +87,18 @@
         "streaming": "https://platform.kimi.com/docs/guide/utilize-the-streaming-output-feature-of-kimi-api"
       },
       "notes": [
-        {"text": "使用前应在官方模型页复核当前模型名与上下文限制。", "source": "https://platform.kimi.com/docs/models"},
-        {"text": "国内接口示例使用 https://api.moonshot.cn/v1。", "source": "https://platform.kimi.com/docs/get-api-key"}
-      ]
+        {
+          "text": "使用前应在官方模型页复核当前模型名与上下文限制。",
+          "source": "https://platform.kimi.com/docs/models"
+        },
+        {
+          "text": "国内接口示例使用 https://api.moonshot.cn/v1。",
+          "source": "https://platform.kimi.com/docs/get-api-key"
+        }
+      ],
+      "model_card": "models/kimi-k2.6.json",
+      "verification": "models/kimi/kimi-k2.6/verification/2026-10-13.json",
+      "verification_scope": "legacy_smoke"
     },
     "zhipu": {
       "name": "智谱 GLM",
@@ -73,14 +108,20 @@
       "default_model": "glm-4.7-flash",
       "model_manual": "../../../models/zhipu/glm-4.7-flash/README.md",
       "thinking_model": "glm-4.7-flash",
-      "thinking_off_body": {"thinking": {"type": "disabled"}},
+      "thinking_off_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
       "default_max_tokens": 512,
       "capabilities": {
         "chat_completions": "documented",
         "streaming": "documented",
-        "thinking_off": "documented",
+        "thinking": "documented",
         "json_object": "documented",
-        "tool_calling": "documented"
+        "tool_calling": "documented",
+        "vision": "unknown",
+        "thinking_off": "documented"
       },
       "sources": {
         "api": "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction",
@@ -88,9 +129,18 @@
         "thinking": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking"
       },
       "notes": [
-        {"text": "glm-4.7-flash 的价格状态以官方定价页为准。", "source": "https://docs.bigmodel.cn/cn/guide/start/pricing"},
-        {"text": "不同代际模型的思考开关能力可能不同；不要把 glm-4.7-flash 的关闭方式套用到 GLM-5.3。", "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"}
-      ]
+        {
+          "text": "glm-4.7-flash 的价格状态以官方定价页为准。",
+          "source": "https://docs.bigmodel.cn/cn/guide/start/pricing"
+        },
+        {
+          "text": "不同代际模型的思考开关能力可能不同；不要把 glm-4.7-flash 的关闭方式套用到 GLM-5.3。",
+          "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+        }
+      ],
+      "model_card": "models/glm-4.7-flash.json",
+      "verification": "models/zhipu/glm-4.7-flash/verification/2026-10-13.json",
+      "verification_scope": "legacy_smoke"
     },
     "qwen": {
       "name": "通义千问（阿里云百炼）",
@@ -100,13 +150,17 @@
       "default_model": "qwen-flash",
       "model_manual": "../../../models/qwen/qwen-flash/README.md",
       "thinking_model": "qwen-flash",
-      "thinking_off_body": {"enable_thinking": false},
+      "thinking_off_body": {
+        "enable_thinking": false
+      },
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
-        "thinking_off": "verified",
+        "thinking": "verified",
         "json_object": "verified",
-        "tool_calling": "verified"
+        "tool_calling": "verified",
+        "vision": "unknown",
+        "thinking_off": "verified"
       },
       "sources": {
         "api": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/",
@@ -115,9 +169,18 @@
         "quota": "https://help.aliyun.com/zh/model-studio/new-free-quota"
       },
       "notes": [
-        {"text": "旧兼容域名仍可用；官方当前推荐使用带 WorkspaceId 的地域域名。", "source": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/"},
-        {"text": "Python SDK 的 enable_thinking 应通过 extra_body 传入。", "source": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/"}
-      ]
+        {
+          "text": "旧兼容域名仍可用；官方当前推荐使用带 WorkspaceId 的地域域名。",
+          "source": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/"
+        },
+        {
+          "text": "Python SDK 的 enable_thinking 应通过 extra_body 传入。",
+          "source": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/"
+        }
+      ],
+      "model_card": "models/qwen-flash.json",
+      "verification": "models/qwen/qwen-flash/verification/2026-10-13.json",
+      "verification_scope": "legacy_smoke"
     },
     "doubao": {
       "name": "豆包（火山方舟）",
@@ -128,14 +191,19 @@
       "default_model": "doubao-seed-2-1-pro-260628",
       "model_manual": "../../../models/doubao/doubao-seed-2-1-pro-260628/README.md",
       "thinking_model": "doubao-seed-2-1-pro-260628",
-      "thinking_off_body": {"thinking": {"type": "disabled"}},
+      "thinking_off_body": {
+        "thinking": {
+          "type": "disabled"
+        }
+      },
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
-        "thinking_off": "verified",
-        "json_object": "verified",
+        "thinking": "verified",
+        "structured_output": "verified",
         "tool_calling": "verified",
-        "vision": "verified"
+        "vision": "verified",
+        "thinking_off": "verified"
       },
       "sources": {
         "api": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh",
@@ -145,9 +213,18 @@
         "activation": "https://docs.volcengine.com/docs/ark/activation-management?lang=zh"
       },
       "notes": [
-        {"text": "调用前需要按官方开通管理流程开通模型。", "source": "https://docs.volcengine.com/docs/ark/activation-management?lang=zh"},
-        {"text": "Model ID 可直接用于在线推理；使用前应在模型列表复核当前 ID。", "source": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh"}
-      ]
+        {
+          "text": "调用前需要按官方开通管理流程开通模型。",
+          "source": "https://docs.volcengine.com/docs/ark/activation-management?lang=zh"
+        },
+        {
+          "text": "Model ID 可直接用于在线推理；使用前应在模型列表复核当前 ID。",
+          "source": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh"
+        }
+      ],
+      "model_card": "models/doubao-seed-2-1-pro-260628.json",
+      "verification": "models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json",
+      "verification_scope": "legacy_smoke"
     }
   }
 }

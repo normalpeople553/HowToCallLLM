@@ -1,25 +1,39 @@
-"""最小可运行示例：调用 DeepSeek 说一句话。对应 docs/01。
+"""最小可运行示例：调用 DeepSeek，并检查回答是否完整。
 
-运行前：
-    export DEEPSEEK_API_KEY="sk-你的key"
-    pip3 install openai
-运行：
-    python3 01_quickstart.py
+运行前配置 DEEPSEEK_API_KEY，安装 openai 后执行本文件。
+官方来源：https://api-docs.deepseek.com/api/create-chat-completion/
 """
 
 import os
 
 from openai import OpenAI
 
-client = OpenAI(
-    api_key=os.environ["DEEPSEEK_API_KEY"],          # key 从环境变量读，别写死
-    base_url="https://api.deepseek.com",             # DeepSeek 接入地址
-)
 
-resp = client.chat.completions.create(
-    model="deepseek-flash",                          # 官方当前推荐入口
+def completed_text(response) -> str:
+    """应用检查：只有正常结束且非空的正文才能当作完整结果。"""
+    if not response.choices:
+        raise RuntimeError("响应没有 choices")
+    choice = response.choices[0]
+    if choice.finish_reason != "stop":
+        raise RuntimeError(
+            f"回答未正常完成：finish_reason={choice.finish_reason!r}；"
+            "length 表示达到生成或上下文限制，请检查思考与回答预算"
+        )
+    content = choice.message.content
+    if getattr(choice.message, "tool_calls", None):
+        raise RuntimeError("收到未处理的工具调用")
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
+    return content
+
+client = OpenAI(
+    api_key=os.environ["DEEPSEEK_API_KEY"],
+    base_url="https://api.deepseek.com",
+    timeout=120,
+)
+response = client.chat.completions.create(
+    model="deepseek-flash",
     messages=[{"role": "user", "content": "用一句话介绍你自己"}],
 )
-
-print(resp.choices[0].message.content)               # 取出回答正文
-print("本次用量：", resp.usage)                      # 花了多少 token
+print(completed_text(response))
+print("本次用量：", response.usage)

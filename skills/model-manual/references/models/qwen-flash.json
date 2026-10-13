@@ -36,7 +36,31 @@
     "tiers": {"value": [{"input_tokens": "0-128K", "input": 0.15, "output": 1.5}, {"input_tokens": "128K-256K", "input": 0.6, "output": 6}, {"input_tokens": "256K-1M", "input": 1.2, "output": 12}], "source": "pricing"},
     "volatile": true
   },
+  "generation": {
+    "schema_version": 1,
+    "key_env": {"value": "DASHSCOPE_API_KEY", "source": "first_call"},
+    "base_url": {"value": "https://dashscope.aliyuncs.com/compatible-mode/v1", "source": "chat_api"},
+    "python_extra_body_fields": {"value": ["enable_thinking"], "source": "chat_api"},
+    "thinking": {
+      "on": {"value": {"enable_thinking": true}, "source": "chat_api"},
+      "off": {"value": {"enable_thinking": false}, "source": "chat_api"}
+    },
+    "token_budget": {
+      "parameter": {"value": "max_tokens", "source": "chat_api"},
+      "min": {"value": 1, "source": "project_generation"},
+      "semantics": {"value": "answer_only", "source": "chat_api"}
+    },
+    "stream_options": {"value": {"include_usage": true}, "source": "chat_api"},
+    "tool_choice": {"value": "auto", "source": "function_calling"},
+    "json_output": {
+      "capability": "json_object",
+      "response_format": {"value": {"type": "json_object"}, "source": "structured_output"},
+      "requires_thinking_off": {"value": true, "source": "structured_output"}
+    },
+    "verification_scope": {"value": "历史报告仅覆盖其中列出的请求；工具调用只验证提出调用，JSON 验证使用关闭思考。代码生成器的完整闭环需以相应新报告为证。", "source": "project_generation"}
+  },
   "sources": {
+    "project_generation": {"title": "项目代码生成约定：预算必须为正整数，不设置默认预算，不声称新增流程已实测", "url": "../../scripts/generate_snippet.py"},
     "first_call": {"title": "首次调用", "url": "https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen"},
     "models": {"title": "模型列表", "url": "https://help.aliyun.com/zh/model-studio/getting-started/models"},
     "pricing": {"title": "模型价格", "url": "https://help.aliyun.com/zh/model-studio/model-pricing"},

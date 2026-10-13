@@ -1,1 +1,2 @@
-openai>=1.30,<3
+# Python >=3.10；完整可复现环境见 requirements-lock.txt。
+openai==2.54.0

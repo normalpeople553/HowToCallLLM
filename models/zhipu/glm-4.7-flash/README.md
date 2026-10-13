@@ -57,7 +57,7 @@ JSON 对象模式使用 `response_format={"type":"json_object"}`；工具通过 
 
 2026-10-13 的验证请求返回 HTTP 429，包括账户速率限制业务码 `1302` 和模型访问量过大业务码 `1305`；这说明请求已到达服务，但不足以证明各能力可用。仓库因此把能力保留为“官方已记录”，不标成“本次实测通过”。详见 [`verification/2026-10-13.json`](verification/2026-10-13.json)。
 
-遇到 429 应使用带抖动的指数退避并限制重试次数；不要无限重试。复测脚本内置 4 次有界退避：`ZHIPU_API_KEY=... python tests/verify_glm_4_7_flash.py`。
+遇到 429 应使用带抖动的指数退避并限制重试次数；持续限流的结果单独记录，不能判为模型能力不支持。[项目建议与规则](../../../docs/来源与核验规则.md) 使用锁定依赖复测：`python tests/verify_glm_4_7_flash.py --report /tmp/glm-4.7-flash-verification.json`，环境变量和退出码见[验证与复现](../../../docs/验证与复现.md)。最新结果统一查[验证状态](../../../docs/验证状态.md)。
 
 ## 6. 给 Agent 的固定配置
 
@@ -68,10 +68,11 @@ base_url: https://open.bigmodel.cn/api/paas/v4/
 api_key_env: ZHIPU_API_KEY
 thinking_off_extra_body:
   thinking: {type: disabled}
-verification_state: rate_limited
 ```
 
-Base URL 与模型参数来自[官方 OpenAI 兼容文档](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)和[对话补全 API](https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8)；`verification_state` 是本仓库 2026-10-13 的实测结果，不是厂商长期状态。
+Base URL 与模型参数来自[官方 OpenAI 兼容文档](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)和[对话补全 API](https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8)；运行状态统一查[验证状态](../../../docs/验证状态.md)，不写进固定连接配置。
+
+[工具调用示例](examples/05_tool_calling.py)已经包含校验、模拟执行、结果回传和最终回答的完整有限循环；此处是可运行模板，真实成功状态以[验证状态](../../../docs/验证状态.md)引用的报告为准。
 
 ## 7. 必看踩雷
 

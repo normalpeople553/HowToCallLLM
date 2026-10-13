@@ -37,7 +37,30 @@
     "output": {"value": 0, "source": "pricing"},
     "volatile": true
   },
+  "generation": {
+    "schema_version": 1,
+    "key_env": {"value": "ZHIPU_API_KEY", "source": "project_convention"},
+    "base_url": {"value": "https://open.bigmodel.cn/api/paas/v4/", "source": "openai_compat"},
+    "python_extra_body_fields": {"value": ["thinking"], "source": "thinking"},
+    "thinking": {
+      "on": {"value": {"thinking": {"type": "enabled"}}, "source": "thinking_mode"},
+      "off": {"value": {"thinking": {"type": "disabled"}}, "source": "thinking_mode"}
+    },
+    "token_budget": {
+      "parameter": {"value": "max_tokens", "source": "chat_api"},
+      "min": {"value": 1, "source": "chat_api"},
+      "max": {"value": 131072, "source": "chat_api"},
+      "semantics": {"value": "unknown", "source": "project_generation"}
+    },
+    "tool_choice": {"value": "auto", "source": "chat_api"},
+    "json_output": {
+      "capability": "json_object",
+      "response_format": {"value": {"type": "json_object"}, "source": "chat_api"}
+    },
+    "verification_scope": {"value": "2026-10-13 历史测试六项均被限流，未完成在线验证；代码生成只依据官方登记的功能。", "source": "project_generation"}
+  },
   "sources": {
+    "project_generation": {"title": "项目代码生成约定：unknown 表示该型号预算语义未确认；不设置默认预算，不声称新增流程已实测", "url": "../../scripts/generate_snippet.py"},
     "project_convention": {"title": "本仓库环境变量约定", "url": "../../SKILL.md"},
     "pricing": {"title": "模型价格", "url": "https://docs.bigmodel.cn/cn/guide/start/pricing"},
     "openai_compat": {"title": "OpenAI SDK 兼容", "url": "https://docs.bigmodel.cn/cn/guide/develop/openai/introduction"},

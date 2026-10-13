@@ -29,4 +29,4 @@ print(response.choices[0].message.content)
 
 `glm-4.7-flash` 的价格状态必须从[官方定价页](https://docs.bigmodel.cn/cn/guide/start/pricing)复核；本项目不把“Flash”名称本身等同于免费承诺。
 
-仓库于 2026-10-13 验证了 `glm-4.7-flash` 的普通、流式和 `thinking.type=disabled` 调用，见 [`tests/verify_calls.py`](../../tests/verify_calls.py)。这项实测不能外推到 GLM-5.3；官方 GLM-5.3 Flash 文档说明该代模型不能关闭思考。[GLM-5.3 Flash 文档](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)
+2026-10-13 的历史验证中，`glm-4.7-flash` 六项请求均遭遇 429（账户速率限制 `1302` 或模型访问量过大 `1305`），没有记录为通过。[历史脱敏报告](../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json) 最新结果统一查[验证状态](../验证状态.md)，完整代码查[型号说明书](../../models/zhipu/glm-4.7-flash/README.md)。GLM-5.3 的思考限制必须单独核对，不继承 GLM-4.7 配置。[GLM-5.3 Flash 文档](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)

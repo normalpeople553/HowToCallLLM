@@ -32,4 +32,4 @@ Python SDK 关闭支持该能力模型的思考时，官方写法是 `extra_body
 
 免费额度只适用于官方规则列出的地域、模型与期限；额度用完后的计费行为也以[官方新人额度规则](https://help.aliyun.com/zh/model-studio/new-free-quota)为准。
 
-仓库于 2026-10-13 验证了目录中 `qwen-flash` 的普通与流式调用，以及 `qwen3.6-flash` 的关闭思考调用；测试实现与限制见 [`tests/verify_calls.py`](../../tests/verify_calls.py)。
+`qwen-flash` 在 2026-10-13 的历史基础验证覆盖普通、流式、思考开关、JSON 对象和首段工具调用；报告没有记录最终结束原因或工具结果回传，因此不能把它解读为完整工具闭环验证。[历史脱敏报告](../../models/qwen/qwen-flash/verification/2026-10-13.json) 最新结果统一查[验证状态](../验证状态.md)，完整示例查[型号说明书](../../models/qwen/qwen-flash/README.md)。

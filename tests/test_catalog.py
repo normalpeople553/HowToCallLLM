@@ -74,6 +74,14 @@ class CatalogTests(unittest.TestCase):
                 )
                 compile(source, f"<{vendor}>", "exec")
 
+    def test_vendor_default_resolves_to_its_model_card(self):
+        for vendor, cfg in self.vendors.items():
+            with self.subTest(vendor=vendor):
+                card = self.generator.load_model(cfg["default_model"], vendor)
+                self.assertEqual(card["vendor"], vendor)
+                self.assertEqual(card["generation"]["key_env"]["value"], cfg["key_env"])
+                self.assertEqual(card["generation"]["base_url"]["value"].rstrip("/"), cfg["base_url"].rstrip("/"))
+
 
 if __name__ == "__main__":
     unittest.main()

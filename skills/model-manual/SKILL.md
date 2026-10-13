@@ -12,7 +12,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问和豆包生成、�
 1. 确认用户指定的厂商、语言和调用方式；能从现有项目判断时，不重复提问。
 2. 读取 [references/vendors.json](references/vendors.json) 中对应厂商的记录。不要凭记忆补写模型名、地址或专属参数。
    - 如果记录含 `model_manual`，继续读取对应模型说明书和 `references/models/` 下的机器卡片；模型级事实优先于厂商级摘要。
-3. 普通示例优先运行 `scripts/generate_snippet.py` 生成。需要融入现有项目时，遵循项目已有语言、依赖和代码风格。
+3. 示例优先运行 `scripts/generate_snippet.py` 生成；它按具体型号检查任务能力、思考开关、输出参数和生命周期。未知型号需先核对官方资料并补型号卡片，不能仅覆盖名字后继承厂商参数。需要融入现有项目时，遵循项目已有语言、依赖和代码风格。
 4. 用户未指定语言时默认 Python；未指定模型时使用 `default_model`。
 5. 返回完整可运行代码，并给出依赖安装命令、所需环境变量和运行命令。
 6. 遇到错误时，保留原始状态码并结合厂商的 `notes` 排查；每条 note 自带来源，不要把所有 404 都归因于同一原因。
@@ -26,20 +26,24 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问和豆包生成、�
 python scripts/generate_snippet.py --vendor kimi --language python
 python scripts/generate_snippet.py --vendor qwen --language typescript --thinking off
 python scripts/generate_snippet.py --vendor doubao --language curl --stream
+python scripts/generate_snippet.py --vendor kimi --task tool --thinking off
+python scripts/generate_snippet.py --vendor qwen --task json --thinking off --max-tokens 2048
 ```
 
-支持的语言是 `python`、`typescript` 和 `curl`。`--thinking off` 只在厂商卡片声明了关闭方法时添加对应请求字段。
+支持的语言是 `python`、`typescript` 和 `curl`；任务、语言组合以脚本帮助为准。`--thinking on/off` 只使用型号卡片登记的开关；`--max-tokens` 读取型号的预算参数和范围，不能假定所有厂商都把思考 token 计入同一个上限。生成器对未支持的组合明确报错。
 
 ## 输出要求
 
 - API Key 必须从厂商卡片规定的环境变量读取，禁止硬编码或在输出中回显完整 Key。
-- 明确区分“已实测”“官方文档说明”和“尚未验证”；缺少资料时直接说明未知。
+- 明确区分“已实测”“官方文档说明”和“尚未验证”；对 `verified` 继续读取卡片的 `verification` 报告，说明测试日期与范围。历史基础验证不能描述成严格结束检查、工具闭环或图片内容识别；限流是运行状态，不是能力不支持。
 - 每个厂商事实都附上 `sources` 或 `notes.source` 中的官方链接；提到价格、免费额度时直接链接官方价格或额度页，不引用二手汇总。
 - 经验性选型或排查建议标注为“项目建议”，并链接仓库的 `docs/来源与核验规则.md`。
 - 不把 Chat Completions 兼容表述成完整 OpenAI API 兼容。
+- 普通/JSON 回答检查结束原因与空正文；流式处理空 `choices` 与结束状态；工具调用验证名称、完整参数并回传 `tool_call_id`，需要有限循环及完整 assistant 消息。模板中的天气为模拟数据，不能当成实时天气。
 - 用户只要代码时保持简洁；用户是新手时补充 Key 申请、安装和运行步骤。
 - 除非用户明确要求实际验证，否则只生成或修改代码，不主动发送可能计费的请求。
 - 若 `verified_at` 已明显过时，提醒用户先运行仓库中的体检脚本或复核官方文档。
+- 安装默认使用仓库锁定依赖，验证运行方式、自动报告和退出码见[验证与复现](../../docs/验证与复现.md)；摘要与原始报告不一致时以报告为准，并用 `scripts/sync_verification.py --check` 定位需同步项。
 
 ## 当前边界
 

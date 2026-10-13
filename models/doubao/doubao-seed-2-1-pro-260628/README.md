@@ -52,11 +52,13 @@ response = client.chat.completions.create(
 
 官方模型列表标注该模型支持结构化输出，并推荐 `json_schema`；Schema 仍应保持精简，客户端必须再次解析和校验。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) 示例：[`examples/04_json_output.py`](examples/04_json_output.py)。
 
-官方模型列表标注该模型支持工具调用；应用应把函数声明放在 `tools`，校验返回参数，自行执行工具并回传结果。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) 示例：[`examples/05_tool_calling.py`](examples/05_tool_calling.py)。
+官方模型列表标注该模型支持工具调用；应用应把函数声明放在 `tools`，校验返回参数，自行执行工具并回传结果。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) [完整示例](examples/05_tool_calling.py)执行模拟天气函数，回传 `tool_call_id` 并生成最终答复；模拟数据不代表实时天气，循环和参数都由应用检查。
 
 ## 5. 图片输入与价格
 
 该模型支持多模态理解；Chat Completions 的图片消息格式与限制以[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)和[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)为准。本仓库用本地生成的 32×32 PNG data URL 完成验证，不依赖外部图片。
+
+可运行图片示例：[examples/06_vision.py](examples/06_vision.py)；支持输入方式和运行命令见文件说明。
 
 价格容易随区域、缓存和活动变化，本页不抄录可能失效的数字；直接查看[官方价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh)。
 
@@ -76,7 +78,7 @@ thinking_off_extra_body:
 lifecycle: past_but_callable
 ```
 
-连接信息来自[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)，生命周期来自[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)并由当天实测补充。实时能力结果见 [`verification/2026-10-13.json`](verification/2026-10-13.json)，复测命令为 `ARK_API_KEY=... python tests/verify_doubao_seed_2_1_pro.py`。
+连接信息来自[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)，生命周期来自[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)。[2026-10-13 历史基础报告](verification/2026-10-13.json)只检查首段工具调用与图片请求格式；最新严格流程结果查[验证状态](../../../docs/验证状态.md)。使用锁定依赖复测：`python tests/verify_doubao_seed_2_1_pro.py --report /tmp/doubao-verification.json`，环境变量与范围见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 8. 必看踩雷
 

@@ -231,7 +231,31 @@
       "source": "vision"
     }
   },
+  "generation": {
+    "schema_version": 1,
+    "key_env": {"value": "DEEPSEEK_API_KEY", "source": "first_call"},
+    "base_url": {"value": "https://api.deepseek.com", "source": "first_call"},
+    "python_extra_body_fields": {"value": ["thinking"], "source": "thinking"},
+    "thinking": {
+      "on": {"value": {"thinking": {"type": "enabled"}}, "source": "thinking"},
+      "off": {"value": {"thinking": {"type": "disabled"}}, "source": "thinking"}
+    },
+    "token_budget": {
+      "parameter": {"value": "max_tokens", "source": "chat_api"},
+      "min": {"value": 1, "source": "chat_api"},
+      "max": {"value": 393216, "source": "chat_api"},
+      "semantics": {"value": "unknown", "source": "project_generation"}
+    },
+    "stream_options": {"value": {"include_usage": true}, "source": "chat_api"},
+    "tool_choice": {"value": "auto", "source": "chat_api"},
+    "json_output": {
+      "capability": "json_object",
+      "response_format": {"value": {"type": "json_object"}, "source": "json_output"}
+    },
+    "verification_scope": {"value": "历史报告仅覆盖其中列出的请求；代码生成器的严格判定、业务 JSON 校验和工具闭环需以相应新报告为证。", "source": "project_generation"}
+  },
   "sources": {
+    "project_generation": {"title": "项目代码生成约定：unknown 表示该型号预算语义未确认；不设置默认预算，不声称新增流程已实测", "url": "../../scripts/generate_snippet.py"},
     "first_call": {
       "title": "Your First API Call",
       "url": "https://api-docs.deepseek.com/guides/codex"

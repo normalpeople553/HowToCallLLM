@@ -12,7 +12,7 @@
 
 ## 模型级说明书
 
-已完成五份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)和[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)。每份均覆盖接口、思考、流式、结构化输出、工具调用、价格入口、Agent 配置和脱敏实测记录；不支持或未实测的能力会明确区分。
+已收录五份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)和[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)。型号卡片保存官方事实，示例包含结果检查与工具闭环；实测范围和结果统一见[验证状态](docs/验证状态.md)。
 
 ## 快速参数表
 
@@ -22,9 +22,9 @@
 |---|---|---|---|---|---|
 | DeepSeek | `DEEPSEEK_API_KEY` | [`https://api.deepseek.com`](https://api-docs.deepseek.com/) | [`deepseek-flash`](https://api-docs.deepseek.com/quick_start/pricing/) | [`thinking.type=disabled`](https://api-docs.deepseek.com/guides/thinking_mode/) | [价格页](https://api-docs.deepseek.com/quick_start/pricing/) |
 | Kimi | `MOONSHOT_API_KEY` | [`https://api.moonshot.cn/v1`](https://platform.kimi.com/docs/get-api-key) | [`kimi-k2.6`](https://platform.kimi.com/docs/models) | [`thinking.type=disabled`](https://platform.kimi.com/docs/guide/use-thinking-models) | [价格页](https://platform.kimi.com/docs/pricing/chat) |
-| 智谱 GLM | `ZHIPU_API_KEY` | [`https://open.bigmodel.cn/api/paas/v4`](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) | [`glm-4.7-flash`](https://docs.bigmodel.cn/cn/guide/start/pricing) | `thinking.type=disabled`（[仓库验证](tests/verify_calls.py)） | [价格页](https://docs.bigmodel.cn/cn/guide/start/pricing) |
+| 智谱 GLM | `ZHIPU_API_KEY`（项目约定） | [`https://open.bigmodel.cn/api/paas/v4`](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) | [`glm-4.7-flash`](https://docs.bigmodel.cn/cn/guide/start/pricing) | [`thinking.type=disabled`](https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode) | [价格页](https://docs.bigmodel.cn/cn/guide/start/pricing) |
 | 通义千问 | `DASHSCOPE_API_KEY` | [OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [`qwen-flash`](https://help.aliyun.com/zh/model-studio/getting-started/models) | [`enable_thinking=false`](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [价格页](https://help.aliyun.com/zh/model-studio/model-pricing) |
-| 豆包方舟 | `ARK_API_KEY` | [`https://ark.cn-beijing.volces.com/api/v3`](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh) | [`doubao-seed-2-1-pro-260628`](https://docs.volcengine.com/docs/ark/model-list?lang=zh) | `thinking.type=disabled`（[仓库验证](tests/verify_calls.py)） | [价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh) |
+| 豆包方舟 | `ARK_API_KEY` | [`https://ark.cn-beijing.volces.com/api/v3`](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh) | [`doubao-seed-2-1-pro-260628`](https://docs.volcengine.com/docs/ark/model-list?lang=zh) | [`thinking.type=disabled`](https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh) | [价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh) |
 
 > 通义官方当前推荐带 `WorkspaceId` 的地域域名；旧 `dashscope.aliyuncs.com/compatible-mode/v1` 仍可使用。两种地址与迁移说明见[官方兼容接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)。
 
@@ -52,7 +52,7 @@ print(response.choices[0].message.content)
 
 ## 让说明书生成代码
 
-生成器读取统一厂商目录，支持 Python、TypeScript 和 cURL；支持范围由[脚本参数](skills/model-manual/scripts/generate_snippet.py)定义。
+生成器读取厂商路由和具体型号卡片，检查型号归属、思考开关、任务能力和输出参数；支持范围由[脚本参数](skills/model-manual/scripts/generate_snippet.py)定义。未知型号会提示先补卡片，避免继续套用默认型号参数。
 
 ```bash
 python skills/model-manual/scripts/generate_snippet.py \
@@ -63,23 +63,31 @@ python skills/model-manual/scripts/generate_snippet.py \
 
 python skills/model-manual/scripts/generate_snippet.py \
   --vendor doubao --language curl
+
+# 生成完整 Python 工具闭环
+python skills/model-manual/scripts/generate_snippet.py \
+  --vendor kimi --model kimi-k2.6 --task tool --thinking off
+
+# JSON 提取；输出上限按当前型号卡片的字段语义处理
+python skills/model-manual/scripts/generate_snippet.py \
+  --vendor qwen --task json --thinking off --max-tokens 2048
 ```
 
 ## 验证
 
-在线体检会向已配置 Key 的厂商发送真实请求，可能消耗额度或余额；具体测试项和退出码见 [`tests/verify_calls.py`](tests/verify_calls.py)。
+仓库要求 Python 3.10+，安装与离线校验见[验证与复现](docs/验证与复现.md)。在线体检会向已配置 Key 的厂商发送真实请求，报告自动记录安全元数据，具体结果见[验证状态](docs/验证状态.md)。
 
 ```bash
 cp examples/.env.example .env
-pip install -r requirements.txt
-python tests/verify_calls.py
-python tests/verify_calls.py kimi qwen
+python -m pip install -r requirements-lock.txt
+python tests/verify_calls.py kimi qwen --report /tmp/model-manual-verification.json
 ```
 
-不发请求的目录校验见 [`tests/test_catalog.py`](tests/test_catalog.py)：
+不发请求的检查覆盖目录、生成器、流式/截断和工具闭环，CI 使用相同命令：
 
 ```bash
-python -m unittest tests/test_catalog.py
+python -m unittest discover -s tests -p 'test_*.py'
+python skills/model-manual/scripts/sync_verification.py --check
 ```
 
 ## 文档
@@ -93,6 +101,8 @@ python -m unittest tests/test_catalog.py
 | [04 价格与额度](docs/04-免费额度与省钱攻略.md) | 直达官方价格、额度页面 |
 | [05 排错](docs/05-新手必会与报错速查.md) | 官方错误文档与项目排查流程 |
 | [06 真实踩雷](docs/06-真实踩雷与生产检查.md) | 思考 token、截断、JSON、工具调用、流式与限流 |
+| [验证与复现](docs/验证与复现.md) | 锁定环境、自动报告、退出码与验证范围 |
+| [验证状态](docs/验证状态.md) | 从模型卡片与报告生成的当前能力状态 |
 | [来源与核验规则](docs/来源与核验规则.md) | 每类结论如何引用与复核 |
 
 ## Key 安全

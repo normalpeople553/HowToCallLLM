@@ -31,4 +31,4 @@ print(response.choices[0].message.content)
 
 价格与免费额度不在本页抄录数字，分别以[官方价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh)和[官方额度页](https://docs.volcengine.com/docs/ark/free-inference-quota?lang=zh)为准。
 
-仓库于 2026-10-13 验证了目录中默认模型的普通、流式和 `thinking.type=disabled` 调用；测试实现与限制见 [`tests/verify_calls.py`](../../tests/verify_calls.py)。该实测不能替代其他型号的官方参数文档。
+`doubao-seed-2-1-pro-260628` 在 2026-10-13 的历史基础验证覆盖普通、流式、思考开关、JSON Schema、首段工具调用和图片请求格式；没有验证图片内容识别或工具结果回传。[历史脱敏报告](../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json) 最新结果统一查[验证状态](../验证状态.md)，完整示例查[型号说明书](../../models/doubao/doubao-seed-2-1-pro-260628/README.md)。该结果不外推到其他型号。

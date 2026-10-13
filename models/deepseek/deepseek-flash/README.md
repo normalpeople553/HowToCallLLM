@@ -22,7 +22,7 @@
 
 ```bash
 export DEEPSEEK_API_KEY="你的Key"
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements-lock.txt
 ```
 
 本项目规定密钥只能从环境变量或被 Git 忽略的 `.env` 读取，不能写进代码、日志或提交记录；这是仓库安全约定。[来源与核验规则](../../../docs/来源与核验规则.md) · [`.gitignore`](../../../.gitignore)
@@ -308,7 +308,7 @@ print("缓存未命中：", usage.prompt_cache_miss_tokens)
 
 ## 16. 验证
 
-仓库在 **2026-10-13** 使用真实 DeepSeek Key 完成 7 项脱敏测试：普通调用、流式输出、开启思考、关闭思考、JSON Output、Tool Calling 和图片输入全部通过；记录只保存状态、token 数和内容长度。[脱敏验证记录](verification/2026-10-13.json) · [测试脚本](../../../tests/verify_deepseek_flash.py)
+**2026-10-13 历史基础验证**记录七项通过，范围为普通调用、流式、思考开关、JSON、首段工具调用和图片请求格式；旧报告没有记录完整结束原因，没有验证工具结果回传或图片内容识别。[历史脱敏记录](verification/2026-10-13.json) 最新的严格流程结果查[验证状态](../../../docs/验证状态.md)，复现环境和报告格式见[验证与复现](../../../docs/验证与复现.md)。
 
 静态检查不会发送请求：
 
@@ -319,9 +319,11 @@ python -m unittest tests/test_models.py
 在线检查会产生真实请求，并要求显式设置 Key；测试范围与脱敏规则见 [`tests/verify_deepseek_flash.py`](../../../tests/verify_deepseek_flash.py)。
 
 ```bash
-DEEPSEEK_API_KEY="你的Key" python tests/verify_deepseek_flash.py
+DEEPSEEK_API_KEY="你的Key" python tests/verify_deepseek_flash.py --report /tmp/deepseek-flash-verification.json
 ```
 
 ## 17. 必看踩雷
 
 不要只判断 HTTP 200：`finish_reason="length"` 表示生成达到限制，正文可能不完整；usage 还会在 `completion_tokens_details.reasoning_tokens` 中给出思考 token。[Chat Completions API](https://api-docs.deepseek.com/api/create-chat-completion/) JSON Mode 如果没有在提示词里明确要求 JSON，还可能持续生成空白直至达到 token 上限。[JSON Output](https://api-docs.deepseek.com/guides/json_mode/) 检测代码和工具、流式相关问题见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。
+
+本仓库可运行示例已加入结束原因、空正文和流式终止检查；[工具示例](examples/05_tool_calling.py)使用有轮次上限的模拟天气闭环，先校验整批参数，再回传结果。它演示调用流程，不提供实时天气。[实现](examples/05_tool_calling.py)
