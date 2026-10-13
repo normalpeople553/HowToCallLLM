@@ -10,6 +10,10 @@
 - 老手：直接查下表或 [`skills/model-manual/references/vendors.json`](skills/model-manual/references/vendors.json)。
 - Agent：先读取 [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md)，再生成、迁移或排查代码。
 
+## 模型级说明书
+
+第一份完整型号说明书已经建立：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)。它覆盖普通调用、流式、思考、JSON、Tool Calling、图片、缓存、价格、错误处理和 Agent 规则，事实来源全部链接 DeepSeek 官方文档。
+
 ## 快速参数表
 
 下表的接口与模型链接均指向厂商官方文档；“仓库验证”指向可复现的在线体检脚本，结果只代表 **2026-10-13** 当日测试环境。[核验口径](docs/来源与核验规则.md)

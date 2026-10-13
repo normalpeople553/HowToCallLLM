@@ -11,6 +11,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问和豆包生成、�
 
 1. 确认用户指定的厂商、语言和调用方式；能从现有项目判断时，不重复提问。
 2. 读取 [references/vendors.json](references/vendors.json) 中对应厂商的记录。不要凭记忆补写模型名、地址或专属参数。
+   - 如果记录含 `model_manual`，继续读取对应模型说明书和 `references/models/` 下的机器卡片；模型级事实优先于厂商级摘要。
 3. 普通示例优先运行 `scripts/generate_snippet.py` 生成。需要融入现有项目时，遵循项目已有语言、依赖和代码风格。
 4. 用户未指定语言时默认 Python；未指定模型时使用 `default_model`。
 5. 返回完整可运行代码，并给出依赖安装命令、所需环境变量和运行命令。
@@ -41,4 +42,4 @@ python scripts/generate_snippet.py --vendor doubao --language curl --stream
 
 ## 当前边界
 
-当前只覆盖文本对话、思考开关和流式输出。JSON Schema、Tool Calling、图片、语音、视频、Embedding 和 Responses API 未在数据中声明时，不要推断其兼容性。
+默认只覆盖文本对话、思考开关和流式输出。模型级机器卡片可以声明 JSON、Tool Calling、图片或 Responses API；未在数据中声明的能力不要推断其兼容性。

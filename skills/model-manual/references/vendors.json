@@ -9,19 +9,26 @@
       "key_url": "https://platform.deepseek.com/api_keys",
       "base_url": "https://api.deepseek.com",
       "default_model": "deepseek-flash",
+      "model_manual": "../../../models/deepseek/deepseek-flash/README.md",
       "thinking_model": "deepseek-flash",
       "thinking_off_body": {"thinking": {"type": "disabled"}},
       "capabilities": {
         "chat_completions": "verified",
         "streaming": "verified",
         "thinking_off": "verified",
-        "json_object": "unknown",
-        "tool_calling": "unknown"
+        "json_object": "documented",
+        "tool_calling": "documented",
+        "vision": "documented",
+        "responses_api": "documented"
       },
       "sources": {
         "api": "https://api-docs.deepseek.com/",
         "models_and_pricing": "https://api-docs.deepseek.com/quick_start/pricing/",
         "thinking": "https://api-docs.deepseek.com/guides/thinking_mode/",
+        "chat_api": "https://api-docs.deepseek.com/api/create-chat-completion/",
+        "json_output": "https://api-docs.deepseek.com/guides/json_mode/",
+        "tool_calls": "https://api-docs.deepseek.com/guides/tool_calls/",
+        "vision": "https://api-docs.deepseek.com/guides/vision/",
         "changes": "https://api-docs.deepseek.com/updates/"
       },
       "notes": [
