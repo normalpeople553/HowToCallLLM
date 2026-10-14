@@ -100,7 +100,7 @@ class LiveExampleRunnerTests(unittest.TestCase):
             relative = "models/deepseek/deepseek-flash/examples/01_basic.py"
             example = root / relative
             example.parent.mkdir(parents=True)
-            example.write_text("pass\n", encoding="utf-8")
+            example.write_bytes(b"pass\n")
             helper = example.with_name("_support.py")
             helper.write_text("SETTING = 1\n", encoding="utf-8")
             with patch.object(runner, "ROOT", root):
@@ -462,7 +462,12 @@ class LiveExampleRunnerTests(unittest.TestCase):
             root = Path(temporary)
             public = root / "docs"
             public.mkdir()
-            (root / ".local").symlink_to(public, target_is_directory=True)
+            try:
+                (root / ".local").symlink_to(public, target_is_directory=True)
+            except OSError as error:
+                if getattr(error, "winerror", None) == 1314:
+                    self.skipTest("Windows account cannot create symbolic links")
+                raise
             destination = root / ".local/evidence/not-created.json"
             with patch.object(runner, "ROOT", root):
                 with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):

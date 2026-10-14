@@ -291,7 +291,12 @@ class ReportingTests(unittest.TestCase):
             root = Path(directory)
             public = root / "docs"
             public.mkdir()
-            (root / ".local").symlink_to(public, target_is_directory=True)
+            try:
+                (root / ".local").symlink_to(public, target_is_directory=True)
+            except OSError as error:
+                if getattr(error, "winerror", None) == 1314:
+                    self.skipTest("Windows account cannot create symbolic links")
+                raise
             destination = root / ".local/evidence/not-created.json"
             with patch.object(verify, "ROOT", root):
                 with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):

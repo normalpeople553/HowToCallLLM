@@ -514,7 +514,12 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             external = Path(directory) / "external.json"
             external.write_text(json.dumps(report), encoding="utf-8")
-            (self.root / "escaped.json").symlink_to(external)
+            try:
+                (self.root / "escaped.json").symlink_to(external)
+            except OSError as error:
+                if getattr(error, "winerror", None) == 1314:
+                    self.skipTest("Windows account cannot create symbolic links")
+                raise
             verification["report"] = "escaped.json"
             self.save(manifest, report)
             with self.assertRaises(ValueError):

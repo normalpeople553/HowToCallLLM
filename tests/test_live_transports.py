@@ -29,14 +29,41 @@ RESPONSE_ID = "offline-private-response-id-fixture"
 NODE = shutil.which("node")
 
 
-@unittest.skipUnless(NODE, "requires real Node/native fetch; no mock fallback")
+def node_major_version():
+    if not NODE:
+        return None
+    try:
+        completed = subprocess.run(
+            [NODE, "--version"], capture_output=True, text=True, timeout=5,
+        )
+        if completed.returncode == 0:
+            return int(completed.stdout.strip().lstrip("v").split(".", 1)[0])
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    return None
+
+
+NODE_MAJOR = node_major_version()
+
+
+def native_process_env():
+    """Return a credential-free environment that still supports Windows processes."""
+    environment = {"PATH": os.defpath}
+    for name in ("SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "TEMP", "TMP"):
+        value = os.environ.get(name)
+        if value:
+            environment[name] = value
+    return environment
+
+
+@unittest.skipUnless(NODE_MAJOR is not None and NODE_MAJOR >= 24, "requires Node.js >=24/native fetch; no mock fallback")
 class NativeFetchObserverTests(unittest.TestCase):
     def test_native_fetch_original_response_privacy_429_and_redirect_isolation(self):
         # A minimal environment prevents inherited observer preload/configuration
         # or credentials from affecting this entirely local test.
         completed = subprocess.run(
             [NODE, str(ROOT / "tests/live_fetch_checks.mjs")], cwd=ROOT,
-            env={"PATH": os.defpath}, capture_output=True, text=True, timeout=20,
+            env=native_process_env(), capture_output=True, text=True, timeout=20,
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)

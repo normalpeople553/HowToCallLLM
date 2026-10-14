@@ -197,7 +197,8 @@ class TextOfficialExampleTests(unittest.TestCase):
             self.assertEqual(len({entry["id"] for entry in entries}), len(entries))
             for entry in entries:
                 self.assertEqual(entry["required_env"], [config["key"]])
-                self.assertEqual(entry["run_command"], "python " + str((directory / entry["file"]).relative_to(ROOT)))
+                relative = (directory / entry["file"]).relative_to(ROOT).as_posix()
+                self.assertEqual(entry["run_command"], "python " + relative)
                 self.assertEqual(entry["origin"], "adapted_from_official")
                 verification = entry["verification"]
                 checked = verified_entries[entry["file"]]["verification"]
