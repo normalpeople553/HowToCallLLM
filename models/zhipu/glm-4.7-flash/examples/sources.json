@@ -27,9 +27,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     },
     {
@@ -59,9 +59,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     },
     {
@@ -86,9 +86,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     },
     {
@@ -146,9 +146,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     },
     {
@@ -179,8 +179,8 @@
       "verification": {
         "offline": "mock_tested",
         "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "note": "已尝试真实执行，仍未取得成功证据；具体 HTTP 状态、错误类别与结束状态以本次脱敏报告为准，不等于能力不支持。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     },
     {
@@ -213,8 +213,8 @@
       "verification": {
         "offline": "mock_tested",
         "live": "rate_limited",
-        "note": "已尝试真实执行，受到 HTTP 429 限流/过载阻断，未取得当前文件成功证据；不等于能力不支持。",
-        "report": "verification/examples/2026-10-14-zhipu-attempt5.json"
+        "note": "已尝试真实执行，仍未取得成功证据；具体 HTTP 状态、错误类别与结束状态以本次脱敏报告为准，不等于能力不支持。",
+        "report": "verification/examples/2026-10-14-zhipu-attempt6.json"
       }
     }
   ],
