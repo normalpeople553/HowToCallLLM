@@ -4,8 +4,8 @@
   "checked_at": "2026-10-14",
   "official_catalog_url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
   "scope_note": {
-    "zh": "范围为智谱中国区BigModel标准托管API的文本/推理/编程与视觉语言理解型号；available表示当前官方目录或请求枚举登记，不是本账户实时可用或已实测。仅记录有官方准确API ID依据的型号，不由展示名造ID，不继承同系列参数、能力或验证。覆盖当前主要目录及有确切ID的部分往期/转路由/退役记录，并非账户动态全量清单；仅旧价目不足以确认可用性。免费型号仅用于目录，不改变本仓库付费默认与示例。排除图像/视频生成、语音/实时音视频、embedding/rerank、纯OCR与私有部署专属型号；输入模态仅按本schema列text/image/video，文件容器及协议细节不在此展开。CodeGeeX-4等仅有展示名称而未确认准确托管ID的条目未猜测补入；GLM-Z1其它变体同理。价格仅提供官方链接，无数字快照；地区、账户权限与生命周期以官方实时信息为准。",
-    "en": "Scope: BigModel's China-region standard hosted text, reasoning, coding and vision-language APIs. Available means listed in current official catalog/request enums, not live account access or successful testing. Only officially evidenced exact API IDs are recorded; display names do not generate IDs, and family parameters, capabilities or verification are not inherited. Coverage includes current major entries plus some exact older, routed and retired IDs, not a dynamic account-wide inventory; historical pricing alone does not establish availability. Free entries are catalog-only and do not change this repository's paid defaults/examples. Excludes image/video generation, speech/realtime audiovisual services, embeddings/reranking, OCR-only and private-deployment-only models. Modalities are limited by this schema to text/image/video; file containers and protocol details are not expanded. Display-only entries such as CodeGeeX-4, and other GLM-Z1 variants without separately confirmed hosted IDs, are not guessed. Prices are linked without numeric snapshots; region, entitlement and lifecycle remain subject to current official information."
+    "zh": "范围为智谱中国区BigModel标准托管API的文本/推理/编程与视觉语言理解型号；available表示当前官方目录或请求枚举登记，不是本账户实时可用或已实测。仅记录有官方准确API ID依据的型号，不由展示名造ID，不继承同系列参数、能力或验证。覆盖当前主要目录及有确切ID的部分仍可用往期/转路由记录，已下线型号不列入，并非账户动态全量清单；仅旧价目不足以确认可用性。免费型号仅用于目录，不改变本仓库付费默认与示例。排除图像/视频生成、语音/实时音视频、embedding/rerank、纯OCR与私有部署专属型号；输入模态仅按本schema列text/image/video，文件容器及协议细节不在此展开。CodeGeeX-4等仅有展示名称而未确认准确托管ID的条目未猜测补入；GLM-Z1其它变体同理。价格仅提供官方链接，无数字快照；地区、账户权限与生命周期以官方实时信息为准。",
+    "en": "Scope: BigModel's China-region standard hosted text, reasoning, coding and vision-language APIs. Available means listed in current official catalog/request enums, not live account access or successful testing. Only officially evidenced exact API IDs are recorded; display names do not generate IDs, and family parameters, capabilities or verification are not inherited. Coverage includes current major entries plus some exact still-listed older and routed IDs, excluding retired IDs; it is not a dynamic account-wide inventory; historical pricing alone does not establish availability. Free entries are catalog-only and do not change this repository's paid defaults/examples. Excludes image/video generation, speech/realtime audiovisual services, embeddings/reranking, OCR-only and private-deployment-only models. Modalities are limited by this schema to text/image/video; file containers and protocol details are not expanded. Display-only entries such as CodeGeeX-4, and other GLM-Z1 variants without separately confirmed hosted IDs, are not guessed. Prices are linked without numeric snapshots; region, entitlement and lifecycle remain subject to current official information."
   },
   "models": [
     {
@@ -705,27 +705,6 @@
         "https://docs.bigmodel.cn/cn/guide/start/model-overview",
         "https://docs.bigmodel.cn/openapi/openapi.json",
         "https://docs.bigmodel.cn/cn/guide/start/concept-param"
-      ]
-    },
-    {
-      "model_id": "glm-z1-air",
-      "family": "GLM-Z1",
-      "status": "retired",
-      "billing": "paid",
-      "input_modalities": [
-        "text"
-      ],
-      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-z1",
-      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
-      "notes": {
-        "zh": "官方系列页明确GLM-Z1系列已下线；该准确ID取自页面保留的旧调用示例。billing仅记录历史价目的付费属性，不表示当前可购买或调用。",
-        "en": "The official series guide explicitly says GLM-Z1 is retired; this exact ID comes from its retained old call example. Billing records only its historical paid classification, not current purchasability or availability."
-      },
-      "sources": [
-        "https://docs.bigmodel.cn/cn/guide/models/text/glm-z1",
-        "https://docs.bigmodel.cn/cn/guide/start/pricing",
-        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
-        "https://docs.bigmodel.cn/openapi/openapi.json"
       ]
     }
   ]

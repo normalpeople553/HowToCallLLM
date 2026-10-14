@@ -132,6 +132,13 @@ class ModelCatalogTests(unittest.TestCase):
             "model_url", "pricing_url", "notes", "sources",
         }
         for item in catalogs:
+            raw = json.loads(
+                (ROOT / "data/model-lists" / (item["vendor"] + ".json")).read_text(encoding="utf-8")
+            )
+            self.assertFalse(
+                any(row["status"] == "retired" for row in raw["models"]),
+                "Current source JSON must not retain retired entries behind a filtered loader",
+            )
             self.assertEqual(item["checked_at"], "2026-10-14")
             self.assertEqual(set(item["scope_note"]), {"zh", "en"})
             self.assertTrue(all(item["scope_note"].values()))
@@ -145,6 +152,7 @@ class ModelCatalogTests(unittest.TestCase):
                     self.assertIn(row["pricing_url"], row["sources"])
                     self.assertEqual(set(row["notes"]), {"zh", "en"})
                     self.assertNotEqual(row["status"], "verified")
+                    self.assertNotEqual(row["status"], "retired")
 
     def test_invalid_or_noncanonical_check_dates_are_rejected(self):
         for value in ("not-a-date", "2026-02-30", "20261014", 20261014, None):
@@ -241,7 +249,7 @@ class ModelCatalogTests(unittest.TestCase):
             self.assertEqual(self.catalog.select_models(catalogs, model="definitely-not-a-model"), [])
             self.assertEqual(self.catalog.select_models(catalogs, vendor="deepseek", model="glm-4.7"), [])
             self.assertEqual(self.catalog.select_models(catalogs, model="minimax-m2.7"), [])
-            for field, value in (("billing", "free"), ("status", "retired")):
+            for field, value in (("billing", "free"), ("status", "alias"), ("status", "unknown")):
                 expected = {(r["vendor"], r["model_id"]) for r in all_rows if r[field] == value}
                 actual = self.catalog.select_models(catalogs, **{field: value})
                 self.assertTrue(expected)
@@ -249,6 +257,42 @@ class ModelCatalogTests(unittest.TestCase):
             self.assertEqual(original, json.dumps(catalogs, sort_keys=True))
             # A data-only selection never implicitly loads cards or inherits evidence.
             self.assertTrue(all(not row["repository_coverage"]["example_files"] for row in all_rows))
+
+    def test_injected_retired_ids_never_leak_through_queries_pages_or_index_counts(self):
+        with offline_only():
+            catalogs = self.catalog.load_catalogs(ROOT)
+            baseline_rows = self.catalog.select_models(catalogs)
+            baseline_pages = self.catalog.expected_pages(ROOT)
+            injected = copy.deepcopy(catalogs)
+            zhipu = next(item for item in injected if item["vendor"] == "zhipu")
+            retired = copy.deepcopy(zhipu["models"][0])
+            retired_id = "offline-retired-id-must-not-be-published"
+            retired.update(model_id=retired_id, status="retired")
+            zhipu["models"].append(retired)
+            original = json.dumps(injected, sort_keys=True)
+            self.assertEqual(self.catalog.PUBLIC_STATUSES, self.catalog.STATUSES - {"retired"})
+            for filters in (
+                {},
+                {"vendor": "zhipu"},
+                {"status": "retired"},
+                {"model": retired_id},
+                {"vendor": "zhipu", "model": retired_id, "status": "retired"},
+            ):
+                with self.subTest(filters=filters):
+                    rows = self.catalog.select_models(injected, **filters)
+                    self.assertFalse(any(row["status"] == "retired" for row in rows))
+                    self.assertFalse(any(row["model_id"] == retired_id for row in rows))
+                    if filters.get("status") == "retired" or filters.get("model") == retired_id:
+                        self.assertEqual(rows, [])
+            self.assertEqual(self.catalog.select_models(injected), baseline_rows)
+            with patch.object(self.catalog, "load_catalogs", return_value=injected):
+                pages = self.catalog.expected_pages(ROOT)
+            # Equality checks both vendor rows and aggregate counts without fixing inventory size.
+            self.assertEqual(pages, baseline_pages)
+            for path, content in pages.items():
+                with self.subTest(page=path.as_posix()):
+                    self.assertNotIn(retired_id, content)
+            self.assertEqual(original, json.dumps(injected, sort_keys=True))
 
     def test_new_and_alias_ids_do_not_inherit_manuals_generation_or_live_results(self):
         with offline_only():
@@ -322,6 +366,13 @@ class ModelCatalogTests(unittest.TestCase):
                 for source in row["sources"]:
                     self.assertIn(source, chinese)
                     self.assertIn(source, english)
+                if row["status"] == "unknown":
+                    # Unknown is still public, but must remain in its own caution group.
+                    exact_id = "`" + row["model_id"] + "`"
+                    zh_heading = re.findall(r"^## (.+)$", chinese[:chinese.index(exact_id)], re.M)[-1]
+                    en_heading = re.findall(r"^## (.+)$", english[:english.index(exact_id)], re.M)[-1]
+                    self.assertRegex(zh_heading, r"(未确认|待确认)")
+                    self.assertIn("unconfirmed", en_heading.lower())
             self.assertIn("示例实测状态.md", chinese)
             self.assertIn("example-status.md", english)
         for path, expected in outputs.items():
@@ -346,6 +397,10 @@ class ModelCatalogTests(unittest.TestCase):
         code, output, _ = self.run_cli("--vendor", "zhipu", "--model", "glm-4.7")
         self.assertEqual(code, 0)
         self.assertEqual([row["model_id"] for row in json.loads(output)["models"]], ["glm-4.7"])
+        code, output, errors = self.run_cli("--status", "retired")
+        self.assertEqual(code, 2)
+        self.assertEqual(output, "")
+        self.assertIn("retired", errors)
         self.assertEqual(before, source_snapshot(ROOT))
 
     def test_write_and_check_modes_cannot_silently_render_a_filtered_subset(self):

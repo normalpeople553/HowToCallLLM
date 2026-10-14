@@ -24,7 +24,7 @@ Read chapters as needed. The [introduction](../en/docs/introduction.md) explains
 
 ## Six models with maintained detailed manuals
 
-These are not the providers' complete inventories. The broader [language-model lists](../en/docs/model-lists/README.md) track official discovery, preview/legacy/alias entries and retirements. Missing manuals or live evidence are explicit; listed models do not automatically use the code below.
+These are not the providers' complete inventories. The broader [language-model lists](../en/docs/model-lists/README.md) track official discovery, previews, still-listed legacy models and compatibility aliases, excluding retired models. Missing manuals or live evidence are explicit; listed models do not automatically use the code below.
 
 This table is a directory, not a quality ranking. “Example highlights” means code collected in the repository—not an exhaustive capability list and not a claim that every example or combination passed. Sources, adaptations, and current scope are in the [example index](../en/docs/example-index.md).
 

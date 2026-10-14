@@ -6,18 +6,18 @@
 
 范围：对话、推理、编程语言模型，包含有官方依据的多模态理解；不含图片/视频生成、独立语音、Embedding、Rerank 和第三方托管型号。各厂商的完整性、账户、地域和接入限制见各页；不是你账户的 /models 返回，也不是所有历史版本的档案。
 
-价格只链接官方页面，不在这里固化数字。免费条目仅用于发现：维护示例和生成器默认仍全部采用付费型号，不静默回退。保留已下线/未确认条目是为了识别旧代码和过期教程，不是建议调用。
+价格只链接官方页面，不在这里固化数字。免费条目仅用于发现：维护示例和生成器默认仍全部采用付费型号，不静默回退。已下线型号不出现在清单和 Agent 查询中；可用性未确认的条目单列，不作为调用建议。
 
 官方生命周期和输入标签是核对日的文档快照，不是在线调用测试。“付费”不等于可以按量接入，预览可能仅限订阅。别名不继承另一个 ID 的说明书、参数或实测。
 
-| 厂商 | 核对日期 | 收录 ID（含下线 / 未确认） | 详细说明书 | 官方目录 |
+| 厂商 | 核对日期 | 收录 ID（不含已下线；含待确认） | 详细说明书 | 官方目录 |
 |---|---|---|---|---|
-| [DeepSeek](deepseek.md) | 2026-10-14 | 6 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
-| [Kimi](kimi.md) | 2026-10-14 | 19 | 1 | [Official](https://platform.kimi.com/docs/models) |
-| [智谱 GLM](zhipu.md) | 2026-10-14 | 33 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
+| [DeepSeek](deepseek.md) | 2026-10-14 | 4 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [Kimi](kimi.md) | 2026-10-14 | 4 | 1 | [Official](https://platform.kimi.com/docs/models) |
+| [智谱 GLM](zhipu.md) | 2026-10-14 | 32 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
 | [通义千问](qwen.md) | 2026-10-14 | 81 | 1 | [Official](https://help.aliyun.com/zh/model-studio/models) |
-| [豆包](doubao.md) | 2026-10-14 | 38 | 1 | [Official](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
-| [MiniMax](minimax.md) | 2026-10-14 | 10 | 1 | [Official](https://platform.minimax.cn/docs/faq/models) |
+| [豆包](doubao.md) | 2026-10-14 | 14 | 1 | [Official](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
+| [MiniMax](minimax.md) | 2026-10-14 | 6 | 1 | [Official](https://platform.minimax.cn/docs/faq/models) |
 
 ## Agent 查询
 

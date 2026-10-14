@@ -4,8 +4,8 @@
   "checked_at": "2026-10-14",
   "official_catalog_url": "https://platform.minimax.cn/docs/faq/models",
   "scope_note": {
-    "zh": "核对中国国内 MiniMax 官方托管语言 API 的当前模型列表、调用指南、计费及下线通知，覆盖其列出的 M 系列对话、推理、编程与多模态理解型号，并保留 FAQ 明确列出的已下线语言型号；不宣称穷尽此前已从目录移除的 abab/Text-01 等历史档案，也不把本地开源权重当作托管 API 可用证据。按量 API、M Plan 与 Token Plan 的密钥、计费及路由必须分开看；仅订阅可用的预览型号已逐项注明，不推断国际站账户或其他区域权限。排除转售、图像/视频/音乐生成、独立语音、向量、重排及纯 OCR。本表无固定价格、参数上限或新增调用实测，模型状态以生命周期通知而非价目残留为依据。",
-    "en": "Checked against mainland-China MiniMax hosted-language API catalogs, calling guides, billing pages and retirement notices. Covers the listed M-series conversational, reasoning, coding and multimodal-understanding models, plus language models explicitly marked retired in the FAQ. This is not an exhaustive archive of earlier abab/Text-01 models removed from those catalogs; local open weights are not evidence of hosted API availability. Pay-as-you-go API, M Plan and Token Plan keys, billing and routing must be distinguished. Subscription-only preview access is noted per model; international-account or other-region permissions are not inferred. Excludes resold models, image/video/music generation, standalone speech, embeddings, reranking and pure OCR. No fixed prices, request limits or new execution tests are included. Lifecycle notices take precedence over stale entries in price tables."
+    "zh": "核对中国国内 MiniMax 官方托管语言 API 的当前模型列表、调用指南、计费及下线通知，覆盖其列出的 M 系列对话、推理、编程与多模态理解型号；已下线语言型号不列入。不宣称穷尽此前已从目录移除的 abab/Text-01 等历史档案，也不把本地开源权重当作托管 API 可用证据。按量 API、M Plan 与 Token Plan 的密钥、计费及路由必须分开看；仅订阅可用的预览型号已逐项注明，不推断国际站账户或其他区域权限。排除转售、图像/视频/音乐生成、独立语音、向量、重排及纯 OCR。本表无固定价格、参数上限或新增调用实测，模型状态以生命周期通知而非价目残留为依据。",
+    "en": "Checked against mainland-China MiniMax hosted-language API catalogs, calling guides, billing pages and retirement notices. Covers the listed M-series conversational, reasoning, coding and multimodal-understanding models; language models explicitly marked retired are excluded. This is not an exhaustive archive of earlier abab/Text-01 models removed from those catalogs; local open weights are not evidence of hosted API availability. Pay-as-you-go API, M Plan and Token Plan keys, billing and routing must be distinguished. Subscription-only preview access is noted per model; international-account or other-region permissions are not inferred. Excludes resold models, image/video/music generation, standalone speech, embeddings, reranking and pure OCR. No fixed prices, request limits or new execution tests are included. Lifecycle notices take precedence over stale entries in price tables."
   },
   "models": [
     {
@@ -143,86 +143,6 @@
         "https://platform.minimax.cn/docs/faq/models",
         "https://platform.minimax.cn/docs/guides/models-intro",
         "https://platform.minimax.cn/docs/api-reference/text-chat-openai"
-      ]
-    },
-    {
-      "model_id": "MiniMax-M2.1",
-      "family": "MiniMax M2.1",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "text"
-      ],
-      "model_url": "https://platform.minimax.cn/docs/faq/models",
-      "pricing_url": "https://platform.minimax.cn/docs/guides/pricing-paygo",
-      "notes": {
-        "zh": "当前模型列表 FAQ 明确标为已下线；调用指南或历史价目保留型号名称不能推翻该生命周期状态。官方该表未给出具体下线日期，本清单不猜测。",
-        "en": "The current model-list FAQ explicitly marks this model retired. Its name remaining in a calling guide or historical price table does not establish availability. That table gives no exact retirement date, so none is inferred."
-      },
-      "sources": [
-        "https://platform.minimax.cn/docs/faq/models",
-        "https://platform.minimax.cn/docs/guides/pricing-paygo",
-        "https://platform.minimax.cn/docs/guides/text-generation"
-      ]
-    },
-    {
-      "model_id": "MiniMax-M2.1-highspeed",
-      "family": "MiniMax M2.1",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "text"
-      ],
-      "model_url": "https://platform.minimax.cn/docs/faq/models",
-      "pricing_url": "https://platform.minimax.cn/docs/guides/pricing-paygo",
-      "notes": {
-        "zh": "当前模型列表 FAQ 明确标为已下线；调用指南或历史价目保留型号名称不能推翻该生命周期状态。官方该表未给出具体下线日期，本清单不猜测。",
-        "en": "The current model-list FAQ explicitly marks this model retired. Its name remaining in a calling guide or historical price table does not establish availability. That table gives no exact retirement date, so none is inferred."
-      },
-      "sources": [
-        "https://platform.minimax.cn/docs/faq/models",
-        "https://platform.minimax.cn/docs/guides/pricing-paygo",
-        "https://platform.minimax.cn/docs/guides/text-generation"
-      ]
-    },
-    {
-      "model_id": "MiniMax-M2",
-      "family": "MiniMax M2",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "text"
-      ],
-      "model_url": "https://platform.minimax.cn/docs/faq/models",
-      "pricing_url": "https://platform.minimax.cn/docs/guides/pricing-paygo",
-      "notes": {
-        "zh": "当前模型列表 FAQ 明确标为已下线；调用指南或历史价目保留型号名称不能推翻该生命周期状态。官方该表未给出具体下线日期，本清单不猜测。",
-        "en": "The current model-list FAQ explicitly marks this model retired. Its name remaining in a calling guide or historical price table does not establish availability. That table gives no exact retirement date, so none is inferred."
-      },
-      "sources": [
-        "https://platform.minimax.cn/docs/faq/models",
-        "https://platform.minimax.cn/docs/guides/pricing-paygo",
-        "https://platform.minimax.cn/docs/guides/text-generation"
-      ]
-    },
-    {
-      "model_id": "M2-her",
-      "family": "MiniMax M2-her",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "text"
-      ],
-      "model_url": "https://platform.minimax.cn/docs/guides/text-chat",
-      "pricing_url": "https://platform.minimax.cn/docs/guides/pricing-paygo",
-      "notes": {
-        "zh": "角色对话模型的准确 API ID 为 M2-her，不加 MiniMax- 前缀；型号介绍页仍存在，但当前模型列表 FAQ 明确标为已下线。价格链接只作为官方入口，不表示当前仍有此型号报价或服务。",
-        "en": "The exact API ID for this character-dialogue model is M2-her, without a MiniMax- prefix. Its guide remains online, but the current model-list FAQ explicitly marks it retired. The pricing link is an official entry point, not evidence of a current quote or callable service."
-      },
-      "sources": [
-        "https://platform.minimax.cn/docs/guides/text-chat",
-        "https://platform.minimax.cn/docs/guides/pricing-paygo",
-        "https://platform.minimax.cn/docs/faq/models"
       ]
     }
   ]

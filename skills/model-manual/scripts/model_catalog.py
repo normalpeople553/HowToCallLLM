@@ -30,6 +30,7 @@ OFFICIAL_HOSTS = {
     "minimax": {"platform.minimax.cn", "www.minimax.cn", "platform.minimax.io"},
 }
 STATUSES = {"available", "preview", "legacy_available", "alias", "retired", "unknown"}
+PUBLIC_STATUSES = STATUSES - {"retired"}
 BILLING = {"paid", "free", "unknown"}
 MODALITIES = {"text", "image", "video", "audio", "unknown"}
 STATUS_ZH = {"available": "官方列为可用", "preview": "预览 / 受限入口",
@@ -180,7 +181,8 @@ def select_models(catalogs, vendor=None, model=None, billing=None, status=None, 
         if vendor is not None and catalog["vendor"] != vendor:
             continue
         for entry in catalog["models"]:
-            if (model is not None and entry["model_id"] != model
+            if (entry["status"] == "retired"
+                    or model is not None and entry["model_id"] != model
                     or billing is not None and entry["billing"] != billing
                     or status is not None and entry["status"] != status):
                 continue
@@ -219,7 +221,8 @@ def _coverage_text(page, value, english):
 
 
 def expected_pages(root=ROOT):
-    catalogs = load_catalogs(root)
+    catalogs = [{**catalog, "models": [entry for entry in catalog["models"] if entry["status"] != "retired"]}
+                for catalog in load_catalogs(root)]
     coverage = project_coverage(root)
     pages = {}
     for english in (False, True):
@@ -233,11 +236,11 @@ def expected_pages(root=ROOT):
                   if english else "这是官方 API 型号的发现清单，不表示仓库已为每个型号维护详细说明书或完成真实调用。"), "",
                  ("Scope: chat, reasoning and coding language models, including multimodal understanding where officially documented. Excludes image/video generation, standalone speech, embeddings, rerankers and third-party hosted models. See each vendor's scope and account/region/access restrictions; this is not an account-specific /models response or an exhaustive historical archive."
                   if english else "范围：对话、推理、编程语言模型，包含有官方依据的多模态理解；不含图片/视频生成、独立语音、Embedding、Rerank 和第三方托管型号。各厂商的完整性、账户、地域和接入限制见各页；不是你账户的 /models 返回，也不是所有历史版本的档案。"), "",
-                 ("Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired/uncertain entries are retained to catch old code and stale tutorials, not to recommend calls."
-                  if english else "价格只链接官方页面，不在这里固化数字。免费条目仅用于发现：维护示例和生成器默认仍全部采用付费型号，不静默回退。保留已下线/未确认条目是为了识别旧代码和过期教程，不是建议调用。"), "",
+                 ("Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired models are excluded from these lists and Agent queries. Unconfirmed availability appears separately and is not a recommendation to call."
+                  if english else "价格只链接官方页面，不在这里固化数字。免费条目仅用于发现：维护示例和生成器默认仍全部采用付费型号，不静默回退。已下线型号不出现在清单和 Agent 查询中；可用性未确认的条目单列，不作为调用建议。"), "",
                  ("Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or passed tests."
                   if english else "官方生命周期和输入标签是核对日的文档快照，不是在线调用测试。“付费”不等于可以按量接入，预览可能仅限订阅。别名不继承另一个 ID 的说明书、参数或实测。"), "",
-                 "| Vendor | Checked | Listed IDs incl. retired / uncertain | Detailed manuals | Official catalog |" if english else "| 厂商 | 核对日期 | 收录 ID（含下线 / 未确认） | 详细说明书 | 官方目录 |",
+                 "| Vendor | Checked | Listed IDs (retired excluded; includes uncertain) | Detailed manuals | Official catalog |" if english else "| 厂商 | 核对日期 | 收录 ID（不含已下线；含待确认） | 详细说明书 | 官方目录 |",
                  "|---|---|---|---|---|"]
         for catalog in catalogs:
             vendor = catalog["vendor"]
@@ -271,9 +274,9 @@ def expected_pages(root=ROOT):
                      ("Text output is the scope; modality labels describe input understanding, not image/audio generation. No entry here expands the snippet generator's supported models."
                       if english else "本清单以语言输出为范围；模态表示输入理解，不是图像/音频生成能力。出现在这里不自动扩展代码生成器支持的型号。"), ""]
             groups = [(False, "Documented / restricted / legacy entries" if english else "官方列出 / 受限 / 旧版入口"),
-                      (True, "Retired or availability unconfirmed — do not assume callable" if english else "已下线或可用性未确认——不可据此认为能调用")]
-            for historical, heading in groups:
-                entries = [entry for entry in catalog["models"] if (entry["status"] in {"retired", "unknown"}) == historical]
+                      (True, "Availability unconfirmed — do not assume callable" if english else "可用性待确认——不可据此认为能调用")]
+            for uncertain, heading in groups:
+                entries = [entry for entry in catalog["models"] if (entry["status"] == "unknown") == uncertain]
                 if not entries:
                     continue
                 lines += [f"## {heading}", "",
@@ -306,7 +309,7 @@ def main(argv=None):
     parser.add_argument("--vendor", choices=VENDORS)
     parser.add_argument("--model", help="Exact API ID; no family/alias fallback")
     parser.add_argument("--billing", choices=sorted(BILLING))
-    parser.add_argument("--status", choices=sorted(STATUSES))
+    parser.add_argument("--status", choices=sorted(PUBLIC_STATUSES))
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--write-pages", action="store_true")

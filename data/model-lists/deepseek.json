@@ -4,8 +4,8 @@
   "checked_at": "2026-10-14",
   "official_catalog_url": "https://api-docs.deepseek.com/quick_start/pricing/",
   "scope_note": {
-    "zh": "范围为官方托管语言模型目录中的两个当前主入口，以及官方明确的旧别名和已退役接入名；不把展示的模型版本号或开源权重名猜成可调用API ID。目录可用性是官方文档状态，不保证任意账户当前有权限或服务容量。",
-    "en": "Covers the two current hosted language-model entry points, explicitly documented legacy aliases, and retired API names. Displayed model versions and open-weight names are not invented API IDs. Availability is a documentation state, not proof of current account access or service capacity."
+    "zh": "范围为官方托管语言模型目录中的两个当前主入口，以及官方明确仍接受请求的旧别名；已下线接入名不列入。不把展示的模型版本号或开源权重名猜成可调用API ID。目录可用性是官方文档状态，不保证任意账户当前有权限或服务容量。",
+    "en": "Covers the two current hosted language-model entry points and explicitly documented legacy aliases that still accept requests. Retired API names are excluded. Displayed model versions and open-weight names are not invented API IDs. Availability is a documentation state, not proof of current account access or service capacity."
   },
   "models": [
     {
@@ -80,44 +80,6 @@
         "en": "The old experimental name is accepted but its original model is retired and requests route to V4.1 Flash."
       },
       "sources": [
-        "https://api-docs.deepseek.com/quick_start/pricing/"
-      ]
-    },
-    {
-      "model_id": "deepseek-chat",
-      "family": "DeepSeek legacy API",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "unknown"
-      ],
-      "model_url": "https://api-docs.deepseek.com/news/news260424/",
-      "pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "notes": {
-        "zh": "官方公告：2026-07-24 15:59 UTC后退役且不可访问。历史教程中的名称不表示当前仍可调用。",
-        "en": "The official notice retires this name and makes it inaccessible after 2026-07-24 15:59 UTC. Historical examples do not establish current access."
-      },
-      "sources": [
-        "https://api-docs.deepseek.com/news/news260424/",
-        "https://api-docs.deepseek.com/quick_start/pricing/"
-      ]
-    },
-    {
-      "model_id": "deepseek-reasoner",
-      "family": "DeepSeek legacy API",
-      "status": "retired",
-      "billing": "unknown",
-      "input_modalities": [
-        "unknown"
-      ],
-      "model_url": "https://api-docs.deepseek.com/news/news260424/",
-      "pricing_url": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "notes": {
-        "zh": "官方公告：2026-07-24 15:59 UTC后退役且不可访问；不把旧思考模型名当成当前独立型号。",
-        "en": "The official notice retires this name and makes it inaccessible after 2026-07-24 15:59 UTC. It is not treated as a current independent reasoning model."
-      },
-      "sources": [
-        "https://api-docs.deepseek.com/news/news260424/",
         "https://api-docs.deepseek.com/quick_start/pricing/"
       ]
     }

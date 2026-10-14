@@ -78,7 +78,7 @@
 | `qwen3.5-27b` / Qwen3.5 | 旧版仍列可用 | 付费 | 文本, 图片, 视频 | 未维护详细说明书 · 无逐文件实测证据 | 官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。 [型号](https://help.aliyun.com/zh/model-studio/qwen3-5-27b) · [价格](https://help.aliyun.com/zh/model-studio/model-pricing) · [出处 3](https://help.aliyun.com/zh/model-studio/text-generation-model) |
 | `qwen3.5-35b-a3b` / Qwen3.5 | 旧版仍列可用 | 付费 | 文本, 图片, 视频 | 未维护详细说明书 · 无逐文件实测证据 | 官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。 [型号](https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b) · [价格](https://help.aliyun.com/zh/model-studio/model-pricing) · [出处 3](https://help.aliyun.com/zh/model-studio/text-generation-model) |
 
-## 已下线或可用性未确认——不可据此认为能调用
+## 可用性待确认——不可据此认为能调用
 
 | 准确 API ID / 系列 | 生命周期 | 付费类型 | 输入 | 仓库覆盖 | 限制 / 官方出处 |
 |---|---|---|---|---|---|

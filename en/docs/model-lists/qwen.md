@@ -78,7 +78,7 @@ Text output is the scope; modality labels describe input understanding, not imag
 | `qwen3.5-27b` / Qwen3.5 | Legacy, still listed | Paid | text, image, video | No maintained manual · No per-file live evidence | Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling. [Model](https://help.aliyun.com/zh/model-studio/qwen3-5-27b) · [Pricing](https://help.aliyun.com/zh/model-studio/model-pricing) · [Source 3](https://help.aliyun.com/zh/model-studio/text-generation-model) |
 | `qwen3.5-35b-a3b` / Qwen3.5 | Legacy, still listed | Paid | text, image, video | No maintained manual · No per-file live evidence | Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling. [Model](https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b) · [Pricing](https://help.aliyun.com/zh/model-studio/model-pricing) · [Source 3](https://help.aliyun.com/zh/model-studio/text-generation-model) |
 
-## Retired or availability unconfirmed — do not assume callable
+## Availability unconfirmed — do not assume callable
 
 | Exact API ID / family | Lifecycle | Billing | Input | Repository coverage | Restrictions / official sources |
 |---|---|---|---|---|---|

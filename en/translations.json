@@ -14,7 +14,7 @@
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "a9f17751ccac70f483a23405bd6cc526a3aa6948159c44c504efdd604687e379"
+      "source_sha256": "96ecf6031be60454780e782bf7e69e051c400758517488f1a7d8e7c5e2fd034c"
     },
     {
       "source": "agents/README.md",
@@ -24,7 +24,7 @@
     {
       "source": "models/README.md",
       "target": "models/README.en.md",
-      "source_sha256": "997891284f2779610ef55c7e24bcbfeb4db655b48afc1394ec01cba6ae504fa6"
+      "source_sha256": "88e34615ac7b30b60c57ba2fe8fc521e2e684dc9a8c60b5880348df1769e9867"
     },
     {
       "source": "skills/model-manual/SKILL.md",
@@ -79,7 +79,7 @@
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "62dbd4de81b29906caf48040f9a9c4971f981b297feefbdf64fa206af6731e32"
+      "source_sha256": "1848af73f1b38e30d38462bd5db79bf9ddbd73cfa0a01cb1f684f81a58d21387"
     },
     {
       "source": "docs/验证与复现.md",
@@ -89,7 +89,7 @@
     {
       "source": "docs/03-厂商攻略/deepseek.md",
       "target": "en/docs/vendors/deepseek.md",
-      "source_sha256": "3054c96cfea9678fd7dae4f0c5238ec6e52dfdace42a7a97bf2d700b0d542a49"
+      "source_sha256": "35f30c7524bdc5f91fa539cac18f7a8ec207a53a8e10ff75766573394358f339"
     },
     {
       "source": "docs/03-厂商攻略/doubao.md",

@@ -4,7 +4,7 @@
 
 官方文档核对日期：2026-10-14。[官方目录](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [来源数据](../../data/model-lists/zhipu.json)
 
-范围为智谱中国区BigModel标准托管API的文本/推理/编程与视觉语言理解型号；available表示当前官方目录或请求枚举登记，不是本账户实时可用或已实测。仅记录有官方准确API ID依据的型号，不由展示名造ID，不继承同系列参数、能力或验证。覆盖当前主要目录及有确切ID的部分往期/转路由/退役记录，并非账户动态全量清单；仅旧价目不足以确认可用性。免费型号仅用于目录，不改变本仓库付费默认与示例。排除图像/视频生成、语音/实时音视频、embedding/rerank、纯OCR与私有部署专属型号；输入模态仅按本schema列text/image/video，文件容器及协议细节不在此展开。CodeGeeX-4等仅有展示名称而未确认准确托管ID的条目未猜测补入；GLM-Z1其它变体同理。价格仅提供官方链接，无数字快照；地区、账户权限与生命周期以官方实时信息为准。
+范围为智谱中国区BigModel标准托管API的文本/推理/编程与视觉语言理解型号；available表示当前官方目录或请求枚举登记，不是本账户实时可用或已实测。仅记录有官方准确API ID依据的型号，不由展示名造ID，不继承同系列参数、能力或验证。覆盖当前主要目录及有确切ID的部分仍可用往期/转路由记录，已下线型号不列入，并非账户动态全量清单；仅旧价目不足以确认可用性。免费型号仅用于目录，不改变本仓库付费默认与示例。排除图像/视频生成、语音/实时音视频、embedding/rerank、纯OCR与私有部署专属型号；输入模态仅按本schema列text/image/video，文件容器及协议细节不在此展开。CodeGeeX-4等仅有展示名称而未确认准确托管ID的条目未猜测补入；GLM-Z1其它变体同理。价格仅提供官方链接，无数字快照；地区、账户权限与生命周期以官方实时信息为准。
 
 可用性是有日期的官方文档快照，不保证你账户具备权限，也不表示本次实际调用。定价入口不等于接入权限，限制见逐行说明。仓库覆盖按准确 ID 关联维护卡片和当前源码 HTTP 报告，不按别名或系列继承。
 
@@ -40,7 +40,7 @@
 | `glm-4v-flash` / GLM-4V-Flash | 官方列为可用 | 免费（以官方条件为准） | 文本, 图片 | 未维护详细说明书 · 无逐文件实测证据 | 本型号页确认图像理解；不因共享视觉接口有video字段就增添视频模态。 [型号](https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) |
 | `glm-4.5-flash` / GLM-4.5-Flash | 别名 / 重路由 | 免费（以官方条件为准） | 文本 | 未维护详细说明书 · 无逐文件实测证据 | 专属页明确原型号于2026-01-30下线后，请求自动路由至glm-4.7-flash。虽然当前概览/枚举仍保留旧ID，这里按转路由入口记录为alias，不声称仍服务原模型或继承原能力。 [型号](https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) |
 
-## 已下线或可用性未确认——不可据此认为能调用
+## 可用性待确认——不可据此认为能调用
 
 | 准确 API ID / 系列 | 生命周期 | 付费类型 | 输入 | 仓库覆盖 | 限制 / 官方出处 |
 |---|---|---|---|---|---|
@@ -51,6 +51,5 @@
 | `glm-4.5-x` / GLM-4.5 | 可用性未确认 | 未确认 | 未确认 | 未维护详细说明书 · 无逐文件实测证据 | 准确ID来自核心参数默认表；专属系列页点名即将下线但无日期，当前目录/枚举未列出。未单独确认此变体的当前模态与按量计费，不从GLM-4.5或AirX继承。 [型号](https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) · [出处 5](https://docs.bigmodel.cn/cn/guide/start/concept-param) |
 | `glm-4.5v` / GLM-4.5V | 可用性未确认 | 付费 | 文本, 图片, 视频 | 未维护详细说明书 · 无逐文件实测证据 | 官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。 [型号](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.5v) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) |
 | `glm-4v-plus-0111` / GLM-4V-Plus | 可用性未确认 | 付费 | 文本, 图片, 视频 | 未维护详细说明书 · 无逐文件实测证据 | 官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。 [型号](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4v-plus-0111) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) · [出处 5](https://docs.bigmodel.cn/cn/guide/start/concept-param) |
-| `glm-z1-air` / GLM-Z1 | 已下线 | 付费 | 文本 | 未维护详细说明书 · 无逐文件实测证据 | 官方系列页明确GLM-Z1系列已下线；该准确ID取自页面保留的旧调用示例。billing仅记录历史价目的付费属性，不表示当前可购买或调用。 [型号](https://docs.bigmodel.cn/cn/guide/models/text/glm-z1) · [价格](https://docs.bigmodel.cn/cn/guide/start/pricing) · [出处 3](https://docs.bigmodel.cn/cn/guide/start/model-overview) · [出处 4](https://docs.bigmodel.cn/openapi/openapi.json) |
 
 [逐文件实测及证据边界](../示例实测状态.md)

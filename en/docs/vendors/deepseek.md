@@ -2,7 +2,7 @@
 
 [中文](../../../docs/03-厂商攻略/deepseek.md) · [Human guide](../../../human/README.en.md)
 
-Beyond the maintained Flash model, see the [DeepSeek language-model list](../model-lists/deepseek.md) for exact IDs, aliases, retirements and official pricing. A listing does not imply a detailed manual or live-call evidence.
+Beyond the maintained Flash model, see the [DeepSeek language-model list](../model-lists/deepseek.md) for exact IDs, compatibility aliases, lifecycle and official pricing. Retired models are excluded; a listing does not imply a detailed manual or live-call evidence.
 
 Source verification date: **2026-10-13**. Vendor facts follow the [DeepSeek API documentation](https://api-docs.deepseek.com/); repository testing terminology follows the [evidence policy](../evidence-policy.md).
 

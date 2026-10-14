@@ -6,18 +6,18 @@ Discovery only: these are official API IDs, not a claim that this repository has
 
 Scope: chat, reasoning and coding language models, including multimodal understanding where officially documented. Excludes image/video generation, standalone speech, embeddings, rerankers and third-party hosted models. See each vendor's scope and account/region/access restrictions; this is not an account-specific /models response or an exhaustive historical archive.
 
-Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired/uncertain entries are retained to catch old code and stale tutorials, not to recommend calls.
+Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired models are excluded from these lists and Agent queries. Unconfirmed availability appears separately and is not a recommendation to call.
 
 Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or passed tests.
 
-| Vendor | Checked | Listed IDs incl. retired / uncertain | Detailed manuals | Official catalog |
+| Vendor | Checked | Listed IDs (retired excluded; includes uncertain) | Detailed manuals | Official catalog |
 |---|---|---|---|---|
-| [DeepSeek](deepseek.md) | 2026-10-14 | 6 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
-| [Kimi](kimi.md) | 2026-10-14 | 19 | 1 | [Official](https://platform.kimi.com/docs/models) |
-| [Zhipu GLM](zhipu.md) | 2026-10-14 | 33 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
+| [DeepSeek](deepseek.md) | 2026-10-14 | 4 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [Kimi](kimi.md) | 2026-10-14 | 4 | 1 | [Official](https://platform.kimi.com/docs/models) |
+| [Zhipu GLM](zhipu.md) | 2026-10-14 | 32 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
 | [Qwen](qwen.md) | 2026-10-14 | 81 | 1 | [Official](https://help.aliyun.com/zh/model-studio/models) |
-| [Doubao](doubao.md) | 2026-10-14 | 38 | 1 | [Official](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
-| [MiniMax](minimax.md) | 2026-10-14 | 10 | 1 | [Official](https://platform.minimax.cn/docs/faq/models) |
+| [Doubao](doubao.md) | 2026-10-14 | 14 | 1 | [Official](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
+| [MiniMax](minimax.md) | 2026-10-14 | 6 | 1 | [Official](https://platform.minimax.cn/docs/faq/models) |
 
 ## Agent lookup
 
