@@ -65,7 +65,8 @@ class DoubaoOfficialExamplesTests(unittest.TestCase):
                 else:
                     self.assertTrue((ROOT / verification["report"]).is_file())
                     self.assertEqual(verification["report"], checked["report"])
-                    self.assertIn("tested_at", checked)
+                    self.assertTrue(checked.get("evidence_id") or checked.get("legacy_evidence") is True)
+                    self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(checked))
                 self.assertEqual(entry["verification"]["offline"], "mock_tested")
                 self.assertIn("ARK_API_KEY", entry["required_env"])
                 self.assertIn(entry["file"], entry["run_command"])

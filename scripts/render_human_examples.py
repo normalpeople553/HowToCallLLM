@@ -154,7 +154,7 @@ def build_views(root=ROOT):
             raise ValueError("example_source_identity_mismatch")
         views.append({"vendor": vendor, "model_id": model, "path": entry["path"],
                       "source_text": source, "source_sha256": digest, "support_sha256": identities,
-                      "tested_at": selected["tested_at"], "report": selected["report"],
+                      "evidence_id": selected.get("evidence_id"), "report": selected["report"],
                       "parameters_path": entry["parameters_path"],
                       "sources": [source["url"] for source in entry["sources"]],
                       "notes": notes, "required_env": entry["required_env"], "run_command": entry["run_command"],
@@ -247,7 +247,7 @@ def expected_pages(root=ROOT):
                       _link(page, view["path"], "Actual output/check logic" if english else "实际输出与校验逻辑") + " · " +
                       _link(page, "en/docs/evidence-policy.md" if english else "docs/来源与核验规则.md", "Evidence boundaries" if english else "证据边界"), "",
                       "## Original execution evidence" if english else "## 对应的原始实测证据", "",
-                      (f"Current-source HTTP evidence passed at {view['tested_at']}. " if english else f"当前源码的真实 HTTP 证据通过时间：{view['tested_at']}。") +
+                      ("The current source has passed real HTTP evidence. " if english else "当前源码已有通过的真实 HTTP 证据。") +
                       _link(page, view["report"], "Original sanitized report" if english else "原始脱敏报告") + " · " +
                       _link(page, "en/docs/example-status.md" if english else "docs/示例实测状态.md", "Current status" if english else "当前状态"), "",
                       ("Source SHA-256: " if english else "源文件 SHA-256：") + f"`{view['source_sha256']}`", "",

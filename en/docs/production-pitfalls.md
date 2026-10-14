@@ -144,13 +144,13 @@ Project recommendation: a request accepted without error does not by itself prov
 
 ## 8. HTTP 429 does not mean the key is wrong or the model is permanently unavailable
 
-On 2026-10-13, repository calls to `glm-4.7-flash` reached the service but received HTTP 429 with business codes `1302` (account rate restriction) or `1305` (high current model traffic). The report records `rate_limited`, not authentication failure or unsupported capability. [Historical Zhipu report](../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json)
+Historical repository calls to `glm-4.7-flash` reached the service but received HTTP 429 with business codes `1302` (account rate restriction) or `1305` (high current model traffic). The report records `rate_limited`, not authentication failure or unsupported capability. [Historical Zhipu report](../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json)
 
 Project recommendation: classify by both HTTP and business code. Apply capped exponential backoff with jitter for 429, inspect credentials/permissions for 401/403, and fix the request body for 400. Do not retry every error indiscriminately. [Policy](evidence-policy.md)
 
 ## 9. Still callable does not mean a good permanent dependency for a new project
 
-Ark lists `doubao-seed-2-1-pro-260628` among past models, while all seven calls in the repository's 2026-10-13 historical report succeeded. [Ark model list](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [Historical Doubao report](../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json)
+Ark lists `doubao-seed-2-1-pro-260628` among past models, while all seven calls in the repository's historical report succeeded. [Ark model list](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [Historical Doubao report](../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json)
 
 Project recommendation: make Model IDs configurable, and check both official lifecycle notices and real liveness before release. One successful call does not remove migration risk; the word “past” alone does not prove the endpoint is already offline. [Policy](evidence-policy.md)
 

@@ -9,6 +9,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest import mock
+from uuid import uuid4
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,11 +68,17 @@ class ExampleReleaseTests(unittest.TestCase):
                 "requested_model": model, "http_status": 200, "finish_reasons": ["stop"], "content_chars": 4,
                 "parameters": {"stream": False}}
 
-    def report(self, name, records):
+    def report(self, name, records, schema_version=1):
         path = self.root / "verification/examples" / name
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"schema_version": 1, "kind": "example_file_execution", "execution": "real_vendor_api",
-                                    "privacy": {flag: False for flag in self.catalog.PRIVACY_FLAGS}, "results": records}), encoding="utf-8")
+        report = {"schema_version": schema_version, "kind": "example_file_execution", "execution": "real_vendor_api",
+                  "privacy": {flag: False for flag in self.catalog.PRIVACY_FLAGS}, "results": copy.deepcopy(records)}
+        if schema_version == 2:
+            report["evidence_id"] = str(uuid4())
+            report["privacy"].update(test_timestamps_saved=False, duration_saved=False)
+            for result in report["results"]:
+                result.pop("tested_at", None)
+        path.write_text(json.dumps(report), encoding="utf-8")
         return path
 
     def collect(self):
@@ -99,6 +106,52 @@ class ExampleReleaseTests(unittest.TestCase):
         self.assertTrue(data["ready"])
         self.assertEqual(data["counts"]["passed"], 1)
 
+    def test_schema_two_current_strict_pass_has_random_identity_without_timing_output(self):
+        path = self.report("current-v2.json", [self.record()], schema_version=2)
+        report = json.loads(path.read_text(encoding="utf-8"))
+        data = self.collect()
+        self.assertTrue(data["ready"])
+        self.assertEqual(data["rows"][0]["selected"]["evidence_id"], report["evidence_id"])
+        self.assertEqual(data["rows"][0]["attempts"][0]["evidence_id"], report["evidence_id"])
+        for value in (report, data):
+            serialized = json.dumps(value)
+            for field in ("tested_at", "legacy_tested_at", "sort_time", "duration_seconds"):
+                self.assertNotIn(f'"{field}"', serialized)
+        for language in ("zh", "en"):
+            page = release.render_page(data, language=language)
+            self.assertNotIn("2026-10-14T01:00:00", page)
+            self.assertIn("current-v2.json", page)
+
+    def test_schema_two_rejects_invalid_identity_privacy_and_timing_at_every_depth(self):
+        mutations = {
+            "missing_id": lambda r: r.pop("evidence_id"),
+            "invalid_uuid": lambda r: r.update(evidence_id="not-a-uuid"),
+            "nonrandom_uuid": lambda r: r.update(evidence_id="12345678-1234-1234-9234-123456789abc"),
+            "missing_timestamp_flag": lambda r: r["privacy"].pop("test_timestamps_saved"),
+            "missing_duration_flag": lambda r: r["privacy"].pop("duration_saved"),
+            "timestamp_flag_true": lambda r: r["privacy"].update(test_timestamps_saved=True),
+            "duration_flag_true": lambda r: r["privacy"].update(duration_saved=True),
+            "report_timestamp": lambda r: r.update(tested_at="must-not-be-rendered"),
+            "result_timestamp": lambda r: r["results"][0].update(tested_at="must-not-be-rendered"),
+            "request_timestamp": lambda r: r["results"][0]["requests"][0].update(tested_at="must-not-be-rendered"),
+            "report_duration": lambda r: r.update(duration_seconds=123.456),
+            "nested_duration": lambda r: r["results"][0]["requests"][0]["parameters"].update(duration_seconds=123.456),
+            "unrelated_timestamp": lambda r: r["results"].append({"path": "not-in-inventory.py", "tested_at": "must-not-be-rendered"}),
+            "empty_results_timestamp": lambda r: r.update(results=[], tested_at="must-not-be-rendered"),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(mutation=name):
+                path = self.report("invalid-v2.json", [self.record()], schema_version=2)
+                report = json.loads(path.read_text(encoding="utf-8"))
+                mutate(report)
+                path.write_text(json.dumps(report), encoding="utf-8")
+                data = self.collect()
+                self.assertFalse(data["ready"])
+                self.assertEqual(data["counts"]["passed"], 0)
+                self.assertTrue(data["report_issues"])
+                for language in ("zh", "en"):
+                    self.assertNotIn("must-not-be-rendered", release.render_page(data, language=language))
+
     def test_bilingual_pages_share_counts_paths_and_canonical_evidence(self):
         self.report("failure.json", [self.record(status="rate_limited", hour=1)])
         self.report("pass.json", [self.record(hour=2)])
@@ -121,11 +174,16 @@ class ExampleReleaseTests(unittest.TestCase):
             for attempt in row["attempts"]:
                 self.assertIn(f"](../{attempt['report']})", chinese)
                 self.assertIn(f"](../../{attempt['report']})", english)
-                self.assertIn(attempt["tested_at"], english)
+                self.assertIsNone(attempt["evidence_id"])
+        for field in ("tested_at", "legacy_tested_at", "sort_time", "duration_seconds"):
+            self.assertNotIn(f'"{field}"', json.dumps(data))
+        for page in (chinese, english):
+            self.assertNotIn("2026-10-14T01:00:00", page)
+            self.assertNotIn("2026-10-14T02:00:00", page)
         with self.assertRaises(ValueError):
             release.render_page(data, language="unknown")
 
-    def test_latest_valid_pass_is_selected_but_later_and_earlier_failures_survive(self):
+    def test_strict_pass_is_selected_but_all_failures_survive(self):
         self.report("old-failure.json", [self.record(status="failed", hour=1)])
         self.report("effective-pass.json", [self.record(hour=2)])
         self.report("later-failure.json", [self.record(status="rate_limited", hour=3)])
@@ -138,6 +196,40 @@ class ExampleReleaseTests(unittest.TestCase):
         self.assertIn("old-failure.json", page)
         self.assertIn("later-failure.json", page)
         self.assertIn("历史失败", page)
+
+    def test_fallback_uses_stable_report_path_order_not_legacy_clock_or_write_order(self):
+        self.report("z-pass.json", [self.record(hour=1)])
+        self.report("a-pass.json", [self.record(hour=23)])
+        self.report("m-failure.json", [self.record(status="failed", hour=2)])
+        row = self.collect()["rows"][0]
+        self.assertEqual(row["selected"]["report"], "verification/examples/a-pass.json")
+        self.assertEqual([attempt["report"] for attempt in row["attempts"]], [
+            "verification/examples/a-pass.json", "verification/examples/m-failure.json", "verification/examples/z-pass.json",
+        ])
+        # Reversing the fixture clocks cannot change the selected evidence or attempt order.
+        self.report("z-pass.json", [self.record(hour=23)])
+        self.report("a-pass.json", [self.record(hour=1)])
+        self.assertEqual(self.collect()["rows"][0], row)
+
+    def test_canonical_current_strict_pass_is_preferred_over_path_order(self):
+        self.report("a-fallback.json", [self.record()], schema_version=2)
+        self.report("z-registered.json", [self.record()], schema_version=2)
+        self.manifest["examples"][0]["verification"].update(live="passed", report="verification/examples/z-registered.json")
+        self.save_manifest()
+        data = self.collect()
+        self.assertTrue(data["ready"])
+        row = data["rows"][0]
+        self.assertEqual(row["selected"]["report"], "verification/examples/z-registered.json")
+        self.assertEqual(row["attempts"][0]["report"], "verification/examples/a-fallback.json")
+
+    def test_canonical_failure_does_not_override_another_strict_pass(self):
+        self.report("a-registered-failure.json", [self.record(status="failed")], schema_version=2)
+        self.report("z-strict-pass.json", [self.record()], schema_version=2)
+        self.manifest["examples"][0]["verification"].update(live="failed", report="verification/examples/a-registered-failure.json")
+        self.save_manifest()
+        data = self.collect()
+        self.assertTrue(data["ready"])
+        self.assertEqual(data["rows"][0]["selected"]["report"], "verification/examples/z-strict-pass.json")
 
     def test_http_200_without_finish_or_body_is_incomplete_not_capability_failure(self):
         http = self.http()
@@ -335,12 +427,18 @@ class ExampleReleaseTests(unittest.TestCase):
                 self.assertFalse(self.collect()["ready"])
 
     def test_invalid_report_timestamp_is_not_rendered_as_untrusted_text(self):
-        record = self.record()
-        record["tested_at"] = "untrusted-field-not-a-date"
-        self.report("bad-time.json", [record])
-        data = self.collect()
-        self.assertFalse(data["ready"])
-        self.assertNotIn("untrusted-field-not-a-date", release.render_page(data))
+        for value in (None, False, "2026-10-14T01:00:00", "untrusted-field-not-a-date"):
+            with self.subTest(value=value):
+                record = self.record()
+                if value is None:
+                    record.pop("tested_at")
+                else:
+                    record["tested_at"] = value
+                self.report("bad-time.json", [record])
+                data = self.collect()
+                self.assertFalse(data["ready"])
+                self.assertEqual(data["rows"][0]["status"], "invalid_evidence")
+                self.assertNotIn("untrusted-field-not-a-date", release.render_page(data))
 
     def test_catalog_is_validated_and_cannot_publish_incomplete_passed_reference(self):
         old = self.record()

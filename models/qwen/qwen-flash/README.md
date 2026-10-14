@@ -22,7 +22,7 @@
 
 ## 2. 地址选择与最小调用
 
-官方当前推荐 Workspace 专属地址 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`；旧的 `https://dashscope.aliyuncs.com/compatible-mode/v1` 仍在兼容文档中。生产项目应优先采用控制台给出的 Workspace 地址。[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) 本仓库对后者的历史运行证据见[2026-10-13 严格报告](verification/2026-10-13-strict.json)，具体文件的当前结果见[逐文件实测状态](../../../docs/示例实测状态.md)。
+官方当前推荐 Workspace 专属地址 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`；旧的 `https://dashscope.aliyuncs.com/compatible-mode/v1` 仍在兼容文档中。生产项目应优先采用控制台给出的 Workspace 地址。[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) 本仓库对后者的历史运行证据见[历史严格报告](verification/2026-10-13-strict.json)，具体文件的当前结果见[逐文件实测状态](../../../docs/示例实测状态.md)。
 
 ```python
 import os
@@ -77,7 +77,7 @@ thinking_off_extra_body:
 modalities: [text]
 ```
 
-模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果。统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`；逐文件命令、环境与退出码见[验证与复现](../../../docs/验证与复现.md)。
+模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；[历史基础报告](verification/2026-10-13.json)保留当时结果。统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`；逐文件命令、环境与退出码见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 7. 必看踩雷
 

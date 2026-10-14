@@ -26,7 +26,7 @@ The [first-call tutorial](first-call.md) remains an optional walkthrough for run
 | Label | Meaning in this project |
 |---|---|
 | Official | A vendor's official source is linked in the same paragraph or table row. |
-| Tested | A date, test scope, redacted report, and corresponding script are provided. |
+| Tested | An evidence identifier, test scope, redacted report, and corresponding script are provided. |
 | Project recommendation | An editorial recommendation about workflow, safety, or selection. |
 | Unknown | Official documentation or repository tests do not provide enough evidence; no conclusion is inferred. |
 

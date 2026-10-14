@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:49:28.424249+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ARK_API_KEY"
       ],
       "capability": "video_input",
-      "tested_at": "2026-10-14T02:49:28.490900+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/09_video.py": "303ed734e1318220d21f99ac26fb67b9d5160b90dbe0c9d7cae60877fc9b1d81"
       },
@@ -45,8 +45,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 11.608
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -57,5 +56,6 @@
     "passed": 0,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "c4ee0e29-bd6c-4946-bc07-f4964d55665f"
 }

@@ -66,7 +66,7 @@ Scripts display answers locally; 03 also displays reasoning. Do not commit priva
 
 For the paid model, consult [current file status](../../../en/docs/example-status.md) and this directory's [sources.json](examples/sources.json), with reports matching current source, inputs, parameters and environment. Offline mocks establish local protocol/safeguards, not real hosted API success or semantic accuracy for arbitrary prompts. [Evidence policy](../../../en/docs/evidence-policy.md)
 
-The free Flash model's [legacy report](../glm-4.7-flash/verification/2026-10-13.json) and [strict report](../glm-4.7-flash/verification/2026-10-13-strict.json) stay at their original paths, unchanged. Neither verifies `glm-4.7`. Keep [historical unified status](../../../en/docs/verification-status.md) separate from [file status](../../../en/docs/example-status.md). See [verification setup](../../../en/docs/verification.md) and [production pitfalls](../../../en/docs/production-pitfalls.md).
+The free Flash model's [legacy report](../glm-4.7-flash/verification/2026-10-13.json) and [strict report](../glm-4.7-flash/verification/2026-10-13-strict.json) retain their outcomes at their original paths. Neither verifies `glm-4.7`. Keep [historical unified status](../../../en/docs/verification-status.md) separate from [file status](../../../en/docs/example-status.md). See [verification setup](../../../en/docs/verification.md) and [production pitfalls](../../../en/docs/production-pitfalls.md).
 
 [model]: https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7
 [api]: https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8

@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
 ## 对应的原始实测证据
 
-当前源码的真实 HTTP 证据通过时间：2026-10-14T02:56:31.070798+00:00。[原始脱敏报告](../../verification/examples/2026-10-14-minimax-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
+当前源码已有通过的真实 HTTP 证据。[原始脱敏报告](../../verification/examples/2026-10-14-minimax-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
 
 源文件 SHA-256：`a0c609a9242f357e6a0d51ce83745d80a1b883d794f31390bfe96305fc41cd9b`
 

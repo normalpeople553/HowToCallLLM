@@ -1,6 +1,5 @@
 {
-  "schema_version": 2,
-  "tested_at": "2026-10-13T17:15:31.414931+08:00",
+  "schema_version": 3,
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -216,8 +215,11 @@
     "tool_arguments_saved": false,
     "request_id_saved": false,
     "request_messages_saved": false,
-    "raw_error_saved": false
+    "raw_error_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "vendor": "qwen",
-  "model_id": "qwen-flash"
+  "model_id": "qwen-flash",
+  "evidence_id": "0b4c4449-a7c0-4ad3-bf7a-93634db3403e"
 }

@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:56:29.914069+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ARK_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:56:29.944849+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/01_basic.py": "5edb7519c41bd3dffb4e4026b2dd13b98ccf2ea91d13b94a9a0078a20f8754cd"
       },
@@ -56,8 +56,7 @@
           "content_chars": 40
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.405
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/02_streaming.py",
@@ -67,7 +66,6 @@
         "ARK_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:56:32.350080+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/02_streaming.py": "09113ca6396da4937ce7728c9160ef19965a38b27e9b486132a0dd1afe7a803a"
       },
@@ -96,8 +94,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 7.976
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/03_thinking.py",
@@ -107,7 +104,6 @@
         "ARK_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T02:56:40.326035+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/03_thinking.py": "3e61c1314cda615c152efe531fa23ab5449ac50cfa64a5e2090f5a6d6a4b34cc"
       },
@@ -140,8 +136,7 @@
           "content_chars": 58
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 8.334
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/04_json_output.py",
@@ -151,7 +146,6 @@
         "ARK_API_KEY"
       ],
       "capability": "structured_output",
-      "tested_at": "2026-10-14T02:56:48.659722+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/04_json_output.py": "d53a16f998de9d23d39eee8f6613b59a9e176d09f9216c07ff89f0378a8d2397"
       },
@@ -187,8 +181,7 @@
           "content_chars": 12
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.388
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/05_tool_calling.py",
@@ -198,7 +191,6 @@
         "ARK_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T02:56:50.048035+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/05_tool_calling.py": "a9a116121b13a801bf68f9478aa5083e80ae69bb9ce8bb707c98fd295a12ef64"
       },
@@ -255,8 +247,7 @@
           "content_chars": 37
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 5.141
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/06_vision.py",
@@ -266,7 +257,6 @@
         "ARK_API_KEY"
       ],
       "capability": "vision",
-      "tested_at": "2026-10-14T02:56:55.189549+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/06_vision.py": "183b545c768830ebd7ad46df56e78130793881db43d5b0cd7dc2f7b53fa24dcb"
       },
@@ -299,8 +289,7 @@
           "content_chars": 56
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 3.569
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/07_multi_turn.py",
@@ -310,7 +299,6 @@
         "ARK_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T02:56:58.759043+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/07_multi_turn.py": "e052fcafdbfb8af78529736ab6903e13a07aee9b8357c31e8820a407342725f7"
       },
@@ -366,8 +354,7 @@
           "content_chars": 170
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 23.903
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/08_thinking_tools.py",
@@ -377,7 +364,6 @@
         "ARK_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T02:57:22.662485+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/08_thinking_tools.py": "3e2a3125d17a12eba1a18fbea2c09042932149cd36cf7dc4c0fd8336c86ac2f7"
       },
@@ -434,8 +420,7 @@
           "content_chars": 50
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 26.77
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/09_video.py",
@@ -445,7 +430,6 @@
         "ARK_API_KEY"
       ],
       "capability": "video_input",
-      "tested_at": "2026-10-14T02:57:49.432269+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/09_video.py": "303ed734e1318220d21f99ac26fb67b9d5160b90dbe0c9d7cae60877fc9b1d81"
       },
@@ -478,8 +462,7 @@
           "content_chars": 123
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 7.537
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/doubao/doubao-seed-2-1-pro-260628/examples/10_implicit_cache.py",
@@ -489,7 +472,6 @@
         "ARK_API_KEY"
       ],
       "capability": "context_caching",
-      "tested_at": "2026-10-14T02:57:56.969376+00:00",
       "source_sha256": {
         "models/doubao/doubao-seed-2-1-pro-260628/examples/10_implicit_cache.py": "7dfddd667ef1ac8916fe1d8fe3870ecf2743298f4f81019928128494b30bb70d"
       },
@@ -545,8 +527,7 @@
           "content_chars": 47
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 4.267
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -557,5 +538,6 @@
     "passed": 10,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "427e660b-5f8e-43ac-a49b-cc18ad754e31"
 }

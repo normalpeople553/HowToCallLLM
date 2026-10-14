@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
+  "evidence_id": "4f37bdec-4a04-4084-9fb6-0e6994e60179",
   "model_id": "glm-4.7-flash",
-  "tested_at": "2026-10-13",
   "implementation_commit": "e614377",
   "test_script": "tests/verify_glm_4_7_flash.py",
   "runtime": {"python": "3.11.15", "openai": "3.29.0"},
-  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false},
+  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false, "test_timestamps_saved": false, "duration_saved": false},
   "summary": {"passed": 0, "failed": 0, "rate_limited": 6},
   "tests": {
     "chat_completions": {"status": "rate_limited", "http_status": 429, "observed_error_codes": ["1302"]},

@@ -48,7 +48,8 @@ python skills/model-manual/scripts/generate_snippet.py --vendor qwen --task json
 - Key 从型号规定的环境变量读取，不硬编码、不回显。除非用户明确要求真实调用，否则只生成、修改代码或执行离线检查。
 - 保留输出完整性检查：普通/JSON 检查结束原因和空正文；流式处理空 `choices` 与结束状态；工具验证名称和参数、回传 `tool_call_id`、保留完整 assistant 消息并限制轮次。示例中的工具数据为模拟数据。
 - 型号 `verification: null` / `verification_scope: not_run` 仅表示未完成该型号统一验证器，不能覆盖独立示例的真实 HTTP 报告；反向也不能由一个文件通过升级整张型号卡。按[证据与验证](references/workflows.md#证据与验证)核对原始报告、范围与当前文件哈希。
-- 现成文件通过不代表任意新生成的参数/任务组合通过；文件或支持依赖哈希变更必须重新执行。`verified` 限于报告日期、型号和测试项，限流、缺 Key 或缺证据不等于能力不支持。
+- 现成文件通过不代表任意新生成的参数/任务组合通过；文件或支持依赖哈希变更必须重新执行。`verified` 限于报告所指执行、型号和测试项，限流、缺 Key 或缺证据不等于能力不支持。
+- 实测证据使用随机 UUIDv4 编号，不保存或展示执行日期、时间戳和耗时；保留官方资料核对与生命周期日期。格式及兼容规则见 [workflows.md](references/workflows.md) 的验证流程。
 - 思考不能关闭的型号不生成假开关；`reasoning_split` 等输出格式参数不能当成关闭思考。请求默认字段、预算名称和允许的思考模式均从准确卡片读取。
 - 以准确卡片和原始报告处理摘要冲突；[逐文件执行器](../../tests/run_example_files.py)默认只列清单，`--execute` 才会真实调用。授权、命令与报告同步见[证据与验证](references/workflows.md#证据与验证)；编译、mock 与历史实测不能写成“本次线上通过”。
 

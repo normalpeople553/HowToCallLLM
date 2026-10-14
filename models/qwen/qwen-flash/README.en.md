@@ -22,7 +22,7 @@ This is the older exact Qwen Flash model, not a newer-generation Flash. Its deta
 
 The official recommendation is a Workspace-specific endpoint, `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`. The older `https://dashscope.aliyuncs.com/compatible-mode/v1` remains documented; production projects should prefer the address supplied by their console. [API][api]
 
-The older endpoint's historical execution evidence is the [2026-10-13 strict report](verification/2026-10-13-strict.json); current file results are in [example status](../../../en/docs/example-status.md). Key creation and `DASHSCOPE_API_KEY` follow the [first-call guide](https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen).
+The older endpoint's historical execution evidence is the [Historical strict report](verification/2026-10-13-strict.json); current file results are in [example status](../../../en/docs/example-status.md). Key creation and `DASHSCOPE_API_KEY` follow the [first-call guide](https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen).
 
 Run the shared [01_basic.py](examples/01_basic.py), rather than a new English variant. From the repository root, after setting DASHSCOPE_API_KEY:
 

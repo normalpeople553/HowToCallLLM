@@ -139,7 +139,7 @@ The code writes final content to stdout and usage statistics to stderr. Wording 
 
 ## Original execution evidence
 
-Current-source HTTP evidence passed at 2026-10-14T04:12:36.474074+00:00. [Original sanitized report](../../verification/examples/2026-10-14-zhipu-paid-attempt2.json) · [Current status](../../en/docs/example-status.md)
+The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-zhipu-paid-attempt2.json) · [Current status](../../en/docs/example-status.md)
 
 Source SHA-256: `ad0906242fa2c9590a4885b4a35fca59fbc40c97baef2e4ce8880a3062664469`
 

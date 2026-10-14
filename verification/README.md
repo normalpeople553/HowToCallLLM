@@ -4,9 +4,9 @@
 
 这里保存 [逐文件执行器](../tests/run_example_files.py) 的真实厂商 API 尝试；不保存密钥、请求消息、响应正文、思考原文或原始错误。当前哪些文件具有完整有效证据，以[示例实测状态](../docs/示例实测状态.md)为准，而不是把历史报告中的 `passed` 逐条相加。
 
-报告保留每次尝试，已有文件不覆盖。`source_sha256` 绑定实际示例及支持依赖，`requests` 记录真实 HTTP 元数据，`exit_code` 记录原文件执行结果。一次通过只覆盖该日期、型号、参数和输入分支，不保证未来可用、输出总是正确、全部可选输入分支或任意新生成组合都通过。[执行与判定实现](../tests/run_example_files.py) · [文件级来源规则](../docs/来源与核验规则.md)
+报告保留每次尝试，正常新增执行不覆盖已有结果。执行时间和耗时已按[隐私规则](../docs/来源与核验规则.md#实测时间最小化项目规则)移除，以随机 `evidence_id` 关联证据；旧路径及 Git 历史未改。`source_sha256` 绑定实际示例及支持依赖，`requests` 记录真实 HTTP 元数据，`exit_code` 记录原文件执行结果。一次通过只覆盖该次执行、型号、参数和输入分支，不保证未来可用、输出总是正确、全部可选输入分支或任意新生成组合都通过。[执行与判定实现](../tests/run_example_files.py) · [文件级来源规则](../docs/来源与核验规则.md)
 
-## 2026-10-14 报告的判读
+## 历史报告的判读
 
 - 早期 `attempt1` 使用的旁观器没有解压部分 HTTP 响应，部分 Shell/TypeScript 记录也只有原文件退出结果。虽然原脚本确实执行了，但其中部分 `passed` 缺少完整 HTTP 结束/正文元数据，不能作为当前发布证据。后续 `attempt2` 的部分 `failed` 同样是旁观证据不足，不代表原脚本或厂商能力失败；原始 `exit_code` 可供区分。[早期 DeepSeek 报告](examples/2026-10-14-deepseek-attempt1.json) · [FIM 补跑记录](examples/2026-10-14-deepseek-fim-attempt2.json)
 - 后续报告旁观解压后的统计副本，仍向原 SDK 逐字节交付真实响应；Python、Node、cURL 都要求实际请求元数据。发布检查会用当前规则重新核验旧记录，不能只相信旧的状态字符串。[执行器](../tests/run_example_files.py) · [Node 旁观器](../tests/live_fetch.mjs) · [cURL 旁观器](../tests/live_curl.py) · [发布检查](../tests/check_example_release.py)

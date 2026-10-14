@@ -21,6 +21,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from urllib.parse import unquote, urlsplit
+from uuid import uuid4
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -187,7 +188,8 @@ class HumanExampleTests(unittest.TestCase):
                 self.assertTrue(row["selected"]["strict_passed"])
                 self.assertTrue(row["selected"]["current_source"])
                 self.assertEqual(view["report"], row["selected"]["report"])
-                self.assertEqual(view["tested_at"], row["selected"]["tested_at"])
+                self.assertEqual(view["evidence_id"], row["selected"].get("evidence_id"))
+                self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(view))
                 source = (ROOT / path).read_bytes()
                 self.assertEqual(view["source_text"].encode("utf-8"), source)
                 expected_hash = hashlib.sha256(source).hexdigest()
@@ -199,6 +201,35 @@ class HumanExampleTests(unittest.TestCase):
                 self.assertEqual(records[0]["source_sha256"][path], expected_hash)
                 self.assertEqual(view["support_sha256"], records[0]["source_sha256"])
                 self.assertEqual(records[0]["status"], "passed")
+
+    def test_views_preserve_opaque_ids_and_never_echo_legacy_execution_times(self):
+        with offline_only():
+            catalog, release_tool = self.renderer.dependencies(ROOT)
+            baseline = release_tool.collect_release(ROOT)
+        for version in (1, 2):
+            with self.subTest(schema_version=version):
+                synthetic = copy.deepcopy(baseline)
+                identities = {}
+                for row in synthetic["rows"]:
+                    selected = row.get("selected")
+                    if not selected:
+                        continue
+                    selected.pop("evidence_id", None)
+                    if version == 2:
+                        identities[row["path"]] = str(uuid4())
+                        selected["evidence_id"] = identities[row["path"]]
+                    # A legacy internal field must not escape into the public view.
+                    selected["legacy_tested_at"] = "1999-12-31T23:59:59+00:00"
+                    selected["tested_at"] = "1999-12-31T23:59:59+00:00"
+                with offline_only(), patch.object(self.renderer, "dependencies", return_value=(catalog, release_tool)), \
+                        patch.object(release_tool, "collect_release", return_value=synthetic):
+                    views = self.renderer.build_views(ROOT)
+                    pages = self.renderer.expected_pages(ROOT)
+                for view in views:
+                    self.assertEqual(view["evidence_id"], identities.get(view["path"]))
+                    self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(view))
+                self.assertNotIn("1999-12-31T23:59:59", json.dumps(views))
+                self.assertTrue(all("1999-12-31T23:59:59" not in page for page in pages.values()))
 
     def test_complete_python_fences_are_verbatim_and_identical_between_editions(self):
         views, pages = self.views_and_pages()
@@ -247,7 +278,9 @@ class HumanExampleTests(unittest.TestCase):
                     parameter_path = parameter_path.with_name("parameters.en.md")
                 self.assertIn((ROOT / parameter_path).resolve(), targets)
                 self.assertIn(source_hash, text)
-                self.assertIn(view["tested_at"], text)
+                self.assertNotIn("tested_at", text)
+                self.assertNotIn("duration_seconds", text)
+                self.assertNotRegex(text, r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}")
                 for note in view["notes"]["en" if suffix == ".en.md" else "zh"]:
                     self.assertIn("#L" + str(note["line"]), text)
                     self.assertIn(note["description"], text)

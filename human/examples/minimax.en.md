@@ -101,7 +101,7 @@ The code prints final content and usage statistics. Wording is not fixed: the or
 
 ## Original execution evidence
 
-Current-source HTTP evidence passed at 2026-10-14T02:56:31.070798+00:00. [Original sanitized report](../../verification/examples/2026-10-14-minimax-attempt3.json) · [Current status](../../en/docs/example-status.md)
+The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-minimax-attempt3.json) · [Current status](../../en/docs/example-status.md)
 
 Source SHA-256: `a0c609a9242f357e6a0d51ce83745d80a1b883d794f31390bfe96305fc41cd9b`
 

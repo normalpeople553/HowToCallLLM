@@ -107,9 +107,9 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 | 信息 | 读取位置与表述 |
 |---|---|
 | 官方支持及参数规则 | 型号卡片的 source → sources，说明官方声明与核对日期 |
-| 型号统一验证器 | 卡片 `verification` 指向的原始报告，说明日期、型号、参数与测试项；`null/not_run` 仅表示这一层没有报告 |
+| 型号统一验证器 | 卡片 `verification` 指向的原始报告，说明证据编号、型号、参数与测试项；`null/not_run` 仅表示这一层没有报告 |
 | 本次离线检查 | 实际运行的命令与结果，不能写成线上调用成功 |
-| 具体示例当前状态 | [示例实测状态](../../../docs/示例实测状态.md)及该型号 `examples/sources.json`；读取所指逐文件报告、`evidence_scope`、时间和哈希，不从型号历史报告推断 |
+| 具体示例当前状态 | [示例实测状态](../../../docs/示例实测状态.md)及该型号 `examples/sources.json`；读取所指逐文件报告、`evidence_scope`、证据编号和哈希，不从型号历史报告推断 |
 | 新生成/改写的调用 | 只报告实际完成的编译、mock 或本次真实执行；相似示例通过不覆盖新的参数、任务、工具或输入组合 |
 
 `mock_tested` 不是服务端验证；`live=not_run`、缺 Key/输入/运行时、限流、超时或失败分别说明，不能汇总成通过。即使某个示例有真实 HTTP 通过证据，型号卡仍可合法保持 `verification: null`；也不能用旧型号统一验证器覆盖所有进阶文件。当前结果动态读取，不预写“所有示例均通过”。
@@ -138,9 +138,9 @@ python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/example
 
 路径以各文件自身为基准：`vendors.json` 中 `model_card`、`model_manual` 相对于该目录，厂商摘要的 `verification` 相对于仓库根目录；型号卡片的 `verification` 相对于型号卡片目录。不要混用两个报告路径规则。
 
-卡片的 `last_checked_at` 表示资料核对日期，报告的 `tested_at` 表示实际测试时间；两者不能互相代替。`verified` 还必须核对具体测试项，历史基础验证不证明严格流程完整通过。失败、限流、跳过保留为运行结果，不改写成能力不支持。
+卡片的 `last_checked_at` 表示官方资料核对日期，保留此字段。新的逐文件报告使用 schema 2、严格统一报告使用 schema 3，以随机 UUIDv4 `evidence_id` 标识，不保存或展示 `tested_at`、`duration_seconds`；相应 `privacy.test_timestamps_saved` 和 `privacy.duration_saved` 均为 `false`。证据编号不能表达先后或证明实时可用，旧基础报告不能借隐私清理升级为严格验证。详见[时间最小化规则](../../../docs/来源与核验规则.md#实测时间最小化项目规则)。`verified` 还必须核对具体测试项，历史基础验证不证明严格流程完整通过。失败、限流、跳过保留为运行结果，不改写成能力不支持。
 
-若用户问“现在是否可用”，历史结果不足以证明当前状态；说明证据时间，并在用户要求真实验证时复测。官方页面与卡片冲突时复核来源，摘要与报告冲突时以原始报告定位差异，不能为了统一文字改写历史结果。
+若用户问“现在是否可用”，历史结果不足以证明当前状态；说明证据范围和时效限制，并在用户要求真实验证时复测。官方页面与卡片冲突时复核来源，摘要与报告冲突时以原始报告定位差异，不能为了统一文字改写历史结果。
 
 维护卡片或报告后，在仓库根目录执行：
 

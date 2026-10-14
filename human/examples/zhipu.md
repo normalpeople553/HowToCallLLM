@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
 ## 对应的原始实测证据
 
-当前源码的真实 HTTP 证据通过时间：2026-10-14T04:12:36.474074+00:00。[原始脱敏报告](../../verification/examples/2026-10-14-zhipu-paid-attempt2.json) · [当前状态](../../docs/示例实测状态.md)
+当前源码已有通过的真实 HTTP 证据。[原始脱敏报告](../../verification/examples/2026-10-14-zhipu-paid-attempt2.json) · [当前状态](../../docs/示例实测状态.md)
 
 源文件 SHA-256：`ad0906242fa2c9590a4885b4a35fca59fbc40c97baef2e4ce8880a3062664469`
 

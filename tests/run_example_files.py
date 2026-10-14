@@ -7,7 +7,6 @@
 import argparse
 import base64
 import contextlib
-from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
 import io
@@ -24,6 +23,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from uuid import uuid4
 import zlib
 
 
@@ -410,9 +410,8 @@ def child(path, telemetry):
 
 
 def execute_entry(entry, env, temporary, timeout):
-    started = time.monotonic()
     path = ROOT / entry["path"]
-    result = {**entry, "tested_at": datetime.now(timezone.utc).isoformat(), "source_sha256": file_identity(entry["path"]), "status": "failed", "execution": "real_vendor_api", "input_fixture": "synthetic_local_image_or_video_or_official_public_url"}
+    result = {**entry, "source_sha256": file_identity(entry["path"]), "status": "failed", "execution": "real_vendor_api", "input_fixture": "synthetic_local_image_or_video_or_official_public_url"}
     missing = [name for name in entry["required_keys"] if not env.get(name)]
     if missing:
         return {**result, "status": "missing_key", "missing_key_names": missing}
@@ -451,11 +450,44 @@ def execute_entry(entry, env, temporary, timeout):
         result["evidence_scope"] = "original_file_and_real_http_metadata" if requests else "original_file_process_exit_and_its_response_checks"
     except subprocess.TimeoutExpired:
         result["status"] = "timeout"
-    result["duration_seconds"] = round(time.monotonic() - started, 3)
     return result
 
 
+def make_report(results=None):
+    """随机证据身份不编码运行时间；不记录测试时间戳或耗时。"""
+    return {
+        "schema_version": 2,
+        "evidence_id": str(uuid4()),
+        "kind": "example_file_execution",
+        "execution": "real_vendor_api",
+        "runtime": {"python": sys.version.split()[0], "openai": importlib.metadata.version("openai")},
+        "privacy": {
+            "api_key_saved": False,
+            "response_content_saved": False,
+            "reasoning_content_saved": False,
+            "raw_error_saved": False,
+            "request_messages_saved": False,
+            "test_timestamps_saved": False,
+            "duration_saved": False,
+        },
+        "results": [] if results is None else results,
+    }
+
+
+def validate_report_privacy(value):
+    """拒绝旧结果中的时间字段，不能以 false 隐私标志掩盖落盘内容。"""
+    if isinstance(value, dict):
+        if {"tested_at", "duration_seconds"} & value.keys():
+            raise ValueError("report_contains_test_timestamp_or_duration")
+        for child in value.values():
+            validate_report_privacy(child)
+    elif isinstance(value, list):
+        for child in value:
+            validate_report_privacy(child)
+
+
 def write_report(path, report):
+    validate_report_privacy(report)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     # 每次报告独立路径；拒绝覆盖既有证据。
@@ -491,7 +523,7 @@ def main():
     if Path(args.report).exists():
         parser.error("报告路径已存在，请使用新路径保留历史")
     env = credentials()
-    report = {"schema_version": 1, "kind": "example_file_execution", "execution": "real_vendor_api", "tested_at": datetime.now(timezone.utc).isoformat(), "runtime": {"python": sys.version.split()[0], "openai": importlib.metadata.version("openai")}, "privacy": {"api_key_saved": False, "response_content_saved": False, "reasoning_content_saved": False, "raw_error_saved": False, "request_messages_saved": False}, "results": []}
+    report = make_report()
     with tempfile.TemporaryDirectory(prefix="model-manual-live-") as temporary:
         directory = Path(temporary)
         env = prepare_inputs(directory, env)

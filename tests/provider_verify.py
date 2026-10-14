@@ -16,9 +16,9 @@ import subprocess
 import time
 import zlib
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+from uuid import uuid4
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -469,13 +469,13 @@ def result_exit_code(counts):
 
 def make_report(results, source=None, single_vendor=None):
     report = {
-        "schema_version": 2,
-        "tested_at": datetime.now(timezone(timedelta(hours=8))).isoformat(),
+        "schema_version": 3,
+        "evidence_id": str(uuid4()),
         "runtime": runtime_metadata(),
         **(source if source is not None else source_metadata()),
         "counts": count_results(results),
         "results": results,
-        "privacy": {"api_key_saved": False, "response_content_saved": False, "reasoning_content_saved": False, "tool_arguments_saved": False, "request_id_saved": False, "request_messages_saved": False, "raw_error_saved": False},
+        "privacy": {"api_key_saved": False, "response_content_saved": False, "reasoning_content_saved": False, "tool_arguments_saved": False, "request_id_saved": False, "request_messages_saved": False, "raw_error_saved": False, "test_timestamps_saved": False, "duration_saved": False},
     }
     if single_vendor:
         spec = SPECS[single_vendor]
@@ -483,7 +483,20 @@ def make_report(results, source=None, single_vendor=None):
     return report
 
 
+def validate_report_privacy(value):
+    """拒绝旧结果中的时间字段，不能以 false 隐私标志掩盖落盘内容。"""
+    if isinstance(value, dict):
+        if {"tested_at", "duration_seconds"} & value.keys():
+            raise ValueError("report_contains_test_timestamp_or_duration")
+        for child in value.values():
+            validate_report_privacy(child)
+    elif isinstance(value, list):
+        for child in value:
+            validate_report_privacy(child)
+
+
 def write_report(destination, report, overwrite=False):
+    validate_report_privacy(report)
     target = Path(destination)
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("w" if overwrite else "x", encoding="utf-8") as handle:

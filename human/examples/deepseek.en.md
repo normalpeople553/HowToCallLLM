@@ -72,7 +72,7 @@ The code prints final content and usage statistics. Wording is not fixed: the or
 
 ## Original execution evidence
 
-Current-source HTTP evidence passed at 2026-10-14T02:56:26.472152+00:00. [Original sanitized report](../../verification/examples/2026-10-14-deepseek-attempt3.json) · [Current status](../../en/docs/example-status.md)
+The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-deepseek-attempt3.json) · [Current status](../../en/docs/example-status.md)
 
 Source SHA-256: `bcd589398bfc2ed984cd9bddff6d2268b08bd5f3600a2dddb91852df63e4e767`
 

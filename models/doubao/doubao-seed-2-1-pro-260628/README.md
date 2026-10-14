@@ -8,14 +8,14 @@
 
 本页代码块是说明性片段；运行与验证以链接的完整文件为准。片段、自改参数及生成器任意新组合不继承文件的实测结果。[参数与文件映射](parameters.md)；[证据边界](../../../docs/来源与核验规则.md)
 
-> 资料核对日期：**2026-10-13**。该 ID 已在官方列表的“往期模型”区域，但本仓库当天仍调用成功；这是历史结果，不替代当前逐文件记录。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)；[历史报告](verification/2026-10-13.json)。机器卡片见 [`doubao-seed-2-1-pro-260628.json`](../../../skills/model-manual/references/models/doubao-seed-2-1-pro-260628.json)。
+> 资料核对日期：**2026-10-13**。该 ID 已在官方列表的“往期模型”区域，但本仓库历史报告记录调用成功；这是历史结果，不替代当前逐文件记录。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)；[历史报告](verification/2026-10-13.json)。机器卡片见 [`doubao-seed-2-1-pro-260628.json`](../../../skills/model-manual/references/models/doubao-seed-2-1-pro-260628.json)。
 
 ## 1. 一眼看懂
 
 | 项目 | 当前值 | 官方来源 |
 |---|---|---|
 | Model ID | `doubao-seed-2-1-pro-260628` | [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
-| 生命周期 | 往期模型，2026-10-13 实测仍可调用 | [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [实测记录](verification/2026-10-13.json) |
+| 生命周期 | 往期模型，历史报告记录可调用 | [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [实测记录](verification/2026-10-13.json) |
 | Base URL | `https://ark.cn-beijing.volces.com/api/v3` | [在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh) |
 | 上下文 | 256K tokens | [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
 | 默认/最大输出 | 4K / 256K tokens | [模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) |
@@ -72,7 +72,7 @@ response = client.chat.completions.create(
 
 ## 6. 生命周期建议
 
-“往期模型”不等于接口立即不可用；本仓库当天实测成功，但它也不适合默认为长期新项目的唯一依赖。上线前应从[当前模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)选择替代型号，并为 Model ID 做配置化切换。
+“往期模型”不等于接口立即不可用；本仓库历史报告记录调用成功，但它也不适合默认为长期新项目的唯一依赖。上线前应从[当前模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)选择替代型号，并为 Model ID 做配置化切换。
 
 ## 7. 给 Agent 的固定配置
 
@@ -86,8 +86,8 @@ thinking_off_extra_body:
 lifecycle: past_but_callable
 ```
 
-连接信息来自[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)，生命周期来自[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)。[2026-10-13 历史基础报告](verification/2026-10-13.json)只检查首段工具调用与图片请求格式；统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_doubao_seed_2_1_pro.py --report /tmp/doubao-verification.json`；环境与逐文件命令见[验证与复现](../../../docs/验证与复现.md)。
+连接信息来自[在线推理 API](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)，生命周期来自[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh)。[历史基础报告](verification/2026-10-13.json)只检查首段工具调用与图片请求格式；统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_doubao_seed_2_1_pro.py --report /tmp/doubao-verification.json`；环境与逐文件命令见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 8. 必看踩雷
 
-该 Model ID 已进入官方“往期模型”区域，但 2026-10-13 的七项实测仍通过；“仍能调用”和“适合作为新项目长期默认”是两个问题。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [实测记录](verification/2026-10-13.json) 迁移和生产检查建议见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。
+该 Model ID 已进入官方“往期模型”区域，但历史报告的七项实测均通过；“仍能调用”和“适合作为新项目长期默认”是两个问题。[模型列表](https://docs.volcengine.com/docs/ark/model-list?lang=zh) · [实测记录](verification/2026-10-13.json) 迁移和生产检查建议见[真实踩雷与生产检查](../../../docs/06-真实踩雷与生产检查.md)。

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
+  "evidence_id": "c2c7394a-1fdc-419b-ac58-121ab7973865",
   "model_id": "doubao-seed-2-1-pro-260628",
-  "tested_at": "2026-10-13",
   "implementation_commit": "e614377",
   "test_script": "tests/verify_doubao_seed_2_1_pro.py",
   "runtime": {"python": "3.11.15", "openai": "3.29.0"},
-  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false},
+  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false, "test_timestamps_saved": false, "duration_saved": false},
   "summary": {"passed": 7, "failed": 0},
   "tests": {
     "chat_completions": {"status": "passed", "input_tokens": 50, "output_tokens": 26, "content_chars": 2},

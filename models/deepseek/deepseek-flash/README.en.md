@@ -169,7 +169,7 @@ Use the exact current ID, read keys only from `DEEPSEEK_API_KEY`, and never hard
 
 ## 16. Verification and reproduction
 
-The **2026-10-13 legacy smoke report** recorded seven passes: basic chat, streaming, thinking switches, JSON, the first tool-call response and image-request format. It did not record full finish reasons, tool-result round trips or image-content recognition. [Original report](verification/2026-10-13.json)
+The **Legacy smoke report** recorded seven passes: basic chat, streaming, thinking switches, JSON, the first tool-call response and image-request format. It did not record full finish reasons, tool-result round trips or image-content recognition. [Original report](verification/2026-10-13.json)
 
 The later strict unified-workflow results are listed in [historical verification status](../../../en/docs/verification-status.md). Current original-file execution is listed in [example status](../../../en/docs/example-status.md); neither automatically proves arbitrary changed requests.
 

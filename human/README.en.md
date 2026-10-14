@@ -51,7 +51,7 @@ Windows activation, Node/cURL dependencies, video inputs, and real-execution swi
 | Evidence | What it establishes | What it does not establish |
 |---|---|---|
 | Official documentation / model card | Located official parameter/capability support for that exact model. | Success for your account, code, or every task. |
-| [Historical unified verification](../en/docs/verification-status.md) | The fixed verifier's test cases and outcomes at the recorded time. | All advanced examples or current source passed. |
+| [Historical unified verification](../en/docs/verification-status.md) | The fixed verifier's test cases and outcomes for the recorded execution. | All advanced examples or current source passed. |
 | [File-level execution](../en/docs/example-status.md) | Real execution evidence for specified source/dependency fingerprints, parameters, inputs, and environment. | Arbitrary rewrites, generated combinations, or general accuracy. |
 | Compilation / offline mocks | Corresponding syntax and simulated boundary checks. | API acceptance or correctness of live business data. |
 

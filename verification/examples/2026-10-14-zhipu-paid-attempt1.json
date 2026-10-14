@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T04:06:01.959990+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T04:06:02.074253+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/01_basic.py": "78a4c4bad011b103f6c89ae865aa25f459617f4ec8a020df91a93e490325af4a"
       },
@@ -53,8 +53,7 @@
           "content_chars": 37
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 27.46
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/02_streaming.py",
@@ -64,7 +63,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T04:06:34.539715+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/02_streaming.py": "715df8f68f8ae23ab47edba14e825ff262f13878f1f6660eaf3e61e9659c077d"
       },
@@ -98,8 +96,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 6.05
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/03_thinking.py",
@@ -109,7 +106,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T04:06:45.590294+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/03_thinking.py": "536748c91bc87740251d047de1ea83cfc002d3e71b68539ab60c1e96d123dd67"
       },
@@ -143,8 +139,7 @@
           "content_chars": 50
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 17.682
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/04_json_output.py",
@@ -154,7 +149,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "json_object",
-      "tested_at": "2026-10-14T04:07:08.275641+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/04_json_output.py": "64cbdced041873dac78d6cbea58f263596aa79ca6284e3d3435e2778795ddceb"
       },
@@ -191,8 +185,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 3.427
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/05_tool_calling.py",
@@ -202,7 +195,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T04:07:16.712341+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/05_tool_calling.py": "d7bb250242bbd54c1a446546e563867bf2686b8c0b858101ababc127e372dd44"
       },
@@ -261,8 +253,7 @@
           "content_chars": 100
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 11.306
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/06_multi_turn.py",
@@ -272,7 +263,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T04:07:33.019718+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/06_multi_turn.py": "e2ccd61b83a1906a0bca9c3cf63a84b7fcd64fe5cc1b042c15f92b4f78a7aaa1"
       },
@@ -332,8 +322,7 @@
           "content_chars": 27
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.42
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/07_thinking_tools.py",
@@ -343,7 +332,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T04:07:47.444773+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/07_thinking_tools.py": "60e1c0da6589b87696e72667a9f9c38e697fd8f34e36fb6b73fb62dbddfc9ca3"
       },
@@ -406,8 +394,7 @@
           "content_chars": 329
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 18.463
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -418,5 +405,6 @@
     "passed": 7,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "46581a91-4fab-4051-bfbc-f088d6217e34"
 }

@@ -107,9 +107,9 @@ First distinguish a request for historical results, code verification, or new li
 | Information | Source and reporting scope |
 |---|---|
 | Official support and parameter rules | Resolve source → sources in the model card; state the official claim and check date |
-| Model-level shared workflow | Read the card's verification report for date, model, parameters, and checks; null/not_run means this layer lacks a report. The [historical workflow page](../../../en/docs/verification-status.md) is a derived view |
+| Model-level shared workflow | Read the card's verification report for evidence identifier, model, parameters, and checks; null/not_run means this layer lacks a report. The [historical workflow page](../../../en/docs/verification-status.md) is a derived view |
 | Current offline checks | Report commands and actual outcomes; do not call them successful online requests |
-| Current status of a specific example | Read [example execution status](../../../en/docs/example-status.md), the model's examples/sources.json, and the referenced file report, evidence_scope, time, and hashes; do not infer from a historical model report |
+| Current status of a specific example | Read [example execution status](../../../en/docs/example-status.md), the model's examples/sources.json, and the referenced file report, evidence_scope, evidence identifier, and hashes; do not infer from a historical model report |
 | Newly generated/rewritten code | Report only compilation, mocks, or live execution actually performed; a similar example's pass does not cover new parameter/task/tool/input combinations |
 
 `mock_tested` is not server verification. Report `live=not_run`, missing keys/inputs/runtime, rate limits, timeouts, and failures separately; none counts as a pass. A model card may legitimately retain `verification: null` while a specific example has real HTTP passing evidence. Conversely, an old model workflow report cannot cover every advanced file. Read current results dynamically; never prewrite that all examples passed.
@@ -138,9 +138,9 @@ The original shared verifier still covers its fixed checks; see [verification an
 
 Resolve paths relative to the file defining them: vendors.json model_card/model_manual paths are relative to its directory, but vendor-summary verification paths are repository-root-relative. A model card's verification path is relative to the card directory. Do not mix the two report-path rules.
 
-A card's last_checked_at is the documentation check date; a report's tested_at is the actual execution time. They do not substitute for one another. verified also requires matching specific checks; a historical smoke check does not establish a complete strict workflow. Preserve failed, rate-limited, and skipped outcomes instead of relabeling them unsupported.
+A card's last_checked_at is the official-document check date and remains intact. New file reports use schema 2 and strict unified reports use schema 3, with a random UUIDv4 evidence_id. Do not store or display tested_at or duration_seconds; privacy.test_timestamps_saved and privacy.duration_saved are both false. An identifier does not express order or prove real-time availability. Privacy redaction must not promote basic reports to strict verification. See the [time-minimization rule](../../../en/docs/evidence-policy.md#minimize-execution-time-information-project-rule). verified also requires matching specific checks; a historical smoke check does not establish a complete strict workflow. Preserve failed, rate-limited, and skipped outcomes instead of relabeling them unsupported.
 
-If asked whether a model works now, historical results cannot establish present availability. State the evidence time and rerun only when the user requests live verification. Recheck official sources when documentation conflicts with a card; locate differences in original reports when summaries disagree. Do not rewrite historical outcomes to make wording consistent.
+If asked whether a model works now, historical results cannot establish present availability. State the evidence scope and freshness limitations and rerun only when the user requests live verification. Recheck official sources when documentation conflicts with a card; locate differences in original reports when summaries disagree. Do not rewrite historical outcomes to make wording consistent.
 
 After maintaining cards or reports, run from the repository root:
 

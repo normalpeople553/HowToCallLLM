@@ -77,7 +77,7 @@ Use exponential backoff for 429, bounded retries for 5xx, and correct a 400 requ
 
 The shared configuration is provider kimi, exact model kimi-k2.6, Base URL `https://api.moonshot.cn/v1`, and key variable MOONSHOT_API_KEY. Explicit thinking-off Python configuration is `extra_body={"thinking":{"type":"disabled"}}`; it is not the model's default. [Quick start][start] · [K2.6][model] · [Thinking][thinking]
 
-The [2026-10-13 legacy smoke report](verification/2026-10-13.json) retains its original scope. Read strict unified-verifier results in [historical status](../../../en/docs/verification-status.md), and original-file runs in [example status](../../../en/docs/example-status.md). The shared unified entry point is `python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`; it sends real requests, and does not automatically execute every advanced file. Commands, environment and exit codes: [verification](../../../en/docs/verification.md).
+The [Legacy smoke report](verification/2026-10-13.json) retains its original scope. Read strict unified-verifier results in [historical status](../../../en/docs/verification-status.md), and original-file runs in [example status](../../../en/docs/example-status.md). The shared unified entry point is `python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`; it sends real requests, and does not automatically execute every advanced file. Commands, environment and exit codes: [verification](../../../en/docs/verification.md).
 
 ## 10. Production checks
 

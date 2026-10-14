@@ -36,7 +36,7 @@ People find models through the [model directory](../models/README.en.md); machin
 | Parameter explanations | [Parameter navigation](../en/docs/parameters.md) | Read the relevant model only; distinguish SDK options, server parameters and local safety limits |
 | Existing feature code | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | Query exact model/capability, provenance, inputs, commands and evidence |
 | New combinations | [generate_snippet.py](../skills/model-manual/scripts/generate_snippet.py) | Generate supported language/task combinations without inheriting old passing evidence |
-| Current per-file results | [Execution status](../en/docs/example-status.md) · [Raw reports](../verification/examples/) | Check identity, date, source/support hashes, normal completion and evidence scope |
+| Current per-file results | [Execution status](../en/docs/example-status.md) · [Raw reports](../verification/examples/) | Check identity, evidence identifier, source/support hashes, normal completion and evidence scope |
 | Older capability checks | [Historical workflow status](../en/docs/verification-status.md) | Use only for its fixed test cases, not as per-file execution proof |
 
 Run queries and generation from the repository root. These commands do not send model requests:
@@ -80,7 +80,7 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool
 Provide the exact model and official sources, code or project changes, dependencies and variable names, run commands, and checks actually completed or still outstanding. Add behavior differences for migration and supporting evidence for debugging. [Contract](../skills/model-manual/SKILL.en.md)
 
 - Read keys from the required environment variable or an ignored local file, never from hard-coded examples or output. A normal coding task does not automatically authorize billable real requests or uploading material.
-- Generation and offline tests are not online verification. Historical evidence covers its model, parameters, inputs and date. Changed source or dependencies need new evidence.
+- Generation and offline tests are not online verification. Historical evidence covers its model, parameters, inputs and execution scope. Changed source or dependencies need new evidence.
 - Explicitly label simulated tool data. Do not remove completion checks, tool-result round trips or required thinking history to manufacture a pass.
 - No model-level workflow report does not imply no real file execution; conversely, one passing file does not verify the entire model card.
 

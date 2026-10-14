@@ -1,6 +1,5 @@
 {
-  "schema_version": 2,
-  "tested_at": "2026-10-13T17:14:57.163568+08:00",
+  "schema_version": 3,
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -260,8 +259,11 @@
     "tool_arguments_saved": false,
     "request_id_saved": false,
     "request_messages_saved": false,
-    "raw_error_saved": false
+    "raw_error_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "vendor": "deepseek",
-  "model_id": "deepseek-flash"
+  "model_id": "deepseek-flash",
+  "evidence_id": "6824665d-6296-4d3d-b8ca-ad59ffc3571b"
 }

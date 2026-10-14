@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:46:29.898068+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:46:29.928300+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/01_basic.py": "068b7f05d96f5eacbed6cb08a074d17aaa8acde2f036cac2e9107ecabbb2567e"
       },
@@ -41,8 +41,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 12.989
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/02_streaming.py",
@@ -52,7 +51,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:46:42.917859+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/02_streaming.py": "3ab87b203303c6e4edeb2442ad67f6b69725e500b2c9a17025d5b47d97965708"
       },
@@ -81,8 +79,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 3.626
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/03_thinking.py",
@@ -92,7 +89,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T02:46:46.544388+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/03_thinking.py": "4ab14a46ab007df2fbfdabd4a5b4f070d03c218a6dd97011aee7418ffae99087"
       },
@@ -115,8 +111,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 16.835
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/04_json_output.py",
@@ -126,7 +121,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "json_object",
-      "tested_at": "2026-10-14T02:47:03.379363+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/04_json_output.py": "a3db0ce06594efcb4551f0131b29c78c2ff5ff176794f28b97a31ce3b5879bea"
       },
@@ -161,8 +155,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.937
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/05_tool_calling.py",
@@ -172,7 +165,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T02:47:05.316482+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/05_tool_calling.py": "fe7e0ceed9dcbe7727540b27f8260a8bb57890ecd2d784d5da8b77f12fa876da"
       },
@@ -227,8 +219,7 @@
           "content_chars": 72
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 4.484
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/06_vision.py",
@@ -238,7 +229,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "vision",
-      "tested_at": "2026-10-14T02:47:09.800361+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/06_vision.py": "3e9e52edf6b3d1a54d418a44c058fb012c34bdf7eaf4c8cd9f196a7b98befdbb"
       },
@@ -270,8 +260,7 @@
           "content_chars": 189
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 5.102
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/07_multi_turn.py",
@@ -281,7 +270,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T02:47:14.902587+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/07_multi_turn.py": "8320c3d5c90e2de480ddad0c438be3041ce11e3c1a7aa5d9c58227251960ec86"
       },
@@ -335,8 +323,7 @@
           "content_chars": 19
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 4.669
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/08_thinking_tools.py",
@@ -346,7 +333,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T02:47:19.571923+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/08_thinking_tools.py": "4fbef5e166050208ff6db6d299d48855d9c7e3b3d0154d9d2876bb65369958e5"
       },
@@ -407,8 +393,7 @@
           "content_chars": 93
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 8.678
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/09_video.py",
@@ -418,7 +403,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "video_input",
-      "tested_at": "2026-10-14T02:47:28.250111+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/09_video.py": "21e48227c486f10761f95ec8d7b328a5c216f66c66aeb6d0cfc0f8cb9e33fc35"
       },
@@ -450,8 +434,7 @@
           "content_chars": 73
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.464
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/kimi/kimi-k2.6/examples/10_json_schema.py",
@@ -461,7 +444,6 @@
         "MOONSHOT_API_KEY"
       ],
       "capability": "json_schema",
-      "tested_at": "2026-10-14T02:47:37.715119+00:00",
       "source_sha256": {
         "models/kimi/kimi-k2.6/examples/10_json_schema.py": "2acd14b5f6a7798f4e510cfcb71836d9dfd4866c599da34fb09361a2159dd999"
       },
@@ -496,8 +478,7 @@
           "content_chars": 25
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.474
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -508,5 +489,6 @@
     "passed": 10,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "bc4e96d1-8633-4bea-8df1-9206a8042b14"
 }

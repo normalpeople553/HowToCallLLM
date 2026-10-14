@@ -72,7 +72,7 @@ print("本次用量：", response.usage)
 
 ## 对应的原始实测证据
 
-当前源码的真实 HTTP 证据通过时间：2026-10-14T02:56:28.767300+00:00。[原始脱敏报告](../../verification/examples/2026-10-14-qwen-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
+当前源码已有通过的真实 HTTP 证据。[原始脱敏报告](../../verification/examples/2026-10-14-qwen-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
 
 源文件 SHA-256：`db698928da659024944cf0b8a48396e6fc72d569de86352a51e9ee93ab0c163b`
 

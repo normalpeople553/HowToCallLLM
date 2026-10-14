@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:56:26.414772+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:56:26.472152+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/01_basic.py": "bcd589398bfc2ed984cd9bddff6d2268b08bd5f3600a2dddb91852df63e4e767",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -53,8 +53,7 @@
           "content_chars": 40
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.66
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/02_streaming.py",
@@ -64,7 +63,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:56:29.132606+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/02_streaming.py": "e55bd1b4cf91c0df5fb6e6e1a633bc564d250044a86c0c7030b1b25e6e2aec80",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -100,8 +98,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.931
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/03_thinking.py",
@@ -111,7 +108,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T02:56:31.064158+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/03_thinking.py": "b7633157da189c29810fda8cbd6d352a67240c14cc8c7bd1129fce6855aadc2a",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -169,8 +165,7 @@
           "content_chars": 35
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 3.148
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/04_json_output.py",
@@ -180,7 +175,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "json_object",
-      "tested_at": "2026-10-14T02:56:34.211920+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/04_json_output.py": "3f9d204ee5c3882acd95cde5dc2c41b916167797c4c3c08daa69fff395b7b2ce",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -217,8 +211,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.642
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/05_tool_calling.py",
@@ -228,7 +221,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T02:56:35.854078+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/05_tool_calling.py": "4443f3f977684b1bbdcb4fc1eca20bfd7887e639bac26e9164ebcb7870e8e8af",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -286,8 +278,7 @@
           "content_chars": 94
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.077
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/06_vision.py",
@@ -297,7 +288,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "vision",
-      "tested_at": "2026-10-14T02:56:37.931199+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/06_vision.py": "4ade7b74f5a553cc7644c33e660ff876ac2646c3311084bbfbb85d9c142b3123",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -331,8 +321,7 @@
           "content_chars": 60
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.681
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/07_typescript.ts",
@@ -342,7 +331,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:56:39.612343+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/07_typescript.ts": "c70a8ae0b9200870541d6f5a64ac9ade6118a893909f0d17be57263925567da4",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446",
@@ -379,8 +367,7 @@
           "observation_status": "json_observed"
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.672
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/08_curl.sh",
@@ -390,7 +377,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:56:41.284136+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/08_curl.sh": "d219f504992a516dd50c4511b28cb333a506f8f53a9c9dfdd1932a3c5774f946",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446",
@@ -427,8 +413,7 @@
           "observation_status": "json_observed"
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.026
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/09_multi_turn.py",
@@ -438,7 +423,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T02:56:43.310224+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/09_multi_turn.py": "5db70e856f10142a248cf110ba086ff32abbe43f759328bd4b7e98bf4c72441d",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -495,8 +479,7 @@
           "content_chars": 5
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.874
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/10_vision_files.py",
@@ -506,7 +489,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "vision_files",
-      "tested_at": "2026-10-14T02:56:45.183932+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/10_vision_files.py": "d95280be75e5ea13005556b7ced562b5987807220d9f2a9756021e9100cebd50",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -547,8 +529,7 @@
           "content_chars": 58
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.44
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/11_responses_vision.py",
@@ -558,7 +539,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "responses_vision",
-      "tested_at": "2026-10-14T02:56:46.623917+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/11_responses_vision.py": "18b9ab46228939bb143f627952baec250730a5299a111243aa51fb2d8de9592c",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -591,8 +571,7 @@
           "content_chars": 97
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.823
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/12_thinking_tools.py",
@@ -602,7 +581,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T02:56:48.447252+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/12_thinking_tools.py": "889b701390c698e34e5b1eaa2133834a529b3ba4d868574109ce121512cff8f8",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -664,8 +642,7 @@
           "content_chars": 70
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.603
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/13_strict_tools.py",
@@ -675,7 +652,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "strict_tool_calling",
-      "tested_at": "2026-10-14T02:56:51.050026+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/13_strict_tools.py": "b8e3f22b181fb149606abd8f76232e379f8732791b66cf92fe4c8e2c2ce276aa",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -737,8 +713,7 @@
           "content_chars": 75
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.243
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/14_prefix_completion.py",
@@ -748,7 +723,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "chat_prefix_completion",
-      "tested_at": "2026-10-14T02:56:53.293465+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/14_prefix_completion.py": "1e3bc63e6dfab558dc220910b0f134cbf3474e7086946168a8df1e9f60a562d1",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -783,8 +757,7 @@
           "content_chars": 210
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.45
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/deepseek/deepseek-flash/examples/15_fim_completion.py",
@@ -794,7 +767,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "fim_completion",
-      "tested_at": "2026-10-14T02:56:54.743883+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/15_fim_completion.py": "7187a66a2005366d816facb1bb31db0c21463d7b4df5570a7c046d67fc6572c0",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
@@ -826,8 +798,7 @@
           ]
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.307
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "examples/01_quickstart.py",
@@ -837,7 +808,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "shared_example",
-      "tested_at": "2026-10-14T02:56:56.050913+00:00",
       "source_sha256": {
         "examples/01_quickstart.py": "a79d4f41fe142e93ff08eb382897df2d82a61b3efdba7a410a44a19775309631"
       },
@@ -866,8 +836,7 @@
           "content_chars": 34
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.354
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "examples/03_streaming.py",
@@ -877,7 +846,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "shared_example",
-      "tested_at": "2026-10-14T02:56:58.404778+00:00",
       "source_sha256": {
         "examples/03_streaming.py": "01b6fc7089df43c16a1570b087072530166d68718556b4890d4e4b3e6549b080"
       },
@@ -912,8 +880,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.258
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "examples/04_multi_turn.py",
@@ -923,7 +890,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "shared_example",
-      "tested_at": "2026-10-14T02:56:59.662630+00:00",
       "source_sha256": {
         "examples/04_multi_turn.py": "7831696c3a4e91d87e606bf0b254d292bfb1dacf6243335059a9a41afe7d35d5"
       },
@@ -979,8 +945,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.01
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -991,5 +956,6 @@
     "passed": 18,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "7db25dfb-938f-4afd-9ba2-95531ee75aa7"
 }

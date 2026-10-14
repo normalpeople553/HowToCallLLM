@@ -7,7 +7,6 @@
 """
 
 import argparse
-from datetime import datetime, timezone
 import importlib.util
 import json
 from pathlib import Path
@@ -47,13 +46,6 @@ def dependencies(root):
     return catalog, runner
 
 
-def _time(value):
-    parsed = datetime.fromisoformat(value) if isinstance(value, str) else None
-    if parsed is None or parsed.tzinfo is None:
-        raise ValueError("invalid_report_time")
-    return parsed.astimezone(timezone.utc)
-
-
 def _targets(root, entry, catalog):
     if entry["vendor"] != "shared":
         return {entry["model_id"]: catalog.API_HOSTS[entry["vendor"]]}
@@ -72,25 +64,33 @@ def _targets(root, entry, catalog):
 
 def _header_valid(report, catalog):
     privacy = report.get("privacy") if isinstance(report, dict) else None
-    return (
+    if not (
         isinstance(report, dict) and type(report.get("schema_version")) is int
-        and report["schema_version"] == 1 and report.get("kind") == "example_file_execution"
+        and report["schema_version"] in {1, 2} and report.get("kind") == "example_file_execution"
         and report.get("execution") == "real_vendor_api" and isinstance(privacy, dict)
         and catalog.PRIVACY_FLAGS <= privacy.keys() and all(value is False for value in privacy.values())
         and isinstance(report.get("results"), list) and all(isinstance(item, dict) for item in report["results"])
-    )
+    ):
+        return False
+    # v2 的整份报告隐私约束也覆盖不属于当前示例清单的记录和空结果集。
+    if report["schema_version"] == 2:
+        try:
+            catalog.evidence_metadata(report, {})
+        except (ValueError, TypeError, KeyError, AttributeError):
+            return False
+    return True
 
 
-def _attempt(root, entry, result, report_path, identity, targets, catalog, runner):
+def _attempt(root, entry, report, result, report_path, identity, targets, catalog, runner):
     """报告自称 passed 只是输入；必须以当前规则重新验证。"""
     attempt = {
         "report": report_path, "reported_status": result.get("status"),
-        "tested_at": result.get("tested_at"), "current_source": result.get("source_sha256") == identity,
+        "evidence_id": None, "current_source": result.get("source_sha256") == identity,
         "strict_passed": False, "issue": None, "request_count": 0,
     }
     try:
-        attempt["sort_time"] = _time(result.get("tested_at"))
-        attempt["tested_at"] = attempt["sort_time"].isoformat()
+        metadata = catalog.evidence_metadata(report, result)
+        attempt["evidence_id"] = metadata.get("evidence_id")
         if result.get("vendor") != entry["vendor"] or result.get("model_id") != entry["model_id"]:
             raise ValueError("model_or_vendor_mismatch")
         if result.get("execution") != "real_vendor_api" or result.get("status") not in runner.LIVE_STATUSES:
@@ -127,9 +127,6 @@ def _attempt(root, entry, result, report_path, identity, targets, catalog, runne
             else:
                 attempt["strict_passed"] = attempt["current_source"]
     except (ValueError, TypeError, KeyError, AttributeError):
-        if "sort_time" not in attempt:
-            attempt["tested_at"] = None
-        attempt["sort_time"] = attempt.get("sort_time", datetime.min.replace(tzinfo=timezone.utc))
         attempt["issue"] = "invalid_evidence"
     return attempt
 
@@ -177,16 +174,18 @@ def collect_release(root=ROOT):
             if not isinstance(source, str) or source not in rows:
                 continue
             row = rows[source]
-            attempt = _attempt(root, row, result, relative, row["identity"], row["targets"], catalog, runner)
+            attempt = _attempt(root, row, report, result, relative, row["identity"], row["targets"], catalog, runner)
             if counts[source] != 1:
                 attempt.update(strict_passed=False, issue="invalid_evidence")
             row["attempts"].append(attempt)
     final = []
     for row in rows.values():
-        attempts = sorted(row["attempts"], key=lambda item: (item["sort_time"], item["report"]))
+        attempts = sorted(row["attempts"], key=lambda item: item["report"])
         valid = [item for item in attempts if item["strict_passed"]]
         current = [item for item in attempts if item["current_source"]]
-        selected = (valid or current or attempts or [None])[-1]
+        source_verification = canonical.get(row["path"], {})
+        registered = [item for item in valid if item["report"] == source_verification.get("report")]
+        selected = (registered or valid or current or attempts or [None])[0]
         if valid:
             status = "passed"
         elif not attempts:
@@ -199,7 +198,6 @@ def collect_release(root=ROOT):
             status = "incomplete_evidence"
         else:
             status = selected["reported_status"]
-        source_verification = canonical.get(row["path"], {})
         if source_verification.get("live") == "passed" and not any(item["strict_passed"] and item["report"] == source_verification.get("report") for item in attempts):
             catalog_issues.append({"path": row["path"], "code": "catalog_passed_reference_lacks_strict_evidence"})
         final.append({
@@ -233,7 +231,7 @@ def render_page(release, language="zh"):
         "Python / TypeScript / cURL 的传输分别须为 `real_httpx` / `real_fetch` / `real_curl`；"
         "还核对源码与支持文件（含对应旁观辅助代码）哈希、厂商/型号、HTTP 成功、最终正常结束、非空正文、流结束标志及服务端业务状态。"
         "工具调用须最终回到正文，多厂商入口须各目标型号均完成。", "",
-        "同一当前源码若有多次执行，选择最新的严格通过记录作为有效证据；历史失败仍在下表保留。"
+        "同一当前源码若有多次执行，优先选择示例清单登记且严格通过的报告；其余记录按报告路径稳定选择，不按测试时间排序。历史失败仍在下表保留。"
         "“缺完整证据”表示观测不足，不是断言接口不支持该能力。`passed` 也不代表所有参数组合或语义正确率均已验证。", "",
         "```bash", "python tests/check_example_release.py --write", "python tests/check_example_release.py --check",
         "python tests/check_example_release.py --check --require-passed", "```", "",
@@ -242,12 +240,12 @@ def render_page(release, language="zh"):
         f"型号示例清单校验：{'通过' if release['catalog_valid'] and not release['catalog_issues'] else '未通过'}；"
         f"报告结构问题：{len(release['report_issues'])}。", "",
         "## 当前源码逐文件证据", "",
-        "| 文件 | 厂商 / 型号 | 当前状态 | 有效/最近记录 | HTTP 请求数 |",
+        "| 文件 | 厂商 / 型号 | 当前状态 | 有效证据 / 报告 | HTTP 请求数 |",
         "|---|---|---|---|---|",
     ]
     for row in release["rows"]:
         selected = row["selected"]
-        evidence = f"{selected['tested_at'] if isinstance(selected['tested_at'], str) else '时间无效'}<br>{_link(selected['report'])}" if selected else "—"
+        evidence = _link(selected["report"]) if selected else "—"
         lines.append(f"| {_link(row['path'], row['path'])} | {row['vendor']} / `{row['model_id']}` | {LABELS.get(row['status'], '证据无效')} | {evidence} | {selected['request_count'] if selected else 0} |")
     missing = [row for row in release["rows"] if row["status"] != "passed"]
     lines.extend(["", "## 尚未取得有效通过证据", ""])
@@ -256,7 +254,7 @@ def render_page(release, language="zh"):
     else:
         lines.append("无；所有当前文件均有严格通过证据。")
     lines.extend(["", "## 历史失败、旧通过与观测不足", "", "历史报告不覆盖、不删除；旧记录不会因重试成功而消失。", "",
-                  "| 文件 | 记录状态 | 源码身份 | 时间 / 报告 |", "|---|---|---|---|"])
+                  "| 文件 | 记录状态 | 源码身份 | 报告 |", "|---|---|---|---|"])
     history_count = 0
     for row in release["rows"]:
         for attempt in row["attempts"]:
@@ -270,7 +268,7 @@ def render_page(release, language="zh"):
                     state = "自报通过，但缺完整 HTTP 证据"
             if attempt["issue"] == "invalid_evidence":
                 state = "记录身份/元数据无效"
-            lines.append(f"| `{row['path']}` | {state} | {'当前' if attempt['current_source'] else '不匹配当前源码'} | {attempt['tested_at'] if isinstance(attempt['tested_at'], str) else '时间无效'}<br>{_link(attempt['report'])} |")
+            lines.append(f"| `{row['path']}` | {state} | {'当前' if attempt['current_source'] else '不匹配当前源码'} | {_link(attempt['report'])} |")
     if not history_count:
         lines.append("| — | 无历史失败或观测不足记录 | — | — |")
     if release["catalog_issues"] or release["report_issues"]:
@@ -298,7 +296,7 @@ def _render_page_en(release):
         "Python / TypeScript / cURL require `real_httpx` / `real_fetch` / `real_curl`, respectively. "
         "Checks cover source and support-file hashes (including transport observers), vendor/model identity, HTTP success, normal final completion, nonempty text, stream termination, and server business status. "
         "Tool workflows must return to final text; the multi-vendor entry point must complete for every target model.", "",
-        "For repeated executions of identical current source, the latest strict pass is the effective evidence. Historical failures remain below. "
+        "For repeated executions of identical current source, prefer the catalog-registered report when it strictly passes. Otherwise select deterministically by report path, not by test time. Historical failures remain below. "
         "Incomplete evidence means insufficient observation, not a conclusion that the API lacks the capability. "
         "A pass does not validate every parameter combination or semantic accuracy. Read the [English model manuals and parameter notes](../../models/README.en.md).", "",
         "```bash", "python tests/check_example_release.py --write", "python tests/check_example_release.py --check",
@@ -309,12 +307,12 @@ def _render_page_en(release):
         f"Report-structure issues: {len(release['report_issues'])}.", "",
         "Related evidence: [official-documentation example index](example-index.md) and [historical workflow status](verification-status.md).", "",
         "## Current-source evidence by file", "",
-        "| File | Vendor / model | Current status | Effective/latest record | HTTP requests |",
+        "| File | Vendor / model | Current status | Effective evidence / report | HTTP requests |",
         "|---|---|---|---|---|",
     ]
     for row in release["rows"]:
         selected = row["selected"]
-        evidence = f"{selected['tested_at'] if isinstance(selected['tested_at'], str) else 'Invalid time'}<br>{link(selected['report'])}" if selected else "—"
+        evidence = link(selected["report"]) if selected else "—"
         lines.append(f"| {link(row['path'], row['path'])} | {row['vendor']} / `{row['model_id']}` | {LABELS_EN.get(row['status'], 'Invalid evidence')} | {evidence} | {selected['request_count'] if selected else 0} |")
     missing = [row for row in release["rows"] if row["status"] != "passed"]
     lines.extend(["", "## Files without an effective pass", ""])
@@ -324,7 +322,7 @@ def _render_page_en(release):
         lines.append("None. Every current file has strict passing evidence.")
     lines.extend(["", "## Historical failures, old passes, and incomplete observations", "",
                   "Historical reports are neither overwritten nor deleted; a successful retry does not erase earlier records.", "",
-                  "| File | Recorded outcome | Source identity | Time / report |", "|---|---|---|---|"])
+                  "| File | Recorded outcome | Source identity | Report |", "|---|---|---|---|"])
     history_count = 0
     for row in release["rows"]:
         for attempt in row["attempts"]:
@@ -339,8 +337,7 @@ def _render_page_en(release):
             if attempt["issue"] == "invalid_evidence":
                 state = "Invalid record identity/metadata"
             source = "Current" if attempt["current_source"] else "Does not match current source"
-            tested_at = attempt["tested_at"] if isinstance(attempt["tested_at"], str) else "Invalid time"
-            lines.append(f"| `{row['path']}` | {state} | {source} | {tested_at}<br>{link(attempt['report'])} |")
+            lines.append(f"| `{row['path']}` | {state} | {source} | {link(attempt['report'])} |")
     if not history_count:
         lines.append("| — | No historical failure or incomplete observation | — | — |")
     if release["catalog_issues"] or release["report_issues"]:

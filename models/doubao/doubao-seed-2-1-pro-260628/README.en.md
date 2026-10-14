@@ -11,7 +11,7 @@ Find code/attribution in [sources.json](examples/sources.json) and the [example 
 | Item | Recorded value | Source |
 |---|---|---|
 | Model ID | `doubao-seed-2-1-pro-260628` | [Model list][models] |
-| Lifecycle | Listed as a past model; callable in the repository's 2026-10-13 test | [Model list][models]; [Historical report](verification/2026-10-13.json) |
+| Lifecycle | Listed as a past model; callable in the repository's historical test | [Model list][models]; [Historical report](verification/2026-10-13.json) |
 | Base URL | `https://ark.cn-beijing.volces.com/api/v3` | [Online inference API][api] |
 | Context | 256K tokens | [Model list][models] |
 | Default / maximum output | 4K / 256K tokens | [Model list][models] |
@@ -54,19 +54,19 @@ Prices vary with region, cache and promotions. This manual intentionally does no
 
 ## 6. Lifecycle recommendation
 
-“Past model” does not mean the endpoint immediately stopped accepting requests; the dated repository report shows successful calls. Project recommendation: do not make that observation the sole long-term dependency of a new project. Before release, evaluate an alternative from the [current model list][models] and make the Model ID configurable rather than silently replacing it.
+“Past model” does not mean the endpoint immediately stopped accepting requests; the historical repository report shows successful calls. Project recommendation: do not make that observation the sole long-term dependency of a new project. Before release, evaluate an alternative from the [current model list][models] and make the Model ID configurable rather than silently replacing it.
 
 ## 7. Fixed configuration and evidence
 
-The shared configuration is provider doubao, exact Model ID above, Base URL above, environment variable ARK_API_KEY and explicit thinking-off object `{"thinking":{"type":"disabled"}}` through extra_body. The original configuration's lifecycle label past_but_callable describes its dated observation, not a permanent guarantee. [Online inference][api] · [Model list][models]
+The shared configuration is provider doubao, exact Model ID above, Base URL above, environment variable ARK_API_KEY and explicit thinking-off object `{"thinking":{"type":"disabled"}}` through extra_body. The original configuration's lifecycle label past_but_callable describes its recorded observation, not a permanent guarantee. [Online inference][api] · [Model list][models]
 
-The [2026-10-13 legacy smoke report](verification/2026-10-13.json) checks only the first tool-call response and image-request format for those features. Strict unified results are in [historical status](../../../en/docs/verification-status.md); original-file runs are in [example status](../../../en/docs/example-status.md).
+The [Legacy smoke report](verification/2026-10-13.json) checks only the first tool-call response and image-request format for those features. Strict unified results are in [historical status](../../../en/docs/verification-status.md); original-file runs are in [example status](../../../en/docs/example-status.md).
 
 The shared unified-verifier command is `python tests/verify_doubao_seed_2_1_pro.py --report /tmp/doubao-verification.json`; this sends real requests and is not execution of all advanced files. See [verification](../../../en/docs/verification.md) for locked setup and per-file commands.
 
 ## 8. Pitfalls
 
-The legacy report's seven passes on 2026-10-13 do not make “still callable” equivalent to “suitable as a long-term default.” [Historical report](verification/2026-10-13.json) · [Model list][models]
+The legacy report's seven recorded passes do not make “still callable” equivalent to “suitable as a long-term default.” [Historical report](verification/2026-10-13.json) · [Model list][models]
 
 Check complete output, thinking budgets, JSON business fields and tool history; distinguish tool strict mode from final-output schema strict mode. Read [parameters](parameters.en.md) and [production pitfalls](../../../en/docs/production-pitfalls.md) for the actual field-level restrictions and project safety checks.
 

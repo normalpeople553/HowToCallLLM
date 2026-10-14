@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T04:12:36.411036+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T04:12:36.474074+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/01_basic.py": "ad0906242fa2c9590a4885b4a35fca59fbc40c97baef2e4ce8880a3062664469"
       },
@@ -53,8 +53,7 @@
           "content_chars": 45
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 26.996
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/02_streaming.py",
@@ -64,7 +63,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T04:13:05.480398+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/02_streaming.py": "c15b9908a8534e870a851772757659814697fbc605cc88e812ff89773cddcbae"
       },
@@ -98,8 +96,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 6.457
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/03_thinking.py",
@@ -109,7 +106,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T04:13:13.941603+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/03_thinking.py": "60757e4eca083e57b3442d5e10a786171834b21d3310c684a8504ab7a1f80126"
       },
@@ -143,8 +139,7 @@
           "content_chars": 36
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 15.905
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/04_json_output.py",
@@ -154,7 +149,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "json_object",
-      "tested_at": "2026-10-14T04:13:31.850974+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/04_json_output.py": "276c3673225035cb812fdc32a9dadc7b558d6542ba3c1cf8bd881e755f924345"
       },
@@ -191,8 +185,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 5.554
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/06_multi_turn.py",
@@ -202,7 +195,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T04:13:39.405163+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/06_multi_turn.py": "4bc9bfce56baa7255000c9d2a30bce94ad2e84b47d4402f538bfe41da81f6a9b"
       },
@@ -262,8 +254,7 @@
           "content_chars": 22
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.508
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7/examples/07_thinking_tools.py",
@@ -273,7 +264,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T04:13:50.922724+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7/examples/07_thinking_tools.py": "9195ec29284c547b427274e87b8f0dcd71223c7544e2f12577b4481a36bad9a5"
       },
@@ -336,8 +326,7 @@
           "content_chars": 309
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 15.988
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -348,5 +337,6 @@
     "passed": 6,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "5be03ee6-b0fd-4163-ada4-fa55ad0d9982"
 }

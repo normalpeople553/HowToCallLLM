@@ -2,6 +2,7 @@
 
 import importlib.util
 import contextlib
+import copy
 import io
 import json
 from pathlib import Path
@@ -12,6 +13,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from urllib.parse import urlparse
+from uuid import uuid4
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,7 +39,8 @@ class ExampleCatalogTests(unittest.TestCase):
         for row in rows:
             if row["verification"]["live"] != "not_run":
                 self.assertIn("report", row["verification"])
-                self.assertIn("tested_at", row["verification"])
+                self.assertTrue(row["verification"].get("evidence_id") or row["verification"].get("legacy_evidence") is True)
+            self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(row["verification"]))
 
     def test_exact_model_and_capability_filter_does_not_fallback(self):
         catalogs = catalog.load_catalogs()
@@ -73,7 +76,6 @@ class ExampleCatalogTests(unittest.TestCase):
                 self.assertIn(state, chinese)
                 self.assertIn(state, english)
                 if row["verification"]["live"] != "not_run":
-                    self.assertIn(row["verification"]["tested_at"], english)
                     self.assertIn(f"](../../{row['verification']['report']})", english)
                 for source in row["sources"]:
                     self.assertIn(f"]({source['url']})", english)
@@ -247,15 +249,108 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         self.assertNotIn(item["reason"], translated)
         self.assertNotEqual(translated, catalog.GAP_TRANSLATIONS["zhipu:vision"][1])
 
-    def test_valid_report_exposes_recorded_time_and_http_scope(self):
-        self.fixture()
+    def test_legacy_report_validates_time_but_exposes_only_legacy_identity_and_http_scope(self):
+        _, report = self.fixture()
         catalogs = catalog.load_catalogs(self.root)
         verification = catalog.select_examples(catalogs)[0]["verification"]
-        self.assertEqual(verification["tested_at"], "2026-10-14T03:04:05+00:00")
+        self.assertIs(verification["legacy_evidence"], True)
+        self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(verification))
+        self.assertEqual(catalog.evidence_metadata(report, report["results"][0]),
+                         {"legacy_tested_at": "2026-10-14T03:04:05+00:00"})
         self.assertEqual(verification["evidence_scope"], catalog.HTTP_SCOPE)
         rendered = catalog.render_index(catalogs)
         self.assertIn("mock_tested / passed", rendered)
-        self.assertIn("2026-10-14T03:04:05+00:00<br>[报告](../verification/examples/synthetic.json)<br>HTTP 元数据", rendered)
+        self.assertIn("[报告](../verification/examples/synthetic.json)<br>HTTP 元数据", rendered)
+        for language in ("zh", "en"):
+            rendered = catalog.render_index(catalogs, language=language)
+            self.assertNotIn(report["results"][0]["tested_at"], rendered)
+            self.assertNotIn("tested_at", rendered)
+
+    def version_two(self, report):
+        report["schema_version"] = 2
+        report["evidence_id"] = str(uuid4())
+        report["privacy"].update(test_timestamps_saved=False, duration_saved=False)
+        for result in report["results"]:
+            result.pop("tested_at", None)
+            result.pop("duration_seconds", None)
+        return report
+
+    def test_v2_opaque_identity_replaces_times_without_weakening_http_scope(self):
+        manifest, report = self.fixture()
+        self.version_two(report)
+        self.save(manifest, report)
+        self.assertEqual(catalog.evidence_metadata(report, report["results"][0]), {"evidence_id": report["evidence_id"]})
+        catalogs = catalog.load_catalogs(self.root)
+        verification = catalog.select_examples(catalogs)[0]["verification"]
+        self.assertEqual(verification["evidence_id"], report["evidence_id"])
+        self.assertEqual(verification["evidence_scope"], catalog.HTTP_SCOPE)
+        self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at", "legacy_evidence"}.intersection(verification))
+        for language, title in (("zh", "报告 / 证据"), ("en", "Report / evidence")):
+            page = catalog.render_index(catalogs, language=language)
+            self.assertIn(title, page)
+            self.assertNotIn("2026-10-14T03:04:05", page)
+        for mutation in (
+            lambda r: r["results"][0]["requests"][0].update(finish_reasons=["length"]),
+            lambda r: r["results"][0].update(source_sha256={}),
+            lambda r: r["results"][0].update(exit_code=1),
+            lambda r: r["results"][0]["requests"][0].update(http_status=429),
+        ):
+            broken = copy.deepcopy(report)
+            mutation(broken)
+            self.save(manifest, broken)
+            with self.assertRaises(ValueError):
+                catalog.load_catalogs(self.root)
+
+    def test_v2_requires_a_canonical_uuid4_and_explicit_false_time_privacy_flags(self):
+        _, report = self.fixture()
+        self.version_two(report)
+        mutations = {
+            "missing_id": lambda r: r.pop("evidence_id"),
+            "nonstring_id": lambda r: r.update(evidence_id=4),
+            "invalid_id": lambda r: r.update(evidence_id="not-a-uuid"),
+            "uuid1": lambda r: r.update(evidence_id="00000000-0000-1000-8000-000000000001"),
+            "uuid5": lambda r: r.update(evidence_id="00000000-0000-5000-8000-000000000001"),
+            "noncanonical_id": lambda r: r.update(evidence_id=r["evidence_id"].replace("-", "")),
+            "missing_timestamp_privacy": lambda r: r["privacy"].pop("test_timestamps_saved"),
+            "missing_duration_privacy": lambda r: r["privacy"].pop("duration_saved"),
+            "timestamp_saved": lambda r: r["privacy"].update(test_timestamps_saved=True),
+            "duration_saved": lambda r: r["privacy"].update(duration_saved=True),
+            "numeric_false": lambda r: r["privacy"].update(duration_saved=0),
+        }
+        for name, mutation in mutations.items():
+            with self.subTest(name=name):
+                broken = copy.deepcopy(report)
+                mutation(broken)
+                with self.assertRaises(ValueError):
+                    catalog.evidence_metadata(broken, broken["results"][0])
+
+    def test_v2_rejects_time_keys_anywhere_including_unselected_nested_records(self):
+        _, report = self.fixture()
+        self.version_two(report)
+        for key in ("tested_at", "duration_seconds"):
+            for location in ("top", "result", "request", "unselected_nested"):
+                with self.subTest(key=key, location=location):
+                    broken = copy.deepcopy(report)
+                    value = "2026-10-14T03:04:05+00:00" if key == "tested_at" else 1.5
+                    target = {"top": broken, "result": broken["results"][0],
+                              "request": broken["results"][0]["requests"][0]}.get(location)
+                    if target is not None:
+                        target[key] = value
+                    else:
+                        broken["extra"] = [{"nested": [{key: value}]}]
+                    with self.assertRaises(ValueError):
+                        catalog.evidence_metadata(broken, broken["results"][0])
+
+    def test_public_selection_cannot_echo_legacy_time_metadata_from_a_manifest(self):
+        manifest, _ = self.fixture(live="not_run")
+        verification = manifest["examples"][0]["verification"]
+        verification.update(tested_at="private-legacy-time", duration_seconds=1, legacy_tested_at="private-legacy-time")
+        self.save(manifest)
+        loaded = catalog.load_catalogs(self.root)
+        self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(catalog.select_examples(loaded)[0]["verification"]))
+        # Even direct selection of an in-memory catalog cannot reintroduce the fields.
+        loaded[0]["examples"][0]["verification"].update(verification)
+        self.assertNotIn("private-legacy-time", json.dumps(catalog.select_examples(loaded)))
 
     def test_all_observed_failure_and_missing_condition_statuses_are_allowed(self):
         manifest, report = self.fixture()
@@ -289,6 +384,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
             "missing_hashes": lambda r: r["results"][0].pop("source_sha256"),
             "missing_time": lambda r: r["results"][0].pop("tested_at"),
             "time_without_zone": lambda r: r["results"][0].update(tested_at="2026-10-14T03:04:05"),
+            "invalid_legacy_time": lambda r: r["results"][0].update(tested_at="not-a-date"),
         }
         for name, mutation in mutations.items():
             with self.subTest(name=name):

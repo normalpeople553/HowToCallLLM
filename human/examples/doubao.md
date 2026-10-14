@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
 ## 对应的原始实测证据
 
-当前源码的真实 HTTP 证据通过时间：2026-10-14T02:56:29.944849+00:00。[原始脱敏报告](../../verification/examples/2026-10-14-doubao-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
+当前源码已有通过的真实 HTTP 证据。[原始脱敏报告](../../verification/examples/2026-10-14-doubao-attempt3.json) · [当前状态](../../docs/示例实测状态.md)
 
 源文件 SHA-256：`5edb7519c41bd3dffb4e4026b2dd13b98ccf2ea91d13b94a9a0078a20f8754cd`
 

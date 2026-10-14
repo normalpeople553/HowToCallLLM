@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
+from uuid import RFC_4122, UUID
 
 import provider_verify as verify
 
@@ -210,6 +211,33 @@ class WorkflowTests(unittest.TestCase):
 
 
 class ReportingTests(unittest.TestCase):
+    def test_strict_reports_use_random_identity_without_test_timestamps_or_durations(self):
+        results = [{"id": "chat_completions", "status": "passed", "requests": []}]
+        report = verify.make_report(results, source={}, single_vendor="kimi")
+        next_report = verify.make_report(results, source={})
+        self.assertEqual(report["schema_version"], 3)
+        identity = UUID(report["evidence_id"])
+        self.assertEqual(identity.version, 4)
+        self.assertEqual(identity.variant, RFC_4122)
+        self.assertEqual(str(identity), report["evidence_id"])
+        self.assertNotEqual(report["evidence_id"], next_report["evidence_id"])
+        self.assertEqual(report["results"], results)
+        self.assertEqual(report["counts"]["passed"], 1)
+        self.assertIs(report["privacy"]["test_timestamps_saved"], False)
+        self.assertIs(report["privacy"]["duration_saved"], False)
+        self.assertFalse(any(report["privacy"].values()))
+
+        def check_private_fields(value):
+            if isinstance(value, dict):
+                self.assertFalse({"tested_at", "duration_seconds"} & set(value))
+                for child in value.values():
+                    check_private_fields(child)
+            elif isinstance(value, list):
+                for child in value:
+                    check_private_fields(child)
+
+        check_private_fields(report)
+
     def test_default_cli_selects_all_vendors_without_reading_keys(self):
         with patch.dict(os.environ, {}, clear=True), patch.object(verify, "load_env"), patch.object(verify, "source_metadata", return_value={}), contextlib.redirect_stdout(io.StringIO()) as output:
             status = verify.main([])
@@ -251,6 +279,35 @@ class ReportingTests(unittest.TestCase):
             verify.write_report(destination, {"replacement": True}, overwrite=True)
             self.assertEqual(json.loads(destination.read_text()), {"replacement": True})
 
+    def test_write_report_rejects_flat_and_nested_time_fields_before_creating_or_overwriting(self):
+        for field, value in (("tested_at", "fixture-time"), ("duration_seconds", 1.25)):
+            for payload in ({field: value}, {"results": [{"requests": [{"response": {field: value}}]}]}):
+                with self.subTest(field=field, payload=payload), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    destination = root / "not-created" / "report.json"
+                    original = json.dumps(payload, sort_keys=True)
+                    with self.assertRaisesRegex(ValueError, "report_contains_test_timestamp_or_duration"):
+                        verify.write_report(destination, payload)
+                    self.assertFalse(destination.parent.exists())
+                    self.assertFalse(destination.exists())
+                    self.assertEqual(json.dumps(payload, sort_keys=True), original)
+                    existing = root / "existing.json"
+                    verify.write_report(existing, {"original": True})
+                    before = existing.read_bytes()
+                    with self.assertRaises(ValueError):
+                        verify.write_report(existing, payload, overwrite=True)
+                    self.assertEqual(existing.read_bytes(), before)
+
+    def test_write_report_rejects_time_fields_carried_from_old_results_without_mutating_them(self):
+        old_results = [{"status": "passed", "tested_at": "fixture-time", "requests": []}]
+        report = verify.make_report(old_results, source={})
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "not-created" / "report.json"
+            with self.assertRaises(ValueError):
+                verify.write_report(destination, report)
+            self.assertFalse(destination.parent.exists())
+        self.assertEqual(old_results[0]["tested_at"], "fixture-time")
+
     def test_exit_code_is_zero_only_when_every_selected_test_passes(self):
         for statuses, expected in ((["passed"], 0), (["passed", "skipped"], 2), (["rate_limited"], 2), (["failed", "rate_limited"], 1), ([], 2)):
             self.assertEqual(verify.result_exit_code(verify.count_results([{"status": value} for value in statuses])), expected)
@@ -269,6 +326,12 @@ class ReportingTests(unittest.TestCase):
             self.assertEqual(status, 2)
             self.assertEqual(report["model_id"], "kimi-k2.6")
             self.assertEqual(report["counts"]["skipped"], 1)
+            self.assertEqual(report["schema_version"], 3)
+            self.assertEqual(UUID(report["evidence_id"]).version, 4)
+            self.assertNotIn("tested_at", report)
+            self.assertNotIn("duration_seconds", report)
+            self.assertIs(report["privacy"]["test_timestamps_saved"], False)
+            self.assertIs(report["privacy"]["duration_saved"], False)
             self.assertFalse(any(report["privacy"].values()))
             self.assertIn("python", report["runtime"])
             self.assertIn("openai", report["runtime"])

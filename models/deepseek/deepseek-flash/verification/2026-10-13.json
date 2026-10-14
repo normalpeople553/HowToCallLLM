@@ -1,7 +1,6 @@
 {
   "schema_version": 1,
   "model_id": "deepseek-flash",
-  "tested_at": "2026-10-13",
   "implementation_commit": "30b9dc2",
   "test_script": "tests/verify_deepseek_flash.py",
   "runtime": {
@@ -12,7 +11,9 @@
     "api_key_saved": false,
     "response_content_saved": false,
     "reasoning_content_saved": false,
-    "request_id_saved": false
+    "request_id_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "summary": {
     "passed": 7,
@@ -59,5 +60,6 @@
       "output_tokens": 2,
       "content_chars": 3
     }
-  }
+  },
+  "evidence_id": "9093dfe8-120a-4831-856c-d44fd26f6726"
 }

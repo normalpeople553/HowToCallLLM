@@ -20,6 +20,7 @@ import types
 import unittest
 from unittest.mock import patch
 from urllib.parse import urlsplit
+from uuid import RFC_4122, UUID
 import zlib
 
 
@@ -349,6 +350,77 @@ class LiveExampleRunnerTests(unittest.TestCase):
             {"http_status": 200, "finish_reasons": ["stop"], "content_chars": 20},
         ])
         self.assertEqual(result["status"], "passed")
+        self.assertNotIn("tested_at", result)
+        self.assertNotIn("duration_seconds", result)
+
+    def test_new_report_uses_random_evidence_identity_without_test_times_or_durations(self):
+        result = self.execute_with_metadata([
+            {"http_status": 200, "finish_reasons": ["stop"], "content_chars": 20},
+        ])
+        with patch.object(runner.importlib.metadata, "version", return_value="fixture-sdk"):
+            report = runner.make_report([result])
+            next_report = runner.make_report()
+        self.assertEqual(report["schema_version"], 2)
+        identity = UUID(report["evidence_id"])
+        self.assertEqual(identity.version, 4)
+        self.assertEqual(identity.variant, RFC_4122)
+        self.assertEqual(str(identity), report["evidence_id"])
+        self.assertNotEqual(report["evidence_id"], next_report["evidence_id"])
+        self.assertEqual(report["results"], [result])
+        self.assertEqual(report["runtime"]["openai"], "fixture-sdk")
+        self.assertIs(report["privacy"]["test_timestamps_saved"], False)
+        self.assertIs(report["privacy"]["duration_saved"], False)
+        self.assertFalse(any(report["privacy"].values()))
+
+        def check_private_fields(value):
+            if isinstance(value, dict):
+                self.assertFalse({"tested_at", "duration_seconds"} & set(value))
+                for child in value.values():
+                    check_private_fields(child)
+            elif isinstance(value, list):
+                for child in value:
+                    check_private_fields(child)
+
+        check_private_fields(report)
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "fixture-report.json"
+            runner.write_report(destination, report)
+            self.assertEqual(json.loads(destination.read_text(encoding="utf-8")), report)
+
+    def test_execution_cli_keeps_timeout_and_delay_controls_without_recording_elapsed_time(self):
+        entries = runner.discover()[:2]
+        results = [{**entry, "status": "passed", "requests": []} for entry in entries]
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "fixture-report.json"
+            with patch.object(sys, "argv", [str(SCRIPT), "--execute", "--report", str(destination), "--timeout", "17", "--delay", "0.5"]), \
+                    patch.object(runner, "discover", return_value=entries), \
+                    patch.object(runner, "credentials", return_value={}), \
+                    patch.object(runner, "prepare_inputs", side_effect=lambda _directory, env: env), \
+                    patch.object(runner, "execute_entry", side_effect=results) as execute, \
+                    patch.object(runner.time, "sleep") as sleep, \
+                    patch.object(runner.importlib.metadata, "version", return_value="fixture-sdk"), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(runner.main(), 0)
+            self.assertEqual([call.args[-1] for call in execute.call_args_list], [17, 17])
+            sleep.assert_called_once_with(0.5)
+            report = json.loads(destination.read_text(encoding="utf-8"))
+        self.assertEqual(report["schema_version"], 2)
+        self.assertEqual(report["summary"]["passed"], 2)
+        self.assertNotIn("tested_at", report)
+        self.assertNotIn("duration_seconds", report)
+        self.assertEqual(report["results"], results)
+
+    def test_process_timeout_still_limits_execution_without_recording_duration(self):
+        entry = runner.discover()[0]
+        env = {key: SECRET for key in entry["required_keys"]}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(
+            runner.subprocess, "run", side_effect=runner.subprocess.TimeoutExpired("fixture", 7),
+        ) as execute:
+            result = runner.execute_entry(entry, env, Path(temporary), 7)
+        self.assertEqual(execute.call_args.kwargs["timeout"], 7)
+        self.assertEqual(result["status"], "timeout")
+        self.assertNotIn("tested_at", result)
+        self.assertNotIn("duration_seconds", result)
 
     def test_streaming_requires_protocol_done_not_just_stop_then_eof(self):
         complete = {
@@ -418,6 +490,8 @@ class LiveExampleRunnerTests(unittest.TestCase):
         execute.assert_not_called()
         self.assertEqual(result["status"], "missing_key")
         self.assertEqual(result["missing_key_names"], entry["required_keys"])
+        self.assertNotIn("tested_at", result)
+        self.assertNotIn("duration_seconds", result)
 
     def test_write_report_does_not_overwrite_historical_evidence(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -426,6 +500,36 @@ class LiveExampleRunnerTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 runner.write_report(path, {"version": 2})
             self.assertEqual(json.loads(path.read_text(encoding="utf-8")), {"version": 1})
+
+    def test_write_report_rejects_flat_and_nested_time_fields_before_touching_destination(self):
+        for field, value in (("tested_at", "fixture-time"), ("duration_seconds", 1.25)):
+            for payload in ({field: value}, {"results": [{"requests": [{"response": {field: value}}]}]}):
+                with self.subTest(field=field, payload=payload), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    destination = root / "not-created" / "report.json"
+                    original = json.dumps(payload, sort_keys=True)
+                    with self.assertRaisesRegex(ValueError, "report_contains_test_timestamp_or_duration"):
+                        runner.write_report(destination, payload)
+                    self.assertFalse(destination.parent.exists())
+                    self.assertFalse(destination.exists())
+                    self.assertEqual(json.dumps(payload, sort_keys=True), original)
+                    existing = root / "existing.json"
+                    runner.write_report(existing, {"original": True})
+                    before = existing.read_bytes()
+                    with self.assertRaises(ValueError):
+                        runner.write_report(existing, payload)
+                    self.assertEqual(existing.read_bytes(), before)
+
+    def test_write_report_rejects_time_fields_carried_from_old_results_without_mutating_them(self):
+        old_results = [{"status": "passed", "duration_seconds": 0.5, "requests": []}]
+        with patch.object(runner.importlib.metadata, "version", return_value="fixture-sdk"):
+            report = runner.make_report(old_results)
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "not-created" / "report.json"
+            with self.assertRaises(ValueError):
+                runner.write_report(destination, report)
+            self.assertFalse(destination.parent.exists())
+        self.assertEqual(old_results[0]["duration_seconds"], 0.5)
 
 
 @unittest.skipUnless(SDK_AVAILABLE, "requires installed real openai/httpx; no fake SDK fallback")

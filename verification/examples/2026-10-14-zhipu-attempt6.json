@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T03:14:09.651486+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T03:14:09.721623+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/01_basic.py": "c0c4ed3b5b6ac4f0bfa184b985b87e6e0f4c0be7070adff22f24f7a5013a9cb7"
       },
@@ -53,8 +53,7 @@
           "content_chars": 40
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.569
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7-flash/examples/02_streaming.py",
@@ -64,7 +63,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T03:14:49.295144+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/02_streaming.py": "1804d827c3a1d06477ee6e07657cf1ad069bef321e514906288ce1b9730e1021"
       },
@@ -98,8 +96,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 44.202
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7-flash/examples/03_thinking.py",
@@ -109,7 +106,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T03:16:03.502324+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/03_thinking.py": "caef6ffaf46220a52f40ea3f68d13312300462c48f1a2ec5ea32acdbf34593e2"
       },
@@ -157,8 +153,7 @@
           "content_chars": 91
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 33.582
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7-flash/examples/05_tool_calling.py",
@@ -168,7 +163,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T03:17:07.089698+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/05_tool_calling.py": "99edd2e0acba5594e7fb223630ad6ec5bb69c20cec33f15c2ad8570e8bcc0985"
       },
@@ -255,8 +249,7 @@
           "content_chars": 89
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 57.989
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7-flash/examples/06_multi_turn.py",
@@ -266,7 +259,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T03:18:35.084834+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/06_multi_turn.py": "56a6a04c082497a8068ec6678c48e98d2f9627a96f99380919d24623e1be2c0d"
       },
@@ -318,8 +310,7 @@
       ],
       "error_type": "RateLimitError",
       "http_status": 429,
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 10.302
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/zhipu/glm-4.7-flash/examples/07_thinking_tools.py",
@@ -329,7 +320,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T03:19:15.391387+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/07_thinking_tools.py": "44f7ac98347b888d4a7bb2728ba9894ee65c73cbf79e20652f2b612e571e8af3"
       },
@@ -384,8 +374,7 @@
       ],
       "error_type": "RateLimitError",
       "http_status": 429,
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 37.391
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -396,5 +385,6 @@
     "passed": 4,
     "rate_limited": 2,
     "timeout": 0
-  }
+  },
+  "evidence_id": "1618be6e-90ee-4125-aebe-d3e3d6b2d7fa"
 }

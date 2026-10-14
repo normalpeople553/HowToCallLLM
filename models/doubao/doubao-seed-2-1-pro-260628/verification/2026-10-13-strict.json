@@ -1,6 +1,5 @@
 {
-  "schema_version": 2,
-  "tested_at": "2026-10-13T17:15:53.648471+08:00",
+  "schema_version": 3,
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -260,8 +259,11 @@
     "tool_arguments_saved": false,
     "request_id_saved": false,
     "request_messages_saved": false,
-    "raw_error_saved": false
+    "raw_error_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "vendor": "doubao",
-  "model_id": "doubao-seed-2-1-pro-260628"
+  "model_id": "doubao-seed-2-1-pro-260628",
+  "evidence_id": "b65d4220-6b7f-497c-9e10-2f56bef7244e"
 }

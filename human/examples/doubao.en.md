@@ -77,7 +77,7 @@ The code prints final content and usage statistics. Wording is not fixed: the or
 
 ## Original execution evidence
 
-Current-source HTTP evidence passed at 2026-10-14T02:56:29.944849+00:00. [Original sanitized report](../../verification/examples/2026-10-14-doubao-attempt3.json) · [Current status](../../en/docs/example-status.md)
+The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-doubao-attempt3.json) · [Current status](../../en/docs/example-status.md)
 
 Source SHA-256: `5edb7519c41bd3dffb4e4026b2dd13b98ccf2ea91d13b94a9a0078a20f8754cd`
 

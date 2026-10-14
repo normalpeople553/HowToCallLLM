@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:57:59.735391+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:57:59.755982+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/02_streaming.py": "dc8880cbd62762b74d45509e0fe1d0515a1053d168a2d14873d258734c73342e"
       },
@@ -60,8 +60,7 @@
           "transport_eof": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.038
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -72,5 +71,6 @@
     "passed": 1,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "6d9268f2-2d73-40c1-ab82-664a4e49d954"
 }

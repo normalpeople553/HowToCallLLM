@@ -36,7 +36,7 @@
 | 参数解释 | [参数导航](../docs/参数说明与调参.md) | 按任务只读对应型号；区分 SDK 配置、模型参数与本地安全限制 |
 | 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与证据 |
 | 生成新组合 | [generate_snippet.py](../skills/model-manual/scripts/generate_snippet.py) | 根据支持的语言/任务组合生成，不自动继承现成文件通过状态 |
-| 当前逐文件结果 | [实测状态](../docs/示例实测状态.md) · [原始报告](../verification/examples/) | 核对身份、时间、源码/支持文件哈希、正常结束和证据范围 |
+| 当前逐文件结果 | [实测状态](../docs/示例实测状态.md) · [原始报告](../verification/examples/) | 核对身份、证据编号、源码/支持文件哈希、正常结束和证据范围 |
 | 旧型号能力检查 | [历史统一验证](../docs/验证状态.md) | 只用于报告里的固定测试项，不替代逐文件执行 |
 
 查询和生成命令在仓库根目录运行，以下命令不发请求：

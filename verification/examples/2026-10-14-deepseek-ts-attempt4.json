@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T03:05:29.781093+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "DEEPSEEK_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T03:05:29.847566+00:00",
       "source_sha256": {
         "models/deepseek/deepseek-flash/examples/07_typescript.ts": "c70a8ae0b9200870541d6f5a64ac9ade6118a893909f0d17be57263925567da4",
         "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446",
@@ -60,8 +60,7 @@
           "observation_status": "json_observed"
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.711
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -72,5 +71,6 @@
     "passed": 1,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "3dc2ae87-5b9c-48da-961e-e1a6a9af656f"
 }

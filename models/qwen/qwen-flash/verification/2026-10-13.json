@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
+  "evidence_id": "baa91e94-e506-431d-90c0-d97b149c46fd",
   "model_id": "qwen-flash",
-  "tested_at": "2026-10-13",
   "implementation_commit": "e614377",
   "test_script": "tests/verify_qwen_flash.py",
   "runtime": {"python": "3.11.15", "openai": "3.29.0"},
-  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false},
+  "privacy": {"api_key_saved": false, "response_content_saved": false, "reasoning_content_saved": false, "request_id_saved": false, "test_timestamps_saved": false, "duration_saved": false},
   "summary": {"passed": 6, "failed": 0},
   "tests": {
     "chat_completions": {"status": "passed", "input_tokens": 12, "output_tokens": 1, "content_chars": 2},

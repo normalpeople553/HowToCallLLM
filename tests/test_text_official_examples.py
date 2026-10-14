@@ -207,7 +207,8 @@ class TextOfficialExampleTests(unittest.TestCase):
                 else:
                     self.assertTrue((ROOT / verification["report"]).is_file())
                     self.assertEqual(verification["report"], checked["report"])
-                    self.assertIn("tested_at", checked)
+                    self.assertTrue(checked.get("evidence_id") or checked.get("legacy_evidence") is True)
+                    self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(checked))
                 self.assertIn(entry["verification"]["offline"], {"mock_tested", "compile_checked"})
                 compile((directory / entry["file"]).read_text(encoding="utf-8"), entry["file"], "exec")
             for item in entries + manifest["not_integrated"]:

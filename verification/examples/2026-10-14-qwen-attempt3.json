@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:56:28.745022+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:56:28.767300+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/01_basic.py": "db698928da659024944cf0b8a48396e6fc72d569de86352a51e9ee93ab0c163b"
       },
@@ -52,8 +52,7 @@
           "content_chars": 31
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.448
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/02_streaming.py",
@@ -63,7 +62,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:56:30.215575+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/02_streaming.py": "d850c2fac3acdebf2e0ea4fffd10b16c259ce8490097447cab37a5cfcc38aceb"
       },
@@ -90,8 +88,7 @@
           "sse_done": true
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.183
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/03_thinking.py",
@@ -101,7 +98,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T02:56:31.398847+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/03_thinking.py": "0be971af7fa52d446e4bc25877712d54e68fdea4f53f3979b52fb9555aa2f07a"
       },
@@ -132,8 +128,7 @@
           "content_chars": 23
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 9.918
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/04_json_output.py",
@@ -143,7 +138,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "json_object",
-      "tested_at": "2026-10-14T02:56:41.317383+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/04_json_output.py": "824eb569552cd58563162631922d49d92290b8977183947b99ec3df5cae7e1c3"
       },
@@ -177,8 +171,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 0.759
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/05_tool_calling.py",
@@ -188,7 +181,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T02:56:42.076393+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/05_tool_calling.py": "d4272db09f69912afc37ae67fd82926b20f649d2b92afc94d6e2a25a096191b6"
       },
@@ -241,8 +233,7 @@
           "content_chars": 27
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.527
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/06_multi_turn.py",
@@ -252,7 +243,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T02:56:43.603541+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/06_multi_turn.py": "3a42655644b193cee9907725a5553cb72253a2582104507840299bdd8e98177c"
       },
@@ -306,8 +296,7 @@
           "content_chars": 22
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 1.122
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/qwen/qwen-flash/examples/07_thinking_tools.py",
@@ -317,7 +306,6 @@
         "DASHSCOPE_API_KEY"
       ],
       "capability": "thinking_tool_calling",
-      "tested_at": "2026-10-14T02:56:44.725995+00:00",
       "source_sha256": {
         "models/qwen/qwen-flash/examples/07_thinking_tools.py": "144a2f77a1d719b079fbd5fe8fd75a65bad77961828a361eb5ad611a862d5526"
       },
@@ -374,8 +362,7 @@
           "content_chars": 56
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 3.935
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -386,5 +373,6 @@
     "passed": 7,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "9a680a55-f656-4d3f-b7ee-9f8b0c6d8e8c"
 }

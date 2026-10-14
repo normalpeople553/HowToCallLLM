@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import sys
 from urllib.parse import urlparse
+from uuid import RFC_4122, UUID
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -65,6 +66,51 @@ GAP_TRANSLATIONS = {
 def _require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def evidence_metadata(report, result):
+    """Validate evidence identity/privacy without exposing legacy execution times.
+
+    Schema 1 timestamps are accepted only as validated internal compatibility
+    metadata. Schema 2 uses an opaque UUIDv4 and forbids saved execution times
+    and durations anywhere in the report. Invalid metadata raises ValueError.
+    """
+    _require(isinstance(report, dict) and type(report.get("schema_version")) is int
+             and report["schema_version"] in {1, 2}, "文件级线上报告 schema_version 无效")
+    _require(isinstance(result, dict), "文件级结果必须为对象")
+    privacy = report.get("privacy")
+    required_flags = PRIVACY_FLAGS | ({"test_timestamps_saved", "duration_saved"} if report["schema_version"] == 2 else set())
+    _require(isinstance(privacy, dict) and required_flags <= privacy.keys()
+             and all(value is False for value in privacy.values()), "真实报告必须声明未保存敏感内容及该版本要求的隐私信息")
+    if report["schema_version"] == 1:
+        tested_at = result.get("tested_at")
+        _require(isinstance(tested_at, str), "文件级报告缺少 tested_at")
+        try:
+            recorded_time = datetime.fromisoformat(tested_at)
+        except ValueError as error:
+            raise ValueError("旧版文件级报告时间无效") from error
+        _require(recorded_time.tzinfo is not None, "文件级报告时间必须包含时区")
+        return {"legacy_tested_at": tested_at}
+
+    def reject_execution_times(value):
+        if isinstance(value, dict):
+            _require(not {"tested_at", "duration_seconds"}.intersection(value), "新版报告不能保存实测时间或耗时")
+            for nested in value.values():
+                reject_execution_times(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                reject_execution_times(nested)
+
+    reject_execution_times(report)
+    evidence_id = report.get("evidence_id")
+    _require(isinstance(evidence_id, str), "新版报告缺少 evidence_id")
+    try:
+        identity = UUID(evidence_id)
+    except ValueError as error:
+        raise ValueError("evidence_id 必须为规范 UUIDv4") from error
+    _require(identity.version == 4 and identity.variant == RFC_4122 and str(identity) == evidence_id,
+             "evidence_id 必须为规范 UUIDv4")
+    return {"evidence_id": evidence_id}
 
 
 def _sources(sources, vendor):
@@ -132,6 +178,8 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     live = verification.get("live")
     _require(isinstance(live, str) and live in LIVE_STATES, "未知文件级线上验证状态")
     _require(isinstance(verification.get("note"), str) and bool(verification["note"].strip()), "文件级验证缺少范围说明")
+    for key in ("tested_at", "duration_seconds", "legacy_tested_at", "evidence_id", "legacy_evidence"):
+        verification.pop(key, None)
     if live == "not_run":
         _require(not verification.get("report"), "not_run 不能引用线上验证报告")
         return
@@ -139,10 +187,8 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     if report_path not in reports:
         reports[report_path] = json.loads(report_path.read_text(encoding="utf-8"))
     report = reports[report_path]
-    _require(isinstance(report, dict) and type(report.get("schema_version")) is int and report["schema_version"] == 1, "文件级线上报告 schema_version 无效")
+    _require(isinstance(report, dict) and type(report.get("schema_version")) is int and report["schema_version"] in {1, 2}, "文件级线上报告 schema_version 无效")
     _require(report.get("kind") == "example_file_execution" and report.get("execution") == "real_vendor_api", "必须使用真实逐文件执行报告，不能复用型号能力报告")
-    privacy = report.get("privacy")
-    _require(isinstance(privacy, dict) and PRIVACY_FLAGS <= privacy.keys() and all(value is False for value in privacy.values()), "真实报告必须声明未保存密钥、正文、思考、原始错误和请求消息")
     results = report.get("results")
     _require(isinstance(results, list) and all(isinstance(item, dict) for item in results), "文件级线上报告缺少 results 列表")
     matching = [item for item in results if item.get("path") == source_path]
@@ -151,10 +197,7 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     _require(result.get("vendor") == vendor and result.get("model_id") == model, "报告厂商/型号与示例不一致")
     _require(result.get("execution") == "real_vendor_api" and result.get("status") == live, "报告执行方式/状态与清单不一致")
     _require(result.get("source_sha256") == file_identity(root, source_path), "示例或支持文件已变更，不能沿用旧文件级报告")
-    tested_at = result.get("tested_at")
-    _require(isinstance(tested_at, str), "文件级报告缺少 tested_at")
-    recorded_time = datetime.fromisoformat(tested_at)
-    _require(recorded_time.tzinfo is not None, "文件级报告时间必须包含时区")
+    metadata = evidence_metadata(report, result)
     requests = result.get("requests", [])
     _require(isinstance(requests, list) and all(isinstance(item, dict) for item in requests), "文件级请求记录必须为列表")
     suffix = Path(source_path).suffix
@@ -171,8 +214,8 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
         _require(bool(requests) and scope == HTTP_SCOPE, "所有语言的 passed 必须有真实 HTTP 元数据，不能只凭进程退出")
         target_requests = [request for request in requests if request.get("requested_model") == model]
         _require(bool(target_requests) and _completion_succeeded(target_requests[-1]), "passed 必须有当前型号最后一次请求的正常结束、非空最终正文及完整传输/业务状态证据")
-    # 日期与范围来自通过身份/哈希校验的报告，而不是清单的自填声明。
-    verification["tested_at"] = tested_at
+    # 公开结果只暴露不透明证据身份，不传出旧版报告的时间。
+    verification.update(metadata if "evidence_id" in metadata else {"legacy_evidence": True})
     verification["evidence_scope"] = scope
 
 
@@ -228,12 +271,16 @@ def select_examples(catalogs, vendor=None, model=None, capability=None):
         for entry in catalog["examples"]:
             if capability and entry["capability"] != capability:
                 continue
+            public_entry = {**entry, "verification": {
+                key: value for key, value in entry["verification"].items()
+                if key not in {"tested_at", "duration_seconds", "legacy_tested_at"}
+            }}
             result.append({
                 "vendor": catalog["vendor"], "model_id": catalog["model_id"],
                 "checked_at": catalog["checked_at"], "catalog_path": catalog["catalog_path"],
                 **({"parameters_path": catalog["parameters_path"]} if "parameters_path" in catalog else {}),
                 "path": str(Path(catalog["catalog_path"]).parent / entry["file"]).replace("\\", "/"),
-                **entry,
+                **public_entry,
             })
     return result
 
@@ -284,7 +331,7 @@ def render_index(catalogs, language="zh"):
         "- `live=passed`：当前文件及支持文件哈希匹配真实逐文件报告，进程退出及示例自身响应检查通过。Python / TypeScript / cURL 分别须有 `real_httpx` / `real_fetch` / `real_curl` HTTP 证据；当前型号最后一次请求须成功、正常结束、最终正文非空、无未处理工具调用和业务/旁观错误，流式请求还须有 `[DONE]` 或真实传输结束标志。旧进程模式报告保留，但不能作为清单的 `passed` 证据。",
         "- `passed` 不等于所有参数组合都受支持，不代表语义正确率、图片/视频识别质量或未来仍可调用；参数含义请先读对应型号的参数页。",
         "- `failed` / `rate_limited` / `timeout` 是未通过；`missing_key` / `missing_input` / `missing_runtime` 是缺少运行条件，不能当作真实调用成功。",
-        "- `live=not_run` 表示没有该文件的线上执行证据。非 `not_run` 项须链接真实逐文件报告，并核对型号、状态、源码和支持文件哈希；日期取自报告。型号历史报告见[验证状态](验证状态.md)，不能继承为示例文件的实测证据。", "",
+        "- `live=not_run` 表示没有该文件的线上执行证据。非 `not_run` 项须链接真实逐文件报告，并核对型号、状态、源码和支持文件哈希；不展示实测时间或耗时。型号历史报告见[验证状态](验证状态.md)，不能继承为示例文件的实测证据。", "",
     ]
     for catalog in catalogs:
         directory = Path(catalog["catalog_path"]).parent.as_posix()
@@ -295,7 +342,7 @@ def render_index(catalogs, language="zh"):
         if "parameters_path" in catalog:
             lines.extend([f"调用前必读：[逐参数说明与文件映射](../{catalog['parameters_path']})。", ""])
         lines.extend([
-            "| 功能 / 文件 | 能力检索词 | 必需环境变量 | 官方来源 | 离线 / 逐文件线上 | 时间 / 报告 / 证据 |",
+            "| 功能 / 文件 | 能力检索词 | 必需环境变量 | 官方来源 | 离线 / 逐文件线上 | 报告 / 证据 |",
             "|---|---|---|---|---|---|",
         ])
         for entry in catalog["examples"]:
@@ -305,7 +352,7 @@ def render_index(catalogs, language="zh"):
             evidence = "—"
             if check["live"] != "not_run":
                 scope = {HTTP_SCOPE: "HTTP 元数据", PROCESS_SCOPE: "进程及自身检查"}.get(check.get("evidence_scope"), "未取得执行证据")
-                evidence = f"{check['tested_at']}<br>[报告](../{check['report']})<br>{scope}"
+                evidence = f"[报告](../{check['report']})<br>{scope}"
             lines.append(f"| [{entry['title']}](../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} | {evidence} |")
         if catalog.get("not_integrated"):
             lines.extend(["", "尚未集成的官方功能或型号边界（不把“没有示例”直接解释为不支持）：", ""])
@@ -348,7 +395,7 @@ def _render_index_en(catalogs):
         "- `passed` does not establish support for every parameter combination, semantic accuracy, visual recognition quality, or future availability. Read the model-specific parameter page.",
         "- `failed`, `rate_limited`, and `timeout` are not passes. `missing_key`, `missing_input`, and `missing_runtime` mean execution prerequisites were missing.",
         "- `live=not_run` has no online execution evidence for that file. Other states require a report with matching model, status, and current source/support hashes; "
-        "the time is read from that report. [Historical workflow checks](verification-status.md) cannot substitute for file-level evidence. "
+        "execution timestamps and durations are not displayed. [Historical workflow checks](verification-status.md) cannot substitute for file-level evidence. "
         "The complete repository release view is [example execution status](example-status.md).", "",
     ]
     for catalog in catalogs:
@@ -363,7 +410,7 @@ def _render_index_en(catalogs):
             parameters = Path(catalog["parameters_path"]).with_name("parameters.en.md").as_posix()
             lines.extend([f"Required reading: [parameter reference and file mapping](../../{parameters}).", ""])
         lines.extend([
-            "| Capability / file | Search key | Required environment | Official sources | Offline / file execution | Time / report / evidence |",
+            "| Capability / file | Search key | Required environment | Official sources | Offline / file execution | Report / evidence |",
             "|---|---|---|---|---|---|",
         ])
         for entry in catalog["examples"]:
@@ -373,7 +420,7 @@ def _render_index_en(catalogs):
             evidence = "—"
             if check["live"] != "not_run":
                 scope = {HTTP_SCOPE: "HTTP metadata", PROCESS_SCOPE: "Process and internal checks"}.get(check.get("evidence_scope"), "No execution evidence obtained")
-                evidence = f"{check['tested_at']}<br>[Report](../../{check['report']})<br>{scope}"
+                evidence = f"[Report](../../{check['report']})<br>{scope}"
             lines.append(f"| [{entry['capability']} · {entry['file']}](../../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} | {evidence} |")
         if catalog.get("not_integrated"):
             lines.extend(["", "### Integration gaps and model-specific boundaries", "",

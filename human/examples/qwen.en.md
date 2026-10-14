@@ -72,7 +72,7 @@ The code prints final content and usage statistics. Wording is not fixed: the or
 
 ## Original execution evidence
 
-Current-source HTTP evidence passed at 2026-10-14T02:56:28.767300+00:00. [Original sanitized report](../../verification/examples/2026-10-14-qwen-attempt3.json) · [Current status](../../en/docs/example-status.md)
+The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-qwen-attempt3.json) · [Current status](../../en/docs/example-status.md)
 
 Source SHA-256: `db698928da659024944cf0b8a48396e6fc72d569de86352a51e9ee93ab0c163b`
 

@@ -113,7 +113,8 @@ class CatalogSyncTests(unittest.TestCase):
                 self.assertEqual(cfg["capabilities"]["thinking_off"], "unknown")
                 row = next(line for line in outputs[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
                 columns = [column.strip() for column in row.strip("|").split("|")]
-                self.assertEqual(columns[1:], ["—", "统一验证器未运行", "—", "—", "—", "—", "—", "报告空缺"])
+                self.assertEqual(columns[1:], ["统一验证器未运行", "—", "—", "—", "—", "—", "报告空缺"])
+                self.assertEqual(len(columns), 8)
 
     def test_explicit_broken_or_other_model_report_is_not_treated_as_not_run(self):
         for case in ("broken_path", "other_model", "unfounded_scope"):
@@ -131,7 +132,37 @@ class CatalogSyncTests(unittest.TestCase):
                     with self.assertRaises(ValueError):
                         sync.expected_outputs()
 
-    def test_bilingual_outputs_use_one_catalog_and_relative_report_counts(self):
+    def test_privacy_metadata_does_not_upgrade_historical_smoke_reports(self):
+        for version, scope in ((1, "legacy_smoke"), (2, "strict_workflow"), (3, "strict_workflow")):
+            with self.subTest(schema_version=version), tempfile.TemporaryDirectory() as directory:
+                root, references, catalog_path, card_path = self.fixture_without_verification(directory)
+                card = json.loads(card_path.read_text(encoding="utf-8"))
+                card.update(verification="fixture-report.json")
+                card_path.write_text(json.dumps(card), encoding="utf-8")
+                report_path = card_path.parent / "fixture-report.json"
+                report = {
+                    "schema_version": version,
+                    "evidence_id": "3211372d-516b-4a6d-901f-92f49a754a96",
+                    "model_id": "MiniMax-M2.7",
+                    "privacy": {"test_timestamps_saved": False, "duration_saved": False},
+                    "runtime": {"openai": "fixture-sdk"},
+                    "tests": {"chat_completions": {"status": "passed"}},
+                }
+                original = json.dumps(report)
+                report_path.write_text(original, encoding="utf-8")
+                status_page = root / "docs/验证状态.md"
+                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page):
+                    outputs = sync.all_expected_outputs()
+                cfg = json.loads(outputs[catalog_path])["vendors"]["minimax"]
+                self.assertEqual(cfg["verification_scope"], scope)
+                self.assertEqual(report_path.read_text(encoding="utf-8"), original)
+                for page in (status_page, root / "en/docs/verification-status.md"):
+                    rows = [line for line in outputs[page].splitlines() if line.startswith("|")]
+                    self.assertTrue(rows)
+                    self.assertTrue(all(len(line.strip("|").split("|")) == 8 for line in rows))
+                    self.assertIn("fixture-sdk", outputs[page])
+
+    def test_bilingual_outputs_use_one_catalog_and_relative_report_counts_without_test_dates(self):
         with tempfile.TemporaryDirectory() as directory:
             root, references, catalog_path, card_path = self.fixture_without_verification(directory)
             card = json.loads(card_path.read_text(encoding="utf-8"))
@@ -139,7 +170,7 @@ class CatalogSyncTests(unittest.TestCase):
             card_path.write_text(json.dumps(card), encoding="utf-8")
             report_path = card_path.parent / "fixture-report.json"
             report_path.write_text(json.dumps({
-                "schema_version": 2, "model_id": "MiniMax-M2.7", "tested_at": "2026-10-14T01:00:00+00:00",
+                "schema_version": 3, "evidence_id": "3211372d-516b-4a6d-901f-92f49a754a96", "model_id": "MiniMax-M2.7",
                 "runtime": {"openai": "2.54.0"}, "results": [
                     {"id": "chat_completions", "status": "passed"},
                     {"id": "streaming", "status": "rate_limited"},
@@ -165,8 +196,17 @@ class CatalogSyncTests(unittest.TestCase):
             en_row = next(line for line in english[english_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
             zh_columns = [value.strip() for value in zh_row.strip("|").split("|")]
             en_columns = [value.strip() for value in en_row.strip("|").split("|")]
-            self.assertEqual(zh_columns[3:8], en_columns[3:8])
-            self.assertEqual(en_columns[3:7], ["1", "0", "1", "1"])
+            self.assertEqual(len(zh_columns), 8)
+            self.assertEqual(len(en_columns), 8)
+            self.assertEqual(zh_columns[2:7], en_columns[2:7])
+            self.assertEqual(en_columns[2:6], ["1", "0", "1", "1"])
+            self.assertEqual(zh_columns[1], "严格流程验证")
+            self.assertEqual(en_columns[1], "Strict workflow")
+            for page in (chinese[status_page], english[english_page]):
+                self.assertNotIn("2026-10-14", page)
+                self.assertNotIn("Report date", page)
+                self.assertNotIn("报告日期", page)
+                self.assertNotIn("execution times", page)
             self.assertIn("../../" + report_path.relative_to(root).as_posix(), en_row)
             self.assertIn("README.en.md", en_row)
             self.assertIn("../en/docs/verification-status.md", chinese[status_page])

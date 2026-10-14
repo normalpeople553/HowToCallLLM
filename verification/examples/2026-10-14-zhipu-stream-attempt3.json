@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:57:02.313553+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "ZHIPU_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:57:02.370555+00:00",
       "source_sha256": {
         "models/zhipu/glm-4.7-flash/examples/02_streaming.py": "1804d827c3a1d06477ee6e07657cf1ad069bef321e514906288ce1b9730e1021"
       },
@@ -77,8 +77,7 @@
       ],
       "error_type": "RateLimitError",
       "http_status": 429,
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 2.197
+      "evidence_scope": "original_file_and_real_http_metadata"
     }
   ],
   "summary": {
@@ -89,5 +88,6 @@
     "passed": 0,
     "rate_limited": 1,
     "timeout": 0
-  }
+  },
+  "evidence_id": "de84a623-7246-4dd6-b492-c84d94ae89eb"
 }

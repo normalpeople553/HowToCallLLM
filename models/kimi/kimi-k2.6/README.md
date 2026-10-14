@@ -8,7 +8,7 @@
 
 本页代码块是说明性片段；运行与验证以链接的完整文件为准。片段、自改参数及生成器任意新组合不继承文件的实测结果。[参数与文件映射](parameters.md)；[证据边界](../../../docs/来源与核验规则.md)
 
-> 官方资料核对日期：**2026-10-13**。事实均附原始链接；运行日期以两层实测的对应报告为准，不用资料编辑日期替代。机器卡片见 [`kimi-k2.6.json`](../../../skills/model-manual/references/models/kimi-k2.6.json)。
+> 官方资料核对日期：**2026-10-13**。事实均附原始链接；两层实测以各自报告的证据编号和范围为准，不用资料核对日期代替执行证据。机器卡片见 [`kimi-k2.6.json`](../../../skills/model-manual/references/models/kimi-k2.6.json)。
 
 ## 1. 一眼看懂
 
@@ -108,7 +108,7 @@ thinking_off_extra_body:
   thinking: {type: disabled}
 ```
 
-这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果；统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`；逐文件命令、环境、范围与退出码见[验证与复现](../../../docs/验证与复现.md)。
+这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。[历史基础报告](verification/2026-10-13.json)保留当时结果；统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`；逐文件命令、环境、范围与退出码见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 10. 必看踩雷
 

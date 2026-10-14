@@ -14,12 +14,12 @@
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "1d129e89b96b34feb114a7d3130bb5c57201d15921727911a33e6d9691d22241"
+      "source_sha256": "283df0a20365814d6c990c878ccdd879443b8c10438760df855d2942db93a39c"
     },
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "33c5a5343fc4c3afbea4bd5e173343b37073f05a56fc113a13fd241c0f052a71"
+      "source_sha256": "e7528afed94af97afd7f7714d181b9a006a523d8d451be2d083fa9bebdcdeeb0"
     },
     {
       "source": "models/README.md",
@@ -29,22 +29,22 @@
     {
       "source": "skills/model-manual/SKILL.md",
       "target": "skills/model-manual/SKILL.en.md",
-      "source_sha256": "6dc622cc3115348a3ea7596547ef553313f4666c24a391c1d8089d067840229b"
+      "source_sha256": "3c94cc3378e69e2c27abcced6ca3fcf8af748e9977e1b9bd52f4575143af5bc2"
     },
     {
       "source": "skills/model-manual/references/workflows.md",
       "target": "skills/model-manual/references/workflows.en.md",
-      "source_sha256": "03aff26e563c057378a134e43ebb7d9cdbbb6b55d8f2f4c15c263f60644eb701"
+      "source_sha256": "6a6e97aaf13360f058bcbca2f464c555bc25835228fc3e2df478bb680cda8067"
     },
     {
       "source": "verification/README.md",
       "target": "verification/README.en.md",
-      "source_sha256": "fddf90febd6fe11a8c2de502ecef346902525ade1a1f6cfdbfd9d7b699e6e601"
+      "source_sha256": "e140ed073bf2204e08ff76b7d00e4905e50fd79f60e9e1c8cfc393f02f4f71ac"
     },
     {
       "source": "docs/00-前言.md",
       "target": "en/docs/introduction.md",
-      "source_sha256": "f34ad6e97ff3f3ed20fdd48f3afe9c2ab6e5d5412892f922c3450667c2c0aea1"
+      "source_sha256": "eaaaebb43c45791fb66cf3241219a8bda2b89f006321f284c7504b28b005a54d"
     },
     {
       "source": "docs/01-5分钟跑通第一次调用.md",
@@ -69,7 +69,7 @@
     {
       "source": "docs/06-真实踩雷与生产检查.md",
       "target": "en/docs/production-pitfalls.md",
-      "source_sha256": "559a5e069740f96f2d6984c3720ea306b37b90b2229228f20876d04bd6ffbf68"
+      "source_sha256": "c5b058a0bab2f0c32785f0238bb0f201d9a9345acee2233346408b555fe2a43e"
     },
     {
       "source": "docs/参数说明与调参.md",
@@ -79,27 +79,27 @@
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "15005a9fcc0ab631efc3bf4e08e84a71dc9c7874104ef1a1e830b0e500217e20"
+      "source_sha256": "31299a1a0ba552e242df21de146c22f216bebd6fbf72fd1d852d911d431d2017"
     },
     {
       "source": "docs/验证与复现.md",
       "target": "en/docs/verification.md",
-      "source_sha256": "14eb5b1872a13e83026f206b35b314d38cb4a38aee4946d2b7d8f0d7b5d297f7"
+      "source_sha256": "86882c6e7b09b7deab3dbbfd96d7490811e8941335b69d4e641c3f0db0cb84d6"
     },
     {
       "source": "docs/03-厂商攻略/deepseek.md",
       "target": "en/docs/vendors/deepseek.md",
-      "source_sha256": "35f30c7524bdc5f91fa539cac18f7a8ec207a53a8e10ff75766573394358f339"
+      "source_sha256": "52107376fe756c924e782ebe26bbb39b394ec9c4841b9cbc01cef418474cf6ef"
     },
     {
       "source": "docs/03-厂商攻略/doubao.md",
       "target": "en/docs/vendors/doubao.md",
-      "source_sha256": "aaf45bf3c5b5a8de69d9a2babaa2740a221a88e0b846434dc66ba6696f9be641"
+      "source_sha256": "5e571d76a77a938a3cb82fc1e33d79e1b0ae42679c52187caba16bc92e28dfe3"
     },
     {
       "source": "docs/03-厂商攻略/kimi.md",
       "target": "en/docs/vendors/kimi.md",
-      "source_sha256": "9baa589b9a0090123c783e9cb37ef34a25753cd89eff89d93e58537d03b9b2a3"
+      "source_sha256": "59da6c336dcb90d6ad57e86f24ae4499eccae927b7b99f31e31cca2ec4407f82"
     },
     {
       "source": "docs/03-厂商攻略/minimax.md",
@@ -109,17 +109,17 @@
     {
       "source": "docs/03-厂商攻略/qwen.md",
       "target": "en/docs/vendors/qwen.md",
-      "source_sha256": "3921070f922a6ea3f2d2a27086aa354f6a46cc826ec00e0d720c35b385347302"
+      "source_sha256": "5caa0ef0b26a8a51211e27777a8a174dd84c793fa8c8d16aebe7cdb5d174fda0"
     },
     {
       "source": "docs/03-厂商攻略/zhipu.md",
       "target": "en/docs/vendors/zhipu.md",
-      "source_sha256": "7851545a2130b39873f7d8b29a7712176916bbdf1cb745ef8e0fbf6726ce1a1f"
+      "source_sha256": "291629b8e62613dc433d65acbe8db604f957478104c7cf36db50769950d6584d"
     },
     {
       "source": "models/deepseek/deepseek-flash/README.md",
       "target": "models/deepseek/deepseek-flash/README.en.md",
-      "source_sha256": "07154195dceca29fff7641a4e0c10a2b96f2818b0b7b6f1df05d853009a287e9"
+      "source_sha256": "036db9b5a347551d12c7fba81d8a61ee0b25f170ffc1e17ce00bf0104d832fbc"
     },
     {
       "source": "models/deepseek/deepseek-flash/parameters.md",
@@ -129,7 +129,7 @@
     {
       "source": "models/doubao/doubao-seed-2-1-pro-260628/README.md",
       "target": "models/doubao/doubao-seed-2-1-pro-260628/README.en.md",
-      "source_sha256": "717896fe620de2f8eb3327b32ae54fd58a459329ec80ba263852555fbcf5d7c2"
+      "source_sha256": "03dfe078cf631147936b01a6b7e9526a5651dbcbc65d1698d78a997d88f0cc01"
     },
     {
       "source": "models/doubao/doubao-seed-2-1-pro-260628/parameters.md",
@@ -139,7 +139,7 @@
     {
       "source": "models/kimi/kimi-k2.6/README.md",
       "target": "models/kimi/kimi-k2.6/README.en.md",
-      "source_sha256": "59ef3f4331fd7854a5069e18a23db291b9147221efee7726eafc3b55e6dcbace"
+      "source_sha256": "e426c006344c56b4cb4891001b0417260683b0b15414097894d17655d1a0c6a1"
     },
     {
       "source": "models/kimi/kimi-k2.6/parameters.md",
@@ -159,7 +159,7 @@
     {
       "source": "models/qwen/qwen-flash/README.md",
       "target": "models/qwen/qwen-flash/README.en.md",
-      "source_sha256": "5ba6a22b505d4940ba3d61c86a57ee8589bb418892972f6bd04196fa7b90e98c"
+      "source_sha256": "29c5bf3cddbf27186321eb12825671e96e688488c29072a237bf5948f714fae1"
     },
     {
       "source": "models/qwen/qwen-flash/parameters.md",
@@ -169,7 +169,7 @@
     {
       "source": "models/zhipu/glm-4.7-flash/README.md",
       "target": "models/zhipu/glm-4.7-flash/README.en.md",
-      "source_sha256": "331e05d1253687500d210b06db3dc7f4497d4b8a4fe3861da7a16c1abf96760c"
+      "source_sha256": "0a65cd16f32327e271f648a740dada8da1faeb24fc5f33e30ab5f9d664436fd6"
     },
     {
       "source": "models/zhipu/glm-4.7/README.md",

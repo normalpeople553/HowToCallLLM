@@ -1,8 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "example_file_execution",
   "execution": "real_vendor_api",
-  "tested_at": "2026-10-14T02:46:34.511961+00:00",
   "runtime": {
     "python": "3.13.13",
     "openai": "2.54.0"
@@ -12,7 +11,9 @@
     "response_content_saved": false,
     "reasoning_content_saved": false,
     "raw_error_saved": false,
-    "request_messages_saved": false
+    "request_messages_saved": false,
+    "test_timestamps_saved": false,
+    "duration_saved": false
   },
   "results": [
     {
@@ -23,7 +24,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "chat_completions",
-      "tested_at": "2026-10-14T02:46:34.539898+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/01_basic.py": "a0c609a9242f357e6a0d51ce83745d80a1b883d794f31390bfe96305fc41cd9b"
       },
@@ -44,8 +44,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 4.676
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/minimax/MiniMax-M2.7/examples/02_streaming.py",
@@ -55,7 +54,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "streaming",
-      "tested_at": "2026-10-14T02:46:39.216113+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/02_streaming.py": "dc8880cbd62762b74d45509e0fe1d0515a1053d168a2d14873d258734c73342e"
       },
@@ -91,8 +89,7 @@
           }
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 7.86
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/minimax/MiniMax-M2.7/examples/03_thinking.py",
@@ -102,7 +99,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "thinking",
-      "tested_at": "2026-10-14T02:46:47.076378+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/03_thinking.py": "0f323dfc4e222cc74fcfcd36a255849db8cc721e2244d7ffd01d0b2420310412"
       },
@@ -123,8 +119,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 6.653
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/minimax/MiniMax-M2.7/examples/05_tool_calling.py",
@@ -134,7 +129,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "tool_calling",
-      "tested_at": "2026-10-14T02:46:53.729136+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/05_tool_calling.py": "e81d4af8825340d3f77f84dabebd9429798b63fa1afe87c7b9310ba99656f99b"
       },
@@ -166,8 +160,7 @@
           "http_status": 200
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 8.021
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/minimax/MiniMax-M2.7/examples/06_multi_turn.py",
@@ -177,7 +170,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "multi_turn",
-      "tested_at": "2026-10-14T02:47:01.749764+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/06_multi_turn.py": "6934f332d6e7610e715a79a70be5bf9d8f9a11f47575697045a0815b917c87df"
       },
@@ -231,8 +223,7 @@
           "content_chars": 11
         }
       ],
-      "evidence_scope": "original_file_and_real_http_metadata",
-      "duration_seconds": 5.078
+      "evidence_scope": "original_file_and_real_http_metadata"
     },
     {
       "path": "models/minimax/MiniMax-M2.7/examples/07_native_curl.sh",
@@ -242,7 +233,6 @@
         "MINIMAX_API_KEY"
       ],
       "capability": "native_chat_completions",
-      "tested_at": "2026-10-14T02:47:06.827761+00:00",
       "source_sha256": {
         "models/minimax/MiniMax-M2.7/examples/07_native_curl.sh": "e013d3c55c7ba552465bf1a17b0b631ab9225e3066529bb2cfa90fadd85a4c2f"
       },
@@ -251,8 +241,7 @@
       "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
       "exit_code": 0,
       "requests": [],
-      "evidence_scope": "original_file_process_exit_and_its_response_checks",
-      "duration_seconds": 5.388
+      "evidence_scope": "original_file_process_exit_and_its_response_checks"
     }
   ],
   "summary": {
@@ -263,5 +252,6 @@
     "passed": 6,
     "rate_limited": 0,
     "timeout": 0
-  }
+  },
+  "evidence_id": "ac093609-74ef-452f-8167-ba5aad714b94"
 }
