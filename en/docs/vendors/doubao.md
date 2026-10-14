@@ -2,6 +2,8 @@
 
 [中文](../../../docs/03-厂商攻略/doubao.md) · [Human guide](../../../human/README.en.md)
 
+See the [Doubao language-model list](../model-lists/doubao.md) for other exact IDs, lifecycle, input modalities and official pricing. Distinguish metered APIs, subscription shorthand and retired versions; a listing does not imply a detailed manual or live-call evidence.
+
 Source verification date: **2026-10-13**. Vendor facts follow the official Ark documentation; repository testing terminology follows the [evidence policy](../evidence-policy.md).
 
 | Item | Value and official source |

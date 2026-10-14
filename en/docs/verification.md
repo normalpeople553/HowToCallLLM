@@ -25,10 +25,25 @@ These commands do not read API keys or call model APIs. Simulated responses exer
 python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
 python skills/model-manual/scripts/example_catalog.py --check
+python skills/model-manual/scripts/model_catalog.py --check
 python tests/check_example_release.py --check
 ```
 
 See the [official-example index](example-index.md) for functionality. Each model's `examples/sources.json` maintains source and run information; regenerate the derived index after changing a manifest with `python skills/model-manual/scripts/example_catalog.py --write-index`. Offline mocks send no requests. Running an example directly does make real calls; upload examples also send their input files. The historical unified verifier covers only its own tests, not every advanced source file. File results are tracked separately in [example status](example-status.md).
+
+## Maintain language-model lists (no requests)
+
+The [six lists](model-lists/README.md) are generated from `data/model-lists/<vendor>.json`. Check official API IDs, lifecycle, modalities and pricing links, then review both languages and the scope before running:
+
+```bash
+python skills/model-manual/scripts/model_catalog.py --write-pages
+python skills/model-manual/scripts/model_catalog.py --check
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
+```
+
+`--write-pages` generates the index and six vendor pages in both languages; `--check` detects stale generated pages. Filters cannot be combined with page operations. An unmatched exact ID, invalid catalog or existing evidence, or stale page exits `2`; success exits `0`. Queries read documentation snapshots and saved evidence, not keys or the network, and do not inventory live models. Sources must use the corresponding vendor's allowed official HTTPS hosts. Host/schema validation does not automatically verify factual meaning.
+
+Adding discovery entries does not change default cards or example source. Full integration needs a separately maintained exact-model card, parameter guide and actually executed examples. Passing evidence for existing example files does not transfer to newly listed models. [Evidence boundaries](evidence-policy.md)
 
 ## Two layers of real evidence
 
@@ -122,6 +137,7 @@ Both languages use the same model cards, source files, provenance manifests and 
 
 ```bash
 python skills/model-manual/scripts/example_catalog.py --write-index
+python skills/model-manual/scripts/model_catalog.py --write-pages
 python skills/model-manual/scripts/sync_verification.py
 python tests/check_example_release.py --write
 python scripts/check_translations.py --check

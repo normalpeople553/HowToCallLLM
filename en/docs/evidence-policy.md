@@ -32,12 +32,19 @@ Model-level machine facts live in [skills/model-manual/references/models/](../..
 
 | Content | Maintained in | How other entry points use it |
 |---|---|---|
+| Official language-model discovery, lifecycle, billing and input modalities | [data/model-lists](../../data/model-lists/) | Bilingual [model lists](model-lists/README.md) are generated; entries do not register detailed cards, generator support or live tests. |
 | Exact-model parameters, capabilities, and official sources | Model machine cards | The generator reads them; human manuals reference and explain them, with corresponding prose updated when facts change. |
 | Historical unified-verifier dates, scope, and outcomes | Original redacted reports referenced by model cards | The synchronizer derives vendor summaries and [unified verification status](verification-status.md). |
 | Real executions of specific runnable files | [File-execution reports](../../verification/examples/) | [Example status](example-status.md) interprets files, source fingerprints, and actual requests; it does not automatically rewrite model capability. |
 | Default models and vendor entry points | Routing fields in `vendors.json` | Agents locate material; nondefault models require lookup by exact ID. |
 | Integration, migration, and troubleshooting workflows | [Agent workflows](../../skills/model-manual/references/workflows.en.md) | The Skill routes by task; the README supplies usage instructions. |
 | Official-example sources, adaptations, and commands | Each model's `examples/sources.json` | The [example index](example-index.md) is generated from manifests; agents query by model/capability. |
+
+### Model discovery rules
+
+Each exact API ID has an official model page, pricing entry and supplemental sources, a check date and bilingual notes. A retained pricing row, open-weight name or subscription shorthand is not proof of a currently callable API. Distinguish officially listed, preview, legacy, alias, retired and unconfirmed entries, using row-specific restrictions and sources. Do not claim exhaustive region, account or historical coverage. Free models may appear for discovery, without changing paid-only maintained examples and generated defaults.
+
+Discovery data does not store hand-entered passing results or card paths. The [query tool](../../skills/model-manual/scripts/model_catalog.py) derives repository coverage from maintained cards and current-source per-file reports by exact vendor and ID; aliases and families cannot inherit it. A new discovery entry needs neither a fabricated detailed card nor an API test. Adding calling examples still follows the source, parameter and real-execution rules below. See [maintenance commands](verification.md).
 
 ### Rules for integrating official examples
 

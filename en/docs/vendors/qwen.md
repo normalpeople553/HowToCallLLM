@@ -2,6 +2,8 @@
 
 [中文](../../../docs/03-厂商攻略/qwen.md) · [Human guide](../../../human/README.en.md)
 
+See the [Qwen language-model list](../model-lists/qwen.md) for other exact IDs, lifecycle, input modalities and official pricing. Check region and snapshot restrictions; a listing does not imply a detailed manual or live-call evidence.
+
 Source verification date: **2026-10-13**. Vendor facts follow Alibaba Cloud's official Model Studio documentation; repository testing terminology follows the [evidence policy](../evidence-policy.md).
 
 | Item | Value and official source |

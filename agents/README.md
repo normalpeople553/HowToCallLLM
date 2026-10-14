@@ -25,6 +25,7 @@
 | 资料 | 规范入口 | 怎么用 |
 |---|---|---|
 | 厂商路由 | [vendors.json](../skills/model-manual/references/vendors.json) | 定位默认型号，不把默认型号规则推广至同厂所有型号 |
+| 厂商还有哪些语言型号 | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [人类清单](../docs/model-lists/README.md) | 按准确 ID 查官方来源和生命周期；覆盖独立关联，清单不等于有卡片或实测 |
 | 准确型号事实 | [references/models](../skills/model-manual/references/models/) | 读取 identity、capabilities、generation，并解析每条 source |
 | 参数解释 | [参数导航](../docs/参数说明与调参.md) | 按任务只读对应型号；区分 SDK 配置、模型参数与本地安全限制 |
 | 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与证据 |
@@ -35,6 +36,8 @@
 查询和生成命令在仓库根目录运行，以下命令不发请求：
 
 ```bash
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
 python skills/model-manual/scripts/generate_snippet.py --help
 python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool --thinking off

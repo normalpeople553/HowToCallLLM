@@ -4,7 +4,7 @@
 
 English translation of the [Chinese model index](README.md). Both languages share the same executable code, model cards, source manifests and reports. Official source URLs are retained, including Chinese-language pages; translating this index does not rerun or revalidate an API.
 
-Each exact model has its own manual and examples. Machine-readable facts remain in [`skills/model-manual/references/models/`](../skills/model-manual/references/models/), under the [evidence policy](../en/docs/evidence-policy.md).
+This directory provides manuals and examples for maintained exact models, not every callable model from each provider. Detailed calling facts remain in [`skills/model-manual/references/models/`](../skills/model-manual/references/models/). The broader [six language-model lists](../en/docs/model-lists/README.md) support discovery without automatically granting cards, parameters or live-test coverage. See the [evidence policy](../en/docs/evidence-policy.md).
 
 | Exact model | Manual | Parameter reference |
 |---|---|---|

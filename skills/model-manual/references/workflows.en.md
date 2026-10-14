@@ -74,11 +74,26 @@ The table provides investigation branches, not diagnoses from a status code alon
 
 Provide the smallest evidence-supported fix and a way to check it. If logs are missing or reproduction is unavailable, describe hypotheses as checks, not established causes. Retries of external writes must also account for duplicate application actions.
 
+## Model discovery
+
+For questions about a provider's other language models, query [model_catalog.py](../scripts/model_catalog.py) or the corresponding [language-model list](../../../en/docs/model-lists/README.md), rather than returning only the default from `vendors.json`. Run at the repository root:
+
+```bash
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
+```
+
+Queries only read the local official-document snapshot and existing evidence, not keys or the network. Explain `checked_at`, `status`, row restrictions and official sources. `available` means officially listed, not a successful request by the current account. `billing=paid` does not establish pay-as-you-go access; previews may be subscription-only. Recheck official pages for current availability; live calls require separate authorization.
+
+`repository_coverage` joins exact vendor and ID: `manual_path` / `parameters_path` refer to maintained-card pages, while `example_files` / `live_passed_files` refer to current-source evidence for that exact ID. Defaults, aliases, families and served versions do not transfer coverage. Discovery entries without cards do not enter the generator; free discovery entries do not change paid-default policy. Unknown IDs return no match, never a silent replacement.
+
+If the user asks only for a model list, maintain bilingual fields and official sources in `data/model-lists/<vendor>.json`, then regenerate pages. Do not thereby create detailed cards, claim live tests or change defaults.
+
 ## Unknown models
 
 If the requested model has no machine card, do not overwrite the default card's Model ID and continue generation.
 
-1. Check the exact ID, availability, lifecycle, required task capabilities, and model-specific parameters in official model/API documentation. Retain official links and the check date.
+1. First use discovery to locate the exact ID and sources, then check availability, lifecycle, required task capabilities and model-specific parameters in official model/API documentation. Retain official links and the check date. Absence from discovery does not establish lack of official support.
 2. If the user only needs their project integrated, handwritten implementation from official sources is allowed with an explicit not-cataloged/not-live-tested scope. Do not expand this knowledge base without a request. State any unresolved critical behavior instead of guessing parameters.
 3. If the user requests an addition to this manual, create a separate card in [models/](models/) and a manual plus necessary examples under repository `models/<vendor>/<model-id>/`. Follow neighboring card structures and generator validation. Every `value` or `status` source must resolve; do not copy other models' facts or reports. Use the schema's applicable unknown state for undocumented capabilities. `verified` requires a real report for that model.
 4. Change a vendor's `default_model` only when the user requests it. Current verifiers fix their test models, and the [synchronizer](../scripts/sync_verification.py) only derives default-model vendor summaries. A new card does not automatically become the default or gain a verifier. Update affected offline checks and verification scripts when expanding coverage, so a new model is not accidentally tested as an old one.

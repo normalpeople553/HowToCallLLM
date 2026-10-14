@@ -1,0 +1,1689 @@
+{
+  "schema_version": 1,
+  "vendor": "qwen",
+  "checked_at": "2026-10-14",
+  "official_catalog_url": "https://help.aliyun.com/zh/model-studio/models",
+  "scope_note": {
+    "zh": "本表整理阿里云百炼官方公开目录、型号专页和地区价目中明确出现的千问自有托管语言模型准确 ID，覆盖当前商业主线、明确快照/别名、多模态理解、代码、长文档、翻译、深入研究及当前可确认的开源版托管服务。仅有价格或历史上架记录、而当前可用性未明确的条目记为 unknown；有价格不等于仍可调用。地域、部署范围、账户权限和协议支持不同；本表不承诺所有地区均可用，也不穷举所有历史/开源长尾快照、微调或专属部署 ID。排除第三方转售、绘图/视频生成、独立 ASR/TTS、实时语音接口、向量、重排序、纯 OCR 和智能路由服务；Omni 仅按可输出文本的多模态理解语言模型收录。免费试用额度不等于免费型号。资料核对不包含真实 API 调用，不继承其他型号或示例的实测结论，也不改变仓库默认调用型号。",
+    "en": "This list records exact Qwen-owned hosted language-model IDs explicitly present in Alibaba Cloud Model Studio's public catalog, model pages, and regional pricing tables. It covers current commercial mainlines, documented snapshots/aliases, multimodal understanding, coding, long-document, translation, deep-research, and currently identifiable hosted open-weight models. An entry supported only by pricing or historical release records is marked unknown when current availability is not established; a price is not proof that an ID remains callable. Regions, deployment scopes, account permissions, and protocol support differ. This is not an all-region inventory or an exhaustive list of historical/open-weight snapshots, fine-tunes, or dedicated-deployment IDs. Third-party resale, image/video generation, standalone ASR/TTS, realtime speech interfaces, embeddings, reranking, OCR-only models, and model routers are excluded. Omni models are included for multimodal understanding with text output. Trial credits do not make a model free. This documentation check sends no API requests, inherits no test result from another model or example, and changes no repository default."
+  },
+  "models": [
+    {
+      "model_id": "qwen3.8-max",
+      "family": "Qwen3.8-Max",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "当前型号页明确 model 参数；不是 qwen3.7-max 的改名。",
+        "en": "The current model page explicitly gives this model parameter; it is not a renamed qwen3.7-max."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-max-0902",
+      "family": "Qwen3.8-Max",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-max-2026-09-02",
+      "family": "Qwen3.8-Max",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方明确为 qwen3.8-max-0902 的别名，不按日期格式自行推导其他别名。",
+        "en": "Explicit official alias for qwen3.8-max-0902; no other aliases are inferred from date formats."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-max-prime",
+      "family": "Qwen3.8-Max",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方价目明确列出此 ID，但本次未确认该条目的当前可调用状态；不要仅凭价格视为可用。",
+        "en": "The official price list explicitly names this ID, but its current callable status was not established in this check. A price alone is not availability evidence."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/prime-mode"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-max",
+      "family": "Qwen3.7-Max",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方主线专页当前列为纯文本，能力对应 2026-05-20；不能把 2026-06-08 的视觉输入能力套给此 ID。",
+        "en": "The mainline page currently lists text-only input and equivalence to 2026-05-20. Do not transfer the 2026-06-08 snapshot's vision input to this ID."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-max-2026-06-08",
+      "family": "Qwen3.7-Max",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "此固定快照的专页能力表明确支持图片/视频，区别于纯文本主线和 05-20 快照。",
+        "en": "The capability table for this fixed snapshot explicitly supports image/video input, unlike the text-only mainline and 05-20 snapshot."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-max-2026-05-20",
+      "family": "Qwen3.7-Max",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-max-preview",
+      "family": "Qwen3.7-Max",
+      "status": "preview",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方列出的纯文本预览 ID，能力对应 2026-05-17；不要推定与正式版等价。",
+        "en": "An officially listed text-only preview ID, equivalent to 2026-05-17; do not assume equivalence to a production version."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-max-2026-05-17",
+      "family": "Qwen3.7-Max",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-max",
+      "family": "Qwen-Max",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-max",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方仍列出的 Qwen2.5 系列滚动主线；主线与其已下线历史快照的生命周期不能混同。",
+        "en": "An officially listed rolling Qwen2.5-series mainline. Its lifecycle must not be conflated with retired historical snapshots."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-max",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-plus",
+      "family": "Qwen3.7-Plus",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-plus",
+      "family": "Qwen3.6-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-plus",
+      "family": "Qwen3.5-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-plus-2026-05-26",
+      "family": "Qwen3.7-Plus",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-plus-2026-04-02",
+      "family": "Qwen3.6-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-plus-2026-04-20",
+      "family": "Qwen3.5-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-plus-2026-02-15",
+      "family": "Qwen3.5-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-plus",
+      "family": "Qwen-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "Qwen3 系列文本主线；当前专页指向 2025-12-01 的能力，不包含 Qwen3.5/3.7 的视觉能力。",
+        "en": "A Qwen3-series text mainline; the page currently associates it with 2025-12-01 capabilities, not Qwen3.5/3.7 vision capabilities."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-latest",
+      "family": "Qwen-Plus",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "专页“动态更新”入口；latest 不是固定快照保证。",
+        "en": "The model page's dynamically updated entry; latest is not a fixed-snapshot guarantee."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-12-01",
+      "family": "Qwen-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-07-14",
+      "family": "Qwen-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-04-28",
+      "family": "Qwen-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-01-25",
+      "family": "Qwen-Plus",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-0714",
+      "family": "Qwen-Plus",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/rate-limit",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方限流表明确与 qwen-plus-2025-07-14 并列的短别名；不要据此推导其他日期短别名。",
+        "en": "A short alias explicitly paired with qwen-plus-2025-07-14 in the official rate-limit table; do not infer other short date aliases."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/rate-limit",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-0428",
+      "family": "Qwen-Plus",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/rate-limit",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方限流表明确与 qwen-plus-2025-04-28 并列的短别名；不要据此推导其他日期短别名。",
+        "en": "A short alias explicitly paired with qwen-plus-2025-04-28 in the official rate-limit table; do not infer other short date aliases."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/rate-limit",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-0125",
+      "family": "Qwen-Plus",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/rate-limit",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方限流表明确与 qwen-plus-2025-01-25 并列的短别名；不要据此推导其他日期短别名。",
+        "en": "A short alias explicitly paired with qwen-plus-2025-01-25 in the official rate-limit table; do not infer other short date aliases."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/rate-limit",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-01-12",
+      "family": "Qwen-Plus",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方价目明确列出此 ID，但本次未确认该条目的当前可调用状态；不要仅凭价格视为可用。",
+        "en": "The official price list explicitly names this ID, but its current callable status was not established in this check. A price alone is not availability evidence."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2024-12-20",
+      "family": "Qwen-Plus",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方价目明确列出此 ID，但本次未确认该条目的当前可调用状态；不要仅凭价格视为可用。",
+        "en": "The official price list explicitly names this ID, but its current callable status was not established in this check. A price alone is not availability evidence."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-flash",
+      "family": "Qwen3.8-Flash",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-flash",
+      "family": "Qwen3.7-Flash",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-flash",
+      "family": "Qwen3.6-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-flash",
+      "family": "Qwen3.5-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.7-flash-2026-07-15",
+      "family": "Qwen3.7-Flash",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-flash-2026-04-16",
+      "family": "Qwen3.6-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-flash-2026-02-23",
+      "family": "Qwen3.5-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-flash",
+      "family": "Qwen-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "本仓库当前维护默认 ID；官方价格非零，Flash 名称和试用额度都不代表免费。此 ID 为纯文本，不继承新代 Flash 的视觉能力。",
+        "en": "The repository's currently maintained default ID. Its official price is nonzero; neither Flash branding nor trial credits make it free. This text-only ID does not inherit newer Flash models' vision capabilities."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-flash-2025-07-28",
+      "family": "Qwen-Flash",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ]
+    },
+    {
+      "model_id": "qwen-long",
+      "family": "Qwen-Long",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-long",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-long",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-omni-flash",
+      "family": "Qwen3.8-Omni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-omni-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "支持 Chat Completions/Responses 的多模态理解与文本输出；不是音频生成模型。",
+        "en": "Multimodal understanding with text output over Chat Completions/Responses; not an audio-generation model."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-omni-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/qwen-omni"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-omni-plus",
+      "family": "Qwen3.5-Omni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "按可返回文本的多模态理解语言模型收录；可选语音输出不在本清单的功能承诺内。北京/新加坡及快照支持按专页复核。",
+        "en": "Included as a multimodal understanding language model that can return text. Optional speech generation is outside this catalog's scope; check the model page for Beijing/Singapore and snapshot support."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/qwen-omni"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-omni-flash",
+      "family": "Qwen3.5-Omni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "按可返回文本的多模态理解语言模型收录；可选语音输出不在本清单的功能承诺内。北京/新加坡及快照支持按专页复核。",
+        "en": "Included as a multimodal understanding language model that can return text. Optional speech generation is outside this catalog's scope; check the model page for Beijing/Singapore and snapshot support."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/qwen-omni"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-omni-plus-2026-03-15",
+      "family": "Qwen3.5-Omni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "按可返回文本的多模态理解语言模型收录；可选语音输出不在本清单的功能承诺内。北京/新加坡及快照支持按专页复核。",
+        "en": "Included as a multimodal understanding language model that can return text. Optional speech generation is outside this catalog's scope; check the model page for Beijing/Singapore and snapshot support."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/qwen-omni"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-omni-flash-2026-03-15",
+      "family": "Qwen3.5-Omni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "按可返回文本的多模态理解语言模型收录；可选语音输出不在本清单的功能承诺内。北京/新加坡及快照支持按专页复核。",
+        "en": "Included as a multimodal understanding language model that can return text. Optional speech generation is outside this catalog's scope; check the model page for Beijing/Singapore and snapshot support."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/qwen-omni"
+      ]
+    },
+    {
+      "model_id": "qwen3-omni-flash",
+      "family": "Qwen3-Omni",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-omni",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方用法页“其他模型与规格”仍列出的旧版理解模型；模态组合限制与 Qwen3.5/3.8 不同。",
+        "en": "An older understanding model still described under other models/specifications in the official usage guide; its modality-combination restrictions differ from Qwen3.5/3.8."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-omni",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3-vl-plus",
+      "family": "Qwen3-VL",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-vl-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "当前专页列出的视觉理解 API ID。",
+        "en": "A visual-understanding API ID listed on the current model page."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-vl-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/vision-model"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-flash",
+      "family": "Qwen3-Coder",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-flash-2025-07-28",
+      "family": "Qwen3-Coder",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-coder-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-character",
+      "family": "Qwen-Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-plus-character",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/qwen-plus-character",
+      "notes": {
+        "zh": "官方文本生成目录中的角色扮演语言模型；并非任意 GLM/Qwen 聊天参数都适用。",
+        "en": "A role-play language model in the official text-generation catalog; do not assume that arbitrary GLM/Qwen chat parameters apply."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus-character",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-character-ja",
+      "family": "Qwen-Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-plus-character-ja",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/qwen-plus-character-ja",
+      "notes": {
+        "zh": "官方文本生成目录中的角色扮演语言模型；并非任意 GLM/Qwen 聊天参数都适用。",
+        "en": "A role-play language model in the official text-generation catalog; do not assume that arbitrary GLM/Qwen chat parameters apply."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-plus-character-ja",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-flash-character",
+      "family": "Qwen-Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-flash-character",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/qwen-flash-character",
+      "notes": {
+        "zh": "官方文本生成目录中的角色扮演语言模型；并非任意 GLM/Qwen 聊天参数都适用。",
+        "en": "A role-play language model in the official text-generation catalog; do not assume that arbitrary GLM/Qwen chat parameters apply."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-flash-character",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-flash-character-2026-02-26",
+      "family": "Qwen-Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-flash-character",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/qwen-flash-character",
+      "notes": {
+        "zh": "官方专页明确列出的固定快照；地域与主线可能不同。",
+        "en": "A fixed snapshot explicitly listed on the official model page; its regions may differ from the mainline."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-flash-character"
+      ]
+    },
+    {
+      "model_id": "qwen-mt-plus",
+      "family": "Qwen-MT",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-mt-plus",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "专用文本翻译语言模型，不等同于通用多轮聊天接口。",
+        "en": "A specialist text-translation language model, not an interchangeable general multi-turn chat interface."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-mt-plus",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-mt-flash",
+      "family": "Qwen-MT",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-mt-flash",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "专用文本翻译语言模型，不等同于通用多轮聊天接口。",
+        "en": "A specialist text-translation language model, not an interchangeable general multi-turn chat interface."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-mt-flash",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-mt-lite",
+      "family": "Qwen-MT",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-mt-lite",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "专用文本翻译语言模型，不等同于通用多轮聊天接口。",
+        "en": "A specialist text-translation language model, not an interchangeable general multi-turn chat interface."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-mt-lite",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen-mt-uni",
+      "family": "Qwen-MT-Uni",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方上架页列出的多模态翻译服务，可处理文本/文档/图片/音频；不是通用 Chat Completions 或独立 ASR/TTS 的替代 ID。",
+        "en": "A multimodal translation service in the official release catalog for text/documents/images/audio; not an interchangeable generic Chat Completions or standalone ASR/TTS ID."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-doc-turbo",
+      "family": "Qwen-Doc",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-doc-turbo",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "文档信息抽取、分类、审核与摘要的文本生成模型；不作为纯 OCR 收录。",
+        "en": "A text-generation model for document extraction, classification, moderation, and summarization; not included as an OCR-only model."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-doc-turbo",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-deep-research",
+      "family": "Qwen-Deep-Research",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-deep-research",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方用法页限定北京、DashScope 与流式两步研究工作流；不是 OpenAI 兼容聊天型号。主线和快照独立计费。",
+        "en": "The official guide specifies Beijing, DashScope, and a streaming two-step research workflow, not OpenAI-compatible chat. Mainline and snapshot billing are separate."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-deep-research",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen-deep-research-2025-12-15",
+      "family": "Qwen-Deep-Research",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen-deep-research",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方用法页限定北京、DashScope 与流式两步研究工作流；不是 OpenAI 兼容聊天型号。主线和快照独立计费。",
+        "en": "The official guide specifies Beijing, DashScope, and a streaming two-step research workflow, not OpenAI-compatible chat. Mainline and snapshot billing are separate."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-deep-research",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-2.4t-a95b",
+      "family": "Qwen3.8",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "当前托管专页的输入模态表写为 Text；不因其他 Qwen3.8 型号而补写视觉能力。",
+        "en": "The current hosted-model page lists Text input; vision capabilities are not inferred from other Qwen3.8 models."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-2-4t-a95b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.8-27b",
+      "family": "Qwen3.8",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-27b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-35b-a3b",
+      "family": "Qwen3.6",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-35b-a3b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "开源权重与托管 API 计费不同：此条目是百炼收费托管服务，不代表本地部署费用。",
+        "en": "Open weights and hosted API billing are distinct: this entry is Model Studio's paid hosted service, not a statement about local-deployment costs."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-35b-a3b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-27b",
+      "family": "Qwen3.6",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-6-27b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "开源权重与托管 API 计费不同：此条目是百炼收费托管服务，不代表本地部署费用。",
+        "en": "Open weights and hosted API billing are distinct: this entry is Model Studio's paid hosted service, not a statement about local-deployment costs."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-27b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-397b-a17b",
+      "family": "Qwen3.5",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-397b-a17b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-397b-a17b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-122b-a10b",
+      "family": "Qwen3.5",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-122b-a10b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-27b",
+      "family": "Qwen3.5",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-27b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.5-35b-a3b",
+      "family": "Qwen3.5",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方文本生成目录列为旧版；不是当前首选推荐，调用前核对地域和权限。",
+        "en": "Listed as an older model in the official text-generation catalog; not a current first recommendation. Check region and account access before calling."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-5-35b-a3b",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ]
+    },
+    {
+      "model_id": "qwen3.6-max-preview",
+      "family": "Qwen3.6-Max",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-max",
+      "family": "Qwen3-Max",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-max-2026-01-23",
+      "family": "Qwen3-Max",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-max-preview",
+      "family": "Qwen3-Max",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen-turbo",
+      "family": "Qwen-Turbo",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-next",
+      "family": "Qwen3-Coder",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-plus",
+      "family": "Qwen3-Coder",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-plus-2025-09-23",
+      "family": "Qwen3-Coder",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-vl-flash",
+      "family": "Qwen-VL",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen-vl-max",
+      "family": "Qwen-VL",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen-vl-plus",
+      "family": "Qwen-VL",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-plus-2025-07-22",
+      "family": "Qwen3-Coder",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-coder-480b-a35b-instruct",
+      "family": "Qwen3-Coder",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen3-max-2025-09-23",
+      "family": "Qwen3-Max",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "仅按官方兼容协议或上架历史中明确出现的准确 ID 收录；本次未确认其当前按量可用性与计费，不从套餐或旧示例推定。",
+        "en": "Recorded only as an exact ID explicitly named in official compatibility or release documentation. Current pay-as-you-go availability and billing were not confirmed; neither is inferred from subscription plans or old examples."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ]
+    },
+    {
+      "model_id": "qwen-plus-2025-09-11",
+      "family": "Qwen-Plus",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+      "pricing_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "notes": {
+        "zh": "官方 Anthropic 兼容支持列表仍列出此准确 ID；当前价目未确认，不能套用其他 Plus 快照的价格或能力。",
+        "en": "The official Anthropic-compatible support list names this exact ID. Its current price was not established; prices and capabilities from other Plus snapshots must not be substituted."
+      },
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/anthropic-api-messages",
+        "https://help.aliyun.com/zh/model-studio/model-pricing"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,732 @@
+{
+  "schema_version": 1,
+  "vendor": "zhipu",
+  "checked_at": "2026-10-14",
+  "official_catalog_url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+  "scope_note": {
+    "zh": "范围为智谱中国区BigModel标准托管API的文本/推理/编程与视觉语言理解型号；available表示当前官方目录或请求枚举登记，不是本账户实时可用或已实测。仅记录有官方准确API ID依据的型号，不由展示名造ID，不继承同系列参数、能力或验证。覆盖当前主要目录及有确切ID的部分往期/转路由/退役记录，并非账户动态全量清单；仅旧价目不足以确认可用性。免费型号仅用于目录，不改变本仓库付费默认与示例。排除图像/视频生成、语音/实时音视频、embedding/rerank、纯OCR与私有部署专属型号；输入模态仅按本schema列text/image/video，文件容器及协议细节不在此展开。CodeGeeX-4等仅有展示名称而未确认准确托管ID的条目未猜测补入；GLM-Z1其它变体同理。价格仅提供官方链接，无数字快照；地区、账户权限与生命周期以官方实时信息为准。",
+    "en": "Scope: BigModel's China-region standard hosted text, reasoning, coding and vision-language APIs. Available means listed in current official catalog/request enums, not live account access or successful testing. Only officially evidenced exact API IDs are recorded; display names do not generate IDs, and family parameters, capabilities or verification are not inherited. Coverage includes current major entries plus some exact older, routed and retired IDs, not a dynamic account-wide inventory; historical pricing alone does not establish availability. Free entries are catalog-only and do not change this repository's paid defaults/examples. Excludes image/video generation, speech/realtime audiovisual services, embeddings/reranking, OCR-only and private-deployment-only models. Modalities are limited by this schema to text/image/video; file containers and protocol details are not expanded. Display-only entries such as CodeGeeX-4, and other GLM-Z1 variants without separately confirmed hosted IDs, are not guessed. Prices are linked without numeric snapshots; region, entitlement and lifecycle remain subject to current official information."
+  },
+  "models": [
+    {
+      "model_id": "glm-5.3",
+      "family": "GLM-5.3",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5.3-flash",
+      "family": "GLM-5.3-Flash/FlashX",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "当前Flash名称不表示免费；该精确ID在视觉请求枚举中，价格页有付费条目。文件输入的额外约束不在本清单展开。",
+        "en": "The Flash name does not mean free: this exact ID is in the vision-request enum and has paid pricing. Additional file-input constraints are outside this list."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5.3-flashx",
+      "family": "GLM-5.3-Flash/FlashX",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "准确ID取自官方视觉请求枚举；不是glm-5.3-flash的别名。文件输入的额外约束不在本清单展开。",
+        "en": "The exact ID comes from the official vision-request enum; it is not an alias for glm-5.3-flash. Additional file-input constraints are outside this list."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5.2",
+      "family": "GLM-5.2",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5.1",
+      "family": "GLM-5.1",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5.1",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5",
+      "family": "GLM-5",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5-turbo",
+      "family": "GLM-5-Turbo",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-5-turbo",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-5-turbo",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-5v-turbo",
+      "family": "GLM-5V-Turbo",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5v-turbo",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.7",
+      "family": "GLM-4.7",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "本仓库当前维护的智谱付费精确型号；目录收录不扩大现有示例或报告的验证范围。",
+        "en": "The repository's maintained paid Zhipu ID; catalog inclusion does not expand existing example or report coverage."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.7-flashx",
+      "family": "GLM-4.7",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "准确ID由官方文本请求枚举确认，付费FlashX与免费Flash分开记录。",
+        "en": "The official text-request enum confirms this exact ID; paid FlashX is distinct from free Flash."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.7-flash",
+      "family": "GLM-4.7-Flash",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "免费型号仅作为目录信息，不作为本仓库当前默认调用或付费示例目标。",
+        "en": "Listed for catalog coverage only, not as the repository's current default or paid-example target."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.7-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.6",
+      "family": "GLM-4.6",
+      "status": "available",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.6",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "当前概览与文本请求枚举仍列出。所读价格页没有该精确ID的按量输入/输出条目；私有实例价格不能据此推断按量计费类型，故billing保留unknown。",
+        "en": "Still listed in the current overview and text-request enum. The cited pricing page lacks a pay-as-you-go input/output row for this exact ID; private-instance prices do not establish its usage-billing type, so billing remains unknown."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.6",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.5-air",
+      "family": "GLM-4.5",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "当前目录和枚举仍列出Air；型号页的即将下线提示点名GLM-4.5与GLM-4.5-X，不据此推断Air已经退役。",
+        "en": "Air remains in the current catalog and enum. The model page's impending-retirement notice names GLM-4.5 and GLM-4.5-X; it does not establish Air's retirement."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.5-airx",
+      "family": "GLM-4.5",
+      "status": "available",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "精确ID由当前文本请求枚举确认。所读价格页未单列AirX按量条目，不继承Air价格或计费类型。",
+        "en": "The current text-request enum confirms the exact ID. The cited pricing page does not separately price AirX usage; Air's price or billing type is not inherited."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4-long",
+      "family": "GLM-4-Long",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4-long",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "当前模型概览与专属页仍列出并给出该ID调用示例，但当前文本请求枚举未列出；这是文档间差异，调用前需核对账户支持，未作真实请求。",
+        "en": "The current overview and dedicated guide still list this ID and show a call, but the current text-request enum omits it. This documentation discrepancy requires account-specific confirmation before use; no live request was made."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4-long",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4-flashx-250414",
+      "family": "GLM-4",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "准确日期后缀ID取自当前文本请求枚举，不以未带日期的展示名代替。",
+        "en": "The dated ID comes from the current text-request enum; an undated display name is not substituted."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4-flash-250414",
+      "family": "GLM-4",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方文本请求枚举确认此日期后缀ID，官方价格页标免费；不作默认调用目标。",
+        "en": "The text-request enum confirms the dated ID and official pricing marks it free; it is not a default call target."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.6v",
+      "family": "GLM-4.6V",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.6v-flashx",
+      "family": "GLM-4.6V",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "专属系列页、视觉请求枚举与价格页共同确认，虽当前概览表未单独列这一变体。",
+        "en": "The series guide, vision-request enum and pricing page jointly confirm this variant, although the current overview table does not list it separately."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.6v-flash",
+      "family": "GLM-4.6V-Flash",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.6v-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "免费视觉语言型号，仅目录收录，不新增或改变默认调用。",
+        "en": "A free vision-language model, listed without creating or changing a default call."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.6v-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "autoglm-phone",
+      "family": "AutoGLM-Phone",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/autoglm-phone",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "准确ID来自视觉请求枚举；专属页标注限时免费，不承诺永久免费。目录描述的是理解屏幕/文本的模型，不授权执行设备操作。",
+        "en": "The exact ID is in the vision-request enum. Its guide says temporarily free, not permanently free. Listing screen/text understanding does not authorize device operations."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/autoglm-phone",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.1v-thinking-flashx",
+      "family": "GLM-4.1V-Thinking",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.1v-thinking-flash",
+      "family": "GLM-4.1V-Thinking-Flash",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.1v-thinking-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "免费型号；模态由该型号页面及系列页确认，不从FlashX参数或实测结果继承。",
+        "en": "A free model; modalities are confirmed by its own and series guides, not inherited from FlashX parameters or test results."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.1v-thinking-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json",
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking"
+      ]
+    },
+    {
+      "model_id": "glm-4v-flash",
+      "family": "GLM-4V-Flash",
+      "status": "available",
+      "billing": "free",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "本型号页确认图像理解；不因共享视觉接口有video字段就增添视频模态。",
+        "en": "The exact model guide confirms image understanding; a video field in the shared vision API does not add video support here."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.5-flash",
+      "family": "GLM-4.5-Flash",
+      "status": "alias",
+      "billing": "free",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "专属页明确原型号于2026-01-30下线后，请求自动路由至glm-4.7-flash。虽然当前概览/枚举仍保留旧ID，这里按转路由入口记录为alias，不声称仍服务原模型或继承原能力。",
+        "en": "The dedicated page states that after the original model's 2026-01-30 retirement, requests route automatically to glm-4.7-flash. Although the overview/enum retain the old ID, it is recorded as a routing alias, not continued service of the original model or inherited capabilities."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4-plus",
+      "family": "GLM-4",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。",
+        "en": "An official older guide or parameter table retains this exact ID, but neither the current overview nor chat-request enums list it. Pricing explicitly retains historical entries; a price or older example does not establish current hosted availability, so status remains unknown."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4-air-250414",
+      "family": "GLM-4",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。 精确小写ID另由核心参数默认表确认。",
+        "en": "An official older guide or parameter table retains this exact ID, but neither the current overview nor chat-request enums list it. Pricing explicitly retains historical entries; a price or older example does not establish current hosted availability, so status remains unknown. The core-parameter defaults table separately confirms the exact lowercase ID."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json",
+        "https://docs.bigmodel.cn/cn/guide/start/concept-param"
+      ]
+    },
+    {
+      "model_id": "glm-4-airx",
+      "family": "GLM-4",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。 精确小写ID另由核心参数默认表确认。",
+        "en": "An official older guide or parameter table retains this exact ID, but neither the current overview nor chat-request enums list it. Pricing explicitly retains historical entries; a price or older example does not establish current hosted availability, so status remains unknown. The core-parameter defaults table separately confirms the exact lowercase ID."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json",
+        "https://docs.bigmodel.cn/cn/guide/start/concept-param"
+      ]
+    },
+    {
+      "model_id": "glm-4.5",
+      "family": "GLM-4.5",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "专属页仍有该ID调用示例，并提示GLM-4.5、GLM-4.5-X即将下线，但未给确切日期；当前概览/枚举未列原版，不能自行判为已退役或仍可用。当前按量计费类型也未在价目单独确认。",
+        "en": "The guide retains a call using this ID and warns that GLM-4.5 and GLM-4.5-X will retire, without an exact date. The original variant is absent from current overview/enums, so neither retirement nor continued availability is assumed. Current pay-as-you-go billing is also unconfirmed."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4.5-x",
+      "family": "GLM-4.5",
+      "status": "unknown",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "准确ID来自核心参数默认表；专属系列页点名即将下线但无日期，当前目录/枚举未列出。未单独确认此变体的当前模态与按量计费，不从GLM-4.5或AirX继承。",
+        "en": "The core-parameter defaults table confirms the exact ID. The series guide warns of retirement without a date, and current overview/enums omit it. This variant's current modalities and usage billing are not separately confirmed or inherited from GLM-4.5/AirX."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json",
+        "https://docs.bigmodel.cn/cn/guide/start/concept-param"
+      ]
+    },
+    {
+      "model_id": "glm-4.5v",
+      "family": "GLM-4.5V",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.5v",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。",
+        "en": "An official older guide or parameter table retains this exact ID, but neither the current overview nor chat-request enums list it. Pricing explicitly retains historical entries; a price or older example does not establish current hosted availability, so status remains unknown."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.5v",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    },
+    {
+      "model_id": "glm-4v-plus-0111",
+      "family": "GLM-4V-Plus",
+      "status": "unknown",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4v-plus-0111",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方旧型号页或参数表保留该准确ID，但当前模型概览与对话请求枚举均未列出。价格页明确可能保留历史价目，不能用有价格或旧示例证明现网仍可调用；当前服务状态保留unknown。",
+        "en": "An official older guide or parameter table retains this exact ID, but neither the current overview nor chat-request enums list it. Pricing explicitly retains historical entries; a price or older example does not establish current hosted availability, so status remains unknown."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4v-plus-0111",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json",
+        "https://docs.bigmodel.cn/cn/guide/start/concept-param"
+      ]
+    },
+    {
+      "model_id": "glm-z1-air",
+      "family": "GLM-Z1",
+      "status": "retired",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-z1",
+      "pricing_url": "https://docs.bigmodel.cn/cn/guide/start/pricing",
+      "notes": {
+        "zh": "官方系列页明确GLM-Z1系列已下线；该准确ID取自页面保留的旧调用示例。billing仅记录历史价目的付费属性，不表示当前可购买或调用。",
+        "en": "The official series guide explicitly says GLM-Z1 is retired; this exact ID comes from its retained old call example. Billing records only its historical paid classification, not current purchasability or availability."
+      },
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-z1",
+        "https://docs.bigmodel.cn/cn/guide/start/pricing",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+        "https://docs.bigmodel.cn/openapi/openapi.json"
+      ]
+    }
+  ]
+}

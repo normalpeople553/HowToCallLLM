@@ -2,6 +2,8 @@
 
 [中文](../../../docs/03-厂商攻略/minimax.md) · [Human guide](../../../human/README.en.md)
 
+See the [MiniMax language-model list](../model-lists/minimax.md) for other exact IDs, lifecycle, input modalities and official pricing. Metered, subscription and preview access are distinguished; a listing does not imply a detailed manual or live-call evidence.
+
 The collected [MiniMax-M2.7 manual](../../../models/minimax/MiniMax-M2.7/README.en.md) covers the China-platform Chat Completions interface, native cURL, thinking output, streaming, multi-turn conversation, and a complete tool loop. Find the examples and official sources in the [feature index](../example-index.md).
 
 The official lifecycle notice states that the M2.7 family stops accepting new users on **2026-10-19**, and its pay-as-you-go API retires on **2026-11-18**. From 10-19, old-name requests on M Plan / Token Plan route to M3.1 Flash Preview. [Lifecycle notice](https://platform.minimax.cn/docs/guides/models-intro)

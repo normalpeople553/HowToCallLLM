@@ -18,6 +18,7 @@ For an agent, start with [SKILL.en.md](skills/model-manual/SKILL.en.md); Chinese
 | Material | Entry point |
 |---|---|
 | First call, compatible APIs, environment variables, pricing links and common errors | [Human reading path](human/README.en.md#reading-path) |
+| Exact language-model API IDs, lifecycle, input modalities, official prices and repository coverage across six providers | [Language-model lists](en/docs/model-lists/README.md) |
 | Exact model identities, endpoints, capabilities, limits, lifecycle and official sources across six providers | [Model manuals](models/README.en.md) |
 | Context versus output budgets, temperature/top-p, thinking, streaming, JSON, tools and multimodal fields | [Parameter guide](en/docs/parameters.md) |
 | Complete files for chat, streaming, thinking, multi-turn, JSON/Schema, tool loops and model-specific image/video features | [Official-source example index](en/docs/example-index.md) |
@@ -29,7 +30,9 @@ For an agent, start with [SKILL.en.md](skills/model-manual/SKILL.en.md); Chinese
 
 This is a content inventory, not a claim that every model supports every listed feature. Read [current per-file execution status](en/docs/example-status.md) for current file counts, passing evidence and outstanding cases. The older capability checks are separate: [historical workflow status](en/docs/verification-status.md).
 
-## Covered models
+## Models with maintained detailed manuals
+
+This table is not a provider's complete inventory. The [six language-model lists](en/docs/model-lists/README.md) separately track official IDs and older names, distinguishing official listings, maintained manuals and per-file live evidence. A discovery entry does not add generator support or inherit the default model's parameters or tests.
 
 Project rule: default calls and maintained examples use paid models only, with no automatic free-model fallback after errors. Follow each manual's official pricing link; promotional credits do not change a model's paid billing category. [Selection policy](en/docs/evidence-policy.md)
 

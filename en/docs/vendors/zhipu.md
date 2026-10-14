@@ -2,6 +2,8 @@
 
 [中文](../../../docs/03-厂商攻略/zhipu.md) · [Human guide](../../../human/README.en.md)
 
+See the [Zhipu language-model list](../model-lists/zhipu.md) for other exact IDs, lifecycle, input modalities and official pricing. Free entries are discovery only and do not change paid defaults; a listing does not imply a detailed manual or live-call evidence.
+
 Source verification date: **2026-10-14**. Vendor facts follow the [Zhipu documentation](https://docs.bigmodel.cn/llms.txt); repository testing terminology follows the [evidence policy](../evidence-policy.md).
 
 | Item | Value and official source |

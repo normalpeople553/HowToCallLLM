@@ -1,0 +1,766 @@
+{
+  "schema_version": 1,
+  "vendor": "doubao",
+  "checked_at": "2026-10-14",
+  "official_catalog_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+  "scope_note": {
+    "zh": "范围为中国内地火山方舟按量 API：收录核对日官方模型列表文本生成栏的豆包自研 Model ID，含角色、翻译及多模态理解语言模型；另收录当前下线公告中的既往对话、推理、编程和 GUI 语言版本以供迁移辨认，不宣称穷尽 2024/2025 历史档案。排除转售型号、图像/视频/3D 生成、独立语音服务、向量、重排、纯 OCR 和单一意图分类器。Coding/Agent Plan 的入口、短名称和生命周期须另查订阅文档，不与按量 API 混用。往期、EOM 与 EOS 分开判断，价目中出现不等于可用；实际权限以地域、账户及控制台为准。本表是官方资料核对而非 API 实测，不包含固定价格或调用参数上限。",
+    "en": "Scope: mainland-China Ark pay-as-you-go API. Includes Doubao-owned Model IDs from the official catalog's text-generation section on the check date, including character, translation and multimodal-understanding language models. Past conversational, reasoning, coding and GUI language versions from the current deprecation notice are retained for migration identification; this is not an exhaustive archive of 2024/2025. Excludes resold models, image/video/3D generation, standalone speech services, embeddings, rerankers, pure OCR and single-purpose intent classifiers. Coding/Agent Plan endpoints, short names and lifecycles require separate subscription documentation and are not interchangeable with pay-as-you-go API IDs. Past-model status, EOM and EOS are distinct; a price listing alone is not availability evidence. Region, account and console permissions still apply. This is an official-document inventory, not an API execution test; it contains no copied prices or request limits."
+  },
+  "models": [
+    {
+      "model_id": "doubao-seed-evolving",
+      "family": "Doubao Seed Evolving",
+      "status": "alias",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/latest-model?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "统一 Model ID 指向持续更新的模型服务，不是固定快照；当前官方列为推荐型号。支持视觉理解，不支持音频理解；本表不把 Coding Plan 的短名称当作按量 API 别名。",
+        "en": "A rolling Model ID for an automatically updated service, not a pinned snapshot; currently recommended in the official catalog. Visual understanding is supported, but audio understanding is not. Coding Plan short names are not treated as pay-as-you-go aliases here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "https://docs.volcengine.com/docs/ark/latest-model?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-1-pro-260915",
+      "family": "Doubao Seed 2.1",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方推荐的固定版本 Model ID；此处状态针对方舟按量 API，不代表订阅套餐的模型范围。",
+        "en": "A fixed-version Model ID recommended in the official catalog. This status concerns Ark pay-as-you-go API access, not subscription-plan availability."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-1-lite-260915",
+      "family": "Doubao Seed 2.1",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方推荐型号；模型表分别列出视觉理解与音频理解。",
+        "en": "Recommended in the official catalog, which lists both visual and audio understanding."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-1-turbo-260628",
+      "family": "Doubao Seed 2.1",
+      "status": "available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 模型表仍列为推荐型号；不要套用 Coding Plan 同名短名称的下线公告。",
+        "en": "Still recommended in the pay-as-you-go API catalog. Deprecation of a similarly named Coding Plan route does not establish retirement of this versioned API ID."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-1-pro-260628",
+      "family": "Doubao Seed 2.1",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方归入往期模型，仍列于可调用模型表；不是 260915 版本，也不是本次新增实测。",
+        "en": "Listed as a past model in the callable catalog. It is not the 260915 version; this inventory does not constitute a new execution test."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-lite-260428",
+      "family": "Doubao Seed 2.0",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方归入往期模型；音频理解表仍明确列出此版本。",
+        "en": "Listed as a past model; the audio-understanding table explicitly includes this version."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-mini-260428",
+      "family": "Doubao Seed 2.0",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方归入往期模型；音频理解表仍明确列出此版本。",
+        "en": "Listed as a past model; the audio-understanding table explicitly includes this version."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-pro-260215",
+      "family": "Doubao Seed 2.0",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "已于 2026-09-24 EOM，不能新建旧版服务；EOS 为 2026-11-24 14:00（UTC+8）。核对日尚未到 EOS，不标为已下线。",
+        "en": "EOM was 2026-09-24, preventing new provisioning of the old service. EOS is 2026-11-24 at 14:00 UTC+8, still in the future on the check date; it is not marked retired."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-lite-260215",
+      "family": "Doubao Seed 2.0",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "已于 2026-09-24 EOM；该版本适用提前的 EOS：2026-10-22 14:00（UTC+8），不是同批公告的通用 11 月日期。",
+        "en": "EOM was 2026-09-24. This version has the earlier EOS of 2026-10-22 at 14:00 UTC+8, not the batch's general November deadline."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-mini-260215",
+      "family": "Doubao Seed 2.0",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "已于 2026-09-24 EOM；该版本适用提前的 EOS：2026-10-22 14:00（UTC+8），不是同批公告的通用 11 月日期。",
+        "en": "EOM was 2026-09-24. This version has the earlier EOS of 2026-10-22 at 14:00 UTC+8, not the batch's general November deadline."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-2-0-code-preview-260215",
+      "family": "Doubao Seed 2.0 Code",
+      "status": "preview",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "预览版本，官方仍列于往期模型；已于 2026-09-24 EOM，EOS 为 2026-11-24 14:00（UTC+8）。preview 标签不表示可向新用户开放。",
+        "en": "A preview version still listed among past models. EOM was 2026-09-24 and EOS is 2026-11-24 at 14:00 UTC+8. The preview label does not imply access for new users."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-character-260628",
+      "family": "Doubao Seed Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "角色模型；官方文本与视觉能力表列出此准确 ID，不与不支持思考的 251128 文本版本合并。",
+        "en": "A character model listed under this exact ID in the text and visual capability tables; not merged with the non-thinking, text-only 251128 version."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-character-251128",
+      "family": "Doubao Seed Character",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "往期文本角色模型；官方明确该版本不支持深度思考。",
+        "en": "A past text character model; the official catalog explicitly states that this version does not support deep thinking."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-translation-250915",
+      "family": "Doubao Seed Translation",
+      "status": "legacy_available",
+      "billing": "paid",
+      "input_modalities": [
+        "text"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "官方文本生成栏中的翻译增强语言模型，不是独立语音、OCR 或向量接口。",
+        "en": "A translation-focused language model in the official text-generation catalog, not a standalone speech, OCR or embedding API."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-code-preview-251028",
+      "family": "Doubao Seed Code",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-8-251228",
+      "family": "Doubao Seed 1.8",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-vision-250815",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-250615",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-251015",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-flash-250828",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-flash-250615",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-lite-32k-250115",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-vision-pro-32k-250115",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-pro-32k-250115",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-pro-32k-character-250715",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-09-21 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-09-21. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-pro-32k-character-250228",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-05-11 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-05-11. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-lite-251015",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-05-11 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-05-11. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-8-251215",
+      "family": "Doubao Seed 1.8",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-05-11 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-05-11. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-lite-32k-character-250228",
+      "family": "Doubao Lite",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-24 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-24. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-thinking-250615",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-thinking-250715",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-seed-1-6-flash-250715",
+      "family": "Doubao Seed 1.6",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-vision-pro-250328",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-thinking-vision-pro-250428",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-vision-lite-250315",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-thinking-pro-250415",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-thinking-pro-m-250428",
+      "family": "Doubao 1.5",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    },
+    {
+      "model_id": "doubao-1-5-ui-tars-250428",
+      "family": "Doubao 1.5 UI-TARS",
+      "status": "retired",
+      "billing": "unknown",
+      "input_modalities": [
+        "unknown"
+      ],
+      "model_url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "pricing_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+      "notes": {
+        "zh": "按量 API 公告列明该版本于 2026-03-31 EOS；旧接入点可能被替换，不能据仍有价格入口判断旧版本可用。旧版本输入模态及当前计费不在本次复核范围。",
+        "en": "The pay-as-you-go notice sets EOS for this version to 2026-03-31. Existing endpoints may be migrated; a pricing link does not establish availability of the old version. Its historical input modalities and current billing are not revalidated here."
+      },
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+      ]
+    }
+  ]
+}

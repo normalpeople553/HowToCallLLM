@@ -2,6 +2,8 @@
 
 [中文](../../../docs/03-厂商攻略/kimi.md) · [Human guide](../../../human/README.en.md)
 
+See the [Kimi language-model list](../model-lists/kimi.md) for other exact IDs, lifecycle, input modalities and official pricing. A listing does not imply a detailed manual or live-call evidence.
+
 Source verification date: **2026-10-13**. Vendor facts follow the [Kimi platform documentation](https://platform.kimi.com/docs/llms.txt); repository testing terminology follows the [evidence policy](../evidence-policy.md).
 
 | Item | Value and official source |

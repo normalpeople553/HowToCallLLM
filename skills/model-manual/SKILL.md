@@ -12,7 +12,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 ## 先定位任务与型号
 
 1. 从用户要求和现有项目确定厂商、型号、语言及调用方式；缺少会影响实现的信息时再问。没有现有项目且用户未指定语言时使用 Python，未指定型号时读取厂商的 `default_model`。本项目默认型号与维护示例全部使用付费型号，核对卡片 `billing.type.value=paid` 及其官方价格来源；遇到报错不得静默回退免费型号。用户明确指定的其他型号应按原 ID 核对，不擅自改名。[项目选型规则](../../docs/来源与核验规则.md)
-2. 从 [references/vendors.json](references/vendors.json) 定位对应厂商，再读取指定型号的 [references/models/](references/models/) 卡片。目录中的 `model_card` 和 `model_manual` 只指默认型号，用户指定其他型号时必须按准确 Model ID 查找。
+2. 从 [references/vendors.json](references/vendors.json) 定位对应厂商，再读取指定型号的 [references/models/](references/models/) 卡片。目录中的 `model_card` 和 `model_manual` 只指默认型号，用户指定其他型号时必须按准确 Model ID 查找。若问“该厂商有哪些语言模型”或指定无卡片型号，先用 [model_catalog.py](scripts/model_catalog.py) 查询官方清单：`python skills/model-manual/scripts/model_catalog.py --vendor deepseek`，可加 `--model <准确ID>`。返回生命周期、官方型号/价格来源和独立派生的 `repository_coverage`；未命中不回退。官方列出不等于仓库已维护/实测，清单中的别名不继承默认卡片。只读命中厂商，不加载全部清单。
 3. 型号参数读取卡片的 `generation`，能力读取 `capabilities`，事实的 `source` 在该卡片的 `sources` 中解析。先检查 `identity` 的生命周期与订阅路由；旧 Model ID 不保证实际服务版本。解释参数时按[任务流程的六型号参数入口](references/workflows.md#接入)读取对应 `parameters.md`，不把 SDK 选项、服务端参数和示例业务限制混为一谈。
 4. 按下表读取[任务流程](references/workflows.md)中相关部分，完成实现和检查。
 
@@ -23,6 +23,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 | 新增调用、JSON 提取、流式或工具调用 | 接入 | 检查任务与语言组合，用型号参数生成代码 |
 | 换厂商、换型号、升级 SDK | 迁移 | 比较源与目标，保留业务行为，处理参数和消息差异 |
 | 报错、空正文、断流或工具循环 | 排错 | 结合实际响应和具体型号定位原因 |
+| 查询厂商的其他语言模型 | 型号发现 | 查官方清单、生命周期和仓库覆盖，不把默认卡片当完整目录 |
 | 指定未收录型号 | 未知型号 | 核对官方资料，避免继承默认型号参数 |
 | 查能力或要求真实复测 | 证据与验证 | 区分型号报告、逐文件证据与新生成代码；按授权运行 |
 

@@ -2,6 +2,8 @@
 
 [English](../../en/docs/vendors/kimi.md)
 
+其他准确 ID、生命周期、输入模态及官方价格入口见[Kimi 语言模型清单](../model-lists/kimi.md)。清单不代表都有详细说明书或真实调用证据。
+
 核对日期：**2026-10-13**。厂商事实以 [Kimi 开放平台文档](https://platform.kimi.com/docs/llms.txt)为准；仓库实测口径见[来源与核验规则](../来源与核验规则.md)。
 
 | 项目 | 值与官方来源 |

@@ -25,6 +25,7 @@ These are project workflows, not provider guarantees. See [workflows](../skills/
 | Resource | Canonical location | Use |
 |---|---|---|
 | Provider routing | [vendors.json](../skills/model-manual/references/vendors.json) | Locate defaults without applying them to every model from that provider |
+| Other language-model IDs | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [Reading lists](../en/docs/model-lists/README.md) | Exact-ID official sources and lifecycle; separately joined coverage, not automatic card or live evidence |
 | Exact-model facts | [references/models](../skills/model-manual/references/models/) | Read identity, capabilities and generation; resolve each source reference |
 | Parameter explanations | [Parameter navigation](../en/docs/parameters.md) | Read the relevant model only; distinguish SDK options, server parameters and local safety limits |
 | Existing feature code | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | Query exact model/capability, provenance, inputs, commands and evidence |
@@ -35,6 +36,8 @@ These are project workflows, not provider guarantees. See [workflows](../skills/
 Run queries and generation from the repository root. These commands do not send model requests:
 
 ```bash
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
 python skills/model-manual/scripts/generate_snippet.py --help
 python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool --thinking off

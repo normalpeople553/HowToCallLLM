@@ -74,11 +74,26 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --model kim
 
 给出与证据对应的最小修复，并说明如何检查是否解决。日志未提供或无法复现时，把推测写成待检查原因，不伪装成已定位；外部写操作的重试还需按业务处理重复执行。
 
+## 型号发现
+
+用户问厂商还有哪些语言型号时，先查询 [model_catalog.py](../scripts/model_catalog.py) 或对应[语言模型清单](../../../docs/model-lists/README.md)，而不是只返回 `vendors.json` 的默认型号。在仓库根目录执行：
+
+```bash
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek
+python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
+```
+
+查询只读本地官方资料快照和现有证据，不读取 Key、不发请求。按 `checked_at`、`status`、逐行说明和官方来源解释；`available` 是官方文档列出，不是当前账户调用成功。`billing=paid` 不能推断按量入口，预览可能仅限订阅。实时可用性仍需复核官方页面，真实调用另按授权。
+
+`repository_coverage` 按准确厂商和 ID 关联：`manual_path` / `parameters_path` 为维护卡片对应页面，`example_files` / `live_passed_files` 为该准确 ID 的当前源码文件证据。默认、别名、系列和实际服务版本之间不转移覆盖。无卡片的清单条目不会加入代码生成器；免费发现条目也不改变项目付费默认规则。未知 ID 返回未命中，不静默替换。
+
+用户只要求增加型号清单时，维护 `data/model-lists/<vendor>.json` 的双语字段和官方来源，再生成页面即可；不因此创建详细卡片、宣称实测或更改默认型号。
+
 ## 未知型号
 
 用户指定的型号没有机器卡片时，不能用默认卡片覆盖 Model ID 后继续生成。
 
-1. 从该厂商官方模型页和接口资料核对准确 ID、是否可调用、生命周期、所需任务能力与专属参数；保留官方链接和核对日期。
+1. 先查发现清单定位准确 ID 与来源，再从该厂商官方模型页和接口资料核对是否可调用、生命周期、所需任务能力与专属参数；保留官方链接和核对日期。清单未收录不等于官方不支持。
 2. 用户只要求完成其项目接入时，可按官方资料手写实现，明确“尚未收录/尚未实测”，无需擅自扩展本知识库。关键行为无法确认时说明缺失项，不猜参数。
 3. 用户要求补充本手册时，在 [models/](models/) 新建独立型号卡片，并在仓库 `models/<vendor>/<model-id>/` 增加说明书与必要示例；按相邻卡片的结构和生成器校验要求填写字段。每个 `value` 或 `status` 对应的 `source` 必须能解析，不能复制其他型号事实或报告。缺少文档的能力使用现有结构适用的未知状态；`verified` 必须有该型号的真实报告支持。
 4. 厂商 `default_model` 只在用户要求更改默认型号时修改。当前验证器明确固定了测试型号，[同步脚本](../scripts/sync_verification.py)只生成厂商默认型号摘要；新增卡片不自动获得验证入口或成为默认型号。扩展目录时同步调整受影响的离线检查和验证脚本，避免把新型号测试成旧型号。

@@ -2,7 +2,7 @@
 
 [English](README.en.md) · [人类篇](../human/README.md)
 
-本目录为每个可调用模型提供独立说明书与示例；机器可读事实仍以 [`skills/model-manual/references/models/`](../skills/model-manual/references/models/)为唯一来源。[仓库来源规则](../docs/来源与核验规则.md)
+本目录为已维护的具体型号提供独立说明书与示例，不覆盖厂商所有可调用型号。详细调用事实仍以 [`skills/model-manual/references/models/`](../skills/model-manual/references/models/)卡片为准；更广的型号发现见[六家语言模型清单](../docs/model-lists/README.md)，不会自动获得卡片、参数或实测覆盖。[仓库来源规则](../docs/来源与核验规则.md)
 
 当前已完成：
 

@@ -11,6 +11,7 @@ This guide is for people making decisions, running examples, or assigning work t
 |---|---|---|
 | Make your first model call | [First call](../en/docs/first-call.md) | Environment, key, endpoint, model, and runnable file. |
 | Use a familiar SDK with another provider | [Compatible-API pattern](../en/docs/compatible-api.md) | Shared structures versus model-specific fields. |
+| Discover a provider's other language models | [Six language-model lists](../en/docs/model-lists/README.md) | Exact IDs, current documentation status, official prices and actual repository coverage. |
 | Find the exact model's instructions | [Model directory](../models/README.en.md) and the table below | API ID, interface, lifecycle, and official sources. |
 | Understand or tune parameters | [Parameters and tuning](../en/docs/parameters.md) | Purpose, defaults/unknowns, budgets, mode-specific effects. |
 | Check prices and quotas | [Official cost links](../en/docs/pricing.md) | Rules for the actual account/region, not copied prices. |
@@ -21,7 +22,9 @@ This guide is for people making decisions, running examples, or assigning work t
 
 Read chapters as needed. The [introduction](../en/docs/introduction.md) explains the structure; there is no requirement to read the whole book first.
 
-## Six collected models
+## Six models with maintained detailed manuals
+
+These are not the providers' complete inventories. The broader [language-model lists](../en/docs/model-lists/README.md) track official discovery, preview/legacy/alias entries and retirements. Missing manuals or live evidence are explicit; listed models do not automatically use the code below.
 
 This table is a directory, not a quality ranking. “Example highlights” means code collected in the repository—not an exhaustive capability list and not a claim that every example or combination passed. Sources, adaptations, and current scope are in the [example index](../en/docs/example-index.md).
 
