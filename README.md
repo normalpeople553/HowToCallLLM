@@ -46,7 +46,9 @@ Agent 的任务分支、未知型号处理和交付要求见[任务流程](skill
 
 ## 模型级说明书
 
-已收录五份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)和[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)。型号卡片保存官方事实，示例包含结果检查与工具闭环；实测范围和结果统一见[验证状态](docs/验证状态.md)。
+已收录六份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)、[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)和[MiniMax `MiniMax-M2.7`](models/minimax/MiniMax-M2.7/README.md)。型号卡片保存官方事实，示例包含结果检查与工具闭环；实测范围和结果统一见[验证状态](docs/验证状态.md)。
+
+MiniMax M2.7 当前仅官方文档收录、尚未实测，且已公告退役：2026-10-19 停止向新用户开放，2026-11-18 按量 API 下线；订阅请求的旧名称将从 10-19 起路由到新模型。使用前先查[官方通知](https://platform.minimax.cn/docs/guides/models-intro)。
 
 ## 快速参数表
 
@@ -59,6 +61,7 @@ Agent 的任务分支、未知型号处理和交付要求见[任务流程](skill
 | 智谱 GLM | `ZHIPU_API_KEY`（项目约定） | [`https://open.bigmodel.cn/api/paas/v4`](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) | [`glm-4.7-flash`](https://docs.bigmodel.cn/cn/guide/start/pricing) | [`thinking.type=disabled`](https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode) | [价格页](https://docs.bigmodel.cn/cn/guide/start/pricing) |
 | 通义千问 | `DASHSCOPE_API_KEY` | [OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [`qwen-flash`](https://help.aliyun.com/zh/model-studio/getting-started/models) | [`enable_thinking=false`](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) | [价格页](https://help.aliyun.com/zh/model-studio/model-pricing) |
 | 豆包方舟 | `ARK_API_KEY` | [`https://ark.cn-beijing.volces.com/api/v3`](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh) | [`doubao-seed-2-1-pro-260628`](https://docs.volcengine.com/docs/ark/model-list?lang=zh) | [`thinking.type=disabled`](https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh) | [价格页](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh) |
+| MiniMax | `MINIMAX_API_KEY`（项目约定） | [`https://api.minimax.cn/v1`](https://platform.minimax.cn/docs/api-reference/text-openai-api) | [`MiniMax-M2.7`（已公告退役）](https://platform.minimax.cn/docs/guides/models-intro) | [M2.x 无法关闭；reasoning_split 只改输出格式](https://platform.minimax.cn/docs/api-reference/text-chat-openai) | [价格页](https://platform.minimax.cn/docs/guides/pricing-paygo) |
 
 > 通义官方当前推荐带 `WorkspaceId` 的地域域名；旧 `dashscope.aliyuncs.com/compatible-mode/v1` 仍可使用。两种地址与迁移说明见[官方兼容接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)。
 
@@ -82,7 +85,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-五家厂商都在各自官方文档中提供 OpenAI-compatible Chat Completions 用法：[DeepSeek](https://api-docs.deepseek.com/)、[Kimi](https://platform.kimi.com/docs/api/chat)、[智谱](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)、[通义](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)、[豆包](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)。本项目因此统一使用 `openai` 客户端，但不声称这些厂商兼容 OpenAI 的全部 API。
+已收录厂商都在各自官方文档中提供 OpenAI-compatible Chat Completions 用法：[DeepSeek](https://api-docs.deepseek.com/)、[Kimi](https://platform.kimi.com/docs/api/chat)、[智谱](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)、[通义](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)、[豆包](https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh)、[MiniMax](https://platform.minimax.cn/docs/api-reference/text-openai-api)。本项目因此统一使用 `openai` 客户端，但不声称这些厂商兼容 OpenAI 的全部 API。
 
 ## 让说明书生成代码
 
@@ -132,7 +135,7 @@ python skills/model-manual/scripts/sync_verification.py --check
 | [Agent 任务流程](skills/model-manual/references/workflows.md) | 接入、迁移、排错、未知型号和证据核对 |
 | [00 阅读说明](docs/00-前言.md) | 双入口、项目范围与可信度标记 |
 | [01 第一次调用](docs/01-5分钟跑通第一次调用.md) | 手动运行的辅助教程 |
-| [02 统一调用套路](docs/02-一个套路调遍所有模型.md) | 五家兼容接口与差异 |
+| [02 统一调用套路](docs/02-一个套路调遍所有模型.md) | 已收录厂商兼容接口与差异 |
 | [03 厂商资料卡](docs/03-厂商攻略/) | 每家官方链接、配置和仓库实测 |
 | [04 价格与额度](docs/04-免费额度与省钱攻略.md) | 直达官方价格、额度页面 |
 | [05 排错](docs/05-新手必会与报错速查.md) | 官方错误文档与项目排查流程 |

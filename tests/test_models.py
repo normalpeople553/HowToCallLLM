@@ -14,6 +14,11 @@ OFFICIAL_HOSTS = {
     "zhipu": {"docs.bigmodel.cn"},
     "qwen": {"help.aliyun.com"},
     "doubao": {"docs.volcengine.com"},
+    "minimax": {"platform.minimax.io", "platform.minimax.cn", "platform.minimaxi.com"},
+}
+EXPECTED_MODELS = {
+    "deepseek-flash", "kimi-k2.6", "glm-4.7-flash", "qwen-flash",
+    "doubao-seed-2-1-pro-260628", "MiniMax-M2.7",
 }
 
 
@@ -23,7 +28,7 @@ class ModelCardTests(unittest.TestCase):
         cls.cards = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(MODEL_CARDS.glob("*.json"))]
 
     def test_expected_models_exist(self):
-        self.assertEqual({c["model_id"] for c in self.cards}, {"deepseek-flash", "kimi-k2.6", "glm-4.7-flash", "qwen-flash", "doubao-seed-2-1-pro-260628"})
+        self.assertEqual({c["model_id"] for c in self.cards}, EXPECTED_MODELS)
 
     def test_sources_are_official_and_reachable_by_reference(self):
         for card in self.cards:
@@ -66,8 +71,13 @@ class ModelCardTests(unittest.TestCase):
 
     def test_verification_record_matches_card(self):
         for card in self.cards:
-            verification_path = (MODEL_CARDS / card["verification"]).resolve()
             with self.subTest(model=card["model_id"]):
+                if card.get("verification") is None:
+                    self.assertEqual(self.card_scope(card), "not_run")
+                    self.assertFalse(any(capability["status"] == "verified" for capability in card["capabilities"].values()))
+                    self.assertFalse(card.get("historical_verification"), "未实测型号不能继承其他型号的旧报告")
+                    continue
+                verification_path = (MODEL_CARDS / card["verification"]).resolve()
                 self.assertTrue(verification_path.is_file())
                 result = json.loads(verification_path.read_text(encoding="utf-8"))
                 self.assertEqual(result["model_id"], card["model_id"])
@@ -107,7 +117,7 @@ class ModelCardTests(unittest.TestCase):
 
     def test_every_model_manual_links_the_pitfall_guide(self):
         manuals = sorted((ROOT / "models").glob("*/*/README.md"))
-        self.assertEqual(len(manuals), 5)
+        self.assertEqual({manual.parent.name for manual in manuals}, EXPECTED_MODELS)
         for manual in manuals:
             with self.subTest(manual=str(manual)):
                 self.assertIn("06-真实踩雷与生产检查.md", manual.read_text(encoding="utf-8"))

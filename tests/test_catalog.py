@@ -30,7 +30,7 @@ class CatalogTests(unittest.TestCase):
     def test_expected_vendors_exist(self):
         self.assertEqual(
             set(self.vendors),
-            {"deepseek", "kimi", "zhipu", "qwen", "doubao"},
+            {"deepseek", "kimi", "zhipu", "qwen", "doubao", "minimax"},
         )
 
     def test_required_fields_and_capability_states(self):
@@ -50,6 +50,9 @@ class CatalogTests(unittest.TestCase):
             "docs.bigmodel.cn",
             "help.aliyun.com",
             "docs.volcengine.com",
+            "platform.minimax.cn",
+            "platform.minimax.io",
+            "platform.minimaxi.com",
         }
         for vendor, cfg in self.vendors.items():
             with self.subTest(vendor=vendor):
@@ -70,7 +73,7 @@ class CatalogTests(unittest.TestCase):
                     cfg["default_model"],
                     "你好",
                     stream=True,
-                    thinking="off",
+                    thinking="off" if "off" in self.generator.load_model(cfg["default_model"])["generation"]["thinking"] else "default",
                 )
                 compile(source, f"<{vendor}>", "exec")
 

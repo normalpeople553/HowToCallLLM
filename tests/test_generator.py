@@ -79,6 +79,11 @@ class ModelSelectionTests(unittest.TestCase):
             for mode in ("default", "on", "off"):
                 with self.subTest(model=model, thinking=mode):
                     original = copy.deepcopy(card)
+                    if mode != "default" and mode not in card["generation"]["thinking"]:
+                        with self.assertRaisesRegex(ValueError, "未登记思考"):
+                            generator.build_request(card, "hi", thinking=mode, max_tokens=4096)
+                        self.assertEqual(card, original)
+                        continue
                     body = generator.build_request(card, "hi", thinking=mode, max_tokens=4096)
                     parameter = card["generation"]["token_budget"]["parameter"]["value"]
                     self.assertEqual(body[parameter], 4096)
@@ -142,7 +147,10 @@ class ModelSelectionTests(unittest.TestCase):
             if git_bash.is_file():
                 bash = str(git_bash)
         for model, card in self.cards.items():
-            tasks = ["chat", "json", "tool"]
+            mode = "off" if "off" in card["generation"]["thinking"] else "default"
+            tasks = ["chat", "tool"]
+            if "json_output" in card["generation"]:
+                tasks.append("json")
             if generator._supported(card, "vision"):
                 tasks.append("vision")
             for task in tasks:
@@ -153,15 +161,15 @@ class ModelSelectionTests(unittest.TestCase):
                         image_url = None
                         if task == "vision":
                             image_url = "data:image/png;base64,AA==" if model == "kimi-k2.6" else "https://example.com/image.png"
-                        source = generator.python_snippet(card, model, question, stream, "off", 4096, task, image_url)
+                        source = generator.python_snippet(card, model, question, stream, mode, 4096, task, image_url)
                         compile(source, f"<{model}/{task}>", "exec")
                         body = request_from_python(source)
                         if task == "json":
                             self.assertIn("JSON", body["messages"][0]["content"])
-                        if task == "tool":
+                        if task == "tool" and "tool_choice" in card["generation"]:
                             self.assertEqual(body["tool_choice"], "auto")
             for stream in (False, True):
-                source = generator.curl_snippet(card, model, question, stream, "off")
+                source = generator.curl_snippet(card, model, question, stream, mode)
                 check = subprocess.run([bash or "bash", "--noprofile", "--norc", "-n"], input=source, encoding="utf-8", capture_output=True)
                 self.assertEqual(check.returncode, 0, check.stderr)
 
@@ -171,6 +179,30 @@ class ModelSelectionTests(unittest.TestCase):
         compile(cli.stdout, "<doubao-cli>", "exec")
         self.assertIn("往期模型", cli.stderr)
         self.assertIn("尚未确认", cli.stderr)
+
+    def test_minimax_native_budget_and_format_do_not_claim_thinking_off(self):
+        card = self.cards["MiniMax-M2.7"]
+        body = generator.build_request(card, "hi", max_tokens=1024)
+        self.assertEqual(body["max_completion_tokens"], 1024)
+        self.assertNotIn("max_tokens", body)
+        self.assertTrue(body["reasoning_split"])
+        source = generator.python_snippet(card, card["model_id"], "hi", False, "default", 1024)
+        request = request_from_python(source)
+        self.assertEqual(request["extra_body"], {"reasoning_split": True})
+        with self.assertRaisesRegex(ValueError, "未登记思考 off"):
+            generator.build_request(card, "hi", thinking="off")
+        for task in ("json", "vision"):
+            with self.assertRaises(ValueError):
+                generator.build_request(card, "hi", task=task)
+        tool_body = generator.build_request(card, "sum", task="tool")
+        self.assertNotIn("tool_choice", tool_body)
+        cli = subprocess.run([sys.executable, str(GENERATOR), "--vendor", "minimax", "--max-tokens", "1024"], capture_output=True, text=True)
+        self.assertEqual(cli.returncode, 0, cli.stderr)
+        compile(cli.stdout, "<minimax-cli>", "exec")
+        self.assertIn("2026-11-18", cli.stderr)
+        self.assertIn("2026-10-19", cli.stderr)
+        self.assertIn("M3.1", cli.stderr)
+        self.assertNotIn("提醒：", cli.stdout)
 
 
 class GeneratedPythonBehaviorTests(unittest.TestCase):
@@ -184,6 +216,16 @@ class GeneratedPythonBehaviorTests(unittest.TestCase):
             for response in (reply("partial", "length"), reply("", "stop"), reply("partial", "aborted"), reply("partial", None), types.SimpleNamespace(choices=[], usage=None)):
                 with self.assertRaises(RuntimeError):
                     self.namespace["checked_message"](response)
+
+    def test_http_success_does_not_hide_provider_business_error(self):
+        bad = reply("不能当作成功的正文")
+        bad.base_resp = {"status_code": 1008, "status_msg": "must-not-log-raw-error"}
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaisesRegex(RuntimeError, "base_resp"):
+            self.namespace["checked_message"](bad)
+        bad_chunk = chunk(no_choices=True)
+        bad_chunk.base_resp = {"status_code": 1008}
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()), self.assertRaisesRegex(RuntimeError, "base_resp"):
+            self.namespace["checked_stream"]([bad_chunk])
 
     def test_stream_usage_only_chunk_is_recorded_and_not_indexed(self):
         output, diagnostics = io.StringIO(), io.StringIO()

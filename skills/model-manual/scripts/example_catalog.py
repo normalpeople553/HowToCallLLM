@@ -17,6 +17,7 @@ HOSTS = {
     "qwen": {"help.aliyun.com"},
     "zhipu": {"docs.bigmodel.cn"},
     "doubao": {"docs.volcengine.com", "www.volcengine.com"},
+    "minimax": {"platform.minimax.io", "platform.minimax.cn", "platform.minimaxi.com"},
 }
 OFFLINE_STATES = {"not_run", "compile_checked", "mock_tested"}
 

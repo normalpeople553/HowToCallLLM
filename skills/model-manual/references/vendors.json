@@ -225,6 +225,45 @@
       "model_card": "models/doubao-seed-2-1-pro-260628.json",
       "verification": "models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json",
       "verification_scope": "strict_workflow"
+    },
+    "minimax": {
+      "name": "MiniMax",
+      "key_env": "MINIMAX_API_KEY",
+      "key_url": "https://platform.minimax.cn/console/access?tab=api-keys",
+      "base_url": "https://api.minimax.cn/v1",
+      "default_model": "MiniMax-M2.7",
+      "model_manual": "../../../models/minimax/MiniMax-M2.7/README.md",
+      "model_card": "models/MiniMax-M2.7.json",
+      "verification": null,
+      "verification_scope": "not_run",
+      "capabilities": {
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking": "documented",
+        "thinking_off": "unknown",
+        "tool_calling": "documented",
+        "multi_turn": "documented",
+        "json_object": "unknown",
+        "json_schema": "unknown",
+        "vision": "unknown",
+        "video_input": "unknown"
+      },
+      "sources": {
+        "api": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+        "models": "https://platform.minimax.cn/docs/guides/models-intro",
+        "sdk": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+        "pricing": "https://platform.minimax.cn/docs/guides/pricing-paygo"
+      },
+      "notes": [
+        {
+          "text": "M2.7 已公告退役，按量 API 与订阅路由有不同日期与行为；先复核账户类型。",
+          "source": "https://platform.minimax.cn/docs/guides/models-intro"
+        },
+        {
+          "text": "M2.x 的思考不能关闭；reasoning_split 仅控制输出格式。",
+          "source": "https://platform.minimax.cn/docs/api-reference/text-chat-openai"
+        }
+      ]
     }
   }
 }

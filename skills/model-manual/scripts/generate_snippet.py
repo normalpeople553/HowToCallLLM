@@ -92,6 +92,7 @@ def build_request(
         raise ValueError(f"{card['model_id']} 未登记 Chat Completions 能力")
     generation = card["generation"]
     body: dict[str, Any] = {
+        **copy.deepcopy(generation.get("request_defaults", {}).get("value", {})),
         "model": card["model_id"], "messages": [{"role": "user", "content": question}],
     }
     if thinking != "default":
@@ -131,7 +132,8 @@ def build_request(
         if not _supported(card, "tool_calling"):
             raise ValueError(f"{card['model_id']} 未登记工具调用能力")
         body["tools"] = [copy.deepcopy(SUM_TOOL)]
-        body["tool_choice"] = _fact(generation, "tool_choice")
+        if "tool_choice" in generation:
+            body["tool_choice"] = _fact(generation, "tool_choice")
     elif task == "vision":
         if not _supported(card, "vision"):
             raise ValueError(f"{card['model_id']} 未登记图片输入能力，请选择已收录的视觉型号")
@@ -170,12 +172,21 @@ def _python_body(card: dict[str, Any], body: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
-PYTHON_RESULT_HELPERS = '''def report_usage(usage):
+PYTHON_RESULT_HELPERS = '''def check_provider_status(response):
+    base = getattr(response, "base_resp", None)
+    if base is not None:
+        code = base.get("status_code") if isinstance(base, dict) else getattr(base, "status_code", None)
+        if isinstance(code, bool) or not isinstance(code, int) or code != 0:
+            raise RuntimeError("服务端 base_resp 未报告成功；不要将 HTTP 200 当成业务成功")
+
+
+def report_usage(usage):
     data = usage.model_dump(exclude_none=True) if hasattr(usage, "model_dump") else usage
     print("usage=" + json.dumps(data, ensure_ascii=False, default=str), file=sys.stderr)
 
 
 def checked_message(response, allow_tools=False):
+    check_provider_status(response)
     report_usage(getattr(response, "usage", None))
     choices = getattr(response, "choices", None) or []
     if not choices:
@@ -202,6 +213,7 @@ def checked_stream(response, echo=True):
     usage = None
     try:
         for chunk in response:
+            check_provider_status(chunk)
             if getattr(chunk, "usage", None) is not None:
                 usage = chunk.usage
             choices = getattr(chunk, "choices", None) or []
@@ -350,7 +362,14 @@ TYPESCRIPT_RESULT_HELPERS = '''function reportUsage(usage: unknown) {
   console.error("usage=" + JSON.stringify(usage ?? null));
 }
 
+function checkProviderStatus(response: any) {
+  if (response.base_resp != null && response.base_resp.status_code !== 0) {
+    throw new Error("服务端 base_resp 未报告成功；不要将 HTTP 200 当成业务成功");
+  }
+}
+
 function checkedMessage(response: any): string {
+  checkProviderStatus(response);
   reportUsage(response.usage);
   const choice = response.choices?.[0];
   if (!choice) throw new Error("响应没有 choices，不能作为成功答案");
@@ -369,6 +388,7 @@ async function checkedStream(response: any, echo = true): Promise<string> {
   let usage: unknown = null;
   try {
     for await (const chunk of response) {
+      checkProviderStatus(chunk);
       if (chunk.usage != null) usage = chunk.usage;
       const choice = chunk.choices?.[0];
       if (!choice) continue;
@@ -494,6 +514,8 @@ def main() -> None:
     except ValueError as exc:
         parser.error(str(exc))
     lifecycle = card.get("identity", {}).get("lifecycle", {}).get("value")
+    if "lifecycle_warning" in card["generation"]:
+        print("提醒：" + _fact(card["generation"], "lifecycle_warning"), file=sys.stderr)
     if lifecycle == "past_but_callable":
         print(f"提醒：{model} 属于官方往期模型；调用前复核模型列表与可用状态。", file=sys.stderr)
     if args.max_tokens is not None and _fact(card["generation"]["token_budget"], "semantics") == "unknown":

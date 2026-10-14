@@ -18,7 +18,9 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parent.parent
-MODEL_DIRS = sorted((ROOT / "models").glob("*/*/examples"))
+# 本模块保留原五家的固定“关闭思考 + 模拟天气/JSON”fixture。
+# MiniMax M2.7 不支持关闭思考或已确认的 JSON Mode，使用独立专项行为测试。
+MODEL_DIRS = sorted(path for path in (ROOT / "models").glob("*/*/examples") if path.parent.parent.name != "minimax")
 TOOLS = [directory / "05_tool_calling.py" for directory in MODEL_DIRS]
 STREAMS = [directory / "02_streaming.py" for directory in MODEL_DIRS] + [ROOT / "examples/03_streaming.py"]
 TEXT_EXAMPLES = [
@@ -88,7 +90,7 @@ def fake_sdk(responses, env=None):
     module.OpenAI = sdk.initialize
     dummy_env = {
         name: "offline-test-only"
-        for name in ("DEEPSEEK_API_KEY", "MOONSHOT_API_KEY", "ZHIPU_API_KEY", "DASHSCOPE_API_KEY", "ARK_API_KEY")
+        for name in ("DEEPSEEK_API_KEY", "MOONSHOT_API_KEY", "ZHIPU_API_KEY", "DASHSCOPE_API_KEY", "ARK_API_KEY", "MINIMAX_API_KEY")
     }
     # 本地输入适用于三家的图片示例；不能把 DeepSeek/Doubao 的 URL 能力套给 Kimi。
     with tempfile.TemporaryDirectory() as directory:
@@ -287,7 +289,9 @@ class ExampleTests(unittest.TestCase):
                     generation = card["generation"]
                     self.assertEqual(sdk.initializations[index]["base_url"], generation["base_url"]["value"])
                     self.assertEqual(sdk.calls[index]["model"], card["identity"]["api_model_id"]["value"])
-                    self.assertEqual(sdk.calls[index]["extra_body"], generation["thinking"]["off"]["value"])
+                    defaults = generation.get("request_defaults", {}).get("value", {})
+                    toggle = generation["thinking"].get("off", {}).get("value", {})
+                    self.assertEqual(sdk.calls[index].get("extra_body", {}), {**defaults, **toggle})
 
     def test_one_for_all_rejects_truncated_answer(self):
         path = ROOT / "examples/02_one_for_all.py"

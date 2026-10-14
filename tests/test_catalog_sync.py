@@ -2,8 +2,10 @@
 
 import importlib.util
 import json
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,9 +42,14 @@ class CatalogSyncTests(unittest.TestCase):
         catalog = json.loads(sync.CATALOG.read_text(encoding="utf-8"))
         for vendor, cfg in catalog["vendors"].items():
             card = json.loads((sync.REFERENCES / cfg["model_card"]).read_text(encoding="utf-8"))
-            report = json.loads((ROOT / cfg["verification"]).read_text(encoding="utf-8"))
             self.assertEqual(card["vendor"], vendor)
             self.assertEqual(card["model_id"], cfg["default_model"])
+            if cfg.get("verification") is None:
+                self.assertIsNone(card.get("verification"))
+                self.assertEqual(cfg["verification_scope"], "not_run")
+                self.assertNotIn("verified", cfg["capabilities"].values())
+                continue
+            report = json.loads((ROOT / cfg["verification"]).read_text(encoding="utf-8"))
             observations = sync.report_tests(report)
             for capability, state in cfg["capabilities"].items():
                 if state != "verified":
@@ -50,6 +57,77 @@ class CatalogSyncTests(unittest.TestCase):
                 with self.subTest(vendor=vendor, capability=capability):
                     self.assertIn(capability, sync.TEST_IDS)
                     self.assertEqual(observations[sync.TEST_IDS[capability]]["status"], "passed")
+
+    def fixture_without_verification(self, directory, *, omit_reference=False):
+        root = Path(directory)
+        references = root / "skills/model-manual/references"
+        cards = references / "models"
+        cards.mkdir(parents=True)
+        catalog_path = references / "vendors.json"
+        catalog_path.write_text(json.dumps({"vendors": {"minimax": {
+            "default_model": "MiniMax-M2.7",
+            "verification": "models/other/old-model/verification/old.json",
+            "verification_scope": "strict_workflow",
+            "capabilities": {"chat_completions": "verified", "thinking_off": "verified", "vision": "verified"},
+        }}}), encoding="utf-8")
+        card_path = cards / "MiniMax-M2.7.json"
+        card = {
+            "model_id": "MiniMax-M2.7", "vendor": "minimax",
+            "verification": None, "verification_scope": "not_run",
+            "generation": {"thinking": {"on": {"value": {"reasoning_split": True}}}},
+            "capabilities": {
+                "chat_completions": {"status": "documented"},
+                "thinking": {"status": "documented"},
+                "vision": {"status": "unsupported"},
+                "not_confirmed": {"status": "unknown"},
+            },
+        }
+        if omit_reference:
+            del card["verification"]
+        card_path.write_text(json.dumps(card), encoding="utf-8")
+        return root, references, catalog_path, card_path
+
+    def test_missing_and_null_report_are_not_run_without_reading_a_report(self):
+        for omit_reference in (False, True):
+            with self.subTest(omit_reference=omit_reference), tempfile.TemporaryDirectory() as directory:
+                root, references, catalog_path, card_path = self.fixture_without_verification(directory, omit_reference=omit_reference)
+                status_page = root / "docs/验证状态.md"
+                reads = []
+                original_read = Path.read_text
+
+                def record_read(path, *args, **kwargs):
+                    reads.append(path)
+                    return original_read(path, *args, **kwargs)
+
+                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page), patch.object(Path, "read_text", record_read):
+                    outputs = sync.expected_outputs()
+                self.assertEqual(set(reads), {catalog_path, card_path})
+                cfg = json.loads(outputs[catalog_path])["vendors"]["minimax"]
+                self.assertIsNone(cfg["verification"])
+                self.assertEqual(cfg["verification_scope"], "not_run")
+                self.assertNotIn("verified", cfg["capabilities"].values())
+                self.assertEqual(cfg["capabilities"]["chat_completions"], "documented")
+                self.assertEqual(cfg["capabilities"]["vision"], "unknown")
+                self.assertEqual(cfg["capabilities"]["thinking_off"], "unknown")
+                row = next(line for line in outputs[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
+                columns = [column.strip() for column in row.strip("|").split("|")]
+                self.assertEqual(columns[1:], ["—", "未实测", "—", "—", "—", "—", "—", "报告空缺"])
+
+    def test_explicit_broken_or_other_model_report_is_not_treated_as_not_run(self):
+        for case in ("broken_path", "other_model", "unfounded_scope"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                root, references, catalog_path, card_path = self.fixture_without_verification(directory)
+                card = json.loads(card_path.read_text(encoding="utf-8"))
+                if case == "unfounded_scope":
+                    card["verification_scope"] = "strict_workflow"
+                else:
+                    card["verification"] = "unexpected-report.json"
+                    if case == "other_model":
+                        (card_path.parent / "unexpected-report.json").write_text(json.dumps({"model_id": "old-model", "tests": {}}), encoding="utf-8")
+                card_path.write_text(json.dumps(card), encoding="utf-8")
+                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=root / "status.md"):
+                    with self.assertRaises(ValueError):
+                        sync.expected_outputs()
 
 
 if __name__ == "__main__":

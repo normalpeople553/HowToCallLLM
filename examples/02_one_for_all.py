@@ -1,4 +1,4 @@
-"""从型号机器卡读取配置，用同一入口调用五家默认型号。
+"""从型号机器卡读取配置，用同一入口调用已收录厂商默认型号。
 
 配置与官方来源见 skills/model-manual/references/models/*.json。
 本文件需要保留在仓库 examples/ 中；单独复制时请一并携带机器卡目录。
@@ -20,6 +20,11 @@ VENDORS = json.loads((REFERENCES / "vendors.json").read_text(encoding="utf-8"))[
 
 def completed_text(response) -> str:
     """应用检查：只有正常结束且非空的正文才能当作完整结果。"""
+    base = getattr(response, "base_resp", None)
+    if base is not None:
+        code = base.get("status_code") if isinstance(base, dict) else getattr(base, "status_code", None)
+        if isinstance(code, bool) or not isinstance(code, int) or code != 0:
+            raise RuntimeError("服务端业务状态未成功")
     if not response.choices:
         raise RuntimeError("响应没有 choices")
     choice = response.choices[0]
@@ -58,10 +63,13 @@ def chat(vendor: str, question: str) -> str:
         "messages": [{"role": "user", "content": question}],
     }
     # 开关值与 Python 扩展字段位置均来自该型号的卡片，避免套用厂商级默认参数。
-    thinking_off = copy.deepcopy(generation["thinking"]["off"]["value"])
+    # 只能对明确支持关闭思考的型号关闭；M2.7 的 disabled 会被忽略。
+    thinking_off = copy.deepcopy(generation["thinking"].get("off", {}).get("value", {}))
+    request_defaults = copy.deepcopy(generation.get("request_defaults", {}).get("value", {}))
+    request_defaults.update(thinking_off)
     extra_fields = set(generation["python_extra_body_fields"]["value"])
-    extra_body = {key: value for key, value in thinking_off.items() if key in extra_fields}
-    params.update({key: value for key, value in thinking_off.items() if key not in extra_fields})
+    extra_body = {key: value for key, value in request_defaults.items() if key in extra_fields}
+    params.update({key: value for key, value in request_defaults.items() if key not in extra_fields})
     if extra_body:
         params["extra_body"] = extra_body
     response = client.chat.completions.create(**params)

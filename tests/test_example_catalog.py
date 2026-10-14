@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,12 +16,17 @@ SCRIPT = ROOT / "skills/model-manual/scripts/example_catalog.py"
 spec = importlib.util.spec_from_file_location("example_catalog", SCRIPT)
 catalog = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(catalog)
+EXPECTED_MODELS = {
+    "deepseek-flash", "kimi-k2.6", "glm-4.7-flash", "qwen-flash",
+    "doubao-seed-2-1-pro-260628", "MiniMax-M2.7",
+}
 
 
 class ExampleCatalogTests(unittest.TestCase):
     def test_every_model_and_runnable_file_is_cataloged(self):
         catalogs = catalog.load_catalogs()
         directories = {path.parent for path in (ROOT / "models").glob("*/*/README.md")}
+        self.assertEqual({item["model_id"] for item in catalogs}, EXPECTED_MODELS)
         self.assertEqual({(ROOT / item["catalog_path"]).parent.parent for item in catalogs}, directories)
         rows = catalog.select_examples(catalogs)
         self.assertGreaterEqual(len(rows), 40)
@@ -33,6 +39,11 @@ class ExampleCatalogTests(unittest.TestCase):
         self.assertTrue(rows[0]["path"].endswith("10_vision_files.py"))
         self.assertEqual(catalog.select_examples(catalogs, model="not-collected"), [])
         self.assertEqual(catalog.select_examples(catalogs, vendor="qwen", capability="vision"), [])
+        minimax_rows = catalog.select_examples(catalogs, "minimax", "MiniMax-M2.7")
+        self.assertTrue(minimax_rows)
+        self.assertTrue(all(row["model_id"] == "MiniMax-M2.7" for row in minimax_rows))
+        self.assertEqual(catalog.select_examples(catalogs, "minimax", "MiniMax-M2.8"), [])
+        self.assertEqual(catalog.select_examples(catalogs, "deepseek", "MiniMax-M2.7"), [])
 
     def test_generated_index_is_current(self):
         expected = catalog.render_index(catalog.load_catalogs())
@@ -78,6 +89,23 @@ class ExampleCatalogTests(unittest.TestCase):
                 path.write_text(json.dumps(data), encoding="utf-8")
                 with self.assertRaises(ValueError):
                     catalog.load_catalogs(root)
+
+    def test_minimax_allows_only_its_official_source_host(self):
+        for source in (
+            "https://platform.minimax.io/docs/api-reference/text-chat",
+            "https://platform.minimax.cn/docs/api-reference/text-chat",
+            "https://platform.minimaxi.com/docs/api-reference/text-chat",
+            "https://example.com/minimax/docs",
+            "https://platform.minimax.io.example.com/docs",
+            "https://docs.bigmodel.cn/minimax",
+            "http://platform.minimax.io/docs",
+        ):
+            with self.subTest(source=source):
+                if urlparse(source).scheme == "https" and urlparse(source).hostname in {"platform.minimax.io", "platform.minimax.cn", "platform.minimaxi.com"}:
+                    catalog._sources([{"url": source, "title": "官方文本接口"}], "minimax")
+                else:
+                    with self.assertRaises(ValueError):
+                        catalog._sources([{"url": source, "title": "非官方来源"}], "minimax")
 
 
 if __name__ == "__main__":

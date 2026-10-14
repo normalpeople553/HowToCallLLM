@@ -55,16 +55,30 @@ def expected_outputs() -> dict[Path, str]:
     for vendor, cfg in catalog["vendors"].items():
         card_path = REFERENCES / "models" / f'{cfg["default_model"]}.json'
         card = json.loads(card_path.read_text(encoding="utf-8"))
-        if card["vendor"] != vendor:
+        if card["vendor"] != vendor or card["model_id"] != cfg["default_model"]:
             raise ValueError(f"型号归属不一致：{cfg['default_model']}")
-        report_path = (card_path.parent / card["verification"]).resolve()
-        report = json.loads(report_path.read_text(encoding="utf-8"))
-        if report["model_id"] != card["model_id"]:
-            raise ValueError(f"型号与报告不一致：{card['model_id']}")
-        observations = report_tests(report)
         cfg["model_card"] = f'models/{card_path.name}'
-        cfg["verification"] = report_path.relative_to(ROOT).as_posix()
-        cfg["verification_scope"] = "strict_workflow" if report.get("schema_version", 1) >= 2 else "legacy_smoke"
+        reference = card.get("verification")
+        report = None
+        report_path = None
+        if reference is None:
+            # 已有官方资料但尚未实测是正式状态，不能猜测报告名或继承厂商旧结果。
+            if card.get("verification_scope", "not_run") != "not_run":
+                raise ValueError(f"缺少报告时验证范围必须是 not_run：{card['model_id']}")
+            cfg["verification"] = None
+            cfg["verification_scope"] = "not_run"
+        else:
+            if not isinstance(reference, str) or not reference.strip():
+                raise ValueError(f"报告引用须为非空路径或 null：{card['model_id']}")
+            report_path = (card_path.parent / reference).resolve()
+            if not report_path.is_file():
+                raise ValueError(f"已登记的报告文件不存在：{card['model_id']}")
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            if report["model_id"] != card["model_id"]:
+                raise ValueError(f"型号与报告不一致：{card['model_id']}")
+            cfg["verification"] = report_path.relative_to(ROOT).as_posix()
+            cfg["verification_scope"] = "strict_workflow" if report.get("schema_version", 1) >= 2 else "legacy_smoke"
+        observations = report_tests(report) if report is not None else {}
         capability_states = {}
         for name, capability in card["capabilities"].items():
             if name in TEST_IDS:
@@ -76,13 +90,20 @@ def expected_outputs() -> dict[Path, str]:
                 else:
                     capability_states[name] = "documented"
             else:
-                capability_states[name] = "unknown" if capability["status"] == "unknown" else "documented"
+                capability_states[name] = "unknown" if capability["status"] in {"not_documented_for_this_model", "unknown", "unsupported"} else "documented"
         if "thinking" in card["capabilities"]:
-            capability_states["thinking_off"] = "verified" if observations.get("thinking_disabled", {}).get("status") == "passed" else "documented"
+            off_body = card.get("generation", {}).get("thinking", {}).get("off", {}).get("value")
+            capability_states["thinking_off"] = (
+                "verified" if observations.get("thinking_disabled", {}).get("status") == "passed"
+                else "documented" if off_body is not None else "unknown"
+            )
         cfg["capabilities"] = capability_states
+        manual_link = f'../models/{vendor}/{card["model_id"]}/README.md'
+        if report is None:
+            lines.append(f'| [{card["model_id"]}]({manual_link}) | — | 未实测 | — | — | — | — | — | 报告空缺 |')
+            continue
         result_counts = counts(report)
         report_link = "../" + report_path.relative_to(ROOT).as_posix()
-        manual_link = f'../models/{vendor}/{card["model_id"]}/README.md'
         scope = "严格流程验证" if cfg["verification_scope"] == "strict_workflow" else "历史基础验证"
         sdk = report.get("runtime", {}).get("openai", "未记录")
         lines.append(
@@ -94,6 +115,7 @@ def expected_outputs() -> dict[Path, str]:
         "",
         "## 如何解读",
         "",
+        "- 未实测：已收录官方资料，但尚无该型号的真实调用报告；计数、日期与 SDK 显示为 —，不等于零次通过或能力不支持。",
         "- 历史基础验证：只证明脚本当时检查过的条件；旧报告没有记录完整结束原因、工具回传闭环或图片内容识别，不自动补写这些结论。",
         "- 严格流程验证：脚本检查结束原因和正文；工具项包含参数验证、结果回传和最终答复；图片项包含测试图内容断言。具体选中了哪些测试仍以报告为准。",
         "- 限流与跳过：没有获得能力验证结论；HTTP 429 不等于鉴权失败或模型不支持。",

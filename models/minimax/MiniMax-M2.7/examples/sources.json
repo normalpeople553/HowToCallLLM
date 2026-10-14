@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "vendor": "minimax",
+  "model_id": "MiniMax-M2.7",
+  "checked_at": "2026-10-14",
+  "examples": [
+    {
+      "id": "basic",
+      "file": "01_basic.py",
+      "title": "M2.7 基础文本调用",
+      "capability": "chat_completions",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量（官方 SDK 环境变量示例为 OPENAI_API_KEY）",
+        "固定国区 api.minimax.cn/v1，不推断跨平台 Key 通用",
+        "演示预算 16384 不代表官方默认或模型上限",
+        "调用前核对官方生命周期，保留用户指定的准确型号",
+        "reasoning_split=True 仅拆分输出，不声称关闭思考",
+        "检查业务状态、stop、空正文和只有内联思考的响应"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "python models/minimax/MiniMax-M2.7/examples/01_basic.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式正文、思考和完整结束",
+      "capability": "streaming",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量（官方 SDK 环境变量示例为 OPENAI_API_KEY）",
+        "固定国区 api.minimax.cn/v1，不推断跨平台 Key 通用",
+        "演示预算 16384 不代表官方默认或模型上限",
+        "调用前核对官方生命周期，保留用户指定的准确型号",
+        "处理只有 usage 的空 choices 块，分开累积 reasoning_content",
+        "拒绝缺少结束、length、工具 delta、重复结束与结束后输出",
+        "连接中断时拒绝把部分正文算完整答案"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "python models/minimax/MiniMax-M2.7/examples/02_streaming.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "M2.7 固有思考与输出拆分",
+      "capability": "thinking",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量（官方 SDK 环境变量示例为 OPENAI_API_KEY）",
+        "固定国区 api.minimax.cn/v1，不推断跨平台 Key 通用",
+        "演示预算 16384 不代表官方默认或模型上限",
+        "调用前核对官方生命周期，保留用户指定的准确型号",
+        "不传 M2.7 无法实现的 thinking 关闭开关",
+        "不传只对其他型号生效的 reasoning_effort",
+        "先检查最终正文，再展示本次实际返回的思考字段"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "python models/minimax/MiniMax-M2.7/examples/03_thinking.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    },
+    {
+      "id": "tool_calling",
+      "file": "05_tool_calling.py",
+      "title": "保留思考的工具完整闭环",
+      "capability": "tool_calling",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量（官方 SDK 环境变量示例为 OPENAI_API_KEY）",
+        "固定国区 api.minimax.cn/v1，不推断跨平台 Key 通用",
+        "演示预算 16384 不代表官方默认或模型上限",
+        "调用前核对官方生命周期，保留用户指定的准确型号",
+        "天气工具为本地固定模拟数据，不访问天气网络服务",
+        "保留原始 assistant 中的内联 <think>、reasoning_content 和 tool_calls",
+        "整批校验函数名、JSON 参数、城市与跨轮 ID 后执行",
+        "最多 6 次模型调用，末轮不再执行工具，必须实际执行工具后得到完整最终正文"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "python models/minimax/MiniMax-M2.7/examples/05_tool_calling.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    },
+    {
+      "id": "multi_turn",
+      "file": "06_multi_turn.py",
+      "title": "保留完整思考的两轮对话",
+      "capability": "multi_turn",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量（官方 SDK 环境变量示例为 OPENAI_API_KEY）",
+        "固定国区 api.minimax.cn/v1，不推断跨平台 Key 通用",
+        "演示预算 16384 不代表官方默认或模型上限",
+        "调用前核对官方生命周期，保留用户指定的准确型号",
+        "展示文本与原始 assistant 历史分开处理",
+        "失败或截断响应不写入历史",
+        "主入口守卫支持离线导入测试"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "python models/minimax/MiniMax-M2.7/examples/06_multi_turn.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    },
+    {
+      "id": "native_curl",
+      "file": "07_native_curl.sh",
+      "title": "原生旧接口 cURL 与业务状态检查",
+      "capability": "native_chat_completions",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-post",
+          "title": "原生 text/chatcompletion_v2：弃用状态、M2.7、预算字段和业务状态"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.io/docs/api-reference/text-openai-api",
+          "title": "国际 OpenAI SDK：api.minimax.io/v1 和对应平台配置"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ],
+      "adaptations": [
+        "本项目使用 MINIMAX_API_KEY 环境变量",
+        "保留原生 /v1/text/chatcompletion_v2 形状，但说明官方已标 deprecated；新接入优先 Chat Completions",
+        "使用原生文档正式列出的 max_completion_tokens，不盲抄已弃用的 max_tokens",
+        "采用当前国区官方 api.minimax.cn；旧 api.minimaxi.com 本轮未实测，国际地址另列出处",
+        "16384 仅为演示预算；不添加原生文档未确认的 reasoning_split",
+        "cURL 检查 HTTP，Python 标准库检查 base_resp.status_code、stop 和最终正文",
+        "仅展示时剥离前导完整 <think>，不执行任何模型生成代码",
+        "调用前核对服务调整公告"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MINIMAX_API_KEY"
+      ],
+      "run_command": "bash models/minimax/MiniMax-M2.7/examples/07_native_curl.sh",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本型号和这些示例均未进行真实 API 调用；mock 仅验证请求形状、模拟闭环和异常路径，不证明托管服务当前可用。"
+      }
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "json_object",
+      "reason": "原生托管接口把 response_format 限定为 MiniMax-Text-01，OpenAI 兼容接口未确证 M2.7 的 JSON 保证参数；不把自托管部署文档或提示词 JSON 当作托管 JSON Mode 支持，不创建 04_json_output.py。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-post",
+          "title": "原生 text/chatcompletion_v2：弃用状态、M2.7、预算字段和业务状态"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        }
+      ]
+    },
+    {
+      "capability": "json_schema",
+      "reason": "未确认托管 MiniMax-M2.7 支持 response_format/json_schema；原生接口文档只声明 MiniMax-Text-01 支持，不从其他型号或自托管 API 继承。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-post",
+          "title": "原生 text/chatcompletion_v2：弃用状态、M2.7、预算字段和业务状态"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        }
+      ]
+    },
+    {
+      "capability": "thinking_off",
+      "reason": "官方明确 M2.x 的 thinking 不能关闭；disabled 会被接受但忽略，reasoning_split 也只是输出格式开关。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        }
+      ]
+    },
+    {
+      "capability": "reasoning_effort_control",
+      "reason": "当前官方仅为 MiniMax-M3.1-Flash-Preview 声明 reasoning_effort 生效；M2.7 示例不添加无效的思考强度控制。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai",
+          "title": "国区 Chat Completions：reasoning_split、思考边界和 max_completion_tokens"
+        }
+      ]
+    },
+    {
+      "capability": "vision",
+      "reason": "当前官方 OpenAI 兼容图片输入范围是 MiniMax-M3.1-Flash-Preview 和 MiniMax-M3；本轮未为 M2.7 确证图片输入，不套用其他型号示例。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        }
+      ]
+    },
+    {
+      "capability": "video_input",
+      "reason": "当前官方多模态输入说明针对 M3 系列；本轮不把其 video_url 协议直接套到 M2.7。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        }
+      ]
+    },
+    {
+      "capability": "legacy_minimaxi_domain_verification",
+      "reason": "当前国区正文列出 api.minimax.cn，国际正文列出 api.minimax.io；旧 api.minimaxi.com 的实际可调用性本轮未真实验证，不作别名兼容承诺。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-post",
+          "title": "原生 text/chatcompletion_v2：弃用状态、M2.7、预算字段和业务状态"
+        },
+        {
+          "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api",
+          "title": "国区 OpenAI SDK：M2.7 支持列表、完整思考消息与国区地址"
+        },
+        {
+          "url": "https://platform.minimax.io/docs/api-reference/text-openai-api",
+          "title": "国际 OpenAI SDK：api.minimax.io/v1 和对应平台配置"
+        }
+      ]
+    },
+    {
+      "capability": "subscription_alias_identity_after_migration",
+      "reason": "官方公告 M2.7 于 2026-10-19 停止新用户调用、2026-11-18 按量 API 正式下线；M Plan/Token Plan 的旧名请求于 2026-10-19 转路由 M3.1 Flash Preview。本示例保留准确型号名，不能把订阅旧名路由后的结果当作原 M2.7 实测。",
+      "sources": [
+        {
+          "url": "https://platform.minimax.cn/docs/guides/models-intro",
+          "title": "MiniMax M2.5/M2.7 系列下线和订阅请求转路由通知"
+        }
+      ]
+    }
+  ]
+}
