@@ -26,31 +26,35 @@ def completed_text(response) -> str:
         raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
     return content
 
-client = OpenAI(
-    api_key=os.environ["ARK_API_KEY"],
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
-    timeout=120,
-)
-
-response = client.chat.completions.create(
-    model="doubao-seed-2-1-pro-260628",
-    messages=[{"role": "user", "content": '只返回 json 对象：{"ok":true}'}],
-    response_format={
-        "type": "json_schema",
-        "json_schema": {
-            "name": "result",
-            "strict": True,
-            "schema": {
-                "type": "object",
-                "properties": {"ok": {"type": "boolean"}},
-                "required": ["ok"],
-                "additionalProperties": False,
+def main():
+    client = OpenAI(
+        api_key=os.environ["ARK_API_KEY"],
+        base_url="https://ark.cn-beijing.volces.com/api/v3",
+        timeout=120,
+    )
+    response = client.chat.completions.create(
+        model="doubao-seed-2-1-pro-260628",
+        messages=[{"role": "user", "content": '只返回 json 对象：{"ok":true}'}],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "result",
+                "strict": True,
+                "schema": {
+                    "type": "object",
+                    "properties": {"ok": {"type": "boolean"}},
+                    "required": ["ok"],
+                    "additionalProperties": False,
+                },
             },
         },
-    },
-    extra_body={"thinking": {"type": "disabled"}},
-)
-data = json.loads(completed_text(response))
-if not isinstance(data, dict) or set(data) != {"ok"} or data["ok"] is not True:
-    raise ValueError("JSON 可解析，但不符合本例业务要求：ok 必须是 true")
-print(data)
+        extra_body={"thinking": {"type": "disabled"}},
+    )
+    data = json.loads(completed_text(response))
+    if not isinstance(data, dict) or set(data) != {"ok"} or data["ok"] is not True:
+        raise ValueError("JSON 可解析，但不符合本例业务要求：ok 必须是 true")
+    print(data)
+
+
+if __name__ == "__main__":
+    main()

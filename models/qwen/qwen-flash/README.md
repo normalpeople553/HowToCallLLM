@@ -1,5 +1,7 @@
 # `qwen-flash` 调用说明书
 
+按功能查找本型号的[官方改写示例与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。清单单独标明文件的官方出处、改写与验证范围；本次新增示例未执行真实 API 调用，不继承历史报告的通过状态。
+
 > 核对日期：**2026-10-13**。官方事实均附原始链接；机器卡片见 [`qwen-flash.json`](../../../skills/model-manual/references/models/qwen-flash.json)。
 
 ## 1. 一眼看懂

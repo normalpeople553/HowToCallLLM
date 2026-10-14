@@ -8,7 +8,7 @@
 
 1. 检查项目已有客户端、配置、依赖和调用入口，确定修改位置；从任务需求判断需要哪些能力，不默认开启思考或增加工具。
 2. 读取准确型号卡片的 `identity`、`capabilities` 与 `generation`。核对接口、Key 环境变量、生命周期、思考开关、输出预算语义和任务约束；`documented` 可作为官方支持依据，不能报告为实测通过。未知能力先核对官方资料。
-3. 查看 [generate_snippet.py](../scripts/generate_snippet.py) 的 `--help`，优先生成支持的任务组合，再将请求和结果检查融入项目。Python 的厂商扩展字段按卡片放入 `extra_body`；直接 HTTP 请求的放置方式按具体接口资料核对。
+3. 需要现成功能代码时，先用 [example_catalog.py](../scripts/example_catalog.py) 按准确型号/能力检索对应 `examples/sources.json`，读取官方出处和改写说明；没有相应例子再查看 [generate_snippet.py](../scripts/generate_snippet.py) 的 `--help` 生成支持的组合。将请求和结果检查融入项目；Python 的厂商扩展字段按卡片放入 `extra_body`，其他 API 按命中示例的官方来源核对，不套用 Chat 参数。
 4. JSON 任务检查结束原因、解析结果并校验业务字段；工具任务使用允许的工具与参数、回传执行结果、保留完整消息并限制轮次。图片任务使用用户提供的输入，不将仅接受图片请求描述成识别准确率验证。
 5. 运行与修改相关的离线检查，交付运行命令及未完成的线上验证项。已有项目遵循其依赖管理方式；独立运行本仓库示例使用锁定依赖，见[验证与复现](../../../docs/验证与复现.md)。
 
@@ -81,6 +81,7 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --model kim
 | 官方支持及参数规则 | 型号卡片的 source → sources，说明官方声明与核对日期 |
 | 历史实测 | verification 指向的原始报告，说明日期、型号、参数、测试项和结果 |
 | 本次离线检查 | 实际运行的命令与结果，不能写成线上调用成功 |
+| 具体示例的来源与验证 | 该型号 `examples/sources.json`；`mock_tested` 不是服务端验证，`live=not_run` 不能继承型号历史报告 |
 | 本次真实验证 | 用户明确要求后执行对应验证器，新增脱敏报告并说明范围 |
 
 路径以各文件自身为基准：`vendors.json` 中 `model_card`、`model_manual` 相对于该目录，厂商摘要的 `verification` 相对于仓库根目录；型号卡片的 `verification` 相对于型号卡片目录。不要混用两个报告路径规则。
@@ -94,6 +95,7 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --model kim
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
+python skills/model-manual/scripts/example_catalog.py --check
 ```
 
 需要更新派生摘要时先运行不带 `--check` 的同步命令，再复查。真实请求、报告保存规则和退出码统一见[验证与复现](../../../docs/验证与复现.md)。

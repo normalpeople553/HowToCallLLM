@@ -13,12 +13,6 @@ import os
 from openai import OpenAI
 
 
-client = OpenAI(
-    api_key=os.environ["ARK_API_KEY"],
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
-    timeout=120,
-)
-
 tools = [
     {
         "type": "function",
@@ -64,48 +58,54 @@ def validate_call(call, used_ids: set[str]) -> tuple[str, str]:
     return call.id, city.strip()
 
 
-messages = [
-    {"role": "system", "content": "天气查询必须使用 get_weather；明确告知用户结果是教学模拟数据。"},
-    {"role": "user", "content": "杭州天气如何？"},
-]
-used_ids: set[str] = set()
-executed_call_count = 0
-max_model_turns = 6
-for turn in range(max_model_turns):
-    response = client.chat.completions.create(
-        model="doubao-seed-2-1-pro-260628",
-        messages=messages,
-        tools=tools,
-        extra_body={"thinking": {"type": "disabled"}},
+def main():
+    client = OpenAI(
+        api_key=os.environ["ARK_API_KEY"],
+        base_url="https://ark.cn-beijing.volces.com/api/v3",
+        timeout=120,
     )
-    if not response.choices:
-        raise RuntimeError("模型响应没有 choices")
-    choice = response.choices[0]
-    message = choice.message
-    calls = message.tool_calls or []
-    if calls:
-        if choice.finish_reason != "tool_calls":
-            raise RuntimeError(f"工具调用未完整结束：{choice.finish_reason!r}，未执行任何工具")
-        if turn == max_model_turns - 1:
-            raise RuntimeError("已达到模型调用次数上限，停止执行后续工具")
-        # 校验全部调用；任何一个失败，本批次都不执行。
-        planned = [validate_call(call, used_ids) for call in calls]
-        # 保留完整 assistant 消息，包含 tool_calls 及可能的 reasoning_content 扩展字段。
-        messages.append(message)
-        for call_id, city in planned:
-            result = get_weather(city)
-            executed_call_count += 1
-            messages.append(
-                {"role": "tool", "tool_call_id": call_id, "content": result}
-            )
-        continue
-    if choice.finish_reason != "stop":
-        raise RuntimeError(f"最终回答未正常完成：{choice.finish_reason!r}")
-    if not isinstance(message.content, str) or not message.content.strip():
-        raise RuntimeError("工具闭环没有最终正文")
-    if executed_call_count == 0:
-        raise RuntimeError("模型没有调用示例工具，未完成工具闭环")
-    print(message.content)
-    break
-else:
+    messages = [
+        {"role": "system", "content": "天气查询必须使用 get_weather；明确告知用户结果是教学模拟数据。"},
+        {"role": "user", "content": "杭州天气如何？"},
+    ]
+    used_ids: set[str] = set()
+    executed_call_count = 0
+    max_model_turns = 6
+    for turn in range(max_model_turns):
+        response = client.chat.completions.create(
+            model="doubao-seed-2-1-pro-260628",
+            messages=messages,
+            tools=tools,
+            extra_body={"thinking": {"type": "disabled"}},
+        )
+        if not response.choices:
+            raise RuntimeError("模型响应没有 choices")
+        choice = response.choices[0]
+        message = choice.message
+        calls = message.tool_calls or []
+        if calls:
+            if choice.finish_reason != "tool_calls":
+                raise RuntimeError(f"工具调用未完整结束：{choice.finish_reason!r}，未执行任何工具")
+            if turn == max_model_turns - 1:
+                raise RuntimeError("已达到模型调用次数上限，停止执行后续工具")
+            planned = [validate_call(call, used_ids) for call in calls]
+            # 完整对象含 encrypted_content 等扩展字段；原样续传。
+            messages.append(message)
+            for call_id, city in planned:
+                result = get_weather(city)
+                executed_call_count += 1
+                messages.append({"role": "tool", "tool_call_id": call_id, "content": result})
+            continue
+        if choice.finish_reason != "stop":
+            raise RuntimeError(f"最终回答未正常完成：{choice.finish_reason!r}")
+        if not isinstance(message.content, str) or not message.content.strip():
+            raise RuntimeError("工具闭环没有最终正文")
+        if executed_call_count == 0:
+            raise RuntimeError("模型没有调用示例工具，未完成工具闭环")
+        print(message.content)
+        return executed_call_count
     raise RuntimeError("已达到模型调用次数上限")
+
+
+if __name__ == "__main__":
+    executed_call_count = main()

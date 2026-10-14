@@ -54,6 +54,7 @@
     "key_env": {"value": "MOONSHOT_API_KEY", "source": "quickstart"},
     "base_url": {"value": "https://api.moonshot.cn/v1", "source": "quickstart"},
     "python_extra_body_fields": {"value": ["thinking"], "source": "thinking"},
+    "image_input": {"value": ["base64_data_url", "ms_file_id"], "source": "chat_api"},
     "thinking": {
       "on": {"value": {"thinking": {"type": "enabled"}}, "source": "thinking"},
       "off": {"value": {"thinking": {"type": "disabled"}}, "source": "thinking"}

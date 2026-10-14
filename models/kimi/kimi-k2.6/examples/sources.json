@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "vendor": "kimi",
+  "model_id": "kimi-k2.6",
+  "checked_at": "2026-10-14",
+  "examples": [
+    {
+      "id": "basic",
+      "file": "01_basic.py",
+      "title": "最小文本调用",
+      "capability": "chat_completions",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "检查 stop 与非空最终正文",
+        "只打印最终回答和用量"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/01_basic.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式正文和完成状态",
+      "capability": "streaming",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/utilize-the-streaming-output-feature-of-kimi-api",
+          "title": "流式输出：delta、结束状态和用量"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "title": "思考模型：K2.6 开关、保留式思考和多步工具调用"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "显式关闭本例思考",
+        "跳过空 choices 的用量块",
+        "拒绝截断、空正文和缺少结束状态"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/02_streaming.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "思考开关与最终正文",
+      "capability": "thinking",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "title": "思考模型：K2.6 开关、保留式思考和多步工具调用"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "本例显式开启 K2.6 思考",
+        "为思考与正文预留 16384 的示例预算",
+        "检查完成状态并区分思考和正文"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/03_thinking.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "json_object",
+      "file": "04_json_output.py",
+      "title": "JSON Mode 与业务字段校验",
+      "capability": "json_object",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-json-mode-feature-of-kimi-api",
+          "title": "JSON Mode：response_format 与提示词"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "在提示词中明确要求 JSON",
+        "关闭本例思考",
+        "JSON 解析后另检查 ok 必须严格等于 true"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/04_json_output.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "tool_calling",
+      "file": "05_tool_calling.py",
+      "title": "非思考工具调用完整闭环",
+      "capability": "tool_calling",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-api-to-complete-tool-calls",
+          "title": "工具调用：执行函数并回传 tool_call_id"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "title": "思考模型：K2.6 开关、保留式思考和多步工具调用"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "工具使用固定模拟天气，不访问真实天气 API",
+        "整批校验工具名、ID 和 city 参数后执行",
+        "保留完整 assistant 消息，按 tool_call_id 回传",
+        "最多 6 次模型请求，确认实际执行过工具并获得完整最终正文"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/05_tool_calling.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "vision",
+      "file": "06_vision.py",
+      "title": "本地图片输入（PNG/JPEG base64）",
+      "capability": "vision",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-vision-model",
+          "title": "视觉输入：base64/文件引用及远程图片 URL 限制"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        }
+      ],
+      "required_env": [
+        "MOONSHOT_API_KEY",
+        "IMAGE_PATH"
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "本地 PNG/JPEG 编码为 base64 data URL",
+        "按当前官方限制明确拒绝 IMAGE_URL，不透传远程图片 URL",
+        "保留多模态 content 数组",
+        "检查 stop、空正文和空文件"
+      ],
+      "origin": "adapted_from_official",
+      "run_command": "python models/kimi/kimi-k2.6/examples/06_vision.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+      }
+    },
+    {
+      "id": "multi_turn",
+      "file": "07_multi_turn.py",
+      "title": "多轮对话和失败后的历史处理",
+      "capability": "multi_turn",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/engage-in-multi-turn-conversations-using-kimi-api",
+          "title": "多轮对话：维护并回传 messages 历史"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "title": "思考模型：K2.6 开关、保留式思考和多步工具调用"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "切换为 kimi-k2.6 并关闭本例思考",
+        "完整成功后才把 user/assistant 追加到历史",
+        "保留完整 assistant 对象",
+        "增加可独立调用的 ask 函数和主入口守卫"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/07_multi_turn.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+      }
+    },
+    {
+      "id": "thinking_tools",
+      "file": "08_thinking_tools.py",
+      "title": "保留思考的多步工具闭环",
+      "capability": "thinking_tool_calling",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "title": "思考模型：K2.6 开关、保留式思考和多步工具调用"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-api-to-complete-tool-calls",
+          "title": "工具调用：执行函数并回传 tool_call_id"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "显式设置 K2.6 thinking enabled 和 keep all",
+        "本例采用非流式以展示完整 assistant 消息回传",
+        "设置 32768 的示例预算，不传 reasoning_effort 或 temperature",
+        "订单工具只返回固定模拟数据，不访问真实订单系统",
+        "整批校验工具/参数和跨轮 ID，最多 6 次模型调用",
+        "确认执行过工具且最终正文完整后才返回"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/08_thinking_tools.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+      }
+    },
+    {
+      "id": "video",
+      "file": "09_video.py",
+      "title": "本地 MP4 视频理解",
+      "capability": "video_input",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-vision-model",
+          "title": "视觉输入：base64/文件引用及远程图片 URL 限制"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        }
+      ],
+      "required_env": [
+        "MOONSHOT_API_KEY",
+        "VIDEO_PATH"
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "只演示 K2.6 专页确证的本地 MP4 -> base64 流程",
+        "使用 video_url 内容类型，不猜测远程视频 URL 或其他字段",
+        "拒绝空文件、非 MP4 和缺少 VIDEO_PATH",
+        "检查 stop 与非空正文"
+      ],
+      "origin": "adapted_from_official",
+      "run_command": "python models/kimi/kimi-k2.6/examples/09_video.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+      }
+    },
+    {
+      "id": "json_schema",
+      "file": "10_json_schema.py",
+      "title": "简单 JSON Schema 与人物抽取",
+      "capability": "json_schema",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/response_format",
+          "title": "Structured Output：K2.6 简单 schema 与业务二次校验"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        }
+      ],
+      "adaptations": [
+        "密钥读取环境变量",
+        "使用简单平面 schema 和 strict true",
+        "不混用 Partial Mode、$ref 或 oneOf",
+        "关闭本例思考",
+        "额外校验字段集合、姓名和整数年龄，显式排除 bool",
+        "检查完整正文后再解析 JSON"
+      ],
+      "origin": "adapted_from_official",
+      "required_env": [
+        "MOONSHOT_API_KEY"
+      ],
+      "run_command": "python models/kimi/kimi-k2.6/examples/10_json_schema.py",
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+      }
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "remote_image_url",
+      "reason": "当前视觉和 Chat API 文档只列出 base64 或 ms:// 文件引用，视觉限制明确不支持远程图片 URL；06 示例已移除直接透传路径。",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-vision-model",
+          "title": "视觉输入：base64/文件引用及远程图片 URL 限制"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/api/chat",
+          "title": "Chat Completions API：请求、内容类型和结束状态"
+        }
+      ]
+    },
+    {
+      "capability": "complex_json_schema_and_partial_mode",
+      "reason": "K2.6 官方记录复杂 $ref/oneOf 和 Partial Mode 组合可能不稳定；本轮仅集成简单 schema 加业务校验，不提供复杂组合示例。",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/response_format",
+          "title": "Structured Output：K2.6 简单 schema 与业务二次校验"
+        }
+      ]
+    },
+    {
+      "capability": "builtin_web_search",
+      "reason": "K2.6 专页标记联网搜索文档正在升级，近期不建议使用；内置 $web_search 与 K2.6 思考模式另有兼容限制，本轮未集成。",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        }
+      ]
+    },
+    {
+      "capability": "uploaded_video_file_reference",
+      "reason": "官方视觉文档介绍文件上传和 ms:// 引用；本轮只集成本地短 MP4/base64，文件生命周期和上传轮询流程尚未集成。",
+      "sources": [
+        {
+          "url": "https://platform.kimi.com/docs/guide/use-kimi-vision-model",
+          "title": "视觉输入：base64/文件引用及远程图片 URL 限制"
+        },
+        {
+          "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+          "title": "Kimi K2.6：图片/视频示例和参数差异"
+        }
+      ]
+    }
+  ]
+}

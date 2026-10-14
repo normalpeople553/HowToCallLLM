@@ -90,10 +90,14 @@ def fake_sdk(responses, env=None):
         name: "offline-test-only"
         for name in ("DEEPSEEK_API_KEY", "MOONSHOT_API_KEY", "ZHIPU_API_KEY", "DASHSCOPE_API_KEY", "ARK_API_KEY")
     }
-    dummy_env["IMAGE_URL"] = "https://example.com/test.png"
-    dummy_env.update(env or {})
-    with patch.dict(sys.modules, {"openai": module}), patch.dict(os.environ, dummy_env, clear=True):
-        yield sdk
+    # 本地输入适用于三家的图片示例；不能把 DeepSeek/Doubao 的 URL 能力套给 Kimi。
+    with tempfile.TemporaryDirectory() as directory:
+        image = Path(directory) / "offline.png"
+        image.write_bytes(b"\x89PNG\r\n\x1a\noffline-pixels")
+        dummy_env["IMAGE_PATH"] = str(image)
+        dummy_env.update(env or {})
+        with patch.dict(sys.modules, {"openai": module}), patch.dict(os.environ, dummy_env, clear=True):
+            yield sdk
 
 
 def run_example(path, responses, env=None, *, run_name="__main__"):

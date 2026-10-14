@@ -25,15 +25,20 @@ def completed_text(response) -> str:
         raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
     return content
 
-client = OpenAI(
-    api_key=os.environ["ARK_API_KEY"],
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
-    timeout=120,
-)
+def main():
+    client = OpenAI(
+        api_key=os.environ["ARK_API_KEY"],
+        base_url="https://ark.cn-beijing.volces.com/api/v3",
+        timeout=120,
+    )
+    response = client.chat.completions.create(
+        model="doubao-seed-2-1-pro-260628",
+        messages=[{"role": "user", "content": "用一句话介绍你自己"}],
+        extra_body={"thinking": {"type": "disabled"}},
+    )
+    print(completed_text(response))
+    print("本次用量：", response.usage)
 
-response = client.chat.completions.create(
-    model="doubao-seed-2-1-pro-260628",
-    messages=[{"role": "user", "content": "用一句话介绍你自己"}],
-)
-print(completed_text(response))
-print("本次用量：", response.usage)
+
+if __name__ == "__main__":
+    main()

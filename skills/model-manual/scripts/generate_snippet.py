@@ -136,8 +136,23 @@ def build_request(
         if not _supported(card, "vision"):
             raise ValueError(f"{card['model_id']} 未登记图片输入能力，请选择已收录的视觉型号")
         parsed = urlparse(image_url or "")
-        if not image_url or not ((parsed.scheme in {"https", "http"} and parsed.netloc) or image_url.startswith("data:image/")):
-            raise ValueError("图片任务需 --image-url，使用 HTTP(S) 图片地址或 data:image/ 数据 URL")
+        input_kind = None
+        if image_url:
+            if parsed.scheme in {"https", "http"} and parsed.netloc:
+                input_kind = "http_url"
+            elif image_url.startswith("data:image/") and ";base64," in image_url:
+                input_kind = "base64_data_url"
+            elif parsed.scheme == "ms" and parsed.netloc:
+                input_kind = "ms_file_id"
+        allowed_inputs = generation.get("image_input", {}).get("value", ["http_url", "base64_data_url"])
+        if input_kind not in allowed_inputs:
+            descriptions = {
+                "http_url": "HTTP(S) 图片地址",
+                "base64_data_url": "data:image/...;base64,...",
+                "ms_file_id": "ms://<file_id>",
+            }
+            allowed_description = "、".join(descriptions[item] for item in allowed_inputs)
+            raise ValueError(f"{card['model_id']} 的 --image-url 只接受：{allowed_description}；请遵循该型号图片输入限制")
         body["messages"][0]["content"] = [
             {"type": "text", "text": question}, {"type": "image_url", "image_url": {"url": image_url}},
         ]
@@ -465,7 +480,7 @@ def main() -> None:
     parser.add_argument("--model", help="已收录的模型 ID；默认使用厂商目录指定的型号")
     parser.add_argument("--task", choices=tuple(TASK_QUESTIONS), default="chat")
     parser.add_argument("--question", help="任务问题；不填时使用对应任务示例")
-    parser.add_argument("--image-url", help="vision 任务的 HTTP(S) 图片或 data:image/ URL")
+    parser.add_argument("--image-url", help="vision 图片输入，按型号限制；Kimi 只接受 base64 data URL 或 ms:// 文件引用")
     parser.add_argument("--stream", action="store_true")
     parser.add_argument("--thinking", choices=("default", "on", "off"), default="default")
     parser.add_argument("--max-tokens", type=int, help="按型号卡片语义设置输出预算；未指定时使用服务端默认值")

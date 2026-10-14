@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "vendor": "deepseek",
+  "model_id": "deepseek-flash",
+  "checked_at": "2026-10-14",
+  "examples": [
+    {
+      "id": "chat",
+      "file": "01_basic.py",
+      "title": "普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/01_basic.py",
+      "adaptations": [
+        "密钥从环境变量读取",
+        "检查正常结束与非空正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式输出",
+      "capability": "streaming",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/02_streaming.py",
+      "adaptations": [
+        "处理空 choices/usage 块",
+        "检查流的结束原因"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "思考模式",
+      "capability": "thinking",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
+          "title": "Thinking Mode"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/03_thinking.py",
+      "adaptations": [
+        "环境变量读取密钥",
+        "区分思考字段与最终正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "json",
+      "file": "04_json_output.py",
+      "title": "JSON 输出与业务校验",
+      "capability": "json_object",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/json_mode/",
+          "title": "JSON Output"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/04_json_output.py",
+      "adaptations": [
+        "明确 JSON 提示词",
+        "检查结束后解析并校验业务字段"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "tools",
+      "file": "05_tool_calling.py",
+      "title": "非思考工具闭环",
+      "capability": "tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/tool_calls/",
+          "title": "Tool Calls"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/05_tool_calling.py",
+      "adaptations": [
+        "天气为教学模拟数据",
+        "工具允许列表、整批校验、六轮上限"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "vision",
+      "file": "06_vision.py",
+      "title": "图片输入（URL 或本地）",
+      "capability": "vision",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/vision/",
+          "title": "Vision"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY",
+        "IMAGE_URL | IMAGE_PATH"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/06_vision.py",
+      "adaptations": [
+        "本地示例限 PNG/JPEG（不是模型格式上限）",
+        "远程地址采用 HTTPS 约定",
+        "检查正文完整性"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "typescript",
+      "file": "07_typescript.ts",
+      "title": "TypeScript 普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "npx tsx models/deepseek/deepseek-flash/examples/07_typescript.ts",
+      "adaptations": [
+        "环境变量读取密钥",
+        "结束与非空正文检查"
+      ],
+      "verification": {
+        "offline": "not_run",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "curl",
+      "file": "08_curl.sh",
+      "title": "cURL 普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "bash models/deepseek/deepseek-flash/examples/08_curl.sh",
+      "adaptations": [
+        "HTTP 失败退出",
+        "Python 解析响应并检查结束原因"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "multi_turn",
+      "file": "09_multi_turn.py",
+      "title": "显式管理多轮历史",
+      "capability": "multi_turn",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/multi_round_chat/",
+          "title": "Multi-round Conversation"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/09_multi_turn.py",
+      "adaptations": [
+        "失败回答不写入历史",
+        "关闭思考并检查结果"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "vision_files",
+      "file": "10_vision_files.py",
+      "title": "Files API 上传及图片 ID 复用",
+      "capability": "vision_files",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/files_api/",
+          "title": "Files API"
+        },
+        {
+          "url": "https://api-docs.deepseek.com/guides/vision/",
+          "title": "Vision · file content block"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY",
+        "IMAGE_PATH | IMAGE_FILE_ID"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/10_vision_files.py",
+      "adaptations": [
+        "上传文件设置一小时过期",
+        "已有文件 ID 只引用不删除",
+        "图片格式预检查及正文检查"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "responses_vision",
+      "file": "11_responses_vision.py",
+      "title": "Responses API 图片输入",
+      "capability": "responses_vision",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/responses_api/",
+          "title": "Responses API"
+        },
+        {
+          "url": "https://api-docs.deepseek.com/guides/vision/",
+          "title": "Vision"
+        },
+        {
+          "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
+          "title": "Thinking Mode · Responses reasoning"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY",
+        "IMAGE_URL | IMAGE_PATH"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/11_responses_vision.py",
+      "adaptations": [
+        "可选 IMAGE_DETAIL",
+        "使用 Responses 专属输入/思考字段",
+        "检查 completed 状态与非空正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "thinking_tools",
+      "file": "12_thinking_tools.py",
+      "title": "思考 + 工具闭环",
+      "capability": "thinking_tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
+          "title": "Thinking Mode"
+        },
+        {
+          "url": "https://api-docs.deepseek.com/guides/tool_calls/",
+          "title": "Tool Calls"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/12_thinking_tools.py",
+      "adaptations": [
+        "完整 assistant（含 reasoning_content）回传",
+        "教学模拟天气、参数校验、六轮上限"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "strict_tools",
+      "file": "13_strict_tools.py",
+      "title": "Beta strict 工具闭环",
+      "capability": "strict_tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/tool_calls/",
+          "title": "Tool Calls · strict"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/13_strict_tools.py",
+      "adaptations": [
+        "使用 /beta 和严格 Schema",
+        "关闭思考",
+        "仍做本地业务校验及轮次限制"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "prefix",
+      "file": "14_prefix_completion.py",
+      "title": "Beta 对话前缀续写",
+      "capability": "chat_prefix_completion",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/chat_prefix_completion/",
+          "title": "Chat Prefix Completion"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/14_prefix_completion.py",
+      "adaptations": [
+        "关闭思考并检查结束原因",
+        "只打印、不执行模型生成代码"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    },
+    {
+      "id": "fim",
+      "file": "15_fim_completion.py",
+      "title": "Beta FIM 中间补全",
+      "capability": "fim_completion",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/fim_completion/",
+          "title": "FIM Completion"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-flash/examples/15_fim_completion.py",
+      "adaptations": [
+        "使用独立 completions API",
+        "只打印、不执行生成代码",
+        "检查结束与非空补全文本"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+      }
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "anthropic_api",
+      "reason": "官方提供兼容入口；本批次未新增 anthropic 依赖和对应示例，不代表模型不支持。",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/vision/",
+          "title": "Vision · Anthropic API"
+        }
+      ]
+    },
+    {
+      "capability": "context_caching",
+      "reason": "本批次未新增专门缓存观测示例；缓存规则仍以官方页面为准。",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/kv_cache/",
+          "title": "Context Caching"
+        }
+      ]
+    }
+  ]
+}

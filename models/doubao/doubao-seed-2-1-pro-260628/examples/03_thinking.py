@@ -1,6 +1,7 @@
 """豆包 思考模式：验证最终回答，而不是只看是否产生思考。
 
 官方来源：https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh
+本型号可能返回思考摘要；reasoning_content 字符数不等于 reasoning_tokens。
 """
 
 import os
@@ -25,18 +26,25 @@ def completed_text(response) -> str:
         raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
     return content
 
-client = OpenAI(
-    api_key=os.environ["ARK_API_KEY"],
-    base_url="https://ark.cn-beijing.volces.com/api/v3",
-    timeout=120,
-)
+def main():
+    client = OpenAI(
+        api_key=os.environ["ARK_API_KEY"],
+        base_url="https://ark.cn-beijing.volces.com/api/v3",
+        timeout=120,
+    )
+    response = client.chat.completions.create(
+        model="doubao-seed-2-1-pro-260628",
+        messages=[{"role": "user", "content": "比较 9.11 和 9.8，只给结论和一句解释。"}],
+        extra_body={"thinking": {"type": "enabled"}},
+    )
+    answer = completed_text(response)
+    print("思考摘要（如返回）：", getattr(response.choices[0].message, "reasoning_content", None))
+    print("最终回答：", answer)
+    usage = response.usage
+    details = getattr(usage, "completion_tokens_details", None)
+    print("实际思考 tokens（未返回时为 None）：", getattr(details, "reasoning_tokens", None))
+    print("本次用量：", usage)
 
-response = client.chat.completions.create(
-    model="doubao-seed-2-1-pro-260628",
-    messages=[{"role": "user", "content": "比较 9.11 和 9.8，只给结论和一句解释。"}],
-    extra_body={"thinking": {"type": "enabled"}},
-)
-answer = completed_text(response)
-print("思考内容：", getattr(response.choices[0].message, "reasoning_content", None))
-print("最终回答：", answer)
-print("本次用量：", response.usage)
+
+if __name__ == "__main__":
+    main()

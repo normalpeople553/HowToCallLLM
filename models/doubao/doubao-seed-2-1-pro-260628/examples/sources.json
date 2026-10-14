@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "vendor": "doubao",
+  "model_id": "doubao-seed-2-1-pro-260628",
+  "checked_at": "2026-10-14",
+  "examples": [
+    {
+      "id": "chat_completions",
+      "file": "01_basic.py",
+      "title": "最小文本调用",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/compatible-with-openai-sdk?lang=zh", "title": "兼容 OpenAI SDK：快速开始示例、设置额外字段"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：文本生成能力、往期模型"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/01_basic.py",
+      "adaptations": ["固定为本目录型号，从环境变量读取密钥", "使用 main 入口，导入不发请求", "显式关闭思考；检查 finish_reason、工具消息和非空正文"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式输出与结束检查",
+      "capability": "streaming",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/streaming-output?lang=zh", "title": "流式输出：Chat API 示例、返回格式说明"},
+        {"url": "https://docs.volcengine.com/docs/ark/compatible-with-openai-sdk?lang=zh", "title": "兼容 OpenAI SDK：设置额外字段"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/02_streaming.py",
+      "adaptations": ["处理 usage-only 空 choices 块", "检查截断、缺少结束标记、空正文和结束后的额外正文", "退出时关闭流；未完整完成时显式报错"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "开启思考、读取摘要和实际 token",
+      "capability": "thinking",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh", "title": "深度思考：控制深度思考、回传思考内容加密原文"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/03_thinking.py",
+      "adaptations": ["以 extra_body.thinking.type=enabled 开启思考", "先检查最终正文完整性，再展示可能返回的思考摘要", "reasoning_tokens 从 usage 读取，缺失保持 None，不从摘要长度推算"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "structured_output",
+      "file": "04_json_output.py",
+      "title": "JSON Schema 结构化输出",
+      "capability": "structured_output",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/structured-output-beta?lang=zh", "title": "结构化输出(beta)：Chat API JSON Schema 模式"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：本型号结构化输出推荐 json_schema 模式"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/04_json_output.py",
+      "adaptations": ["使用精简教学 Schema", "完成状态检查后解析 JSON，并检查业务字段与类型", "不将可解析但不合要求的 JSON 当作成功"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "tool_calling",
+      "file": "05_tool_calling.py",
+      "title": "关闭思考的模拟工具闭环",
+      "capability": "tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/function-calling?lang=zh", "title": "Function Calling：调用外部函数、返回函数结果、完整代码示例"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：工具调用能力表"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/05_tool_calling.py",
+      "adaptations": ["天气工具返回固定教学数据，不调用外部服务", "整批校验函数允许列表、JSON 字段、类型和调用 ID 后才执行", "最多六轮，保留完整 assistant 消息及可能的扩展字段，检查最终正文"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "vision",
+      "file": "06_vision.py",
+      "title": "图片 URL 或本地文件输入",
+      "capability": "vision",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/image-understanding?lang=zh", "title": "图片理解：图片 URL、Base64 编码传入"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：视觉理解能力、往期模型"}
+      ],
+      "required_env": ["ARK_API_KEY", "IMAGE_URL | IMAGE_PATH"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/06_vision.py",
+      "adaptations": ["图片地址和本地路径二选一", "本地示例仅接收 PNG/JPEG 并编码 data URL", "保留 content 数组，检查最终正文完整性"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "multi_turn",
+      "file": "07_multi_turn.py",
+      "title": "手动历史管理的多轮对话",
+      "capability": "multi_turn",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/context-management?lang=zh", "title": "上下文管理：多轮对话、Chat API 手动管理上下文"},
+        {"url": "https://docs.volcengine.com/docs/ark/text-generation?lang=zh", "title": "文本生成：多轮对话"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/07_multi_turn.py",
+      "adaptations": ["固定两轮，保留服务端完整 assistant 消息", "只有回答完整时才将本轮用户消息和回答一起写入历史", "不将中断或空回答加入下一轮上下文"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "thinking_tool_calling",
+      "file": "08_thinking_tools.py",
+      "title": "思考工具闭环与加密思考原文续传",
+      "capability": "thinking_tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh", "title": "深度思考：回传思考内容加密原文，支持模型含 260628"},
+        {"url": "https://docs.volcengine.com/docs/ark/function-calling?lang=zh", "title": "Function Calling：完整工具调用流程"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/08_thinking_tools.py",
+      "adaptations": ["显式开启思考，最多六次模型请求", "保留 reasoning_content 与 encrypted_content 完整消息，不重建或裁剪加密字段", "使用可校验的模拟工具，参数整批校验后才执行，不打印加密思考原文", "末轮实际思考 token 只从服务端 usage 读取"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只在假 SDK 上覆盖本文件；本清单不声称文件级真实调用通过，型号历史报告另查。"}
+    },
+    {
+      "id": "video",
+      "file": "09_video.py",
+      "title": "视频 URL 的视觉理解",
+      "capability": "video_input",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/video-understanding?lang=zh", "title": "视频理解：支持模型、视频 URL 传入的 Chat API 示例"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：视频理解支持模型链接指向的视觉理解能力表，往期型号含 260628"}
+      ],
+      "required_env": ["ARK_API_KEY", "VIDEO_URL"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/09_video.py",
+      "adaptations": ["使用用户提供的 HTTPS URL，不下载媒体、不创建文件资源", "只采用通用 video_url.url 格式，不移植新型号的预处理、音频或抽帧参数", "核对源页面的支持模型链接及对应型号表，检查回答完整性"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只验证构造的消息与异常边界；未使用真实视频调用本文件，不声称视频识别质量已实测。"}
+    },
+    {
+      "id": "implicit_cache",
+      "file": "10_implicit_cache.py",
+      "title": "观察隐式缓存命中 token",
+      "capability": "context_caching",
+      "origin": "adapted_from_official",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/context-cache?lang=zh", "title": "上下文缓存：隐式缓存、提升缓存命中率、工作原理"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：上下文缓存能力、往期模型支持 Chat API 隐式缓存"}
+      ],
+      "required_env": ["ARK_API_KEY"],
+      "run_command": "python models/doubao/doubao-seed-2-1-pro-260628/examples/10_implicit_cache.py",
+      "adaptations": ["由代码生成固定教学长前缀，发送两次普通 Chat 请求", "只读取服务端 usage.prompt_tokens_details.cached_tokens，不从字符数推算", "缺少统计值报告无法判断，值为零如实报告未命中，不承诺缓存命中"],
+      "verification": {"offline": "mock_tested", "live": "not_run", "note": "只用假统计覆盖命中、未命中和字段缺失；未实测本文件的缓存命中率。"}
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "explicit_cache",
+      "reason": "官方支持表列出本型号的 Responses API 前缀和 Session 缓存；本批示例采用 Chat API，仅集成无需创建资源的隐式缓存观察，尚未覆盖显式缓存的创建、复用、过期和存储计费流程。",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/context-cache?lang=zh", "title": "上下文缓存：显式缓存、使用限制"},
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：上下文缓存能力"}
+      ]
+    },
+    {
+      "capability": "files_video_preprocessing",
+      "reason": "当前视频教程的 Files 上传示例使用 260915，并包含模型专属预处理配置；本批未逐项核对这些配置对 260628 的适用范围，因此只提供无需上传的 video_url.url 示例。",
+      "sources": [{"url": "https://docs.volcengine.com/docs/ark/video-understanding?lang=zh", "title": "视频理解：Files API 上传、preprocess_configs.video.model"}]
+    },
+    {
+      "capability": "video_embedded_audio",
+      "reason": "本批只整合视频画面的视觉理解；未独立核对该历史型号的内嵌音频输入边界和参数，不将视觉输入通过推定为音频理解通过。",
+      "sources": [{"url": "https://docs.volcengine.com/docs/ark/video-understanding?lang=zh", "title": "视频理解：支持音频理解，部分模型支持"}]
+    },
+    {
+      "capability": "responses_builtin_tools",
+      "reason": "官方工具能力表列出本型号的联网、MCP 等 Responses 工具；本批完整工具示例采用 Chat API 的本地模拟函数，未将不同接口的工具结构混用。",
+      "sources": [
+        {"url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh", "title": "模型列表：工具调用能力"},
+        {"url": "https://docs.volcengine.com/docs/ark/online-content-plugin-guide?lang=zh", "title": "联网内容插件：Responses API"}
+      ]
+    }
+  ]
+}

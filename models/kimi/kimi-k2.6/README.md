@@ -1,5 +1,7 @@
 # `kimi-k2.6` 调用说明书
 
+按功能查找本型号的[官方改写示例与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。清单单独标明文件的官方出处、改写与验证范围；本次新增示例未执行真实 API 调用，不继承历史报告的通过状态。
+
 > 核对日期：**2026-10-13**。官方事实均附原始链接；“实测”只指本仓库验证脚本在该日期的结果。机器卡片见 [`kimi-k2.6.json`](../../../skills/model-manual/references/models/kimi-k2.6.json)。
 
 ## 1. 一眼看懂
@@ -78,6 +80,8 @@ K2.6 不支持 `tool_choice="required"`；可让模型自动选择、禁止调�
 图片支持 JPEG、PNG、GIF、WebP、BMP、HEIC、HEIF；视频支持 MP4、MPEG、MOV、AVI、FLV、MPG、WebM、WMV、3GPP。内容必须传数组，不能把数组序列化成字符串；SVG 不作为图片格式接受。[视觉模型](https://platform.kimi.com/docs/guide/use-kimi-vision-model)
 
 可运行图片示例：[examples/06_vision.py](examples/06_vision.py)；输入方式和运行命令见文件说明。
+
+当前官方图片字段接受 base64 data URL 或 `ms://<file_id>`，不直接接受远程 HTTP(S) 图片地址；本仓库图片脚本使用 `IMAGE_PATH` 编码本地文件，拒绝 `IMAGE_URL`。不要将其他厂商的远程图片写法直接复制到 Kimi。[Chat Completions：Content 字段](https://platform.kimi.com/docs/api/chat)
 
 上下文缓存支持 5 分钟或 1 小时 TTL，命中条件、用量字段和价格以[上下文缓存](https://platform.kimi.com/docs/guide/context-caching)为准。
 

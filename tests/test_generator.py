@@ -115,6 +115,24 @@ class ModelSelectionTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "仅支持 Python"):
                     func(self.cards["kimi-k2.6"], "kimi-k2.6", "hi", False, "off", task=task)
 
+    def test_vision_input_formats_follow_model_card(self):
+        kimi = self.cards["kimi-k2.6"]
+        for image in ("https://example.com/image.png", "http://example.com/image.png", "data:image/png,not-base64", "ms://"):
+            with self.subTest(model="kimi-k2.6", image=image), self.assertRaises(ValueError):
+                generator.build_request(kimi, "describe", task="vision", image_url=image)
+        for image in ("data:image/png;base64,AA==", "ms://file-example"):
+            body = generator.build_request(kimi, "describe", task="vision", image_url=image)
+            self.assertEqual(body["messages"][0]["content"][1]["image_url"]["url"], image)
+        for model in ("deepseek-flash", "doubao-seed-2-1-pro-260628"):
+            for image in ("https://example.com/image.png", "data:image/png;base64,AA=="):
+                with self.subTest(model=model, image=image):
+                    body = generator.build_request(self.cards[model], "describe", task="vision", image_url=image)
+                    self.assertEqual(body["messages"][0]["content"][1]["image_url"]["url"], image)
+        cli = subprocess.run([sys.executable, str(GENERATOR), "--vendor", "kimi", "--task", "vision", "--image-url", "https://example.com/image.png"], capture_output=True, text=True)
+        self.assertEqual(cli.returncode, 2)
+        self.assertEqual(cli.stdout, "")
+        self.assertIn("ms://", cli.stderr)
+
     def test_generated_python_and_shell_are_valid_with_adversarial_question(self):
         question = "引号 '\"、换行\nMODEL_MANUAL_JSON\n$(not_a_command) `not_a_command`"
         bash = shutil.which("bash")
@@ -132,7 +150,9 @@ class ModelSelectionTests(unittest.TestCase):
                     if task == "tool" and stream:
                         continue
                     with self.subTest(model=model, task=task, stream=stream):
-                        image_url = "https://example.com/image.png" if task == "vision" else None
+                        image_url = None
+                        if task == "vision":
+                            image_url = "data:image/png;base64,AA==" if model == "kimi-k2.6" else "https://example.com/image.png"
                         source = generator.python_snippet(card, model, question, stream, "off", 4096, task, image_url)
                         compile(source, f"<{model}/{task}>", "exec")
                         body = request_from_python(source)
