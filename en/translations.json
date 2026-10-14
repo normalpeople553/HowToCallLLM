@@ -9,12 +9,12 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "a52b0573214f5dfb9ec129c902f4cd296337ba0a6e8914e781075b0a27db3283"
+      "source_sha256": "31d187de2372806edc629c167e9f54dc8b4fd03991352d84cd348def00f613f0"
     },
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "96ecf6031be60454780e782bf7e69e051c400758517488f1a7d8e7c5e2fd034c"
+      "source_sha256": "e60222c6b23f02a0399a821523340dc8fd7230bbe1f474a3fdc96f97cf75707e"
     },
     {
       "source": "agents/README.md",
@@ -79,12 +79,12 @@
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "1848af73f1b38e30d38462bd5db79bf9ddbd73cfa0a01cb1f684f81a58d21387"
+      "source_sha256": "c6a368d32fe8cddd8b3737969b9e693b5a359e8c45c6b18ec70be0d33e762451"
     },
     {
       "source": "docs/验证与复现.md",
       "target": "en/docs/verification.md",
-      "source_sha256": "768564a5a0a3746c5a5feb8503be514b88873a7cb9e64d3a9f2d2a05e64f8474"
+      "source_sha256": "14eb5b1872a13e83026f206b35b314d38cb4a38aee4946d2b7d8f0d7b5d297f7"
     },
     {
       "source": "docs/03-厂商攻略/deepseek.md",
@@ -232,6 +232,41 @@
       "source": "docs/model-lists/minimax.md",
       "target": "en/docs/model-lists/minimax.md",
       "generator": "skills/model-manual/scripts/model_catalog.py"
+    },
+    {
+      "source": "human/examples/README.md",
+      "target": "human/examples/README.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/deepseek.md",
+      "target": "human/examples/deepseek.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/kimi.md",
+      "target": "human/examples/kimi.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/zhipu.md",
+      "target": "human/examples/zhipu.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/qwen.md",
+      "target": "human/examples/qwen.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/doubao.md",
+      "target": "human/examples/doubao.en.md",
+      "generator": "scripts/render_human_examples.py"
+    },
+    {
+      "source": "human/examples/minimax.md",
+      "target": "human/examples/minimax.en.md",
+      "generator": "scripts/render_human_examples.py"
     }
   ]
 }

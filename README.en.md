@@ -17,7 +17,7 @@ For an agent, start with [SKILL.en.md](skills/model-manual/SKILL.en.md); Chinese
 
 | Material | Entry point |
 |---|---|
-| First call, compatible APIs, environment variables, pricing links and common errors | [Human reading path](human/README.en.md#reading-path) |
+| First call, complete code walkthroughs, human review of Agent code, compatible APIs and common errors | [Human reading path](human/README.en.md#reading-path) |
 | Exact language-model API IDs, lifecycle, input modalities, official prices and repository coverage across six providers | [Language-model lists](en/docs/model-lists/README.md) |
 | Exact model identities, endpoints, capabilities, limits, lifecycle and official sources across six providers | [Model manuals](models/README.en.md) |
 | Context versus output budgets, temperature/top-p, thinking, streaming, JSON, tools and multimodal fields | [Parameter guide](en/docs/parameters.md) |

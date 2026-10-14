@@ -4,12 +4,15 @@
 
 This guide is for people making decisions, running examples, or assigning work to an agent—not separate beginner and expert groups. Humans and agents share [model cards](../skills/model-manual/references/models/), executable source, and reports rather than maintaining independent model facts. [Evidence policy](../en/docs/evidence-policy.md)
 
+To read calls or review an Agent's implementation, start with [code reading and human review](examples/README.en.md): six maintained models each have a complete Python example, important-line explanations, run instructions and original execution evidence, plus review checklists for streaming, JSON, tools and images. Code comes directly from the executed files, not a separately simplified version.
+
 <a id="reading-path"></a>
 ## Read for the question you have now
 
 | What you want to do | Start here | What you should establish |
 |---|---|---|
 | Make your first model call | [First call](../en/docs/first-call.md) | Environment, key, endpoint, model, and runnable file. |
+| Read calling code and review an Agent's implementation | [Code reading and human review](examples/README.en.md) | Exact model, configuration, request fields, normal completion and evidence scope. |
 | Use a familiar SDK with another provider | [Compatible-API pattern](../en/docs/compatible-api.md) | Shared structures versus model-specific fields. |
 | Discover a provider's other language models | [Six language-model lists](../en/docs/model-lists/README.md) | Exact IDs, current documentation status, official prices and actual repository coverage. |
 | Find the exact model's instructions | [Model directory](../models/README.en.md) and the table below | API ID, interface, lifecycle, and official sources. |

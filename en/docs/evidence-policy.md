@@ -39,6 +39,7 @@ Model-level machine facts live in [skills/model-manual/references/models/](../..
 | Default models and vendor entry points | Routing fields in `vendors.json` | Agents locate material; nondefault models require lookup by exact ID. |
 | Integration, migration, and troubleshooting workflows | [Agent workflows](../../skills/model-manual/references/workflows.en.md) | The Skill routes by task; the README supplies usage instructions. |
 | Official-example sources, adaptations, and commands | Each model's `examples/sources.json` | The [example index](example-index.md) is generated from manifests; agents query by model/capability. |
+| Complete code and line explanations for human readers | [Reading-page renderer](../../scripts/render_human_examples.py) | [Human code-reading pages](../../human/examples/README.en.md) copy original files unchanged and join current-source evidence; they do not create a second executable example set. |
 
 ### Model discovery rules
 
@@ -71,5 +72,7 @@ The file executor runs the original file and observes real network transport, wi
 Do not claim “every example passed live testing” until every current executable file has complete passing evidence. The [release check](../../tests/check_example_release.py) with `--check` checks page synchronization only; add `--require-passed` to fail the release gate on remaining unpassed files. Earlier observation scopes and historical-report retention are explained in the [report notes](../../verification/README.en.md).
 
 Explanatory code blocks, generator output, and changed input/parameter combinations do not inherit a linked file's passing result. Rerun the relevant path after source, helper, runtime, or parameter changes. Even a real model/tool loop using explicitly simulated data is not verification of live weather or a real business system. These are project evidence rules; parameter details are in the [tuning guide](parameters.md).
+
+The [human complete-code reading pages](../../human/examples/README.en.md) are an explicit display-only exception: full code is copied unchanged from original files with valid current-source HTTP evidence. Source hashes and explanatory line anchors are checked, and the pages reference those original reports without claiming another execution. They are not separate executables and do not establish passing evidence for an Agent's rewrite or another parameter combination. [Renderer tests](../../tests/test_human_examples.py) check source copying, bilingual code equality and evidence rejection conditions.
 
 The repository requires Python 3.10+ and uses [locked dependencies](../../requirements-lock.txt) for reproduction. Installation, offline checks, and real API verification commands are in [verification and reproduction](verification.md).

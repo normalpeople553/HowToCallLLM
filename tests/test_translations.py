@@ -84,6 +84,8 @@ class RepositoryEditionTests(unittest.TestCase):
             "verification/README.md",
         }
         expected.update(path.relative_to(ROOT).as_posix() for path in (ROOT / "docs").rglob("*.md"))
+        expected.update(path.relative_to(ROOT).as_posix() for path in (ROOT / "human").rglob("*.md")
+                        if not path.name.endswith(".en.md"))
         for pattern in ("*/*/README.md", "*/*/parameters.md"):
             expected.update(path.relative_to(ROOT).as_posix() for path in (ROOT / "models").glob(pattern))
         self.assertEqual(actual, expected)

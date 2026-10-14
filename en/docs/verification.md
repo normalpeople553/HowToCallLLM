@@ -26,6 +26,7 @@ python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
 python skills/model-manual/scripts/example_catalog.py --check
 python skills/model-manual/scripts/model_catalog.py --check
+python scripts/render_human_examples.py --check
 python tests/check_example_release.py --check
 ```
 
@@ -44,6 +45,17 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 `--write-pages` generates the index and six vendor pages in both languages; `--check` detects stale generated pages. Filters cannot be combined with page operations. An unmatched exact ID, invalid catalog or existing evidence, or stale page exits `2`; success exits `0`. Queries read documentation snapshots and saved evidence, not keys or the network, and do not inventory live models. Sources must use the corresponding vendor's allowed official HTTPS hosts. Host/schema validation does not automatically verify factual meaning.
 
 Adding discovery entries does not change default cards or example source. Full integration needs a separately maintained exact-model card, parameter guide and actually executed examples. Passing evidence for existing example files does not transfer to newly listed models. [Evidence boundaries](evidence-policy.md)
+
+## Human code-reading pages (no requests)
+
+[Code reading and human review](../../human/examples/README.en.md) displays the complete executed basic files for the six maintained models. Source changes still need the original real-execution procedure first. The renderer generates both editions only when current source has complete passing HTTP evidence and reading anchors still match. It creates no new calling code and makes no requests.
+
+```bash
+python scripts/render_human_examples.py --write
+python scripts/render_human_examples.py --check
+```
+
+No arguments defaults to read-only checking. Invalid source, evidence, reading anchors or stale pages exit `2`; successful checking or writing exits `0`. `--write` updates only the 14 reading pages in `human/examples/`. Both editions preserve the actual source code, with explanations from one bilingual set of reading prompts. An Agent implementation with changed calling fields or prompts still needs separate verification. Source and support-dependency evidence rules are in the [evidence policy](evidence-policy.md).
 
 ## Two layers of real evidence
 
@@ -138,6 +150,7 @@ Both languages use the same model cards, source files, provenance manifests and 
 ```bash
 python skills/model-manual/scripts/example_catalog.py --write-index
 python skills/model-manual/scripts/model_catalog.py --write-pages
+python scripts/render_human_examples.py --write
 python skills/model-manual/scripts/sync_verification.py
 python tests/check_example_release.py --write
 python scripts/check_translations.py --check

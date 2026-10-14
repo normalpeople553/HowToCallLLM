@@ -22,5 +22,6 @@ jobs:
       - run: python skills/model-manual/scripts/sync_verification.py --check
       - run: python skills/model-manual/scripts/example_catalog.py --check
       - run: python skills/model-manual/scripts/model_catalog.py --check
+      - run: python scripts/render_human_examples.py --check
       - run: python tests/check_example_release.py --check
       - run: python scripts/check_translations.py --check
