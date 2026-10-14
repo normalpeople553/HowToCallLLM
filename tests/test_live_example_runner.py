@@ -612,6 +612,43 @@ class ActualSDKObservationTests(unittest.TestCase):
                 logging.disable(old_disable)
             return code, json.loads(telemetry.read_text(encoding="utf-8"))
 
+    def test_normal_python_exit_does_not_fake_or_hide_request_success(self):
+        def no_network(transport, request):
+            raise AssertionError("fixture must not send any request")
+
+        for statement, expected in (("raise SystemExit(0)", 0), ("raise SystemExit()", 0),
+                                    ("raise SystemExit(1)", 1), (f"raise SystemExit({PRIVATE!r})", 1),
+                                    ("raise SystemExit(0.0)", 1)):
+            with self.subTest(statement=statement):
+                code, report = self.run_real_sdk_fixture(statement, no_network)
+                self.assertEqual(code, expected)
+                self.assertEqual(report["exit_code"], expected)
+                self.assertEqual(report["requests"], [])
+                # Process success without actual HTTP evidence cannot become a pass.
+                self.assertEqual(runner.determine_status({"vendor": "deepseek", "model_id": "deepseek-flash"}, report, code), "failed")
+                self.assertNotIn(PRIVATE, json.dumps(report))
+
+    def test_successful_main_exit_preserves_actual_sdk_http_observation(self):
+        import httpx
+
+        payload = {"model": "deepseek-flash", "choices": [{"index": 0, "finish_reason": "stop",
+                   "message": {"role": "assistant", "content": PRIVATE}}]}
+
+        def handler(transport, request):
+            return httpx.Response(200, stream=httpx.ByteStream(json.dumps(payload).encode()),
+                                  headers={"content-type": "application/json"}, request=request)
+
+        source = ("from openai import OpenAI\n"
+                  f"client = OpenAI(api_key={SECRET!r}, base_url='https://api.deepseek.com', max_retries=0)\n"
+                  "client.chat.completions.create(model='deepseek-flash', messages=[{'role':'user','content':'fixture'}])\n"
+                  "raise SystemExit(0)\n")
+        code, report = self.run_real_sdk_fixture(source, handler)
+        self.assertEqual(code, 0)
+        self.assertEqual(runner.determine_status({"vendor": "deepseek", "model_id": "deepseek-flash"}, report, code), "passed")
+        self.assertEqual(len(report["requests"]), 1)
+        for value in (PRIVATE, SECRET):
+            self.assertNotIn(value, json.dumps(report))
+
     def test_compressed_actual_sdk_chat_fim_and_sse_keep_independent_decoders(self):
         import httpx
 

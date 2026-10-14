@@ -24,6 +24,8 @@ Create a key at [DeepSeek API Keys](https://platform.deepseek.com/api_keys). Bal
 
 Project rule: never embed a key in code or commit it to Git. Examples read it from an environment variable. [Evidence and safety policy](evidence-policy.md)
 
+The [basic file](../../examples/01_quickstart.py) reads the process environment directly; it does not automatically load `.env`. Saving a key in `.env` alone is not enough to run that file. Use the environment-variable method below, or follow [local live verification](verification.md#local-live-verification) to let the executor load an ignored `.env`. Do not print keys to check configuration.
+
 ```bash
 # macOS / Linux
 export DEEPSEEK_API_KEY="YOUR_KEY"

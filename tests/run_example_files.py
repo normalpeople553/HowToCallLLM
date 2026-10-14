@@ -397,6 +397,13 @@ def child(path, telemetry):
         sys.path.insert(0, str(path.parent))
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             runpy.run_path(str(path), run_name="__main__")
+    except SystemExit as exc:
+        # Conventional Python entry points use raise SystemExit(main()).
+        # A successful exit is not an exception failure; HTTP checks still apply.
+        successful = exc.code is None or isinstance(exc.code, int) and exc.code == 0
+        outcome["exit_code"] = 0 if successful else 1
+        if not successful:
+            outcome["error_type"] = "SystemExit"
     except BaseException as exc:
         outcome["exit_code"] = 1
         outcome["error_type"] = type(exc).__name__

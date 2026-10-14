@@ -14,6 +14,14 @@ A model API handbook for people and an implementation guide for agents. Start wi
 
 The human and Agent guides share official model cards and calling code. Both languages use the same source; execution records stay local and are not published.
 
+## Give this to your Agent
+
+Give your coding agent the repository URL and this task prompt. This is project guidance, not model-calling code. The [Agent guide](agents/README.en.md) defines the integration rules.
+
+> Refer to https://github.com/normalpeople553/HowToCallLLM and integrate a basic DeepSeek text call into my current project. Start with the repository's Agent guide, use its routing to determine the paid default model, and prefer a complete existing example with response checks intact. Give me the environment-variable names and install/run commands. Run offline checks first; make real calls only after my explicit authorization. Do not echo keys or upload test records.
+
+Preserve the language and dependency management of an existing project; for a new project, follow the Agent rules to choose the language. Existing examples and generator output do not replace verification of rewritten code.
+
 ## Maintenance and reproduction
 
 [Calling-code directory](en/docs/example-status.md) · [Verification and reproduction](en/docs/verification.md) · [Evidence policy](en/docs/evidence-policy.md) · [Translation checks](scripts/check_translations.py)

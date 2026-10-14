@@ -55,8 +55,11 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 先按准确型号和能力查现成文件，再读取该文件的输入变量、官方来源和运行要求。
 
 ```bash
+python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability text
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
 ```
+
+普通文本可用 `text`、`chat` 或 `basic`，它们仅是 `chat_completions` 的检索别名；返回的准确型号、能力和验证状态不变。其他能力词不确定时，先只传 `--model` 查看该型号的候选，不猜词反复查询，不换型号回退。[检索实现](../skills/model-manual/scripts/example_catalog.py)
 
 ### 代码生成
 

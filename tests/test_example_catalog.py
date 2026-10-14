@@ -57,6 +57,29 @@ class ExampleCatalogTests(unittest.TestCase):
             with self.subTest(path=relative.as_posix()):
                 self.assertEqual((ROOT / relative).read_text(encoding="utf-8"), expected)
 
+    def test_text_search_aliases_preserve_exact_model_capability_and_evidence(self):
+        catalogs = catalog.load_catalogs()
+        for model in EXPECTED_MODELS:
+            expected = catalog.select_examples(catalogs, model=model, capability="chat_completions")
+            self.assertTrue(expected)
+            for alias in ("text", "chat", "basic"):
+                with self.subTest(model=model, alias=alias):
+                    self.assertEqual(catalog.select_examples(catalogs, model=model, capability=alias), expected)
+        self.assertEqual(catalog.select_examples(catalogs, model="unknown", capability="text"), [])
+        self.assertEqual(catalog.select_examples(catalogs, vendor="qwen", model="deepseek-flash", capability="text"), [])
+        self.assertEqual(catalog.select_examples(catalogs, model="qwen-flash", capability="vision"), [])
+
+    def test_text_alias_cli_succeeds_but_unknown_model_still_fails(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), "--model", "deepseek-flash", "--capability", "text"], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        rows = json.loads(result.stdout)
+        self.assertTrue(rows)
+        self.assertTrue(all(row["model_id"] == "deepseek-flash" and row["capability"] == "chat_completions" for row in rows))
+        self.assertTrue(any(row["path"].endswith("01_basic.py") for row in rows))
+        missing = subprocess.run([sys.executable, str(SCRIPT), "--model", "unknown", "--capability", "text"], capture_output=True, text=True)
+        self.assertEqual(missing.returncode, 2)
+        self.assertEqual(missing.stdout, "")
+
     def test_bilingual_indices_share_canonical_data_sources_and_file_links(self):
         catalogs = catalog.load_catalogs()
         before = json.dumps(catalogs, sort_keys=True)

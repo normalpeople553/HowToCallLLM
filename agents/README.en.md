@@ -55,8 +55,11 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 Find existing files by exact model and capability, then read the file's input variables, official sources and run requirements.
 
 ```bash
+python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability text
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
 ```
+
+For basic text calls, `text`, `chat` and `basic` are search aliases for `chat_completions`; the exact model, canonical capability and verification state are unchanged. If another key is uncertain, pass only `--model` to inspect that model's candidates rather than repeatedly guessing or falling back to another model. [Search implementation](../skills/model-manual/scripts/example_catalog.py)
 
 ### Code generation
 

@@ -35,6 +35,8 @@ HTTP_SCOPE = "original_file_and_real_http_metadata"
 PROCESS_SCOPE = "original_file_process_exit_and_its_response_checks"
 TRANSPORTS = {".py": "real_httpx", ".ts": "real_fetch", ".sh": "real_curl"}
 TRACE_HELPERS = {".ts": "tests/live_fetch.mjs", ".sh": "tests/live_curl.py"}
+# Search vocabulary only: never changes Model IDs, declared capabilities or evidence.
+CAPABILITY_ALIASES = {"text": "chat_completions", "chat": "chat_completions", "basic": "chat_completions"}
 # Human translations only; evidence, statuses, and source URLs always come from the manifests.
 GAP_TRANSLATIONS = {
     "deepseek:anthropic_api": ("9fdfd08558ba05252de04736ee5f31c15e56690202d5d7e12cb9c38f87396843", "An official compatible endpoint exists. This batch adds neither the anthropic dependency nor an example; that is not a claim of unsupported functionality."),
@@ -318,6 +320,7 @@ def load_catalogs(root=ROOT, private_evidence=False):
 
 
 def select_examples(catalogs, vendor=None, model=None, capability=None):
+    capability = CAPABILITY_ALIASES.get(capability, capability)
     result = []
     for catalog in catalogs:
         if vendor and catalog["vendor"] != vendor or model and catalog["model_id"] != model:
@@ -340,6 +343,7 @@ def select_examples(catalogs, vendor=None, model=None, capability=None):
 
 def selection_diagnostics(catalogs, vendor=None, model=None, capability=None):
     """无命中时给出当前型号的可用词与边界；不把缺示例写成不支持。"""
+    capability = CAPABILITY_ALIASES.get(capability, capability)
     result = []
     for catalog in catalogs:
         if vendor and catalog["vendor"] != vendor or model and catalog["model_id"] != model:
@@ -370,12 +374,14 @@ def render_index(catalogs, language="zh"):
         "图片或视频会发送到对应厂商，请仅使用获准上传的内容。", "",
         "按功能给 Agent 查询（只读取清单，不发送请求）：", "",
         "```bash",
+        "python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability text",
         "python skills/model-manual/scripts/example_catalog.py --vendor deepseek --capability vision",
         "python skills/model-manual/scripts/example_catalog.py --model kimi-k2.6 --capability video_input",
         "python skills/model-manual/scripts/example_catalog.py --write-index",
         "python skills/model-manual/scripts/example_catalog.py --check",
         "```", "",
         "输出 JSON 含完整命令与改写说明；能力词不确定时先仅传 `--model` 列出该型号的示例。"
+        "普通文本的 `text`、`chat`、`basic` 是 `chat_completions` 的检索别名；输出仍保留清单的准确能力名，不改变型号、支持范围或验证状态。"
         "找不到型号或功能时退出码为 2，已收录型号同时给出候选能力和匹配的未集成说明，不回退到别的型号。"
         "下表中环境变量的 `|` 表示二选一（Key 始终必需），可选变量见文件说明。", "",
         "## 校验与记录边界", "",
@@ -426,12 +432,14 @@ def _render_index_en(catalogs):
         "Images and videos are sent to the relevant vendor: use only material you are authorized to upload.", "",
         "Read the [English model manuals](../../models/README.en.md) and parameter notes before calling a model. "
         "Query by capability without sending requests:", "", "```bash",
+        "python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability text",
         "python skills/model-manual/scripts/example_catalog.py --vendor deepseek --capability vision",
         "python skills/model-manual/scripts/example_catalog.py --model kimi-k2.6 --capability video_input",
         "python skills/model-manual/scripts/example_catalog.py --write-index",
         "python skills/model-manual/scripts/example_catalog.py --check", "```", "",
         "The machine-readable JSON remains in its canonical schema, including the original source metadata. "
         "Use `--model` alone to list capability keys. An unknown model or capability exits with code 2 and never falls back to another model; "
+        "`text`, `chat` and `basic` are search aliases for `chat_completions`; returned capabilities, exact model IDs and verification states remain unchanged. "
         "known models include available keys and relevant integration boundaries in the diagnostics. "
         "`or` in the environment column means either input is sufficient; the API key is always required. Optional variables are documented in the files.", "",
         "## Check and record boundaries", "",
@@ -489,7 +497,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--vendor", choices=sorted(HOSTS))
     parser.add_argument("--model")
-    parser.add_argument("--capability", help="精确能力词；不确定时先仅用 --model 列出该型号示例")
+    parser.add_argument("--capability", help="能力词；普通文本可用 text/chat/basic（chat_completions 检索别名）；不确定时仅用 --model 列出示例")
     action = parser.add_mutually_exclusive_group()
     action.add_argument("--write-index", action="store_true", help="从清单生成中英文 Markdown 索引")
     action.add_argument("--check", action="store_true", help="检查清单与中英文生成索引是否一致")

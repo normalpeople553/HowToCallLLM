@@ -13,13 +13,14 @@ Install [requirements-lock.txt](../../requirements-lock.txt) from the repository
 Read the [English model manuals](../../models/README.en.md) and parameter notes before calling a model. Query by capability without sending requests:
 
 ```bash
+python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability text
 python skills/model-manual/scripts/example_catalog.py --vendor deepseek --capability vision
 python skills/model-manual/scripts/example_catalog.py --model kimi-k2.6 --capability video_input
 python skills/model-manual/scripts/example_catalog.py --write-index
 python skills/model-manual/scripts/example_catalog.py --check
 ```
 
-The machine-readable JSON remains in its canonical schema, including the original source metadata. Use `--model` alone to list capability keys. An unknown model or capability exits with code 2 and never falls back to another model; known models include available keys and relevant integration boundaries in the diagnostics. `or` in the environment column means either input is sufficient; the API key is always required. Optional variables are documented in the files.
+The machine-readable JSON remains in its canonical schema, including the original source metadata. Use `--model` alone to list capability keys. An unknown model or capability exits with code 2 and never falls back to another model; `text`, `chat` and `basic` are search aliases for `chat_completions`; returned capabilities, exact model IDs and verification states remain unchanged. known models include available keys and relevant integration boundaries in the diagnostics. `or` in the environment column means either input is sufficient; the API key is always required. Optional variables are documented in the files.
 
 ## Check and record boundaries
 

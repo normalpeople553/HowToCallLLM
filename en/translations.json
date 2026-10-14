@@ -9,7 +9,7 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "482904d869d6c3c66a24d92bf2b537fd2638375072ba7f98d8986667dca1dd14"
+      "source_sha256": "f0bd9c7d2904b16b8436c301dad27a54f0a041ac92e13c9d9f8049b23f97a111"
     },
     {
       "source": "human/README.md",
@@ -19,7 +19,7 @@
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "7b467bc0a1492d90c5981fcc2add4f62cf16e61a9ee2f31791a328dcfdf8de62"
+      "source_sha256": "1c8070f847c81386a1f99f813bcfcbfb751823ea079e6c15ba9f378274116e55"
     },
     {
       "source": "models/README.md",
@@ -49,7 +49,7 @@
     {
       "source": "docs/01-5分钟跑通第一次调用.md",
       "target": "en/docs/first-call.md",
-      "source_sha256": "8ff204888aa8d2e38cea1484b1c812dbbd92bac8efde9be89cd8e41fc04d1e0d"
+      "source_sha256": "1f400b3e218d0401140f2a3c6ecc55f8000a8346fb6e9aba5cf61f323c70dea2"
     },
     {
       "source": "docs/02-一个套路调遍所有模型.md",
