@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T04:12:36.411036+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/zhipu/glm-4.7/examples/01_basic.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T04:12:36.474074+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/01_basic.py": "ad0906242fa2c9590a4885b4a35fca59fbc40c97baef2e4ce8880a3062664469"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {},
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 758,
+            "prompt_tokens": 9,
+            "total_tokens": 767
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 45
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 26.996
+    },
+    {
+      "path": "models/zhipu/glm-4.7/examples/02_streaming.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T04:13:05.480398+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/02_streaming.py": "c15b9908a8534e870a851772757659814697fbc605cc88e812ff89773cddcbae"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "stream": true
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "served_model": "glm-4.7",
+          "content_chars": 126,
+          "usage": {
+            "prompt_tokens": 12,
+            "completion_tokens": 72,
+            "total_tokens": 84
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "sse_done": true
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 6.457
+    },
+    {
+      "path": "models/zhipu/glm-4.7/examples/03_thinking.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "thinking",
+      "tested_at": "2026-10-14T04:13:13.941603+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/03_thinking.py": "60757e4eca083e57b3442d5e10a786171834b21d3310c684a8504ab7a1f80126"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "enabled"
+            }
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 404,
+            "prompt_tokens": 23,
+            "total_tokens": 427
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 36
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 15.905
+    },
+    {
+      "path": "models/zhipu/glm-4.7/examples/04_json_output.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "json_object",
+      "tested_at": "2026-10-14T04:13:31.850974+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/04_json_output.py": "276c3673225035cb812fdc32a9dadc7b558d6542ba3c1cf8bd881e755f924345"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "response_format": {
+              "type": "json_object"
+            }
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 10,
+            "prompt_tokens": 69,
+            "total_tokens": 79
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 11
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 5.554
+    },
+    {
+      "path": "models/zhipu/glm-4.7/examples/06_multi_turn.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "multi_turn",
+      "tested_at": "2026-10-14T04:13:39.405163+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/06_multi_turn.py": "4bc9bfce56baa7255000c9d2a30bce94ad2e84b47d4402f538bfe41da81f6a9b"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "max_tokens": 4096
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 15,
+            "prompt_tokens": 33,
+            "total_tokens": 48
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 25
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "max_tokens": 4096
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 12,
+            "prompt_tokens": 58,
+            "total_tokens": 70
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 22
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 9.508
+    },
+    {
+      "path": "models/zhipu/glm-4.7/examples/07_thinking_tools.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "thinking_tool_calling",
+      "tested_at": "2026-10-14T04:13:50.922724+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7/examples/07_thinking_tools.py": "9195ec29284c547b427274e87b8f0dcd71223c7544e2f12577b4481a36bad9a5"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "tool_choice": "auto",
+            "max_tokens": 16384,
+            "thinking": {
+              "type": "enabled"
+            }
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 62,
+            "prompt_tokens": 191,
+            "total_tokens": 253
+          },
+          "finish_reasons": [
+            "tool_calls"
+          ],
+          "content_chars": 23,
+          "has_tool_calls": true
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "tool_choice": "auto",
+            "max_tokens": 16384,
+            "thinking": {
+              "type": "enabled"
+            }
+          },
+          "requested_model": "glm-4.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "transport_eof": true,
+          "served_model": "glm-4.7",
+          "usage": {
+            "completion_tokens": 215,
+            "prompt_tokens": 277,
+            "total_tokens": 492
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 309
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 15.988
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 6,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

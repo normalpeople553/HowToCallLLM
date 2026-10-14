@@ -9,32 +9,32 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "a7df4a8ccda0e9a1ec16b943f58e4f51a4c07a1a407b9779f772772413745c18"
+      "source_sha256": "a2bfe342a0f5c8c334271212329d33a74567d00df53d752a2edde5cbd1001e17"
     },
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "90015d0a91528063d15abacdea6f7331a4a8b7d70279148aed1d5dfc827dd7f0"
+      "source_sha256": "4123fe275700cdcb004a41f5f8adcccba350932a129a4961076704bd1530819b"
     },
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "9bd6d29d0b52d0a52b16c4c116360cffe718eed08fb4a7b4297bc53e2b30b13f"
+      "source_sha256": "6c9a219b485a5a20b3cf94e7b45b160124cd442397761b6f549ebb5dec5e8acb"
     },
     {
       "source": "models/README.md",
       "target": "models/README.en.md",
-      "source_sha256": "1830fe13e85c4603c4cc83400fd1d166de0a4bfb34357ca01e1d57188dcdf6bd"
+      "source_sha256": "02053cd5b160eeb55d312090ec040766e6c484851dd18b0a90d0bcbb748589a3"
     },
     {
       "source": "skills/model-manual/SKILL.md",
       "target": "skills/model-manual/SKILL.en.md",
-      "source_sha256": "4d695ae441d748b755b8ccd14ac2e7b2b5c97127fa328d5a825c77a62f5df20d"
+      "source_sha256": "8aac01649ba9f50d9e92e2582bb071276f650fb5167ea6fe9352106f1ce0924c"
     },
     {
       "source": "skills/model-manual/references/workflows.md",
       "target": "skills/model-manual/references/workflows.en.md",
-      "source_sha256": "edeef0c828760bccebe6df930d0ed61c402c681f1c92d84abb1b8310b123a9c8"
+      "source_sha256": "c5dec6575f0a3304f302df89607a8e132ab253e80e7c05a312b0cce7ff93ff57"
     },
     {
       "source": "verification/README.md",
@@ -54,12 +54,12 @@
     {
       "source": "docs/02-一个套路调遍所有模型.md",
       "target": "en/docs/compatible-api.md",
-      "source_sha256": "a476b9310b73dad54794fbe9be4968cf9278b1131a60e408e378bb854bb46ac0"
+      "source_sha256": "a9345269db26b4b85c82545b25215b13aa40390888cceebffd59f8342c633319"
     },
     {
       "source": "docs/04-免费额度与省钱攻略.md",
       "target": "en/docs/pricing.md",
-      "source_sha256": "f8361852916b43e10a7982c6e9d3665e1b3b193bdfba180202da46b2d8086d5f"
+      "source_sha256": "b8773c0c4867887cfdd9705e4e19ce7560485e9c5300193fabde1750499d50f6"
     },
     {
       "source": "docs/05-新手必会与报错速查.md",
@@ -74,12 +74,12 @@
     {
       "source": "docs/参数说明与调参.md",
       "target": "en/docs/parameters.md",
-      "source_sha256": "5051bc85795389c1e563c159a7243b893d6b792759b3543efec8729895dbb133"
+      "source_sha256": "9e8d94a815f2bcbdad9b2e16dfbcc0984eebf593088ceb44def3aeed971fb1e6"
     },
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "ebf8e4ab300446071b0f2d176ca175045dcde1d83f5019c2abd023177de35bee"
+      "source_sha256": "69b3db1b0e52bf433cc414785327d735c59c040aa4958a29cf572f51b3dcc62d"
     },
     {
       "source": "docs/验证与复现.md",
@@ -114,7 +114,7 @@
     {
       "source": "docs/03-厂商攻略/zhipu.md",
       "target": "en/docs/vendors/zhipu.md",
-      "source_sha256": "fcc155d4b22e127b72a9304dffdbd0dc322b4b465c78ea5099f7961a62c5d300"
+      "source_sha256": "8095f561ebdebb8760d6e0e6844cf4a9eb8b0c0502dc1c0c6a2a54d149058659"
     },
     {
       "source": "models/deepseek/deepseek-flash/README.md",
@@ -169,12 +169,17 @@
     {
       "source": "models/zhipu/glm-4.7-flash/README.md",
       "target": "models/zhipu/glm-4.7-flash/README.en.md",
-      "source_sha256": "e79ddd72fa83c6a956bac0df6a7a6b3fd24525fdd4afeed55a8b0eb2ef44752d"
+      "source_sha256": "331e05d1253687500d210b06db3dc7f4497d4b8a4fe3861da7a16c1abf96760c"
     },
     {
-      "source": "models/zhipu/glm-4.7-flash/parameters.md",
-      "target": "models/zhipu/glm-4.7-flash/parameters.en.md",
-      "source_sha256": "4d1982346771eb0527a6abaa1283348826e23919719b08ee46437c720dd651bd"
+      "source": "models/zhipu/glm-4.7/README.md",
+      "target": "models/zhipu/glm-4.7/README.en.md",
+      "source_sha256": "33d3e0bf87242d19ebfbea47f6cfb41e5a6f870c88cf393d85a4a10f8ef2eaaf"
+    },
+    {
+      "source": "models/zhipu/glm-4.7/parameters.md",
+      "target": "models/zhipu/glm-4.7/parameters.en.md",
+      "source_sha256": "b6f14e07ed425078356a00d214859effb698afbb6871abe5cc4c5cb1d09fe2aa"
     }
   ],
   "generated": [

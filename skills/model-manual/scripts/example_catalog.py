@@ -58,6 +58,7 @@ GAP_TRANSLATIONS = {
     "qwen:max_completion_tokens": ("38120c4d69188d1056282f1a83c630d3850e4746dd6168976dfc0c7306c773f7", "The documented parameter support list starts at Qwen3.5-Flash. It is not directly applied to the older qwen-flash; the examples retain the documented max_tokens answer budget."),
     "zhipu:vision": ("9079d62c7901b72a0c62cebf34e2a38bf4f8d4bef0b9b8e85d80d92ce1e398e7", "The official model page lists text for both input and output modalities. Image examples for GLM vision models must not be transplanted."),
     "zhipu:context_caching": ("1461f4b8c1a4cca1f22f5dc7a3607e6dab19488ad5f7509646dc6347253850eb", "The official page lists context caching, but this batch adds no cache-hit observation example. Model-specific usage fields still need checking; two requests do not guarantee a cache hit."),
+    "zhipu:server_json_schema_and_strict_tools": ("74459c4e81baff08f52d520d57b768d76bcc9654343a969ab0a7772e3f039c25", "The current text-request schema lists text/json_object only, and FunctionObject does not list strict. Client-side JSON Schema validation and other vendors' strict-tool capabilities are not transplanted to this model."),
 }
 
 
@@ -100,9 +101,17 @@ def _report_path(root, value):
     return target
 
 
+def _model_identity_conflicts(request):
+    # Paid GLM must not inherit a response from the old free Flash model.
+    # Do not impose exact matching on other vendors' documented aliases.
+    return request.get("requested_model") == "glm-4.7" and request.get("served_model") is not None and request["served_model"] != "glm-4.7"
+
+
 def _completion_succeeded(request):
     """与 runner.completion_succeeded 保持同一门槛；只读安全元数据。"""
     status, chars = request.get("http_status"), request.get("content_chars")
+    if _model_identity_conflicts(request):
+        return False
     if type(status) is not int or not 200 <= status < 300:
         return False
     if request.get("business_status", 0) != 0 or request.get("telemetry_overflow") or request.get("telemetry_error"):
@@ -157,6 +166,7 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     if scope is not None:
         _require(scope == (HTTP_SCOPE if requests else PROCESS_SCOPE), "报告证据范围与 HTTP 记录不一致")
     if live == "passed":
+        _require(not any(_model_identity_conflicts(request) for request in requests), "付费 GLM 请求的实际返回型号冲突，不能标记通过")
         _require(type(result.get("exit_code")) is int and result["exit_code"] == 0, "passed 必须有 exit_code=0")
         _require(bool(requests) and scope == HTTP_SCOPE, "所有语言的 passed 必须有真实 HTTP 元数据，不能只凭进程退出")
         target_requests = [request for request in requests if request.get("requested_model") == model]

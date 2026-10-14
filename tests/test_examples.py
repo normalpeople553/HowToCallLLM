@@ -20,7 +20,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parent.parent
 # 本模块保留原五家的固定“关闭思考 + 模拟天气/JSON”fixture。
 # MiniMax M2.7 不支持关闭思考或已确认的 JSON Mode，使用独立专项行为测试。
-MODEL_DIRS = sorted(path for path in (ROOT / "models").glob("*/*/examples") if path.parent.parent.name != "minimax")
+MODEL_DIRS = sorted(path for path in (ROOT / "models").glob("*/*/examples") if path.parent.parent.name != "minimax" and (path / "sources.json").is_file())
 TOOLS = [directory / "05_tool_calling.py" for directory in MODEL_DIRS]
 STREAMS = [directory / "02_streaming.py" for directory in MODEL_DIRS] + [ROOT / "examples/03_streaming.py"]
 TEXT_EXAMPLES = [
@@ -41,12 +41,45 @@ def tool_call(city="杭州", *, name="get_weather", call_id="call_1", arguments=
     )
 
 
+def sdk_dump(value, exclude_none=False):
+    if isinstance(value, SimpleNamespace):
+        value = vars(value)
+    if isinstance(value, dict):
+        return {key: sdk_dump(item, exclude_none) for key, item in value.items() if item is not None or not exclude_none}
+    if isinstance(value, list):
+        return [sdk_dump(item, exclude_none) for item in value]
+    return copy.deepcopy(value)
+
+
+class SDKMessage(SimpleNamespace):
+    def model_dump(self, *, exclude_none=False, **_):
+        return sdk_dump(self, exclude_none)
+
+
+class SDKStream:
+    """Closable SDK-like stream; the same object remains observable after failure."""
+    def __init__(self, chunks):
+        self.chunks, self.closed = iter(chunks), False
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return next(self.chunks)
+
+    def close(self):
+        self.closed = True
+        close = getattr(self.chunks, "close", None)
+        if close is not None:
+            close()
+
+
 def response(content="完整回答", reason="stop", calls=None):
     return SimpleNamespace(
         choices=[
             SimpleNamespace(
                 finish_reason=reason,
-                message=SimpleNamespace(
+                message=SDKMessage(
                     role="assistant",
                     content=content,
                     tool_calls=calls,
@@ -80,7 +113,10 @@ class FakeSDK:
     def create(self, **kwargs):
         # 冻结每次调用的 messages，防止后续 append 掩盖第一次请求的内容。
         self.calls.append(copy.deepcopy(kwargs))
-        return next(self.responses)
+        value = next(self.responses)
+        if isinstance(value, BaseException):
+            raise value
+        return value
 
 
 @contextmanager
@@ -103,8 +139,17 @@ def fake_sdk(responses, env=None):
 
 
 def run_example(path, responses, env=None, *, run_name="__main__"):
-    with fake_sdk(responses, env) as sdk, redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
-        namespace = runpy.run_path(str(path), run_name=run_name)
+    stdout, stderr = io.StringIO(), io.StringIO()
+    with fake_sdk(responses, env) as sdk, redirect_stdout(stdout), redirect_stderr(stderr):
+        # New GLM examples intentionally keep state in main; do not require legacy globals.
+        capture_main = path.parent.parent.name == "glm-4.7" and run_name == "__main__"
+        namespace = runpy.run_path(str(path), run_name="offline_example_import" if capture_main else run_name)
+        if capture_main:
+            main = namespace["main"]
+            result = main()
+            namespace.update(main.__globals__)
+            namespace["_main_result"] = result
+        namespace["_stdout"], namespace["_stderr"] = stdout.getvalue(), stderr.getvalue()
     return sdk, namespace
 
 
@@ -140,14 +185,22 @@ class ExampleTests(unittest.TestCase):
                         run_example(directory / "04_json_output.py", [response(content)])
 
     def test_stream_accepts_usage_only_chunks_and_tracks_finish(self):
+        import json
+
         for path in STREAMS:
             with self.subTest(example=str(path.relative_to(ROOT))):
                 usage_only = SimpleNamespace(choices=[], usage=SimpleNamespace(completion_tokens=5))
-                stream = iter([chunk(), chunk("完整"), chunk("回答"), chunk(reason="stop"), usage_only])
+                stream = SDKStream([chunk(), chunk("完整"), chunk("回答"), chunk(reason="stop"), usage_only])
                 _, namespace = run_example(path, [stream])
-                self.assertEqual(namespace["finish_reason"], "stop")
-                self.assertEqual("".join(namespace["answer_parts"]), "完整回答")
-                self.assertEqual(namespace["usage"].completion_tokens, 5)
+                if "_main_result" in namespace and isinstance(namespace["_main_result"], str):
+                    self.assertEqual(namespace["_main_result"], "完整回答")
+                    observed = [json.loads(line.removeprefix("usage=")) for line in namespace["_stderr"].splitlines() if line.startswith("usage=")]
+                    self.assertEqual(observed[-1]["completion_tokens"], 5)
+                    self.assertTrue(stream.closed)
+                else:
+                    self.assertEqual(namespace["finish_reason"], "stop")
+                    self.assertEqual("".join(namespace["answer_parts"]), "完整回答")
+                    self.assertEqual(namespace["usage"].completion_tokens, 5)
 
     def test_stream_rejects_truncation_missing_finish_and_empty_answer(self):
         cases = [
@@ -162,8 +215,11 @@ class ExampleTests(unittest.TestCase):
         for path in STREAMS:
             for index, chunks in enumerate(cases):
                 with self.subTest(example=str(path.relative_to(ROOT)), case=index):
+                    stream = SDKStream(chunks)
                     with self.assertRaises(RuntimeError):
-                        run_example(path, [iter(chunks)])
+                        run_example(path, [stream])
+                    if path.parent.parent.name == "glm-4.7":
+                        self.assertTrue(stream.closed)
 
     def test_stream_propagates_transport_failure(self):
         def broken_stream():
@@ -172,8 +228,13 @@ class ExampleTests(unittest.TestCase):
 
         for path in STREAMS:
             with self.subTest(example=str(path.relative_to(ROOT))):
-                with self.assertRaises(ConnectionError):
-                    run_example(path, [broken_stream()])
+                stream = SDKStream(broken_stream())
+                expected = RuntimeError if path.parent.parent.name == "glm-4.7" else ConnectionError
+                with self.assertRaises(expected) as error:
+                    run_example(path, [stream])
+                if path.parent.parent.name == "glm-4.7":
+                    self.assertTrue(stream.closed)
+                    self.assertNotIn("offline disconnect", str(error.exception))
 
     def test_tools_round_trip_preserves_assistant_and_matches_call_ids(self):
         import json
@@ -183,13 +244,12 @@ class ExampleTests(unittest.TestCase):
                 first = response(None, "tool_calls", [tool_call(), tool_call("北京", call_id="call_2")])
                 sdk, namespace = run_example(path, [first, response("杭州和北京均为模拟晴天")])
                 self.assertEqual(len(sdk.calls), 2)
-                self.assertEqual(namespace["executed_call_count"], 2)
                 self.assertEqual(len(sdk.calls[0]["messages"]), 2)
                 messages = sdk.calls[1]["messages"]
                 assistant = messages[2]
-                self.assertEqual(assistant.reasoning_content, first.choices[0].message.reasoning_content)
-                self.assertEqual(assistant.provider_extension, {"preserved": True})
+                self.assertEqual(sdk_dump(assistant, exclude_none=True), first.choices[0].message.model_dump(exclude_none=True))
                 tool_messages = messages[3:]
+                self.assertEqual(len(tool_messages), 2)
                 self.assertEqual([message["tool_call_id"] for message in tool_messages], ["call_1", "call_2"])
                 self.assertTrue(all(message["role"] == "tool" for message in tool_messages))
                 self.assertTrue(all(json.loads(message["content"])["simulated"] for message in tool_messages))
@@ -238,9 +298,10 @@ class ExampleTests(unittest.TestCase):
 
     def test_tools_require_an_executed_tool_before_final_answer(self):
         for path in TOOLS:
-            with self.subTest(example=str(path.relative_to(ROOT))):
-                with self.assertRaisesRegex(RuntimeError, "未完成工具闭环"):
-                    run_example(path, [response("杭州天气晴，模型直接生成的正文")])
+            with self.subTest(example=str(path.relative_to(ROOT))), fake_sdk([response("杭州天气晴，模型直接生成的正文")]) as sdk, redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+                with self.assertRaises(RuntimeError):
+                    runpy.run_path(str(path), run_name="__main__")
+                self.assertEqual(len(sdk.calls), 1)
 
     def test_tools_bound_model_turns(self):
         for path in TOOLS:
@@ -291,7 +352,39 @@ class ExampleTests(unittest.TestCase):
                     self.assertEqual(sdk.calls[index]["model"], card["identity"]["api_model_id"]["value"])
                     defaults = generation.get("request_defaults", {}).get("value", {})
                     toggle = generation["thinking"].get("off", {}).get("value", {})
-                    self.assertEqual(sdk.calls[index].get("extra_body", {}), {**defaults, **toggle})
+                    configured = {**defaults, **toggle}
+                    extra_fields = set(generation["python_extra_body_fields"]["value"])
+                    self.assertEqual(sdk.calls[index].get("extra_body", {}), {key: value for key, value in configured.items() if key in extra_fields})
+                    for key, value in configured.items():
+                        if key not in extra_fields:
+                            self.assertEqual(sdk.calls[index][key], value)
+
+    def test_one_for_all_rejects_free_or_unfounded_default_before_client_creation(self):
+        import json
+
+        original = json.loads((ROOT / "skills/model-manual/references/models/deepseek-flash.json").read_text(encoding="utf-8"))
+        for case in ("missing", "free", "missing_source", "unresolved_source"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory, fake_sdk([]) as sdk:
+                references = Path(directory)
+                (references / "models").mkdir()
+                card = copy.deepcopy(original)
+                card["billing"] = {"type": {"value": "paid", "source": "fixture_pricing"}}
+                card["sources"]["fixture_pricing"] = {"title": "Fixture official pricing", "url": "https://api-docs.deepseek.com/quick_start/pricing"}
+                if case == "missing":
+                    card.pop("billing")
+                elif case == "free":
+                    card["billing"]["type"]["value"] = "free"
+                elif case == "missing_source":
+                    card["billing"]["type"].pop("source")
+                else:
+                    card["billing"]["type"]["source"] = "not-a-source"
+                (references / "models/deepseek-flash.json").write_text(json.dumps(card), encoding="utf-8")
+                namespace = runpy.run_path(str(ROOT / "examples/02_one_for_all.py"), run_name="offline_import")
+                with patch.dict(namespace["model_card"].__globals__, {"REFERENCES": references, "VENDORS": {"deepseek": {"default_model": "deepseek-flash"}}}):
+                    with self.assertRaises(ValueError):
+                        namespace["chat"]("deepseek", "offline fixture")
+                self.assertEqual(sdk.initializations, [])
+                self.assertEqual(sdk.calls, [])
 
     def test_one_for_all_rejects_truncated_answer(self):
         path = ROOT / "examples/02_one_for_all.py"

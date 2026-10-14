@@ -58,8 +58,12 @@ def _targets(root, entry, catalog):
     if entry["vendor"] != "shared":
         return {entry["model_id"]: catalog.API_HOSTS[entry["vendor"]]}
     result = {}
-    for path in sorted((root / "skills/model-manual/references/models").glob("*.json")):
-        card = json.loads(path.read_text(encoding="utf-8"))
+    references = root / "skills/model-manual/references"
+    vendors = json.loads((references / "vendors.json").read_text(encoding="utf-8"))["vendors"]
+    for vendor, config in vendors.items():
+        card = json.loads((references / "models" / f"{config['default_model']}.json").read_text(encoding="utf-8"))
+        if card["vendor"] != vendor or card["model_id"] != config["default_model"]:
+            raise ValueError("shared_default_model_card_mismatch")
         result[card["model_id"]] = catalog.API_HOSTS[card["vendor"]]
     if not result:
         raise ValueError("shared_example_has_no_model_cards")
@@ -107,6 +111,8 @@ def _attempt(root, entry, result, report_path, identity, targets, catalog, runne
             model = request.get("requested_model")
             if model in targets and endpoint.hostname not in targets[model]:
                 raise ValueError("model_endpoint_mismatch")
+            if runner.model_identity_conflicts(request):
+                raise ValueError("served_model_identity_mismatch")
         scope = result.get("evidence_scope")
         if scope is not None and scope != (catalog.HTTP_SCOPE if requests else catalog.PROCESS_SCOPE):
             raise ValueError("invalid_evidence_scope")

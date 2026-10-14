@@ -64,6 +64,40 @@ class ModelSelectionTests(unittest.TestCase):
         self.assertEqual(cli.stdout, "")
         self.assertIn("未收录型号", cli.stderr)
 
+    def test_default_generation_fails_closed_without_resolved_paid_billing(self):
+        for case in ("missing", "free", "missing_source", "unresolved_source"):
+            with self.subTest(case=case):
+                card = copy.deepcopy(self.cards["deepseek-flash"])
+                card["billing"] = {"type": {"value": "paid", "source": "fixture_pricing"}}
+                card["sources"]["fixture_pricing"] = {"title": "Fixture official pricing", "url": "https://api-docs.deepseek.com/quick_start/pricing"}
+                if case == "missing":
+                    card.pop("billing")
+                elif case == "free":
+                    card["billing"]["type"]["value"] = "free"
+                elif case == "missing_source":
+                    card["billing"]["type"].pop("source")
+                else:
+                    card["billing"]["type"]["source"] = "not-a-source"
+                alternate = copy.deepcopy(self.cards["kimi-k2.6"])
+                output = io.StringIO()
+                with patch.object(generator, "load_vendors", return_value={"deepseek": {"default_model": "deepseek-flash"}}), patch.object(generator, "load_models", return_value={"deepseek-flash": card, "kimi-k2.6": alternate}), patch.object(sys, "argv", [str(GENERATOR), "--vendor", "deepseek"]), contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as error:
+                        generator.main()
+                self.assertEqual(error.exception.code, 2)
+                self.assertEqual(output.getvalue(), "")
+
+    def test_explicit_model_selection_preserves_identity_instead_of_paid_substitution(self):
+        card = copy.deepcopy(self.cards["deepseek-flash"])
+        card["model_id"] = "explicit-free-fixture"
+        card["identity"]["api_model_id"]["value"] = "explicit-free-fixture"
+        card["billing"] = {"type": {"value": "free", "source": "fixture_pricing"}}
+        card["sources"]["fixture_pricing"] = {"title": "Fixture pricing", "url": "https://api-docs.deepseek.com/quick_start/pricing"}
+        output = io.StringIO()
+        cards = {**self.cards, card["model_id"]: card}
+        with patch.object(generator, "load_models", return_value=cards), patch.object(sys, "argv", [str(GENERATOR), "--vendor", "deepseek", "--model", card["model_id"]]), contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
+            generator.main()
+        self.assertEqual(request_from_python(output.getvalue())["model"], "explicit-free-fixture")
+
     def test_legacy_function_arguments_cannot_override_model(self):
         cfg = {"default_model": "kimi-k2.6", "key_env": "OTHER_KEY", "base_url": "https://invalid.example", "thinking_off_body": {"incorrect": True}}
         source = generator.python_snippet(cfg, "kimi-k2.6", "hi", False, "off")
@@ -97,8 +131,14 @@ class ModelSelectionTests(unittest.TestCase):
         qwen = generator.build_request(self.cards["qwen-flash"], "hi", max_tokens=100)
         self.assertIn("max_tokens", qwen)
         self.assertNotIn("max_completion_tokens", qwen)
-        default = generator.build_request(self.cards["glm-4.7-flash"], "hi")
-        self.assertNotIn("max_tokens", default)
+        glm = self.cards["glm-4.7"]
+        default = generator.build_request(glm, "hi")
+        defaults = glm["generation"].get("request_defaults", {}).get("value", {})
+        budget_parameter = glm["generation"]["token_budget"]["parameter"]["value"]
+        if budget_parameter in defaults:
+            self.assertEqual(default[budget_parameter], defaults[budget_parameter])
+        else:
+            self.assertNotIn(budget_parameter, default)
         for invalid in (0, -1, True, 1.5):
             with self.assertRaises(ValueError):
                 generator.build_request(self.cards["deepseek-flash"], "hi", max_tokens=invalid)
@@ -106,7 +146,7 @@ class ModelSelectionTests(unittest.TestCase):
             generator.build_request(self.cards["deepseek-flash"], "hi", max_tokens=393217)
 
     def test_capability_and_language_combinations_fail_explicitly(self):
-        for model in ("qwen-flash", "glm-4.7-flash"):
+        for model in ("qwen-flash", "glm-4.7"):
             with self.assertRaisesRegex(ValueError, "未登记图片输入"):
                 generator.build_request(self.cards[model], "describe", task="vision", image_url="https://example.com/image.png")
         with self.assertRaisesRegex(ValueError, "image-url"):

@@ -33,6 +33,20 @@ class CatalogTests(unittest.TestCase):
             {"deepseek", "kimi", "zhipu", "qwen", "doubao", "minimax"},
         )
 
+    def test_default_selection_policy_and_generated_requests_use_paid_models(self):
+        policy = self.data["selection_policy"]
+        self.assertEqual(policy["default_billing"], "paid")
+        self.assertEqual(policy["scope"], "maintained_examples_and_generated_defaults")
+        self.assertTrue((CATALOG.parent / policy["source"]).resolve().is_file())
+        self.assertEqual(self.vendors["zhipu"]["default_model"], "glm-4.7")
+        for vendor, cfg in self.vendors.items():
+            with self.subTest(vendor=vendor):
+                card = self.generator.load_model(cfg["default_model"], vendor)
+                self.assertEqual(card["billing"]["type"]["value"], "paid")
+                body = self.generator.build_request(card, "offline fixture")
+                self.assertEqual(body["model"], card["identity"]["api_model_id"]["value"])
+                self.assertNotEqual(body["model"], "glm-4.7-flash")
+
     def test_required_fields_and_capability_states(self):
         allowed_states = {"verified", "documented", "unknown"}
         for vendor, cfg in self.vendors.items():

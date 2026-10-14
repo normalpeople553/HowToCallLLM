@@ -20,7 +20,7 @@ spec = importlib.util.spec_from_file_location("example_catalog", SCRIPT)
 catalog = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(catalog)
 EXPECTED_MODELS = {
-    "deepseek-flash", "kimi-k2.6", "glm-4.7-flash", "qwen-flash",
+    "deepseek-flash", "kimi-k2.6", "glm-4.7", "qwen-flash",
     "doubao-seed-2-1-pro-260628", "MiniMax-M2.7",
 }
 
@@ -28,7 +28,7 @@ EXPECTED_MODELS = {
 class ExampleCatalogTests(unittest.TestCase):
     def test_every_model_and_runnable_file_is_cataloged(self):
         catalogs = catalog.load_catalogs()
-        directories = {path.parent for path in (ROOT / "models").glob("*/*/README.md")}
+        directories = {path.parent.parent for path in (ROOT / "models").glob("*/*/examples/sources.json")}
         self.assertEqual({item["model_id"] for item in catalogs}, EXPECTED_MODELS)
         self.assertEqual({(ROOT / item["catalog_path"]).parent.parent for item in catalogs}, directories)
         rows = catalog.select_examples(catalogs)
@@ -163,8 +163,8 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
 
-    def fixture(self, suffix=".py", live="passed"):
-        directory = self.root / "models/deepseek/deepseek-flash/examples"
+    def fixture(self, suffix=".py", live="passed", vendor="deepseek", model="deepseek-flash"):
+        directory = self.root / "models" / vendor / model / "examples"
         directory.mkdir(parents=True, exist_ok=True)
         source = directory / f"01_basic{suffix}"
         source.write_text("# synthetic fixture; never executed\n", encoding="utf-8")
@@ -178,19 +178,19 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         if live != "not_run":
             verification["report"] = self.report_path.relative_to(self.root).as_posix()
         manifest = {
-            "schema_version": 1, "vendor": "deepseek", "model_id": "deepseek-flash", "checked_at": "2026-10-14",
+            "schema_version": 1, "vendor": vendor, "model_id": model, "checked_at": "2026-10-14",
             "examples": [{
                 "id": "basic", "file": source.name, "title": "基础调用", "capability": "chat_completions",
-                "origin": "adapted_from_official", "sources": [{"url": "https://api-docs.deepseek.com/api/create-chat-completion", "title": "官方接口"}],
-                "required_env": ["DEEPSEEK_API_KEY"], "run_command": f"python {self.source_path}",
+                "origin": "adapted_from_official", "sources": [{"url": "https://" + sorted(catalog.HOSTS[vendor])[0] + "/fixture-api", "title": "官方接口"}],
+                "required_env": ["ZHIPU_API_KEY" if vendor == "zhipu" else "DEEPSEEK_API_KEY"], "run_command": f"python {self.source_path}",
                 "adaptations": ["离线测试夹具"], "verification": verification,
             }], "not_integrated": [],
         }
         result = {
-            "path": self.source_path, "vendor": "deepseek", "model_id": "deepseek-flash",
+            "path": self.source_path, "vendor": vendor, "model_id": model,
             "tested_at": "2026-10-14T03:04:05+00:00", "source_sha256": catalog.file_identity(self.root, self.source_path),
             "status": live, "execution": "real_vendor_api", "exit_code": 0,
-            "requests": [{"transport": catalog.TRANSPORTS[suffix], "http_status": 200, "requested_model": "deepseek-flash", "endpoint": "https://api.deepseek.com/chat/completions", "finish_reasons": ["stop"], "content_chars": 5, "parameters": {"stream": False}}],
+            "requests": [{"transport": catalog.TRANSPORTS[suffix], "http_status": 200, "requested_model": model, "endpoint": "https://" + sorted(catalog.API_HOSTS[vendor])[0] + "/chat/completions", "finish_reasons": ["stop"], "content_chars": 5, "parameters": {"stream": False}}],
             "evidence_scope": catalog.HTTP_SCOPE,
         }
         report = {
@@ -369,6 +369,32 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         requests.insert(0, {**requests[0], "http_status": 429})
         self.save(manifest, report)
         self.assertEqual(catalog.load_catalogs(self.root)[0]["examples"][0]["verification"]["live"], "passed")
+
+    def test_paid_glm_rejects_explicit_served_conflict_even_before_a_later_normal_reply(self):
+        for early_conflict in (False, True):
+            with self.subTest(early_conflict=early_conflict), tempfile.TemporaryDirectory() as directory:
+                previous = self.root
+                self.root = Path(directory)
+                try:
+                    manifest, report = self.fixture(vendor="zhipu", model="glm-4.7")
+                    requests = report["results"][0]["requests"]
+                    requests[0]["served_model"] = "glm-4.7-flash"
+                    if early_conflict:
+                        requests.append({**requests[0], "served_model": "glm-4.7"})
+                    self.save(manifest, report)
+                    with self.assertRaises(ValueError):
+                        catalog.load_catalogs(self.root)
+                    requests[0]["served_model"] = "glm-4.7"
+                    self.save(manifest, report)
+                    catalog.load_catalogs(self.root)
+                finally:
+                    self.root = previous
+
+    def test_other_vendor_served_alias_is_not_rejected_by_paid_glm_identity_rule(self):
+        manifest, report = self.fixture()
+        report["results"][0]["requests"][0]["served_model"] = "deepseek-v4-flash"
+        self.save(manifest, report)
+        catalog.load_catalogs(self.root)
 
     def test_all_languages_require_complete_matching_real_http_evidence(self):
         for suffix in (".py", ".sh", ".ts"):

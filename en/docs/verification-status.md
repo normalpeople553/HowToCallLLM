@@ -12,7 +12,7 @@ This page summarizes the historical shared workflow checks, not the current exec
 |---|---|---|---:|---:|---:|---:|---|---|
 | [deepseek-flash](../../models/deepseek/deepseek-flash/README.en.md) | 2026-10-13 | Strict workflow | 7 | 0 | 0 | 0 | 2.54.0 | [JSON](../../models/deepseek/deepseek-flash/verification/2026-10-13-strict.json) |
 | [kimi-k2.6](../../models/kimi/kimi-k2.6/README.en.md) | 2026-10-13 | Strict workflow | 7 | 0 | 0 | 0 | 2.54.0 | [JSON](../../models/kimi/kimi-k2.6/verification/2026-10-13-strict.json) |
-| [glm-4.7-flash](../../models/zhipu/glm-4.7-flash/README.en.md) | 2026-10-13 | Strict workflow | 0 | 1 | 1 | 4 | 2.54.0 | [JSON](../../models/zhipu/glm-4.7-flash/verification/2026-10-13-strict.json) |
+| [glm-4.7](../../models/zhipu/glm-4.7/README.en.md) | — | Workflow not run | — | — | — | — | — | No report registered |
 | [qwen-flash](../../models/qwen/qwen-flash/README.en.md) | 2026-10-13 | Strict workflow | 6 | 0 | 0 | 0 | 2.54.0 | [JSON](../../models/qwen/qwen-flash/verification/2026-10-13-strict.json) |
 | [doubao-seed-2-1-pro-260628](../../models/doubao/doubao-seed-2-1-pro-260628/README.en.md) | 2026-10-13 | Strict workflow | 7 | 0 | 0 | 0 | 2.54.0 | [JSON](../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json) |
 | [MiniMax-M2.7](../../models/minimax/MiniMax-M2.7/README.en.md) | — | Workflow not run | — | — | — | — | — | No report registered |

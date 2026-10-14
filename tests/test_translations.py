@@ -99,8 +99,12 @@ class RepositoryEditionTests(unittest.TestCase):
         self.assertEqual(list((ROOT / "en").rglob("*.ts")), [])
         self.assertEqual(list((ROOT / "en").rglob("*.sh")), [])
         refs = ROOT / "skills/model-manual/references"
-        for card_path in (refs / "models").glob("*.json"):
+        vendors = json.loads((refs / "vendors.json").read_text(encoding="utf-8"))["vendors"]
+        for vendor, config in vendors.items():
+            card_path = refs / "models" / f"{config['default_model']}.json"
             card = json.loads(card_path.read_text(encoding="utf-8"))
+            self.assertEqual(card["vendor"], vendor)
+            self.assertEqual(card["model_id"], config["default_model"])
             folder = ROOT / "models" / card["vendor"] / card["model_id"]
             for name in ("README.md", "README.en.md", "parameters.md", "parameters.en.md"):
                 self.assertTrue((folder / name).is_file())

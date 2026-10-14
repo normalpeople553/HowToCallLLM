@@ -33,11 +33,13 @@
 <a id="快速参数表"></a>
 ## 已收录型号
 
+项目规则：默认调用与维护示例全部采用付费型号，不因报错自动回退免费型号；价格直接查各说明书的官方入口，赠送额度不改变型号的付费性质。[选型规则](docs/来源与核验规则.md)
+
 | 厂商 | 准确型号 / 中文说明书 | English manual |
 |---|---|---|
 | DeepSeek | [deepseek-flash](models/deepseek/deepseek-flash/README.md) | [English](models/deepseek/deepseek-flash/README.en.md) |
 | Kimi | [kimi-k2.6](models/kimi/kimi-k2.6/README.md) | [English](models/kimi/kimi-k2.6/README.en.md) |
-| 智谱 | [glm-4.7-flash](models/zhipu/glm-4.7-flash/README.md) | [English](models/zhipu/glm-4.7-flash/README.en.md) |
+| 智谱 | [glm-4.7](models/zhipu/glm-4.7/README.md) | [English](models/zhipu/glm-4.7/README.en.md) |
 | 通义千问 | [qwen-flash](models/qwen/qwen-flash/README.md) | [English](models/qwen/qwen-flash/README.en.md) |
 | 豆包 | [doubao-seed-2-1-pro-260628](models/doubao/doubao-seed-2-1-pro-260628/README.md) | [English](models/doubao/doubao-seed-2-1-pro-260628/README.en.md) |
 | MiniMax | [MiniMax-M2.7](models/minimax/MiniMax-M2.7/README.md) | [English](models/minimax/MiniMax-M2.7/README.en.md) |

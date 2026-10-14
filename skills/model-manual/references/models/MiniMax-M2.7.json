@@ -2,6 +2,7 @@
   "schema_version": 1,
   "model_id": "MiniMax-M2.7",
   "vendor": "minimax",
+  "billing": {"type": {"value": "paid", "source": "pricing"}},
   "last_checked_at": "2026-10-14",
   "verification": null,
   "verification_scope": "not_run",

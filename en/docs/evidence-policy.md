@@ -10,6 +10,12 @@ The project separates information into three categories. These are repository ed
 
 Prices and free quotas change quickly. Copied numbers are not a permanent source of truth; link directly to official pages: [DeepSeek](https://api-docs.deepseek.com/quick_start/pricing/), [Kimi](https://platform.kimi.com/docs/pricing/chat), [Zhipu GLM](https://docs.bigmodel.cn/cn/guide/start/pricing), [Qwen](https://help.aliyun.com/zh/model-studio/model-pricing), [Doubao / Ark](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh), [MiniMax](https://platform.minimax.cn/docs/guides/pricing-paygo).
 
+## Paid-model selection (project rule)
+
+Vendor defaults, maintained examples, and default generated code use paid models only. Do not choose free models to save cost or silently fall back to them after an error. Each maintained model card records `billing.type` as `paid` with an official pricing source; the vendor catalog records this project rule in `selection_policy`. Promotional credits or balance deductions do not change a model's metered billing category, and the name `Flash` does not itself mean free. Current prices come only from the official pages above; paid models are not guaranteed to avoid rate limits.
+
+On 2026-10-14, the maintained Zhipu target changed from free `glm-4.7-flash` to the same-generation paid `glm-4.7`. Original reports remain historical troubleshooting evidence, not passing evidence for the new model. [Official Zhipu pricing](https://docs.bigmodel.cn/cn/guide/start/pricing) Check an explicitly requested different model by its exact ID and explain any difference from current coverage; never rename it to a cataloged model and claim success.
+
 ## Two entry paths, one set of facts
 
 The [repository entry](../../README.en.md) routes humans to the [human guide](../../human/README.en.md) and agents to the [Agent guide](../../agents/README.en.md) and [Skill](../../skills/model-manual/SKILL.en.md). Navigation and task instructions differ, but facts and evidence are shared. Human tutorials are optional reference material; agents need not read them sequentially.
@@ -20,7 +26,7 @@ Chinese and English provide human and agent guides, general chapters, model manu
 
 The [translation manifest](../translations.json) maps static pages and records hashes of Chinese source revisions reviewed by a person or agent. After a source change, the [translation checker](../../scripts/check_translations.py) requests review of the English version and checks cited external URLs and parameter-page example mappings. A hash identifies a revision needing review, not semantic translation accuracy. Do not blindly refresh hashes without reviewing the translation.
 
-The two example indexes, file-execution status pages and historical model status pages are generated from the same facts and reports; generation/check commands handle both languages. Do not create translated model cards, executable examples or execution reports. Preserve existing links and verified source paths. [Synchronization and reproduction](verification.md)
+The two example indexes, file-execution status pages and historical model status pages are generated from the same facts and reports; generation/check commands handle both languages. Do not create translated model cards, executable examples or execution reports, or change source paths merely for translation. Model migrations use new paths and fresh verification while retaining original reports. [Synchronization and reproduction](verification.md)
 
 Model-level machine facts live in [skills/model-manual/references/models/](../../skills/model-manual/references/models/). [vendors.json](../../skills/model-manual/references/vendors.json) provides vendor entry points, default models, and compatible summaries only. Exact-model constraints take precedence over vendor summaries; an unknown model cannot inherit the default model's thinking switch.
 

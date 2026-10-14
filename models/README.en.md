@@ -10,14 +10,14 @@ Each exact model has its own manual and examples. Machine-readable facts remain 
 |---|---|---|
 | DeepSeek `deepseek-flash` | [Manual](deepseek/deepseek-flash/README.en.md) | [Parameters](deepseek/deepseek-flash/parameters.en.md) |
 | Kimi `kimi-k2.6` | [Manual](kimi/kimi-k2.6/README.en.md) | [Parameters](kimi/kimi-k2.6/parameters.en.md) |
-| Zhipu `glm-4.7-flash` | [Manual](zhipu/glm-4.7-flash/README.en.md) | [Parameters](zhipu/glm-4.7-flash/parameters.en.md) |
+| Zhipu `glm-4.7` | [Manual](zhipu/glm-4.7/README.en.md) | [Parameters](zhipu/glm-4.7/parameters.en.md) |
 | Qwen `qwen-flash` | [Manual](qwen/qwen-flash/README.en.md) | [Parameters](qwen/qwen-flash/parameters.en.md) |
 | Doubao `doubao-seed-2-1-pro-260628` | [Manual](doubao/doubao-seed-2-1-pro-260628/README.en.md) | [Parameters](doubao/doubao-seed-2-1-pro-260628/parameters.en.md) |
 | MiniMax `MiniMax-M2.7` | [Manual](minimax/MiniMax-M2.7/README.en.md) | [Parameters](minimax/MiniMax-M2.7/parameters.en.md) |
 
-Zhipu's historical unified-verifier report records timeouts, rate limits and skipped tests; this is not the current status of every executable file. Check [per-file results](../en/docs/example-status.md). Doubao's ID is listed as a past model in its [official model list](https://docs.volcengine.com/docs/ark/model-list?lang=zh). MiniMax has an [official retirement notice](https://platform.minimax.cn/docs/guides/models-intro); its per-file execution evidence is separate from the historical unified verifier.
+Zhipu now targets the same-generation paid `glm-4.7`; it does not inherit evidence from the old free Flash model. Check [per-file results](../en/docs/example-status.md). Doubao's ID is listed as a past model in its [official model list](https://docs.volcengine.com/docs/ark/model-list?lang=zh). MiniMax has an [official retirement notice](https://platform.minimax.cn/docs/guides/models-intro); its per-file execution evidence is separate from the historical unified verifier.
 
-Each manual covers identity and lifecycle, connection configuration, capabilities and limitations, official pricing links, basic/streaming requests, thinking, structured output, tools, multimodal inputs, errors and production checks where documented. Undocumented capabilities remain unknown, not automatically supported or unsupported. [Evidence policy](../en/docs/evidence-policy.md)
+Project rule: all maintained models above are paid, with no default free-model fallback. Official pricing links and selection evidence are in the cards and [evidence policy](../en/docs/evidence-policy.md). Each manual covers identity and lifecycle, connection configuration, capabilities and limitations, official pricing links, basic/streaming requests, thinking, structured output, tools, multimodal inputs, errors and production checks where documented. Undocumented capabilities remain unknown, not automatically supported or unsupported.
 
 For output truncation, thinking tokens, JSON validation, tool loops, streaming and rate limits across models, see [production pitfalls](../en/docs/production-pitfalls.md). Use the locked environment in [verification and reproduction](../en/docs/verification.md).
 

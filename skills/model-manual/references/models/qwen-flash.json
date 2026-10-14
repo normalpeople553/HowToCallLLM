@@ -2,6 +2,7 @@
   "schema_version": 1,
   "model_id": "qwen-flash",
   "vendor": "qwen",
+  "billing": {"type": {"value": "paid", "source": "pricing"}},
   "last_checked_at": "2026-10-13",
   "verification": "../../../../models/qwen/qwen-flash/verification/2026-10-13-strict.json",
   "verification_scope": "strict_workflow",

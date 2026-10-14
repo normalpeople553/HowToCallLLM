@@ -9,6 +9,7 @@ import copy
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 from openai import OpenAI
 
@@ -40,13 +41,33 @@ def completed_text(response) -> str:
         raise RuntimeError("模型没有返回最终正文；请检查思考预算和提示词")
     return content
 
+def validate_paid_default(card: dict) -> None:
+    """默认调用仅接受明确标记付费且关联计费来源的卡片。"""
+    billing = card.get("billing")
+    fact = billing.get("type") if isinstance(billing, dict) else None
+    sources = card.get("sources")
+    source_key = fact.get("source") if isinstance(fact, dict) else None
+    source = sources.get(source_key) if isinstance(sources, dict) and isinstance(source_key, str) else None
+    url = source.get("url") if isinstance(source, dict) else None
+    parsed = urlparse(url) if isinstance(url, str) else None
+    if (
+        not isinstance(fact, dict) or fact.get("value") != "paid"
+        or parsed is None or parsed.scheme != "https" or not parsed.netloc
+    ):
+        raise ValueError(
+            f"默认型号 {card.get('model_id', '<unknown>')} 必须明确登记为付费"
+            "（billing.type.value=paid）并关联有效的官方计费来源；拒绝调用，不会自动换型号"
+        )
+
+
 def model_card(vendor: str) -> dict:
-    """只调用仓库中有独立机器卡的型号。"""
+    """只调用仓库中有独立机器卡、计费分类明确为付费的默认型号。"""
     model = VENDORS[vendor]["default_model"]
     path = REFERENCES / "models" / f"{model}.json"
     card = json.loads(path.read_text(encoding="utf-8"))
     if card["vendor"] != vendor or card["model_id"] != model:
         raise ValueError("厂商目录与型号机器卡不一致")
+    validate_paid_default(card)
     return card
 
 

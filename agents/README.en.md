@@ -6,6 +6,8 @@ For coding agents performing integration, migration, debugging and verification.
 
 ## Start a task
 
+Project defaults and maintained examples use paid models only. Read the card's `billing.type` and official pricing source; do not silently fall back to a free model after an error. [Selection policy](../en/docs/evidence-policy.md)
+
 Read [SKILL.en.md](../skills/model-manual/SKILL.en.md) completely, then read only the relevant [workflow](../skills/model-manual/references/workflows.en.md). Do not load every model by default.
 
 | User task | What matters |

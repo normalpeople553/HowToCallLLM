@@ -58,6 +58,25 @@ def load_model(model: str, vendor: str | None = None) -> dict[str, Any]:
     return card
 
 
+def validate_paid_default(card: dict[str, Any]) -> None:
+    """Fail closed on default selection; explicit model lookup stays separate."""
+    billing = card.get("billing")
+    fact = billing.get("type") if isinstance(billing, dict) else None
+    sources = card.get("sources")
+    source_key = fact.get("source") if isinstance(fact, dict) else None
+    source = sources.get(source_key) if isinstance(sources, dict) and isinstance(source_key, str) else None
+    url = source.get("url") if isinstance(source, dict) else None
+    parsed = urlparse(url) if isinstance(url, str) else None
+    if (
+        not isinstance(fact, dict) or fact.get("value") != "paid"
+        or parsed is None or parsed.scheme != "https" or not parsed.netloc
+    ):
+        raise ValueError(
+            f"默认型号 {card.get('model_id', '<unknown>')} 必须明确登记为付费"
+            "（billing.type.value=paid）并关联有效的官方计费来源；拒绝生成，不会自动换型号"
+        )
+
+
 def _resolve_card(cfg: dict[str, Any], model: str) -> dict[str, Any]:
     # Compatibility: existing callers may pass a vendor cfg. It selects identity
     # only; it cannot override the model card's connection or request parameters.
@@ -505,10 +524,12 @@ def main() -> None:
     parser.add_argument("--thinking", choices=("default", "on", "off"), default="default")
     parser.add_argument("--max-tokens", type=int, help="按型号卡片语义设置输出预算；未指定时使用服务端默认值")
     args = parser.parse_args()
-    model = args.model or vendors[args.vendor]["default_model"]
+    model = args.model if args.model is not None else vendors[args.vendor]["default_model"]
     generators = {"python": python_snippet, "typescript": typescript_snippet, "curl": curl_snippet}
     try:
         card = load_model(model, args.vendor)
+        if args.model is None:
+            validate_paid_default(card)
         source = generators[args.language](card, model, args.question or TASK_QUESTIONS[args.task], args.stream,
                                            args.thinking, args.max_tokens, args.task, args.image_url)
     except ValueError as exc:

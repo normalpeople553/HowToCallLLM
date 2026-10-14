@@ -2,6 +2,7 @@
   "schema_version": 1,
   "model_id": "deepseek-flash",
   "vendor": "deepseek",
+  "billing": {"type": {"value": "paid", "source": "models_pricing"}},
   "last_checked_at": "2026-10-13",
   "verification": "../../../../models/deepseek/deepseek-flash/verification/2026-10-13-strict.json",
   "verification_scope": "strict_workflow",

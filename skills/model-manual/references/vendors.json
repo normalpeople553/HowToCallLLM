@@ -2,6 +2,11 @@
   "schema_version": 2,
   "scope": "OpenAI-compatible text chat completions",
   "verified_at": "2026-10-13",
+  "selection_policy": {
+    "default_billing": "paid",
+    "scope": "maintained_examples_and_generated_defaults",
+    "source": "../../../docs/来源与核验规则.md"
+  },
   "vendors": {
     "deepseek": {
       "name": "DeepSeek",
@@ -105,9 +110,9 @@
       "key_env": "ZHIPU_API_KEY",
       "key_url": "https://bigmodel.cn/usercenter/apikeys",
       "base_url": "https://open.bigmodel.cn/api/paas/v4",
-      "default_model": "glm-4.7-flash",
-      "model_manual": "../../../models/zhipu/glm-4.7-flash/README.md",
-      "thinking_model": "glm-4.7-flash",
+      "default_model": "glm-4.7",
+      "model_manual": "../../../models/zhipu/glm-4.7/README.md",
+      "thinking_model": "glm-4.7",
       "thinking_off_body": {
         "thinking": {
           "type": "disabled"
@@ -130,17 +135,17 @@
       },
       "notes": [
         {
-          "text": "glm-4.7-flash 的价格状态以官方定价页为准。",
+          "text": "glm-4.7 是付费型号，价格以官方定价页为准。",
           "source": "https://docs.bigmodel.cn/cn/guide/start/pricing"
         },
         {
-          "text": "不同代际模型的思考开关能力可能不同；不要把 glm-4.7-flash 的关闭方式套用到 GLM-5.3。",
+          "text": "不同代际模型的思考开关能力可能不同；不要把 glm-4.7 的关闭方式套用到 GLM-5.3。",
           "source": "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
         }
       ],
-      "model_card": "models/glm-4.7-flash.json",
-      "verification": "models/zhipu/glm-4.7-flash/verification/2026-10-13-strict.json",
-      "verification_scope": "strict_workflow"
+      "model_card": "models/glm-4.7.json",
+      "verification": null,
+      "verification_scope": "not_run"
     },
     "qwen": {
       "name": "通义千问（阿里云百炼）",

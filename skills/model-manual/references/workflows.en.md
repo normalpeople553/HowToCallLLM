@@ -20,7 +20,7 @@ Parameter pages map fields to example files and explain defaults/ranges, modes, 
 |---|---|
 | `deepseek-flash` | [Parameters](../../../models/deepseek/deepseek-flash/parameters.en.md) |
 | `kimi-k2.6` | [Parameters](../../../models/kimi/kimi-k2.6/parameters.en.md) |
-| `glm-4.7-flash` | [Parameters](../../../models/zhipu/glm-4.7-flash/parameters.en.md) |
+| `glm-4.7` | [Parameters](../../../models/zhipu/glm-4.7/parameters.en.md) |
 | `qwen-flash` | [Parameters](../../../models/qwen/qwen-flash/parameters.en.md) |
 | `doubao-seed-2-1-pro-260628` | [Parameters](../../../models/doubao/doubao-seed-2-1-pro-260628/parameters.en.md) |
 | `MiniMax-M2.7` | [Parameters](../../../models/minimax/MiniMax-M2.7/parameters.en.md) |

@@ -11,7 +11,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 
 ## 先定位任务与型号
 
-1. 从用户要求和现有项目确定厂商、型号、语言及调用方式；缺少会影响实现的信息时再问。没有现有项目且用户未指定语言时使用 Python，未指定型号时读取厂商的 `default_model`。
+1. 从用户要求和现有项目确定厂商、型号、语言及调用方式；缺少会影响实现的信息时再问。没有现有项目且用户未指定语言时使用 Python，未指定型号时读取厂商的 `default_model`。本项目默认型号与维护示例全部使用付费型号，核对卡片 `billing.type.value=paid` 及其官方价格来源；遇到报错不得静默回退免费型号。用户明确指定的其他型号应按原 ID 核对，不擅自改名。[项目选型规则](../../docs/来源与核验规则.md)
 2. 从 [references/vendors.json](references/vendors.json) 定位对应厂商，再读取指定型号的 [references/models/](references/models/) 卡片。目录中的 `model_card` 和 `model_manual` 只指默认型号，用户指定其他型号时必须按准确 Model ID 查找。
 3. 型号参数读取卡片的 `generation`，能力读取 `capabilities`，事实的 `source` 在该卡片的 `sources` 中解析。先检查 `identity` 的生命周期与订阅路由；旧 Model ID 不保证实际服务版本。解释参数时按[任务流程的六型号参数入口](references/workflows.md#接入)读取对应 `parameters.md`，不把 SDK 选项、服务端参数和示例业务限制混为一谈。
 4. 按下表读取[任务流程](references/workflows.md)中相关部分，完成实现和检查。

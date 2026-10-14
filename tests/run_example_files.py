@@ -281,7 +281,18 @@ def request_record(request):
     return record
 
 
+def model_identity_conflicts(record):
+    """Reject an explicit served-model conflict for the paid GLM target only.
+
+    Other vendors can return documented aliases; do not impose global exact matching.
+    Missing served_model is unobserved identity, not a fabricated mismatch.
+    """
+    return record.get("requested_model") == "glm-4.7" and record.get("served_model") is not None and record["served_model"] != "glm-4.7"
+
+
 def completion_succeeded(record):
+    if model_identity_conflicts(record):
+        return False
     if type(record.get("http_status")) is not int or not 200 <= record["http_status"] < 300:
         return False
     if record.get("business_status", 0) != 0 or record.get("telemetry_overflow") or record.get("telemetry_error"):
@@ -305,12 +316,22 @@ def determine_status(entry, outcome, process_exit):
         return "rate_limited" if any(item.get("http_status") == 429 for item in requests) else "failed"
     if not requests:
         return "failed"
+    if any(model_identity_conflicts(record) for record in requests):
+        return "failed"
     final_by_model = {}
     for record in requests:
         if record.get("requested_model"):
             final_by_model[record["requested_model"]] = record
     if entry["vendor"] == "shared":
-        expected = {json.loads(path.read_text(encoding="utf-8"))["model_id"] for path in (ROOT / "skills/model-manual/references/models").glob("*.json")}
+        references = ROOT / "skills/model-manual/references"
+        vendors = json.loads((references / "vendors.json").read_text(encoding="utf-8"))["vendors"]
+        expected = set()
+        for vendor, config in vendors.items():
+            model = config["default_model"]
+            card = json.loads((references / "models" / f"{model}.json").read_text(encoding="utf-8"))
+            if card["vendor"] != vendor or card["model_id"] != model:
+                raise ValueError("shared_default_model_card_mismatch")
+            expected.add(model)
     else:
         expected = {entry["model_id"]}
     if expected <= set(final_by_model) and all(completion_succeeded(final_by_model[model]) for model in expected):

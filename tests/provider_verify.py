@@ -44,7 +44,7 @@ def load_specs():
     models = {
         "deepseek": "deepseek-flash",
         "kimi": "kimi-k2.6",
-        "zhipu": "glm-4.7-flash",
+        "zhipu": "glm-4.7",
         "qwen": "qwen-flash",
         "doubao": "doubao-seed-2-1-pro-260628",
     }

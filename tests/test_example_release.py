@@ -41,7 +41,7 @@ class ExampleReleaseTests(unittest.TestCase):
         references = self.root / "skills/model-manual/references"
         (references / "models").mkdir(parents=True)
         (references / "models/deepseek-flash.json").write_text(json.dumps({"vendor": "deepseek", "model_id": "deepseek-flash"}), encoding="utf-8")
-        (references / "vendors.json").write_text("{}", encoding="utf-8")
+        (references / "vendors.json").write_text(json.dumps({"vendors": {"deepseek": {"default_model": "deepseek-flash"}}}), encoding="utf-8")
         # 若误调用执行器或读凭据，测试立即失败。
         self.runner.credentials = mock.Mock(side_effect=AssertionError("credentials_must_not_be_read"))
         self.runner.execute_entry = mock.Mock(side_effect=AssertionError("example_must_not_be_executed"))
@@ -232,6 +232,7 @@ class ExampleReleaseTests(unittest.TestCase):
         source.parent.mkdir()
         source.write_text("# synthetic shared example\n", encoding="utf-8")
         (self.root / "skills/model-manual/references/models/qwen-flash.json").write_text(json.dumps({"vendor": "qwen", "model_id": "qwen-flash"}), encoding="utf-8")
+        self.add_default_model("qwen", "qwen-flash")
         record = self.record(source="examples/02_one_for_all.py")
         self.report("shared.json", [record])
         row = next(row for row in self.collect()["rows"] if row["path"] == "examples/02_one_for_all.py")
@@ -244,6 +245,77 @@ class ExampleReleaseTests(unittest.TestCase):
         self.report("shared.json", [record])
         row = next(row for row in self.collect()["rows"] if row["path"] == "examples/02_one_for_all.py")
         self.assertEqual(row["status"], "invalid_evidence")
+        (self.root / "skills/model-manual/references/models/glm-4.7.json").write_text(json.dumps({"vendor": "zhipu", "model_id": "glm-4.7"}), encoding="utf-8")
+        self.add_default_model("zhipu", "glm-4.7")
+        wrong_served = {**self.http(model="glm-4.7", host="open.bigmodel.cn"), "served_model": "glm-4.7-flash"}
+        record = self.record(source="examples/02_one_for_all.py", requests=[self.http(), self.http(model="qwen-flash", host="dashscope.aliyuncs.com"), wrong_served])
+        self.report("shared.json", [record])
+        row = next(row for row in self.collect()["rows"] if row["path"] == "examples/02_one_for_all.py")
+        self.assertEqual(row["status"], "invalid_evidence")
+
+    def add_default_model(self, vendor, model):
+        path = self.root / "skills/model-manual/references/vendors.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["vendors"][vendor] = {"default_model": model}
+        path.write_text(json.dumps(data), encoding="utf-8")
+
+    def test_shared_routing_change_invalidates_earlier_pass_without_editing_report(self):
+        relative = "examples/02_one_for_all.py"
+        source = self.root / relative
+        source.parent.mkdir()
+        source.write_text("# synthetic shared example\n", encoding="utf-8")
+        path = self.report("shared-before-migration.json", [self.record(source=relative)])
+        original = path.read_bytes()
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "passed")
+        card = self.root / "skills/model-manual/references/models/glm-4.7.json"
+        card.write_text(json.dumps({"vendor": "zhipu", "model_id": "glm-4.7"}), encoding="utf-8")
+        self.add_default_model("zhipu", "glm-4.7")
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "stale_source")
+        self.assertFalse(row["attempts"][0]["current_source"])
+        self.assertEqual(path.read_bytes(), original)
+
+    def test_archived_nondefault_card_is_not_a_shared_execution_target(self):
+        relative = "examples/02_one_for_all.py"
+        source = self.root / relative
+        source.parent.mkdir()
+        source.write_text("# synthetic shared example\n", encoding="utf-8")
+        archived = self.root / "skills/model-manual/references/models/glm-4.7-flash.json"
+        archived.write_text(json.dumps({"vendor": "zhipu", "model_id": "glm-4.7-flash"}), encoding="utf-8")
+        # Hash includes the archive conservatively, but the actual shared script loops vendor defaults only.
+        self.report("shared-defaults-only.json", [self.record(source=relative)])
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "passed")
+
+    def test_paid_glm_example_never_inherits_flash_file_report_or_model_identity(self):
+        relative = "models/zhipu/glm-4.7/examples/01_basic.py"
+        source = self.root / relative
+        source.parent.mkdir(parents=True)
+        source.write_text("# synthetic paid-model example\n", encoding="utf-8")
+        manifest = copy.deepcopy(self.manifest)
+        manifest.update(vendor="zhipu", model_id="glm-4.7")
+        manifest["examples"][0]["sources"] = [{"url": "https://docs.bigmodel.cn/cn/guide/models/llm/glm-4.7", "title": "Official model"}]
+        manifest["examples"][0]["required_env"] = ["ZHIPU_API_KEY"]
+        manifest["examples"][0]["run_command"] = "python " + relative
+        (source.parent / "sources.json").write_text(json.dumps(manifest), encoding="utf-8")
+        report = self.record(source=relative, requests=[self.http(model="glm-4.7", host="open.bigmodel.cn")])
+        old = copy.deepcopy(report)
+        old.update(path="models/zhipu/glm-4.7-flash/examples/01_basic.py", model_id="glm-4.7-flash")
+        self.report("old-flash.json", [old])
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "missing_evidence")
+        old["path"] = relative
+        self.report("misattributed-flash.json", [old])
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "invalid_evidence")
+        self.assertFalse(row["attempts"][0]["strict_passed"])
+        report["requests"][0]["served_model"] = "glm-4.7-flash"
+        report["tested_at"] = "2026-10-14T03:00:00+00:00"
+        self.report("paid-request-free-served.json", [report])
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "invalid_evidence")
+        self.assertFalse(row["selected"]["strict_passed"])
 
     def test_report_header_wrong_model_duplicate_and_privacy_cannot_claim_pass(self):
         for mutation in ("kind", "privacy", "model", "duplicate"):

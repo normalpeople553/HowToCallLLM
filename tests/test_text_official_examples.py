@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent.parent
 PROVIDERS = {
     "qwen": {"model": "qwen-flash", "key": "DASHSCOPE_API_KEY", "host": "help.aliyun.com", "off": {"enable_thinking": False}, "on": {"enable_thinking": True}},
-    "zhipu": {"model": "glm-4.7-flash", "key": "ZHIPU_API_KEY", "host": "docs.bigmodel.cn", "off": {"thinking": {"type": "disabled"}}, "on": {"thinking": {"type": "enabled"}}},
+    "zhipu": {"model": "glm-4.7", "key": "ZHIPU_API_KEY", "host": "docs.bigmodel.cn", "off": {"thinking": {"type": "disabled"}}, "on": {"thinking": {"type": "enabled"}}},
 }
 
 

@@ -127,6 +127,14 @@ class WorkflowTests(unittest.TestCase):
             runner.run(name, test)
         return runner.results[-1], output.getvalue()
 
+    def test_zhipu_profile_targets_paid_glm_not_free_flash(self):
+        self.assertEqual(verify.SPECS["zhipu"].model, "glm-4.7")
+        runner, client = self.make_runner("zhipu", [completion()])
+        result, _ = self.run_silently(runner, "chat_completions", runner.basic)
+        self.assertEqual(client.chat.completions.create.call_args.kwargs["model"], "glm-4.7")
+        self.assertEqual(result["model_id"], "glm-4.7")
+        self.assertNotIn("glm-4.7-flash", json.dumps(result))
+
     def test_tool_arguments_are_validated_and_result_used(self):
         first = completion(None, "tool_calls", reasoning=SECRET, calls=[tool_call()])
         runner, client = self.make_runner(replies=[first, completion("杭州晴，23摄氏度")])

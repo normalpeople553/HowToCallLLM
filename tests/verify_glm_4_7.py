@@ -1,4 +1,4 @@
-"""真实验证 glm-4.7-flash；429 有界重试后标记 rate_limited。"""
+"""真实验证付费 glm-4.7；429 有界重试后标记 rate_limited。"""
 
 import sys
 

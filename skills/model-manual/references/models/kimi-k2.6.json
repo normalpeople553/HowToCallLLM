@@ -2,6 +2,7 @@
   "schema_version": 1,
   "model_id": "kimi-k2.6",
   "vendor": "kimi",
+  "billing": {"type": {"value": "paid", "source": "pricing"}},
   "last_checked_at": "2026-10-13",
   "verification": "../../../../models/kimi/kimi-k2.6/verification/2026-10-13-strict.json",
   "verification_scope": "strict_workflow",

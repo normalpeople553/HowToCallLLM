@@ -6,6 +6,8 @@
 
 ## 开始一个任务
 
+项目默认型号与维护示例全部采用付费型号，读取卡片 `billing.type` 和官方价格来源；遇到失败不静默回退免费型号。[选型规则](../docs/来源与核验规则.md)
+
 先完整读取 [SKILL.md](../skills/model-manual/SKILL.md)，再按用户任务读取[任务流程](../skills/model-manual/references/workflows.md)的相关部分，不默认加载所有型号。
 
 | 用户要做什么 | 读取与执行重点 |

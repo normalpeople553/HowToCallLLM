@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "vendor": "zhipu",
+  "model_id": "glm-4.7",
+  "checked_at": "2026-10-14",
+  "examples": [
+    {
+      "id": "chat_completions",
+      "file": "01_basic.py",
+      "title": "基础文本对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8",
+          "title": "对话补全：messages、model 与返回结果"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/01_basic.py",
+      "adaptations": [
+        "使用项目约定环境变量 ZHIPU_API_KEY",
+        "固定为已收录的 glm-4.7",
+        "正常结束与非空正文检查",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式文本输出",
+      "capability": "streaming",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：流式输出能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8",
+          "title": "对话补全：stream 与 usage"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/02_streaming.py",
+      "adaptations": [
+        "环境变量密钥",
+        "空 choices 块处理",
+        "传输中断、缺失结束信号与截断检查",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具",
+        "finally中关闭流，拒绝结束后的正文/重复结束信号/未处理工具delta"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "启用思考并读取最终答案",
+      "capability": "thinking",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode",
+          "title": "思考模式：GLM-4.7 默认思考行为与轮级开关"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/03_thinking.py",
+      "adaptations": [
+        "Python 扩展参数放入 extra_body",
+        "同时检查最终回答完整性",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    },
+    {
+      "id": "json_output",
+      "file": "04_json_output.py",
+      "title": "JSON 对象与业务字段校验",
+      "capability": "json_object",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8",
+          "title": "对话补全：response_format 的 json_object"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/04_json_output.py",
+      "adaptations": [
+        "提示词指定 JSON",
+        "关闭思考便于聚焦格式",
+        "正常结束、JSON 解析与业务字段校验",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    },
+    {
+      "id": "tool_calling",
+      "file": "05_tool_calling.py",
+      "title": "非思考工具完整闭环",
+      "capability": "tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：Function Calling"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode",
+          "title": "思考模式：工具结果回传示例"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/05_tool_calling.py",
+      "adaptations": [
+        "工具返回固定模拟天气",
+        "整批参数校验与有限调用次数",
+        "完整 assistant 回传与最终正文检查",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt1.json"
+      }
+    },
+    {
+      "id": "multi_turn",
+      "file": "06_multi_turn.py",
+      "title": "关闭思考的两轮对话",
+      "capability": "multi_turn",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：多轮对话场景"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8",
+          "title": "对话补全：messages 历史消息"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/06_multi_turn.py",
+      "adaptations": [
+        "固定两轮课程信息问答",
+        "关闭思考与 main 保护",
+        "仅完整回答可以进入后续历史",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    },
+    {
+      "id": "thinking_tools",
+      "file": "07_thinking_tools.py",
+      "title": "交错思考与模拟库存工具闭环",
+      "capability": "thinking_tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：同代付费文本型号与官方能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode",
+          "title": "思考模式：交错式思考与必须回传 reasoning_content"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：思考与 Function Calling 能力"
+        },
+        {
+          "url": "https://docs.bigmodel.cn/cn/api/api-code",
+          "title": "错误码：1302/1305限流，以及不应盲目重试的欠费/额度/权限429"
+        }
+      ],
+      "required_env": [
+        "ZHIPU_API_KEY"
+      ],
+      "run_command": "python models/zhipu/glm-4.7/examples/07_thinking_tools.py",
+      "adaptations": [
+        "官方工具流程改为本地固定模拟库存",
+        "完整回传 assistant 的 reasoning_content 与工具指令",
+        "整批参数校验、跨轮调用 ID 去重",
+        "16384 生成预算与四次模型调用上限",
+        "实际工具执行与最终正常回答缺一不可",
+        "SDK关闭自动重试；仅1302/1305最多三次模型HTTP尝试，指数退避加抖动；不重放已消费流或本地工具"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
+        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+      }
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "vision",
+      "reason": "该型号官方页的输入与输出模态均为文本，不能迁移 GLM 视觉型号的图片输入示例。",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：输入模态与输出模态"
+        }
+      ]
+    },
+    {
+      "capability": "context_caching",
+      "reason": "官方页声明上下文缓存能力；本次暂未新增命中观察示例，后续需核对该型号的统计字段，不能保证两次请求必定命中。",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7",
+          "title": "GLM-4.7：上下文缓存"
+        }
+      ]
+    },
+    {
+      "capability": "server_json_schema_and_strict_tools",
+      "reason": "当前文本请求schema仅列text/json_object，FunctionObject未列strict；不把客户端JSON Schema校验或其他厂商strict能力迁移到本型号。",
+      "sources": [
+        {
+          "url": "https://docs.bigmodel.cn/openapi/openapi.json",
+          "title": "官方OpenAPI：ChatCompletionTextRequest、FunctionObject"
+        }
+      ]
+    }
+  ]
+}

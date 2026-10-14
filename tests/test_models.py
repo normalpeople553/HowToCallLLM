@@ -17,7 +17,7 @@ OFFICIAL_HOSTS = {
     "minimax": {"platform.minimax.io", "platform.minimax.cn", "platform.minimaxi.com"},
 }
 EXPECTED_MODELS = {
-    "deepseek-flash", "kimi-k2.6", "glm-4.7-flash", "qwen-flash",
+    "deepseek-flash", "kimi-k2.6", "glm-4.7", "qwen-flash",
     "doubao-seed-2-1-pro-260628", "MiniMax-M2.7",
 }
 
@@ -25,10 +25,45 @@ EXPECTED_MODELS = {
 class ModelCardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.cards = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(MODEL_CARDS.glob("*.json"))]
+        vendors = json.loads((MODEL_CARDS.parent / "vendors.json").read_text(encoding="utf-8"))["vendors"]
+        cls.cards = [json.loads((MODEL_CARDS / f"{cfg['default_model']}.json").read_text(encoding="utf-8")) for cfg in vendors.values()]
 
     def test_expected_models_exist(self):
         self.assertEqual({c["model_id"] for c in self.cards}, EXPECTED_MODELS)
+
+    def test_all_maintained_default_models_have_official_paid_billing_evidence(self):
+        self.assertEqual(len(self.cards), 6)
+        for card in self.cards:
+            with self.subTest(model=card["model_id"]):
+                billing = card["billing"]["type"]
+                self.assertEqual(billing["value"], "paid")
+                source = card["sources"][billing["source"]]
+                parsed = urlparse(source["url"])
+                self.assertEqual(parsed.scheme, "https")
+                self.assertIn(parsed.hostname, OFFICIAL_HOSTS[card["vendor"]])
+
+    def test_paid_glm_4_7_does_not_inherit_flash_verification(self):
+        card = next(card for card in self.cards if card["model_id"] == "glm-4.7")
+        self.assertEqual(card["vendor"], "zhipu")
+        self.assertNotIn("glm-4.7-flash", json.dumps(card.get("historical_verification", [])))
+        if card.get("verification") is not None:
+            report = json.loads((MODEL_CARDS / card["verification"]).resolve().read_text(encoding="utf-8"))
+            self.assertEqual(report["model_id"], "glm-4.7")
+            self.assertNotIn("glm-4.7-flash", card["verification"])
+        else:
+            self.assertEqual(card.get("verification_scope"), "not_run")
+            self.assertNotIn("verified", [capability["status"] for capability in card["capabilities"].values()])
+        manifest = json.loads((ROOT / "models/zhipu/glm-4.7/examples/sources.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["model_id"], "glm-4.7")
+        for example in manifest["examples"]:
+            check = example["verification"]
+            if check["live"] == "not_run":
+                self.assertFalse(check.get("report"))
+                continue
+            report = json.loads((ROOT / check["report"]).read_text(encoding="utf-8"))
+            matching = [result for result in report["results"] if result["path"] == f"models/zhipu/glm-4.7/examples/{example['file']}"]
+            self.assertEqual(len(matching), 1)
+            self.assertEqual(matching[0]["model_id"], "glm-4.7")
 
     def test_sources_are_official_and_reachable_by_reference(self):
         for card in self.cards:
@@ -116,7 +151,7 @@ class ModelCardTests(unittest.TestCase):
         self.assertNotIn("sk-", source)
 
     def test_every_model_manual_links_the_pitfall_guide(self):
-        manuals = sorted((ROOT / "models").glob("*/*/README.md"))
+        manuals = [ROOT / "models" / card["vendor"] / card["model_id"] / "README.md" for card in self.cards]
         self.assertEqual({manual.parent.name for manual in manuals}, EXPECTED_MODELS)
         for manual in manuals:
             with self.subTest(manual=str(manual)):

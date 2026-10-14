@@ -2,23 +2,25 @@
 
 [中文](../../../docs/03-厂商攻略/zhipu.md) · [Human guide](../../../human/README.en.md)
 
-Source verification date: **2026-10-13**. Vendor facts follow the [Zhipu documentation](https://docs.bigmodel.cn/llms.txt); repository testing terminology follows the [evidence policy](../evidence-policy.md).
+Source verification date: **2026-10-14**. Vendor facts follow the [Zhipu documentation](https://docs.bigmodel.cn/llms.txt); repository testing terminology follows the [evidence policy](../evidence-policy.md).
 
 | Item | Value and official source |
 |---|---|
 | Key | [`ZHIPU_API_KEY`; management page](https://bigmodel.cn/usercenter/apikeys) |
 | `base_url` | [`https://open.bigmodel.cn/api/paas/v4`](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) |
-| Project default | [`glm-4.7-flash`](https://docs.bigmodel.cn/cn/guide/start/pricing) |
+| Project default | [Paid `glm-4.7`](https://docs.bigmodel.cn/cn/guide/start/pricing) |
 | Models and pricing | [Official pricing](https://docs.bigmodel.cn/cn/guide/start/pricing) |
 | OpenAI SDK | [Official compatibility guide](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction) |
 | Thinking | [Official thinking-mode guide](https://docs.bigmodel.cn/cn/guide/capabilities/thinking) |
 
-The Chinese reference's illustrative client fragment reads `ZHIPU_API_KEY`, uses the Base URL and `glm-4.7-flash` above, sends a user text message, and sets `max_tokens=512` before printing `choices[0].message.content`. That illustrative budget is not a documented model default or a passing test for every configuration. For the maintained runnable path and its own current parameters, use [01_basic.py](../../../models/zhipu/glm-4.7-flash/examples/01_basic.py).
+Use the canonical runnable [01_basic.py](../../../models/zhipu/glm-4.7/examples/01_basic.py) and the [paid model's parameter reference](../../../models/zhipu/glm-4.7/parameters.en.md). Install locked dependencies and configure `ZHIPU_API_KEY`, then run from the repository root:
 
 ```bash
-python models/zhipu/glm-4.7-flash/examples/01_basic.py
+python models/zhipu/glm-4.7/examples/01_basic.py
 ```
 
-Recheck `glm-4.7-flash` pricing status on the [official pricing page](https://docs.bigmodel.cn/cn/guide/start/pricing). The word “Flash” is not itself a promise of free service.
+Project rule: free `glm-4.7-flash` is no longer the Zhipu default, and failed paid-model calls do not fall back to it. Follow the [official pricing page](https://docs.bigmodel.cn/cn/guide/start/pricing) for `glm-4.7`; do not copy fixed prices. [Selection policy](../evidence-policy.md)
 
-All six requests in the 2026-10-13 historical verification received 429, with account rate restriction `1302` or high model traffic `1305`; none was recorded as passed. [Historical redacted report](../../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json) Consult [unified verification status](../verification-status.md) for results and the [model manual](../../../models/zhipu/glm-4.7-flash/README.en.md) for complete code. GLM-5.3's thinking restrictions require a separate check and must not inherit GLM-4.7 configuration. [GLM-5.3 Flash documentation](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)
+Balance is not concurrency allowance. Zhipu code `1302` means an account rate limit, `1305` platform overload, and `1113` account arrears; paid models are not guaranteed to avoid rate limits. [Official rate limits](https://docs.bigmodel.cn/cn/api/rate-limit) · [Official error codes](https://docs.bigmodel.cn/cn/api/api-code)
+
+The old free model's [2026-10-13 historical report](../../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json) remains troubleshooting history, not evidence for the new paid model. Check the [paid model manual](../../../models/zhipu/glm-4.7/README.en.md) and [per-file status](../example-status.md) for current source-specific results, and [unified verification status](../verification-status.md) for the separate verifier. Check thinking restrictions independently across generations rather than inheriting GLM-4.7 configuration. [GLM-5.3 Flash documentation](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)

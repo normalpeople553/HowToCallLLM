@@ -379,6 +379,32 @@ class LiveExampleRunnerTests(unittest.TestCase):
         records = [{"http_status": 200, "content_chars": 10, "finish_reasons": ["stop"], "requested_model": "unregistered-" + str(i)} for i in range(6)]
         self.assertNotEqual(self.execute_with_metadata(records, vendor="shared")["status"], "passed")
 
+    def test_shared_default_target_cannot_be_satisfied_by_an_archived_flash_model(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            references = root / "skills/model-manual/references"
+            (references / "models").mkdir(parents=True)
+            for model in ("glm-4.7", "glm-4.7-flash"):
+                (references / "models" / f"{model}.json").write_text(json.dumps({"vendor": "zhipu", "model_id": model}), encoding="utf-8")
+            (references / "vendors.json").write_text(json.dumps({"vendors": {"zhipu": {"default_model": "glm-4.7"}}}), encoding="utf-8")
+            entry = {"vendor": "shared", "model_id": "multiple"}
+            old = {"requested_model": "glm-4.7-flash", "http_status": 200, "finish_reasons": ["stop"], "content_chars": 5}
+            new = {**old, "requested_model": "glm-4.7"}
+            with patch.object(runner, "ROOT", root):
+                self.assertEqual(runner.determine_status(entry, {"exit_code": 0, "requests": [old]}, 0), "failed")
+                self.assertEqual(runner.determine_status(entry, {"exit_code": 0, "requests": [new]}, 0), "passed")
+                mismatch = {**new, "served_model": "glm-4.7-flash"}
+                self.assertEqual(runner.determine_status(entry, {"exit_code": 0, "requests": [mismatch]}, 0), "failed")
+                self.assertEqual(runner.determine_status(entry, {"exit_code": 0, "requests": [mismatch, new]}, 0), "failed")
+
+    def test_paid_glm_served_identity_conflict_is_rejected_without_breaking_other_aliases(self):
+        record = {"requested_model": "glm-4.7", "served_model": "glm-4.7-flash", "http_status": 200, "finish_reasons": ["stop"], "content_chars": 5}
+        self.assertFalse(runner.completion_succeeded(record))
+        self.assertEqual(runner.determine_status({"vendor": "zhipu", "model_id": "glm-4.7"}, {"exit_code": 0, "requests": [record]}, 0), "failed")
+        self.assertTrue(runner.completion_succeeded({**record, "served_model": "glm-4.7"}))
+        self.assertTrue(runner.completion_succeeded({key: value for key, value in record.items() if key != "served_model"}))
+        self.assertTrue(runner.completion_succeeded({**record, "requested_model": "deepseek-flash", "served_model": "deepseek-v4-flash"}))
+
     def test_http_429_and_nonzero_exit_are_classified_without_raw_error(self):
         result = self.execute_with_metadata([{"http_status": 429}], exit_code=1)
         self.assertEqual(result["status"], "rate_limited")

@@ -15,6 +15,8 @@ Prices, free quotas, regions, and expiration dates change. The project therefore
 
 ## Project recommendations
 
+Project defaults and maintained examples use paid models only, without selecting or automatically falling back to free models to save cost. Promotional credits may offset charges but do not change the model's billing category. [Paid-selection policy](evidence-policy.md)
+
 These are project cost-control practices, not vendor promises. Their classification follows the [evidence policy](evidence-policy.md).
 
 1. Before calling a model, open its official pricing page and check the model name, input/output rates, cache rates, region, and billing unit.

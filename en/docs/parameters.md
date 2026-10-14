@@ -10,7 +10,7 @@ This page routes to six model-specific parameter guides and gives project readin
 |---|---|---|
 | `deepseek-flash` | [DeepSeek parameters](../../models/deepseek/deepseek-flash/parameters.en.md) | Chat versus Responses fields, thinking and budgets, images/File IDs, strict tools, Beta/FIM. |
 | `kimi-k2.6` | [Kimi parameters](../../models/kimi/kimi-k2.6/parameters.en.md) | Fixed sampling settings, reasoning history, JSON/Schema, image/video input shapes. |
-| `glm-4.7-flash` | [Zhipu parameters](../../models/zhipu/glm-4.7-flash/parameters.en.md) | Exact Flash scope, unknown defaults, thinking tools, multi-turn history, SDK retries. |
+| `glm-4.7` | [Zhipu parameters](../../models/zhipu/glm-4.7/parameters.en.md) | Paid-model scope, budget defaults, thinking tools, multi-turn history, bounded retries. |
 | `qwen-flash` | [Qwen parameters](../../models/qwen/qwen-flash/parameters.en.md) | Sampling/budgets for the old exact model, thinking/JSON combinations, complete tool history. |
 | `doubao-seed-2-1-pro-260628` | [Doubao parameters](../../models/doubao/doubao-seed-2-1-pro-260628/parameters.en.md) | Answer/reasoning budgets, strict tools, encrypted reasoning, image/video inputs, cache statistics. |
 | `MiniMax-M2.7` | [MiniMax parameters](../../models/minimax/MiniMax-M2.7/parameters.en.md) | M2.7 versus M3, `reasoning_split`, unknown budget semantics, native versus compatible APIs. |

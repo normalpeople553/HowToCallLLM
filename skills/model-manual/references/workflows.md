@@ -20,7 +20,7 @@
 |---|---|
 | `deepseek-flash` | [逐项参数](../../../models/deepseek/deepseek-flash/parameters.md) |
 | `kimi-k2.6` | [逐项参数](../../../models/kimi/kimi-k2.6/parameters.md) |
-| `glm-4.7-flash` | [逐项参数](../../../models/zhipu/glm-4.7-flash/parameters.md) |
+| `glm-4.7` | [逐项参数](../../../models/zhipu/glm-4.7/parameters.md) |
 | `qwen-flash` | [逐项参数](../../../models/qwen/qwen-flash/parameters.md) |
 | `doubao-seed-2-1-pro-260628` | [逐项参数](../../../models/doubao/doubao-seed-2-1-pro-260628/parameters.md) |
 | `MiniMax-M2.7` | [逐项参数](../../../models/minimax/MiniMax-M2.7/parameters.md) |

@@ -31,11 +31,13 @@ This is a content inventory, not a claim that every model supports every listed 
 
 ## Covered models
 
+Project rule: default calls and maintained examples use paid models only, with no automatic free-model fallback after errors. Follow each manual's official pricing link; promotional credits do not change a model's paid billing category. [Selection policy](en/docs/evidence-policy.md)
+
 | Provider | Exact model / English manual | 中文说明书 |
 |---|---|---|
 | DeepSeek | [deepseek-flash](models/deepseek/deepseek-flash/README.en.md) | [中文](models/deepseek/deepseek-flash/README.md) |
 | Kimi | [kimi-k2.6](models/kimi/kimi-k2.6/README.en.md) | [中文](models/kimi/kimi-k2.6/README.md) |
-| Zhipu | [glm-4.7-flash](models/zhipu/glm-4.7-flash/README.en.md) | [中文](models/zhipu/glm-4.7-flash/README.md) |
+| Zhipu | [glm-4.7](models/zhipu/glm-4.7/README.en.md) | [中文](models/zhipu/glm-4.7/README.md) |
 | Qwen | [qwen-flash](models/qwen/qwen-flash/README.en.md) | [中文](models/qwen/qwen-flash/README.md) |
 | Doubao | [doubao-seed-2-1-pro-260628](models/doubao/doubao-seed-2-1-pro-260628/README.en.md) | [中文](models/doubao/doubao-seed-2-1-pro-260628/README.md) |
 | MiniMax | [MiniMax-M2.7](models/minimax/MiniMax-M2.7/README.en.md) | [中文](models/minimax/MiniMax-M2.7/README.md) |
