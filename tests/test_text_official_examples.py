@@ -182,7 +182,7 @@ class TextOfficialExampleTests(unittest.TestCase):
                     runpy.run_path(str(path), run_name="__main__")
                 self.assertEqual(len(sdk.calls), 4)
 
-    def test_source_manifests_cover_files_official_sources_and_evidenced_live_status(self):
+    def test_source_manifests_cover_files_and_sources_without_public_execution_data(self):
         validator = runpy.run_path(str(ROOT / "skills/model-manual/scripts/example_catalog.py"), run_name="offline_catalog_validation")
         validated = {(item["vendor"], item["model_id"]): item for item in validator["load_catalogs"](ROOT)}
         for vendor, config in PROVIDERS.items():
@@ -202,13 +202,9 @@ class TextOfficialExampleTests(unittest.TestCase):
                 verification = entry["verification"]
                 checked = verified_entries[entry["file"]]["verification"]
                 self.assertEqual(verification["live"], checked["live"])
-                if verification["live"] == "not_run":
-                    self.assertFalse(verification.get("report"))
-                else:
-                    self.assertTrue((ROOT / verification["report"]).is_file())
-                    self.assertEqual(verification["report"], checked["report"])
-                    self.assertTrue(checked.get("evidence_id") or checked.get("legacy_evidence") is True)
-                    self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(checked))
+                self.assertEqual(set(checked), {"offline", "live", "note"})
+                self.assertEqual(set(verification), {"offline", "live", "note"})
+                self.assertIn(checked["live"], {"private", "not_run"})
                 self.assertIn(entry["verification"]["offline"], {"mock_tested", "compile_checked"})
                 compile((directory / entry["file"]).read_text(encoding="utf-8"), entry["file"], "exec")
             for item in entries + manifest["not_integrated"]:

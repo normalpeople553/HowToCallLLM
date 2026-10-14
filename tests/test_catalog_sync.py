@@ -1,12 +1,13 @@
-"""不发请求的证据、派生摘要和报告统计一致性检查。"""
+"""公开摘要只依赖官方来源；测试不读本地真实证据、密钥或厂商接口。"""
 
-import importlib.util
 import contextlib
+import importlib.util
 import io
 import json
+from pathlib import Path
+import shutil
 import tempfile
 import unittest
-from pathlib import Path
 from unittest.mock import patch
 
 
@@ -15,6 +16,8 @@ SYNC_PATH = ROOT / "skills/model-manual/scripts/sync_verification.py"
 spec = importlib.util.spec_from_file_location("sync_verification", SYNC_PATH)
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
+OFFICIAL = "https://platform.minimax.cn/docs/api-reference/text-chat-openai"
+PRIVATE_SENTINEL = "fixture-private-evidence-never-published"
 
 
 class CatalogSyncTests(unittest.TestCase):
@@ -23,206 +26,197 @@ class CatalogSyncTests(unittest.TestCase):
             with self.subTest(path=str(path)):
                 self.assertEqual(path.read_text(encoding="utf-8"), expected)
 
-    def test_rate_limited_and_skipped_are_not_passed_or_failed(self):
-        report = {"tests": {
-            "first": {"status": "passed"},
-            "second": {"status": "rate_limited"},
-            "third": {"status": "skipped"},
-        }}
-        self.assertEqual(sync.counts(report), {"passed": 1, "failed": 0, "rate_limited": 1, "skipped": 1})
-
-    def test_report_summary_agrees_with_test_results(self):
-        for path in (ROOT / "models").glob("*/*/verification/*.json"):
-            with self.subTest(path=str(path)):
-                report = json.loads(path.read_text(encoding="utf-8"))
-                actual = sync.counts(report)
-                for status, count in report.get("summary", report.get("counts", {})).items():
-                    if status in actual:
-                        self.assertEqual(count, actual[status])
-
-    def test_verified_capability_has_matching_runtime_evidence(self):
-        catalog = json.loads(sync.CATALOG.read_text(encoding="utf-8"))
-        for vendor, cfg in catalog["vendors"].items():
-            card = json.loads((sync.REFERENCES / cfg["model_card"]).read_text(encoding="utf-8"))
-            self.assertEqual(card["vendor"], vendor)
-            self.assertEqual(card["model_id"], cfg["default_model"])
-            if cfg.get("verification") is None:
-                self.assertIsNone(card.get("verification"))
-                self.assertEqual(cfg["verification_scope"], "not_run")
-                self.assertNotIn("verified", cfg["capabilities"].values())
-                continue
-            report = json.loads((ROOT / cfg["verification"]).read_text(encoding="utf-8"))
-            observations = sync.report_tests(report)
-            for capability, state in cfg["capabilities"].items():
-                if state != "verified":
-                    continue
-                with self.subTest(vendor=vendor, capability=capability):
-                    self.assertIn(capability, sync.TEST_IDS)
-                    self.assertEqual(observations[sync.TEST_IDS[capability]]["status"], "passed")
-
-    def fixture_without_verification(self, directory, *, omit_reference=False):
+    def fixture(self, directory, scope="private", *, omit_reference=False):
         root = Path(directory)
         references = root / "skills/model-manual/references"
         cards = references / "models"
         cards.mkdir(parents=True)
         catalog_path = references / "vendors.json"
-        catalog_path.write_text(json.dumps({"vendors": {"minimax": {
-            "default_model": "MiniMax-M2.7",
-            "verification": "models/other/old-model/verification/old.json",
-            "verification_scope": "strict_workflow",
-            "capabilities": {"chat_completions": "verified", "thinking_off": "verified", "vision": "verified"},
-        }}}), encoding="utf-8")
+        catalog_path.write_text(json.dumps({
+            "selection_policy": {"default_billing": "paid"},
+            "verified_at": PRIVATE_SENTINEL,
+            "vendors": {"minimax": {
+                "default_model": "MiniMax-M2.7",
+                "verification": ".local/evidence/old-private.json",
+                "verification_scope": "strict_workflow",
+                "capabilities": {"chat_completions": "verified", "old_report_only": "verified"},
+                "base_url": "https://api.minimax.cn/v1",
+            }},
+        }), encoding="utf-8")
         card_path = cards / "MiniMax-M2.7.json"
         card = {
             "model_id": "MiniMax-M2.7", "vendor": "minimax",
-            "verification": None, "verification_scope": "not_run",
-            "generation": {"thinking": {"on": {"value": {"reasoning_split": True}}}},
+            "verification": None, "verification_scope": scope,
+            "generation": {"thinking": {"on": {"value": {"reasoning_split": True}, "source": "api"}}},
             "capabilities": {
-                "chat_completions": {"status": "documented"},
-                "thinking": {"status": "documented"},
-                "vision": {"status": "unsupported"},
-                "not_confirmed": {"status": "unknown"},
+                "chat_completions": {"status": "verified", "source": "api"},
+                "thinking": {"status": "documented", "source": "api"},
+                "vision": {"status": "unsupported", "source": "api"},
+                "not_confirmed": {"status": "unknown", "source": "api"},
+                "local_only": {"status": "documented", "source": "local"},
             },
+            "sources": {"api": {"url": OFFICIAL}, "local": {"url": "../../../../docs/policy.md"}},
         }
         if omit_reference:
             del card["verification"]
         card_path.write_text(json.dumps(card), encoding="utf-8")
         return root, references, catalog_path, card_path
 
-    def test_missing_and_null_report_are_not_run_without_reading_a_report(self):
-        for omit_reference in (False, True):
-            with self.subTest(omit_reference=omit_reference), tempfile.TemporaryDirectory() as directory:
-                root, references, catalog_path, card_path = self.fixture_without_verification(directory, omit_reference=omit_reference)
-                status_page = root / "docs/验证状态.md"
-                reads = []
-                original_read = Path.read_text
+    def settings(self, root, references, catalog_path):
+        return patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path,
+                              STATUS_PAGE=root / "docs/验证状态.md")
 
-                def record_read(path, *args, **kwargs):
-                    reads.append(path)
-                    return original_read(path, *args, **kwargs)
-
-                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page), patch.object(Path, "read_text", record_read):
-                    outputs = sync.expected_outputs()
-                self.assertEqual(set(reads), {catalog_path, card_path})
-                cfg = json.loads(outputs[catalog_path])["vendors"]["minimax"]
-                self.assertIsNone(cfg["verification"])
-                self.assertEqual(cfg["verification_scope"], "not_run")
-                self.assertNotIn("verified", cfg["capabilities"].values())
-                self.assertEqual(cfg["capabilities"]["chat_completions"], "documented")
-                self.assertEqual(cfg["capabilities"]["vision"], "unknown")
-                self.assertEqual(cfg["capabilities"]["thinking_off"], "unknown")
-                row = next(line for line in outputs[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
-                columns = [column.strip() for column in row.strip("|").split("|")]
-                self.assertEqual(columns[1:], ["统一验证器未运行", "—", "—", "—", "—", "—", "报告空缺"])
-                self.assertEqual(len(columns), 8)
-
-    def test_explicit_broken_or_other_model_report_is_not_treated_as_not_run(self):
-        for case in ("broken_path", "other_model", "unfounded_scope"):
-            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
-                root, references, catalog_path, card_path = self.fixture_without_verification(directory)
-                card = json.loads(card_path.read_text(encoding="utf-8"))
-                if case == "unfounded_scope":
-                    card["verification_scope"] = "strict_workflow"
-                else:
-                    card["verification"] = "unexpected-report.json"
-                    if case == "other_model":
-                        (card_path.parent / "unexpected-report.json").write_text(json.dumps({"model_id": "old-model", "tests": {}}), encoding="utf-8")
-                card_path.write_text(json.dumps(card), encoding="utf-8")
-                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=root / "status.md"):
-                    with self.assertRaises(ValueError):
-                        sync.expected_outputs()
-
-    def test_privacy_metadata_does_not_upgrade_historical_smoke_reports(self):
-        for version, scope in ((1, "legacy_smoke"), (2, "strict_workflow"), (3, "strict_workflow")):
-            with self.subTest(schema_version=version), tempfile.TemporaryDirectory() as directory:
-                root, references, catalog_path, card_path = self.fixture_without_verification(directory)
-                card = json.loads(card_path.read_text(encoding="utf-8"))
-                card.update(verification="fixture-report.json")
-                card_path.write_text(json.dumps(card), encoding="utf-8")
-                report_path = card_path.parent / "fixture-report.json"
-                report = {
-                    "schema_version": version,
-                    "evidence_id": "3211372d-516b-4a6d-901f-92f49a754a96",
-                    "model_id": "MiniMax-M2.7",
-                    "privacy": {"test_timestamps_saved": False, "duration_saved": False},
-                    "runtime": {"openai": "fixture-sdk"},
-                    "tests": {"chat_completions": {"status": "passed"}},
-                }
-                original = json.dumps(report)
-                report_path.write_text(original, encoding="utf-8")
-                status_page = root / "docs/验证状态.md"
-                with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page):
-                    outputs = sync.all_expected_outputs()
-                cfg = json.loads(outputs[catalog_path])["vendors"]["minimax"]
-                self.assertEqual(cfg["verification_scope"], scope)
-                self.assertEqual(report_path.read_text(encoding="utf-8"), original)
-                for page in (status_page, root / "en/docs/verification-status.md"):
-                    rows = [line for line in outputs[page].splitlines() if line.startswith("|")]
-                    self.assertTrue(rows)
-                    self.assertTrue(all(len(line.strip("|").split("|")) == 8 for line in rows))
-                    self.assertIn("fixture-sdk", outputs[page])
-
-    def test_bilingual_outputs_use_one_catalog_and_relative_report_counts_without_test_dates(self):
+    def test_public_capabilities_use_only_official_sources_and_never_private_passes(self):
         with tempfile.TemporaryDirectory() as directory:
-            root, references, catalog_path, card_path = self.fixture_without_verification(directory)
-            card = json.loads(card_path.read_text(encoding="utf-8"))
-            card.update(verification="fixture-report.json", verification_scope="strict_workflow")
-            card_path.write_text(json.dumps(card), encoding="utf-8")
-            report_path = card_path.parent / "fixture-report.json"
-            report_path.write_text(json.dumps({
-                "schema_version": 3, "evidence_id": "3211372d-516b-4a6d-901f-92f49a754a96", "model_id": "MiniMax-M2.7",
-                "runtime": {"openai": "2.54.0"}, "results": [
-                    {"id": "chat_completions", "status": "passed"},
-                    {"id": "streaming", "status": "rate_limited"},
-                    {"id": "thinking_enabled", "status": "skipped"},
-                ],
-            }), encoding="utf-8")
-            status_page = root / "docs/验证状态.md"
-            with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page):
-                chinese, english = sync.expected_outputs(), sync.expected_outputs(language="en")
-                reads = []
+            root, references, catalog_path, _ = self.fixture(directory)
+            with self.settings(root, references, catalog_path):
+                outputs = sync.all_expected_outputs()
+            catalog = json.loads(outputs[catalog_path])
+            self.assertNotIn("verified_at", catalog)
+            self.assertEqual(catalog["selection_policy"], {"default_billing": "paid"})
+            cfg = catalog["vendors"]["minimax"]
+            self.assertIsNone(cfg["verification"])
+            self.assertEqual(cfg["verification_scope"], "private")
+            self.assertEqual(cfg["capabilities"], {
+                "chat_completions": "documented", "thinking": "documented",
+                "vision": "unknown", "not_confirmed": "unknown",
+                "local_only": "unknown", "thinking_off": "unknown",
+            })
+            self.assertNotIn("verified", cfg["capabilities"].values())
+            self.assertEqual(cfg["base_url"], "https://api.minimax.cn/v1")
+
+    def test_private_and_not_run_remain_distinct_without_reading_any_report(self):
+        for scope in ("private", "not_run"):
+            for omit_reference in (False, True):
+                with self.subTest(scope=scope, omit_reference=omit_reference), tempfile.TemporaryDirectory() as directory:
+                    root, references, catalog_path, card_path = self.fixture(directory, scope, omit_reference=omit_reference)
+                    reads = []
+                    original_read = Path.read_text
+
+                    def public_only(path, *args, **kwargs):
+                        self.assertIn(path, {catalog_path, card_path})
+                        reads.append(path)
+                        return original_read(path, *args, **kwargs)
+
+                    with self.settings(root, references, catalog_path), patch.object(Path, "read_text", public_only):
+                        outputs = sync.all_expected_outputs()
+                    self.assertEqual(set(reads), {catalog_path, card_path})
+                    self.assertEqual(len(reads), 2)
+                    cfg = json.loads(outputs[catalog_path])["vendors"]["minimax"]
+                    self.assertIsNone(cfg["verification"])
+                    self.assertEqual(cfg["verification_scope"], scope)
+                    page = outputs[root / "docs/验证状态.md"]
+                    expected = "本地记录不公开" if scope == "private" else "统一流程未运行"
+                    self.assertIn(expected, page)
+                    rows = [line for line in page.splitlines() if line.startswith("|")]
+                    self.assertTrue(all(len(line.strip("|").split("|")) == 3 for line in rows))
+
+    def test_public_bindings_or_old_workflow_scopes_fail_before_reading_a_report(self):
+        for case in ("report_binding", "legacy_scope", "strict_scope", "unknown_scope"):
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as directory:
+                root, references, catalog_path, card_path = self.fixture(directory)
+                card = json.loads(card_path.read_text(encoding="utf-8"))
+                if case == "report_binding":
+                    card["verification"] = ".local/evidence/private.json"
+                else:
+                    card["verification_scope"] = {"legacy_scope": "legacy_smoke", "strict_scope": "strict_workflow", "unknown_scope": "made_up"}[case]
+                card_path.write_text(json.dumps(card), encoding="utf-8")
                 original_read = Path.read_text
-                def record_read(path, *args, **kwargs):
-                    reads.append(path.resolve())
+
+                def public_only(path, *args, **kwargs):
+                    self.assertIn(path, {catalog_path, card_path})
                     return original_read(path, *args, **kwargs)
-                with patch.object(Path, "read_text", record_read):
-                    both = sync.all_expected_outputs()
-                self.assertEqual(len(reads), len(set(reads)))
-            english_page = root / "en/docs/verification-status.md"
-            self.assertEqual(json.loads(chinese[catalog_path]), json.loads(english[catalog_path]))
-            self.assertEqual(set(both), {catalog_path, status_page, english_page})
-            self.assertTrue(all(path.is_relative_to(root) for path in both))
-            zh_row = next(line for line in chinese[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
-            en_row = next(line for line in english[english_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
-            zh_columns = [value.strip() for value in zh_row.strip("|").split("|")]
-            en_columns = [value.strip() for value in en_row.strip("|").split("|")]
-            self.assertEqual(len(zh_columns), 8)
-            self.assertEqual(len(en_columns), 8)
-            self.assertEqual(zh_columns[2:7], en_columns[2:7])
-            self.assertEqual(en_columns[2:6], ["1", "0", "1", "1"])
-            self.assertEqual(zh_columns[1], "严格流程验证")
-            self.assertEqual(en_columns[1], "Strict workflow")
-            for page in (chinese[status_page], english[english_page]):
-                self.assertNotIn("2026-10-14", page)
-                self.assertNotIn("Report date", page)
-                self.assertNotIn("报告日期", page)
-                self.assertNotIn("execution times", page)
-            self.assertIn("../../" + report_path.relative_to(root).as_posix(), en_row)
-            self.assertIn("README.en.md", en_row)
-            self.assertIn("../en/docs/verification-status.md", chinese[status_page])
-            self.assertIn("../../docs/验证状态.md", english[english_page])
+
+                with self.settings(root, references, catalog_path), patch.object(Path, "read_text", public_only):
+                    with self.assertRaises(ValueError):
+                        sync.all_expected_outputs()
+
+    def test_local_records_do_not_affect_public_generation_and_clone_needs_no_evidence(self):
+        with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as cloned:
+            root, references, catalog_path, _ = self.fixture(directory)
+            with self.settings(root, references, catalog_path):
+                before = sync.all_expected_outputs()
+            private_file = root / ".local/evidence/fixture.json"
+            private_file.parent.mkdir(parents=True)
+            private_file.write_text(json.dumps({
+                "evidence_id": PRIVATE_SENTINEL, "runtime": {"openai": PRIVATE_SENTINEL},
+                "counts": {"passed": 999}, "source_sha256": PRIVATE_SENTINEL,
+                "results": [{"status": "passed", "model_id": "MiniMax-M2.7"}],
+            }), encoding="utf-8")
+            original_read = Path.read_text
+
+            def no_private_reads(path, *args, **kwargs):
+                self.assertNotIn(".local", path.parts)
+                return original_read(path, *args, **kwargs)
+
+            with self.settings(root, references, catalog_path), patch.object(Path, "read_text", no_private_reads):
+                self.assertEqual(before, sync.all_expected_outputs())
+            clone = Path(cloned)
+            clone_references = clone / "skills/model-manual/references"
+            shutil.copytree(references, clone_references)
+            clone_catalog = clone_references / "vendors.json"
+            self.assertFalse((clone / ".local").exists())
+            with self.settings(clone, clone_references, clone_catalog), patch.object(Path, "read_text", no_private_reads), contextlib.redirect_stdout(io.StringIO()):
+                after = sync.all_expected_outputs()
+                self.assertEqual({path.relative_to(root): value for path, value in before.items()},
+                                 {path.relative_to(clone): value for path, value in after.items()})
+                self.assertEqual(sync.main([]), 0)
+                self.assertEqual(sync.main(["--check"]), 0)
+            self.assertFalse((clone / ".local").exists())
+
+    def test_bilingual_pages_only_publish_public_navigation_and_official_references(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, references, catalog_path, _ = self.fixture(directory)
+            with self.settings(root, references, catalog_path):
+                outputs = sync.all_expected_outputs()
+            chinese = outputs[root / "docs/验证状态.md"]
+            english = outputs[root / "en/docs/verification-status.md"]
+            self.assertEqual(set(outputs), {catalog_path, root / "docs/验证状态.md", root / "en/docs/verification-status.md"})
+            for page in (chinese, english):
+                self.assertIn(OFFICIAL, page)
+                self.assertNotIn(PRIVATE_SENTINEL, page)
+                for private_field in ("evidence_id", "source_sha256", "tested_at", "duration_seconds", "2.54.0", "999", ".local/"):
+                    self.assertNotIn(private_field, page)
+                self.assertNotIn("[JSON]", page)
+                self.assertNotIn("| SDK |", page)
+                self.assertNotIn("| Passed |", page)
+            self.assertIn("README.en.md", english)
+            self.assertIn("../../tests/provider_verify.py", english)
+            self.assertIn("../tests/provider_verify.py", chinese)
+            self.assertIn("../en/docs/verification-status.md", chinese)
+            self.assertIn("../../docs/验证状态.md", english)
+
+    def test_official_source_missing_cross_vendor_or_untrusted_does_not_become_documented(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _, _, _, card_path = self.fixture(directory)
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            for url in ("../../../../.local/evidence/private.json", "https://api-docs.deepseek.com/", "http://platform.minimax.cn/docs", "https://user:secret@platform.minimax.cn/docs"):
+                with self.subTest(url=url):
+                    card["sources"]["api"]["url"] = url
+                    self.assertEqual(sync.documented_capabilities(card)["chat_completions"], "unknown")
+            card["sources"].pop("api")
+            self.assertEqual(sync.documented_capabilities(card)["chat_completions"], "unknown")
+
+    def test_official_qualified_support_states_remain_documented_not_verified(self):
+        with tempfile.TemporaryDirectory() as directory:
+            _, _, _, card_path = self.fixture(directory)
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            for state in ("beta_documented", "automatic", "non_thinking_only"):
+                with self.subTest(state=state):
+                    card["capabilities"]["chat_completions"]["status"] = state
+                    self.assertEqual(sync.documented_capabilities(card)["chat_completions"], "documented")
+            card["capabilities"]["chat_completions"]["status"] = "made_up_passed"
+            self.assertEqual(sync.documented_capabilities(card)["chat_completions"], "unknown")
 
     def test_bilingual_cli_is_fixture_isolated_and_detects_english_staleness(self):
         with tempfile.TemporaryDirectory() as directory:
-            root, references, catalog_path, _ = self.fixture_without_verification(directory)
+            root, references, catalog_path, _ = self.fixture(directory)
             status_page = root / "docs/验证状态.md"
             english_page = root / "en/docs/verification-status.md"
-            with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page), contextlib.redirect_stdout(io.StringIO()):
+            with self.settings(root, references, catalog_path), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(sync.main([]), 0)
-                self.assertTrue(status_page.is_file())
-                self.assertTrue(english_page.is_file())
-                original_chinese = status_page.read_text(encoding="utf-8")
                 self.assertEqual(sync.main(["--check"]), 0)
+                original_chinese = status_page.read_text(encoding="utf-8")
                 english_page.write_text("stale English", encoding="utf-8")
                 self.assertEqual(sync.main(["--check"]), 1)
                 self.assertEqual(status_page.read_text(encoding="utf-8"), original_chinese)

@@ -2,7 +2,7 @@
 
 [中文](README.md) · [Human guide](../../../human/README.en.md) · [Parameter reference](parameters.en.md)
 
-English translation of the [Chinese manual](README.md), source-checked on **2026-10-14**. Code, source manifests and reports are shared; official URLs are retained, including Chinese pages. Translation does not rerun API verification.
+English translation of the [Chinese manual](README.md), source-checked on **2026-10-14**. Calling code and official source manifests are shared; official URLs are retained, including Chinese pages. Translation does not rerun API verification.
 
 This directory maintains the same-generation **paid** model `glm-4.7`, not `glm-4.7-flash`, and does not silently upgrade to the newest GLM. The exact ID remains in the official model guide and API enum, and official pricing lists nonzero charges. Follow the pricing page for current tiers and terms; this repository does not freeze a numerical price. [Model][model] · [API][api] · [Pricing][pricing]
 
@@ -64,9 +64,9 @@ Scripts display answers locally; 03 also displays reasoning. Do not commit priva
 
 ## 5. No cross-model evidence inheritance
 
-For the paid model, consult [current file status](../../../en/docs/example-status.md) and this directory's [sources.json](examples/sources.json), with reports matching current source, inputs, parameters and environment. Offline mocks establish local protocol/safeguards, not real hosted API success or semantic accuracy for arbitrary prompts. [Evidence policy](../../../en/docs/evidence-policy.md)
+For this paid model, find calling files and official attribution in the [code directory](../../../en/docs/example-status.md) and [sources.json](examples/sources.json). Execution records stay local and are not displayed publicly. Offline mocks establish local protocol/safeguards, not real hosted API success or semantic accuracy for arbitrary prompts. [Evidence policy](../../../en/docs/evidence-policy.md)
 
-The free Flash model's [legacy report](../glm-4.7-flash/verification/2026-10-13.json) and [strict report](../glm-4.7-flash/verification/2026-10-13-strict.json) retain their outcomes at their original paths. Neither verifies `glm-4.7`. Keep [historical unified status](../../../en/docs/verification-status.md) separate from [file status](../../../en/docs/example-status.md). See [verification setup](../../../en/docs/verification.md) and [production pitfalls](../../../en/docs/production-pitfalls.md).
+Use this model's own [calling code](examples/sources.json), not free-model results. See [reproduction](../../../en/docs/verification.md) and [production pitfalls](../../../en/docs/production-pitfalls.md).
 
 [model]: https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7
 [api]: https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8

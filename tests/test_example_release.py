@@ -51,7 +51,21 @@ class ExampleReleaseTests(unittest.TestCase):
         self.addCleanup(self.dependency_patch.stop)
 
     def save_manifest(self):
-        self.manifest_path.write_text(json.dumps(self.manifest), encoding="utf-8")
+        public = copy.deepcopy(self.manifest)
+        for entry in public["examples"]:
+            verification = entry["verification"]
+            if verification["live"] not in {"private", "not_run"}:
+                source = (self.manifest_path.parent / entry["file"]).relative_to(self.root).as_posix()
+                self.save_binding(source, verification)
+                entry["verification"] = {"offline": verification["offline"], "live": "private", "note": "执行记录仅本地保留"}
+        self.manifest_path.write_text(json.dumps(public), encoding="utf-8")
+
+    def save_binding(self, source, verification):
+        path = self.root / release.PRIVATE_EVIDENCE / "bindings.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        data = json.loads(path.read_text()) if path.exists() else {"schema_version": 1, "examples": {}}
+        data["examples"][source] = copy.deepcopy(verification)
+        path.write_text(json.dumps(data), encoding="utf-8")
 
     def record(self, source=None, status="passed", hour=1, requests=None):
         source = source or self.source
@@ -69,7 +83,7 @@ class ExampleReleaseTests(unittest.TestCase):
                 "parameters": {"stream": False}}
 
     def report(self, name, records, schema_version=1):
-        path = self.root / "verification/examples" / name
+        path = self.root / release.PRIVATE_EVIDENCE / "verification/examples" / name
         path.parent.mkdir(parents=True, exist_ok=True)
         report = {"schema_version": schema_version, "kind": "example_file_execution", "execution": "real_vendor_api",
                   "privacy": {flag: False for flag in self.catalog.PRIVACY_FLAGS}, "results": copy.deepcopy(records)}
@@ -84,6 +98,9 @@ class ExampleReleaseTests(unittest.TestCase):
     def collect(self):
         return release.collect_release(self.root)
 
+    def directory(self):
+        return release.collect_code_directory(self.root)
+
     def test_missing_evidence_is_explicit_and_inventory_includes_root_examples(self):
         for name in ("01_quickstart.py", "02_one_for_all.py", "03_streaming.py", "04_multi_turn.py"):
             path = self.root / "examples" / name
@@ -93,8 +110,9 @@ class ExampleReleaseTests(unittest.TestCase):
         self.assertEqual(data["total"], 5)
         self.assertEqual(data["counts"]["missing_evidence"], 5)
         self.assertFalse(data["ready"])
-        page = release.render_page(data)
-        self.assertIn("缺少报告", page)
+        page = release.render_page(self.directory())
+        self.assertIn("调用代码目录", page)
+        self.assertNotIn("缺少报告", page)
         self.assertIn("examples/04_multi_turn.py", page)
         self.assertNotIn(str(self.root), page)
         self.runner.credentials.assert_not_called()
@@ -105,6 +123,65 @@ class ExampleReleaseTests(unittest.TestCase):
         data = self.collect()
         self.assertTrue(data["ready"])
         self.assertEqual(data["counts"]["passed"], 1)
+
+    def test_private_marker_without_local_records_is_missing_not_a_pass(self):
+        self.manifest["examples"][0]["verification"].update(live="private", note="执行记录不公开")
+        self.save_manifest()
+        self.assertFalse((self.root / release.PRIVATE_EVIDENCE).exists())
+        data = self.collect()
+        self.assertTrue(data["catalog_valid"])
+        self.assertEqual(data["rows"][0]["status"], "missing_evidence")
+        self.assertFalse(data["ready"])
+        self.assertIn(self.source, release.render_page(self.directory()))
+
+    def test_old_public_report_cannot_substitute_for_missing_private_evidence(self):
+        private = self.report("old-public.json", [self.record()])
+        public = self.root / "verification/examples/old-public.json"
+        public.parent.mkdir(parents=True)
+        private.rename(public)
+        data = self.collect()
+        self.assertEqual(data["rows"][0]["status"], "missing_evidence")
+        self.assertFalse(data["ready"])
+
+    def test_public_directory_and_cli_never_read_local_records_or_compute_hashes(self):
+        expected = release.page_outputs(self.directory())
+        path = self.report("private-never-published.json", [self.record()], schema_version=2)
+        path.write_text("invalid local report", encoding="utf-8")
+        binding = self.root / release.PRIVATE_EVIDENCE / "bindings.json"
+        binding.write_text("invalid local bindings", encoding="utf-8")
+        original_read = Path.read_text
+        private_root = self.root / release.PRIVATE_EVIDENCE
+
+        def read_public(path, *args, **kwargs):
+            if path.resolve().is_relative_to(private_root.resolve()):
+                raise AssertionError("public_generation_must_not_read_local_records")
+            return original_read(path, *args, **kwargs)
+
+        with mock.patch.object(Path, "read_text", read_public), \
+                mock.patch.object(self.runner, "file_identity", side_effect=AssertionError("public_generation_must_not_hash")), \
+                mock.patch.object(self.catalog, "file_identity", side_effect=AssertionError("public_generation_must_not_hash")), \
+                mock.patch.object(release, "collect_release", side_effect=AssertionError("public_cli_must_not_check_private_records")):
+            self.assertEqual(release.page_outputs(self.directory()), expected)
+            with contextlib.redirect_stdout(io.StringIO()) as stdout, contextlib.redirect_stderr(io.StringIO()):
+                self.assertEqual(release.main(["--root", str(self.root), "--write"]), 0)
+                self.assertEqual(release.main(["--root", str(self.root), "--check"]), 0)
+            self.assertNotIn("HTTP", stdout.getvalue())
+            self.assertNotIn("通过", stdout.getvalue())
+        for relative, page in expected.items():
+            self.assertEqual((self.root / relative).read_text(), page)
+            self.assertNotIn("private-never-published.json", page)
+
+    def test_invalid_private_binding_blocks_only_explicit_private_gate(self):
+        self.report("private-pass.json", [self.record()])
+        binding = self.root / release.PRIVATE_EVIDENCE / "bindings.json"
+        binding.write_text('{"schema_version": 999, "examples": {}}', encoding="utf-8")
+        data = self.collect()
+        self.assertFalse(data["catalog_valid"])
+        self.assertFalse(data["ready"])
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(release.main(["--root", str(self.root), "--write"]), 0)
+            self.assertEqual(release.main(["--root", str(self.root), "--check"]), 0)
+            self.assertEqual(release.main(["--root", str(self.root), "--require-passed"]), 2)
 
     def test_schema_two_current_strict_pass_has_random_identity_without_timing_output(self):
         path = self.report("current-v2.json", [self.record()], schema_version=2)
@@ -118,9 +195,10 @@ class ExampleReleaseTests(unittest.TestCase):
             for field in ("tested_at", "legacy_tested_at", "sort_time", "duration_seconds"):
                 self.assertNotIn(f'"{field}"', serialized)
         for language in ("zh", "en"):
-            page = release.render_page(data, language=language)
+            page = release.render_page(self.directory(), language=language)
             self.assertNotIn("2026-10-14T01:00:00", page)
-            self.assertIn("current-v2.json", page)
+            self.assertNotIn("current-v2.json", page)
+            self.assertNotIn(report["evidence_id"], page)
 
     def test_schema_two_rejects_invalid_identity_privacy_and_timing_at_every_depth(self):
         mutations = {
@@ -150,21 +228,19 @@ class ExampleReleaseTests(unittest.TestCase):
                 self.assertEqual(data["counts"]["passed"], 0)
                 self.assertTrue(data["report_issues"])
                 for language in ("zh", "en"):
-                    self.assertNotIn("must-not-be-rendered", release.render_page(data, language=language))
+                    self.assertNotIn("must-not-be-rendered", release.render_page(self.directory(), language=language))
 
-    def test_bilingual_pages_share_counts_paths_and_canonical_evidence(self):
+    def test_bilingual_public_pages_share_source_paths_without_execution_metadata(self):
         self.report("failure.json", [self.record(status="rate_limited", hour=1)])
         self.report("pass.json", [self.record(hour=2)])
         data = self.collect()
-        before = copy.deepcopy(data)
-        chinese, english = release.render_page(data), release.render_page(data, language="en")
-        self.assertEqual(data, before)
-        self.assertEqual(release.render_page(data, language="zh"), chinese)
-        outputs = release.page_outputs(data)
+        directory = self.directory()
+        before = copy.deepcopy(directory)
+        chinese, english = release.render_page(directory), release.render_page(directory, language="en")
+        self.assertEqual(directory, before)
+        self.assertEqual(release.render_page(directory, language="zh"), chinese)
+        outputs = release.page_outputs(directory)
         self.assertEqual(set(outputs), {release.PAGE, release.EN_PAGE})
-        summary = f"**{data['counts']['passed']}/{data['total']}**"
-        self.assertIn(summary, chinese)
-        self.assertIn(summary, english)
         self.assertIn("../en/docs/example-status.md", chinese)
         self.assertIn("../../docs/示例实测状态.md", english)
         self.assertIn("../../models/README.en.md", english)
@@ -172,16 +248,22 @@ class ExampleReleaseTests(unittest.TestCase):
             self.assertIn(f"](../{row['path']})", chinese)
             self.assertIn(f"](../../{row['path']})", english)
             for attempt in row["attempts"]:
-                self.assertIn(f"](../{attempt['report']})", chinese)
-                self.assertIn(f"](../../{attempt['report']})", english)
+                self.assertNotIn(attempt["report"], chinese)
+                self.assertNotIn(attempt["report"], english)
                 self.assertIsNone(attempt["evidence_id"])
         for field in ("tested_at", "legacy_tested_at", "sort_time", "duration_seconds"):
             self.assertNotIn(f'"{field}"', json.dumps(data))
         for page in (chinese, english):
             self.assertNotIn("2026-10-14T01:00:00", page)
             self.assertNotIn("2026-10-14T02:00:00", page)
+            for private_marker in (".local/", "failure.json", "pass.json", "source_sha256", "evidence_id", "HTTP 请求数", "HTTP requests", "59/59"):
+                self.assertNotIn(private_marker, page)
+        for row in directory["rows"]:
+            self.assertEqual(set(row), {"path", "vendor", "model_id", "capability", "run_command"})
+            self.assertIn(row["run_command"], chinese)
+            self.assertIn(row["run_command"], english)
         with self.assertRaises(ValueError):
-            release.render_page(data, language="unknown")
+            release.render_page(directory, language="unknown")
 
     def test_strict_pass_is_selected_but_all_failures_survive(self):
         self.report("old-failure.json", [self.record(status="failed", hour=1)])
@@ -190,21 +272,22 @@ class ExampleReleaseTests(unittest.TestCase):
         data = self.collect()
         row = data["rows"][0]
         self.assertEqual(row["status"], "passed")
-        self.assertEqual(row["selected"]["report"], "verification/examples/effective-pass.json")
+        self.assertEqual(row["selected"]["report"], ".local/evidence/verification/examples/effective-pass.json")
         self.assertEqual(len(row["attempts"]), 3)
-        page = release.render_page(data)
-        self.assertIn("old-failure.json", page)
-        self.assertIn("later-failure.json", page)
-        self.assertIn("历史失败", page)
+        self.assertEqual({Path(attempt["report"]).name for attempt in row["attempts"]}, {"old-failure.json", "effective-pass.json", "later-failure.json"})
+        page = release.render_page(self.directory())
+        self.assertNotIn("old-failure.json", page)
+        self.assertNotIn("later-failure.json", page)
+        self.assertNotIn("历史失败", page)
 
     def test_fallback_uses_stable_report_path_order_not_legacy_clock_or_write_order(self):
         self.report("z-pass.json", [self.record(hour=1)])
         self.report("a-pass.json", [self.record(hour=23)])
         self.report("m-failure.json", [self.record(status="failed", hour=2)])
         row = self.collect()["rows"][0]
-        self.assertEqual(row["selected"]["report"], "verification/examples/a-pass.json")
+        self.assertEqual(row["selected"]["report"], ".local/evidence/verification/examples/a-pass.json")
         self.assertEqual([attempt["report"] for attempt in row["attempts"]], [
-            "verification/examples/a-pass.json", "verification/examples/m-failure.json", "verification/examples/z-pass.json",
+            ".local/evidence/verification/examples/a-pass.json", ".local/evidence/verification/examples/m-failure.json", ".local/evidence/verification/examples/z-pass.json",
         ])
         # Reversing the fixture clocks cannot change the selected evidence or attempt order.
         self.report("z-pass.json", [self.record(hour=23)])
@@ -219,8 +302,8 @@ class ExampleReleaseTests(unittest.TestCase):
         data = self.collect()
         self.assertTrue(data["ready"])
         row = data["rows"][0]
-        self.assertEqual(row["selected"]["report"], "verification/examples/z-registered.json")
-        self.assertEqual(row["attempts"][0]["report"], "verification/examples/a-fallback.json")
+        self.assertEqual(row["selected"]["report"], ".local/evidence/verification/examples/z-registered.json")
+        self.assertEqual(row["attempts"][0]["report"], ".local/evidence/verification/examples/a-fallback.json")
 
     def test_canonical_failure_does_not_override_another_strict_pass(self):
         self.report("a-registered-failure.json", [self.record(status="failed")], schema_version=2)
@@ -229,7 +312,7 @@ class ExampleReleaseTests(unittest.TestCase):
         self.save_manifest()
         data = self.collect()
         self.assertTrue(data["ready"])
-        self.assertEqual(data["rows"][0]["selected"]["report"], "verification/examples/z-strict-pass.json")
+        self.assertEqual(data["rows"][0]["selected"]["report"], ".local/evidence/verification/examples/z-strict-pass.json")
 
     def test_http_200_without_finish_or_body_is_incomplete_not_capability_failure(self):
         http = self.http()
@@ -238,7 +321,7 @@ class ExampleReleaseTests(unittest.TestCase):
         self.report("old-observer.json", [self.record(requests=[http])])
         data = self.collect()
         self.assertEqual(data["rows"][0]["status"], "incomplete_evidence")
-        self.assertIn("缺完整证据", release.render_page(data))
+        self.assertFalse(data["ready"])
 
     def test_final_response_must_satisfy_all_completion_and_transport_guards(self):
         mutations = {
@@ -368,6 +451,26 @@ class ExampleReleaseTests(unittest.TestCase):
         self.assertFalse(row["attempts"][0]["current_source"])
         self.assertEqual(path.read_bytes(), original)
 
+    def test_shared_metadata_cleanup_still_invalidates_earlier_pass(self):
+        relative = "examples/02_one_for_all.py"
+        source = self.root / relative
+        source.parent.mkdir()
+        source.write_text("# synthetic shared example\n", encoding="utf-8")
+        card_path = self.root / "skills/model-manual/references/models/deepseek-flash.json"
+        card = json.loads(card_path.read_text())
+        card["verification"] = "old-public-model-report.json"
+        card_path.write_text(json.dumps(card), encoding="utf-8")
+        report = self.report("shared-before-privacy-change.json", [self.record(source=relative)])
+        original = report.read_bytes()
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "passed")
+        card.pop("verification")
+        card_path.write_text(json.dumps(card), encoding="utf-8")
+        row = next(row for row in self.collect()["rows"] if row["path"] == relative)
+        self.assertEqual(row["status"], "stale_source")
+        self.assertFalse(row["attempts"][0]["strict_passed"])
+        self.assertEqual(report.read_bytes(), original)
+
     def test_archived_nondefault_card_is_not_a_shared_execution_target(self):
         relative = "examples/02_one_for_all.py"
         source = self.root / relative
@@ -438,7 +541,7 @@ class ExampleReleaseTests(unittest.TestCase):
                 data = self.collect()
                 self.assertFalse(data["ready"])
                 self.assertEqual(data["rows"][0]["status"], "invalid_evidence")
-                self.assertNotIn("untrusted-field-not-a-date", release.render_page(data))
+                self.assertNotIn("untrusted-field-not-a-date", release.render_page(self.directory()))
 
     def test_catalog_is_validated_and_cannot_publish_incomplete_passed_reference(self):
         old = self.record()

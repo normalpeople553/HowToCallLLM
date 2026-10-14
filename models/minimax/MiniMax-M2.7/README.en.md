@@ -2,9 +2,9 @@
 
 [中文](README.md) · [Human guide](../../../human/README.en.md) · [Parameter reference](parameters.en.md)
 
-English translation of the [Chinese manual](README.md), source-checked there on **2026-10-14**. Code, source manifests and reports are shared. Original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [model card](../../../skills/model-manual/references/models/MiniMax-M2.7.json); attribution/commands: [sources.json](examples/sources.json); cross-model navigation: [example index](../../../en/docs/example-index.md).
+English translation of the [Chinese manual](README.md), source-checked there on **2026-10-14**. Calling code and official source manifests are shared. Original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [model card](../../../skills/model-manual/references/models/MiniMax-M2.7.json); attribution/commands: [sources.json](examples/sources.json); cross-model navigation: [example index](../../../en/docs/example-index.md).
 
-[Historical unified verification](../../../en/docs/verification-status.md) and [current per-file execution](../../../en/docs/example-status.md) are separate. An absent unified report does not mean this model's files were never called. Each result applies only to its recorded source, parameters, input and environment; fragments, modified requests and generated combinations do not inherit passes. [Evidence policy](../../../en/docs/evidence-policy.md)
+Find calling files and attribution in [sources.json](examples/sources.json) and the [complete code directory](../../../en/docs/example-status.md). Reports, replies, statistics and execution fingerprints stay local. Recheck changed parameters or inputs. [Publishing policy](../../../en/docs/evidence-policy.md)
 
 ## Check lifecycle first
 
@@ -76,7 +76,7 @@ Use [official pay-as-you-go pricing](https://platform.minimax.cn/docs/guides/pri
 
 Project troubleshooting order: domain, account type, exact model and lifecycle; then HTTP/business status, output budget, complete termination and tool history. See [production pitfalls](../../../en/docs/production-pitfalls.md) and [parameters](parameters.en.md).
 
-Card verification null / verification_scope not_run means no unified-verifier report is registered there, not that [per-file reports](../../../en/docs/example-status.md) contain no real requests. Check each file/report rather than promoting a basic call into a general capability claim. Reports omit keys and bodies; see [evidence policy](../../../en/docs/evidence-policy.md) and [verification](../../../en/docs/verification.md).
+Calling code and official attribution are in [sources.json](examples/sources.json). The testing process stays local; a basic call does not establish every capability or parameter combination. See [publishing policy](../../../en/docs/evidence-policy.md) and [reproduction](../../../en/docs/verification.md).
 
 [lifecycle]: https://platform.minimax.cn/docs/guides/models-intro
 [chat]: https://platform.minimax.cn/docs/api-reference/text-chat-openai

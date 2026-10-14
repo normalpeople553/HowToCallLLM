@@ -8,7 +8,7 @@ Scope: chat, reasoning and coding language models, including multimodal understa
 
 Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired models are excluded from these lists and Agent queries. Unconfirmed availability appears separately and is not a recommendation to call.
 
-Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or passed tests.
+Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or code. Maintainer execution records remain local and are not published.
 
 | Vendor | Checked | Listed IDs (retired excluded; includes uncertain) | Detailed manuals | Official catalog |
 |---|---|---|---|---|

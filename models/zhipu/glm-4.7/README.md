@@ -62,9 +62,9 @@ JSON模式是 `response_format={"type":"json_object"}`，仍需客户端校验�
 
 ## 5. 证据不跨型号继承
 
-当前付费型号的逐文件执行状态只看[示例实测状态](../../../docs/示例实测状态.md)和[本目录sources.json](examples/sources.json)指向的、匹配当前源码/输入/参数/环境的报告。离线mock只证明本地协议与保护逻辑，不证明真实托管API成功，也不证明任意提示词的语义正确率。[来源与核验规则](../../../docs/来源与核验规则.md)
+当前付费型号的调用文件与官方出处见[代码目录](../../../docs/示例实测状态.md)和[本目录sources.json](examples/sources.json)；运行记录只留本地，不在公开页面展示。离线mock只证明本地协议与保护逻辑，不证明真实托管API成功，也不证明任意提示词的语义正确率。[来源与核验规则](../../../docs/来源与核验规则.md)
 
-免费Flash的[旧报告](../glm-4.7-flash/verification/2026-10-13.json)和[旧严格报告](../glm-4.7-flash/verification/2026-10-13-strict.json)原地保留，仅解释旧型号历史，不是 `glm-4.7` 的验证。历史统一流程与当前逐文件结果分别查[统一状态](../../../docs/验证状态.md)及[逐文件状态](../../../docs/示例实测状态.md)。复现环境见[验证与复现](../../../docs/验证与复现.md)，生产检查见[真实踩雷](../../../docs/06-真实踩雷与生产检查.md)。
+本型号按自己的[调用文件](examples/sources.json)使用，不继承免费型号结果。环境见[验证与复现](../../../docs/验证与复现.md)，生产检查见[真实踩雷](../../../docs/06-真实踩雷与生产检查.md)。
 
 [model]: https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7
 [api]: https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8

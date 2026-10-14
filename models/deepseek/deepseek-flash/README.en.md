@@ -2,11 +2,11 @@
 
 [中文](README.md) · [Human guide](../../../human/README.en.md) · [Parameter reference](parameters.en.md)
 
-English translation of the [Chinese manual](README.md). Executable code, source manifests and reports are shared. Official URLs are retained, even when their pages are in Chinese. This translation does not rerun or newly validate any API.
+English translation of the [Chinese manual](README.md). Executable code and official source manifests are shared. Official URLs are retained, even when their pages are in Chinese. This translation does not rerun or newly validate any API.
 
 Source-check date in the original manual: **2026-10-13**. Machine-readable facts: [`deepseek-flash.json`](../../../skills/model-manual/references/models/deepseek-flash.json). Find source attribution and commands in [examples/sources.json](examples/sources.json), and browse the [example index](../../../en/docs/example-index.md).
 
-Keep [historical unified verification](../../../en/docs/verification-status.md) separate from [current per-file execution](../../../en/docs/example-status.md). Evidence applies only to the recorded source, parameters, inputs and environment. Documentation fragments, modified requests and arbitrary generated combinations do not inherit a file's pass. [Evidence policy](../../../en/docs/evidence-policy.md)
+Find calling files and attribution in [sources.json](examples/sources.json) and the [complete code directory](../../../en/docs/example-status.md). Reports, replies, statistics and execution fingerprints stay local. Recheck changed parameters or inputs. [Publishing policy](../../../en/docs/evidence-policy.md)
 
 ## 1. Identity
 
@@ -169,7 +169,7 @@ Use the exact current ID, read keys only from `DEEPSEEK_API_KEY`, and never hard
 
 ## 16. Verification and reproduction
 
-The **Legacy smoke report** recorded seven passes: basic chat, streaming, thinking switches, JSON, the first tool-call response and image-request format. It did not record full finish reasons, tool-result round trips or image-content recognition. [Original report](verification/2026-10-13.json)
+Calling code and official attribution are in [sources.json](examples/sources.json). Execution records stay local; see [reproduction](../../../en/docs/verification.md) for setup and checks.
 
 The later strict unified-workflow results are listed in [historical verification status](../../../en/docs/verification-status.md). Current original-file execution is listed in [example status](../../../en/docs/example-status.md); neither automatically proves arbitrary changed requests.
 

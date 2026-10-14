@@ -2,7 +2,7 @@
 
 [中文](parameters.md) · [Human guide](../../../human/README.en.md) · [Model manual](README.en.md)
 
-English translation of the [Chinese reference](parameters.md), checked there on **2026-10-14**. This covers the **M2.7 hosted API** and existing files, not M3/M3.1 vision, reasoning-depth or other newer parameters. Shared code, sources and reports are unchanged; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Parameter attribution is not execution evidence: see [sources.json](examples/sources.json) and [example status](../../../en/docs/example-status.md).
+English translation of the [Chinese reference](parameters.md), checked there on **2026-10-14**. This covers the **M2.7 hosted API** and existing files, not M3/M3.1 vision, reasoning-depth or other newer parameters. Calling code and official sources are shared unchanged; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Parameter attribution is not execution evidence: see [sources.json](examples/sources.json) and [example status](../../../en/docs/example-status.md).
 
 Check lifecycle before calling: M2.7 new-user access ends **2026-10-19**, pay-as-you-go API service ends **2026-11-18**, and M Plan/Token Plan old-name requests route to M3.1 Flash Preview from **2026-10-19**. An old ID does not prove original-model execution. This reference does not silently replace the requested model. [Official notice][lifecycle]
 

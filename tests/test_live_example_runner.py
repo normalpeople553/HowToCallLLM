@@ -410,6 +410,65 @@ class LiveExampleRunnerTests(unittest.TestCase):
         self.assertNotIn("duration_seconds", report)
         self.assertEqual(report["results"], results)
 
+    def test_execution_cli_defaults_to_local_only_uuid_report_without_printing_private_metadata(self):
+        entry = runner.discover()[0]
+        result = {**entry, "status": "passed", "requests": [{"http_status": 200, "finish_reasons": ["stop"], "content_chars": 5}], "source_sha256": {entry["path"]: "fixture-private-hash"}}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with patch.object(runner, "ROOT", root), patch.object(sys, "argv", [str(SCRIPT), "--execute"]), \
+                    patch.object(runner, "discover", return_value=[entry]), \
+                    patch.object(runner, "credentials", return_value={}), \
+                    patch.object(runner, "prepare_inputs", side_effect=lambda _directory, env: env), \
+                    patch.object(runner, "execute_entry", return_value=result), \
+                    patch.object(runner.importlib.metadata, "version", return_value="fixture-sdk"), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(runner.main(), 0)
+            files = list((root / ".local/evidence/example-files").glob("*.json"))
+            self.assertEqual(len(files), 1)
+            report = json.loads(files[0].read_text(encoding="utf-8"))
+            self.assertEqual(files[0].stem, report["evidence_id"])
+            self.assertEqual(UUID(files[0].stem).version, 4)
+            for private in (report["evidence_id"], "fixture-private-hash", "fixture-sdk", str(root), '"requests"', '"summary"'):
+                self.assertNotIn(private, output.getvalue())
+            self.assertEqual([path for path in root.iterdir()], [root / ".local"])
+
+    def test_public_repository_report_destination_is_rejected_before_credentials_or_file_writes(self):
+        entry = runner.discover()[0]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            destination = root / "verification/not-created.json"
+            with patch.object(runner, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):
+                    runner.write_report(destination, {"safe": True})
+                with patch.object(sys, "argv", [str(SCRIPT), "--execute", "--report", str(destination)]), \
+                        patch.object(runner, "discover", return_value=[entry]), \
+                        patch.object(runner, "credentials") as load, contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as error:
+                        runner.main()
+                    self.assertEqual(error.exception.code, 2)
+                    load.assert_not_called()
+            self.assertFalse(destination.parent.exists())
+
+    def test_explicit_private_repository_destination_remains_supported(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            destination = root / ".local/evidence/custom.json"
+            with patch.object(runner, "ROOT", root):
+                runner.write_report(destination, {"safe": True})
+            self.assertEqual(json.loads(destination.read_text(encoding="utf-8")), {"safe": True})
+
+    def test_private_directory_symlink_cannot_redirect_a_report_to_public_repository(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            public = root / "docs"
+            public.mkdir()
+            (root / ".local").symlink_to(public, target_is_directory=True)
+            destination = root / ".local/evidence/not-created.json"
+            with patch.object(runner, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):
+                    runner.write_report(destination, {"safe": True})
+            self.assertFalse((public / "evidence").exists())
+
     def test_process_timeout_still_limits_execution_without_recording_duration(self):
         entry = runner.discover()[0]
         env = {key: SECRET for key in entry["required_keys"]}

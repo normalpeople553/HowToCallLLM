@@ -2,75 +2,232 @@
   "schema_version": 1,
   "model_id": "MiniMax-M2.7",
   "vendor": "minimax",
-  "billing": {"type": {"value": "paid", "source": "pricing"}},
+  "billing": {
+    "type": {
+      "value": "paid",
+      "source": "pricing"
+    }
+  },
   "last_checked_at": "2026-10-14",
   "verification": null,
   "verification_scope": "not_run",
   "identity": {
-    "api_model_id": {"value": "MiniMax-M2.7", "source": "chat_api"},
-    "lifecycle": {"value": "deprecation_announced", "source": "lifecycle"},
-    "new_user_cutoff": {"value": "2026-10-19", "source": "lifecycle"},
-    "paygo_retirement": {"value": "2026-11-18", "source": "lifecycle"},
-    "subscription_rerouting": {"value": {"from": "2026-10-19", "target": "M3.1 Flash Preview", "plans": ["M Plan", "Token Plan"], "old_name_retained": true}, "source": "lifecycle"}
+    "api_model_id": {
+      "value": "MiniMax-M2.7",
+      "source": "chat_api"
+    },
+    "lifecycle": {
+      "value": "deprecation_announced",
+      "source": "lifecycle"
+    },
+    "new_user_cutoff": {
+      "value": "2026-10-19",
+      "source": "lifecycle"
+    },
+    "paygo_retirement": {
+      "value": "2026-11-18",
+      "source": "lifecycle"
+    },
+    "subscription_rerouting": {
+      "value": {
+        "from": "2026-10-19",
+        "target": "M3.1 Flash Preview",
+        "plans": [
+          "M Plan",
+          "Token Plan"
+        ],
+        "old_name_retained": true
+      },
+      "source": "lifecycle"
+    }
   },
   "connection": {
-    "api_key_env": {"value": "MINIMAX_API_KEY", "source": "project_convention"},
-    "openai_base_url": {"value": "https://api.minimax.cn/v1", "source": "openai_sdk"},
-    "chat_completions_path": {"value": "/chat/completions", "source": "chat_api"},
-    "native_endpoint": {"value": "https://api.minimax.cn/v1/text/chatcompletion_v2", "source": "native_api"},
-    "native_endpoint_lifecycle": {"value": "deprecated", "source": "native_api"}
+    "api_key_env": {
+      "value": "MINIMAX_API_KEY",
+      "source": "project_convention"
+    },
+    "openai_base_url": {
+      "value": "https://api.minimax.cn/v1",
+      "source": "openai_sdk"
+    },
+    "chat_completions_path": {
+      "value": "/chat/completions",
+      "source": "chat_api"
+    },
+    "native_endpoint": {
+      "value": "https://api.minimax.cn/v1/text/chatcompletion_v2",
+      "source": "native_api"
+    },
+    "native_endpoint_lifecycle": {
+      "value": "deprecated",
+      "source": "native_api"
+    }
   },
   "limits": {
-    "context_tokens": {"value": 204800, "source": "openai_sdk"},
-    "max_output_tokens": {"value": 204800, "source": "chat_api"},
-    "recommended_output_tokens": {"value": 65536, "source": "chat_api"}
+    "context_tokens": {
+      "value": 204800,
+      "source": "openai_sdk"
+    },
+    "max_output_tokens": {
+      "value": 204800,
+      "source": "chat_api"
+    },
+    "recommended_output_tokens": {
+      "value": 65536,
+      "source": "chat_api"
+    }
   },
   "capabilities": {
-    "chat_completions": {"status": "documented", "source": "chat_api"},
-    "streaming": {"status": "documented", "source": "chat_api"},
-    "thinking": {"status": "documented", "source": "chat_api"},
-    "thinking_off": {"status": "unsupported", "source": "chat_api"},
-    "tool_calling": {"status": "documented", "source": "openai_sdk"},
-    "multi_turn": {"status": "documented", "source": "openai_sdk"},
-    "json_object": {"status": "not_documented_for_this_model", "source": "native_api"},
-    "json_schema": {"status": "not_documented_for_this_model", "source": "native_api"},
-    "vision": {"status": "not_documented_for_this_model", "source": "openai_sdk"},
-    "video_input": {"status": "not_documented_for_this_model", "source": "openai_sdk"}
+    "chat_completions": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "streaming": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "thinking": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "thinking_off": {
+      "status": "unsupported",
+      "source": "chat_api"
+    },
+    "tool_calling": {
+      "status": "documented",
+      "source": "openai_sdk"
+    },
+    "multi_turn": {
+      "status": "documented",
+      "source": "openai_sdk"
+    },
+    "json_object": {
+      "status": "not_documented_for_this_model",
+      "source": "native_api"
+    },
+    "json_schema": {
+      "status": "not_documented_for_this_model",
+      "source": "native_api"
+    },
+    "vision": {
+      "status": "not_documented_for_this_model",
+      "source": "openai_sdk"
+    },
+    "video_input": {
+      "status": "not_documented_for_this_model",
+      "source": "openai_sdk"
+    }
   },
   "thinking": {
-    "default": {"value": "enabled_cannot_disable", "source": "chat_api"},
-    "disabled_behavior": {"value": "accepted_but_ignored", "source": "chat_api"},
-    "reasoning_effort": {"value": "ignored_for_this_model", "source": "chat_api"},
-    "reasoning_split": {"value": "output_format_only_not_thinking_toggle", "source": "chat_api"},
-    "tool_history": {"value": "preserve_complete_assistant_including_thinking_and_tool_calls", "source": "openai_sdk"}
+    "default": {
+      "value": "enabled_cannot_disable",
+      "source": "chat_api"
+    },
+    "disabled_behavior": {
+      "value": "accepted_but_ignored",
+      "source": "chat_api"
+    },
+    "reasoning_effort": {
+      "value": "ignored_for_this_model",
+      "source": "chat_api"
+    },
+    "reasoning_split": {
+      "value": "output_format_only_not_thinking_toggle",
+      "source": "chat_api"
+    },
+    "tool_history": {
+      "value": "preserve_complete_assistant_including_thinking_and_tool_calls",
+      "source": "openai_sdk"
+    }
   },
   "pricing": {
-    "official_page": {"value": "https://platform.minimax.cn/docs/guides/pricing-paygo", "source": "pricing"},
+    "official_page": {
+      "value": "https://platform.minimax.cn/docs/guides/pricing-paygo",
+      "source": "pricing"
+    },
     "volatile": true
   },
   "generation": {
     "schema_version": 1,
-    "key_env": {"value": "MINIMAX_API_KEY", "source": "project_convention"},
-    "base_url": {"value": "https://api.minimax.cn/v1", "source": "openai_sdk"},
-    "python_extra_body_fields": {"value": ["reasoning_split", "thinking"], "source": "openai_sdk"},
-    "request_defaults": {"value": {"reasoning_split": true}, "source": "project_convention"},
+    "key_env": {
+      "value": "MINIMAX_API_KEY",
+      "source": "project_convention"
+    },
+    "base_url": {
+      "value": "https://api.minimax.cn/v1",
+      "source": "openai_sdk"
+    },
+    "python_extra_body_fields": {
+      "value": [
+        "reasoning_split",
+        "thinking"
+      ],
+      "source": "openai_sdk"
+    },
+    "request_defaults": {
+      "value": {
+        "reasoning_split": true
+      },
+      "source": "project_convention"
+    },
     "thinking": {
-      "on": {"value": {"thinking": {"type": "adaptive"}}, "source": "chat_api"}
+      "on": {
+        "value": {
+          "thinking": {
+            "type": "adaptive"
+          }
+        },
+        "source": "chat_api"
+      }
     },
     "token_budget": {
-      "parameter": {"value": "max_completion_tokens", "source": "chat_api"},
-      "min": {"value": 1, "source": "chat_api"},
-      "max": {"value": 204800, "source": "chat_api"},
-      "semantics": {"value": "unknown", "source": "project_convention"}
+      "parameter": {
+        "value": "max_completion_tokens",
+        "source": "chat_api"
+      },
+      "min": {
+        "value": 1,
+        "source": "chat_api"
+      },
+      "max": {
+        "value": 204800,
+        "source": "chat_api"
+      },
+      "semantics": {
+        "value": "unknown",
+        "source": "project_convention"
+      }
     },
-    "lifecycle_warning": {"value": "MiniMax-M2.7 已公告退役：2026-10-19 停止向新用户开放，2026-11-18 按量 API 下线；M Plan/Token Plan 自 2026-10-19 起将旧名称请求路由到 M3.1 Flash Preview。调用前按账户类型复核，旧名称不能保证仍由 M2.7 服务。", "source": "lifecycle"}
+    "lifecycle_warning": {
+      "value": "MiniMax-M2.7 已公告退役：2026-10-19 停止向新用户开放，2026-11-18 按量 API 下线；M Plan/Token Plan 自 2026-10-19 起将旧名称请求路由到 M3.1 Flash Preview。调用前按账户类型复核，旧名称不能保证仍由 M2.7 服务。",
+      "source": "lifecycle"
+    }
   },
   "sources": {
-    "project_convention": {"title": "项目约定：密钥环境变量、分离思考输出及未实测边界", "url": "../../../../models/minimax/MiniMax-M2.7/README.md"},
-    "chat_api": {"title": "Chat Completions API：M2.x 思考行为、输出上限与字段", "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai"},
-    "openai_sdk": {"title": "OpenAI SDK：国区地址、M2.7、上下文与完整消息回传", "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api"},
-    "native_api": {"title": "文本合成（已弃用接口）：M2.7 与 max_completion_tokens", "url": "https://platform.minimax.cn/docs/api-reference/text-post"},
-    "lifecycle": {"title": "模型概览：M2.5/M2.7 下线及订阅路由通知", "url": "https://platform.minimax.cn/docs/guides/models-intro"},
-    "pricing": {"title": "按量计费：M2.7 价格及账户类型", "url": "https://platform.minimax.cn/docs/guides/pricing-paygo"}
+    "project_convention": {
+      "title": "项目约定：密钥环境变量、分离思考输出及未实测边界",
+      "url": "../../../../models/minimax/MiniMax-M2.7/README.md"
+    },
+    "chat_api": {
+      "title": "Chat Completions API：M2.x 思考行为、输出上限与字段",
+      "url": "https://platform.minimax.cn/docs/api-reference/text-chat-openai"
+    },
+    "openai_sdk": {
+      "title": "OpenAI SDK：国区地址、M2.7、上下文与完整消息回传",
+      "url": "https://platform.minimax.cn/docs/api-reference/text-openai-api"
+    },
+    "native_api": {
+      "title": "文本合成（已弃用接口）：M2.7 与 max_completion_tokens",
+      "url": "https://platform.minimax.cn/docs/api-reference/text-post"
+    },
+    "lifecycle": {
+      "title": "模型概览：M2.5/M2.7 下线及订阅路由通知",
+      "url": "https://platform.minimax.cn/docs/guides/models-intro"
+    },
+    "pricing": {
+      "title": "按量计费：M2.7 价格及账户类型",
+      "url": "https://platform.minimax.cn/docs/guides/pricing-paygo"
+    }
   }
 }

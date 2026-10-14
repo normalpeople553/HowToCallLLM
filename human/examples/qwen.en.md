@@ -66,17 +66,15 @@ print("本次用量：", response.usage)
 
 ## What should count as success
 
-The code prints final content and usage statistics. Wording is not fixed: the original reports intentionally omit answer text. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper.
+The code prints final content and usage statistics. Wording is not fixed. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper.
 
 [Actual output/check logic](../../models/qwen/qwen-flash/examples/01_basic.py) · [Evidence boundaries](../../en/docs/evidence-policy.md)
 
-## Original execution evidence
+## Public record boundaries
 
-The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-qwen-attempt3.json) · [Current status](../../en/docs/example-status.md)
+The maintainer's execution records are local and not published with this repository. This page only checks the public source, exact request identity, reading anchors and official-source links; it does not consult private reports or claim a publicly verifiable pass.
 
-Source SHA-256: `db698928da659024944cf0b8a48396e6fc72d569de86352a51e9ee93ab0c163b`
-
-This page is a reading view of that exact file, not another live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or present account availability.
+This is a reading view, not a live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or current account availability.
 
 ## Official sources and advanced examples
 

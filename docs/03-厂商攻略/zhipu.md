@@ -25,4 +25,4 @@ python models/zhipu/glm-4.7/examples/01_basic.py
 
 余额不等于并发额度。智谱 `1302` 表示账户速率限制，`1305` 表示平台服务过载，`1113` 才是账户欠费；付费型号也不能保证不会限流。[官方速率限制](https://docs.bigmodel.cn/cn/api/rate-limit) · [官方错误码](https://docs.bigmodel.cn/cn/api/api-code)
 
-旧免费型号的[历史报告](../../models/zhipu/glm-4.7-flash/verification/2026-10-13.json)仅作为排错记录保留，不能替代新付费型号的实测。当前准确源码与状态查[付费型号说明书](../../models/zhipu/glm-4.7/README.md)和[逐文件实测状态](../示例实测状态.md)；统一验证器另查[验证状态](../验证状态.md)。不同代际的思考限制须独立核对，不继承 GLM-4.7 配置。[GLM-5.3 Flash 文档](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)
+按准确付费型号读取[说明书](../../models/zhipu/glm-4.7/README.md)与[调用文件](../../models/zhipu/glm-4.7/examples/sources.json)，不继承免费型号结果。测试记录只留本地；不同代际的思考限制独立核对。[GLM-5.3 Flash 文档](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)

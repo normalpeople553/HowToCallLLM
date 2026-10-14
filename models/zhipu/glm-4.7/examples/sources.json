@@ -36,9 +36,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -78,9 +77,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -114,9 +112,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -151,9 +148,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -192,9 +188,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt1.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -233,9 +228,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -276,9 +270,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行最终付费glm-4.7原文件；HTTP元数据、返回型号、正常结束与原文件校验通过。仅覆盖此次提示词和参数，不证明任意组合或语义正确率；不继承免费Flash历史报告。",
-        "report": "verification/examples/2026-10-14-zhipu-paid-attempt2.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     }
   ],

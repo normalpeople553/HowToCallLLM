@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""只读核对全部示例的当前源码与真实 HTTP 证据，可重生成中文状态页。
+"""公开调用代码目录生成器，以及显式启用的本地私有证据检查。
 
 不执行示例、不读取 .env、不访问网络。仅调用 runner 的清单、哈希、响应判定函数。
-默认退出码不要求全部通过；--require-passed 将缺少有效证据视为退出码 1。
-输入/清单错误或 --check 发现页面过期时退出码 2。
+默认 --write/--check 不读取本地证据；--require-passed 单独启用严格私有检查。
+缺少有效私有证据时退出码 1；输入错误或公开目录页过期时退出码 2。
 """
 
 import argparse
@@ -17,6 +17,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = Path("docs/示例实测状态.md")
 EN_PAGE = Path("en/docs/example-status.md")
+PRIVATE_EVIDENCE = Path(".local/evidence")
 LABELS = {
     "passed": "通过", "failed": "执行未通过", "rate_limited": "限流",
     "missing_key": "缺少 Key", "missing_input": "缺少输入", "missing_runtime": "缺少运行环境",
@@ -132,14 +133,18 @@ def _attempt(root, entry, report, result, report_path, identity, targets, catalo
 
 
 def collect_release(root=ROOT):
+    """仅从本地私有镜像检查真实证据；公开页面不调用此函数。"""
     root = Path(root).resolve()
     catalog, runner = dependencies(root)
     catalog_valid, catalog_issues = True, []
     try:
-        catalogs = catalog.load_catalogs(root)
-        canonical = {row["path"]: row["verification"] for row in catalog.select_examples(catalogs)}
+        catalogs = catalog.load_catalogs(root, private_evidence=True)
+        canonical = {
+            (Path(item["catalog_path"]).parent / entry["file"]).as_posix(): entry["verification"]
+            for item in catalogs for entry in item["examples"]
+        }
     except (ValueError, TypeError, KeyError, OSError, AttributeError):
-        # 仍展示全部文件的证据状态，清单问题独立阻止发布，不伪造全绿。
+        # 仍核对全部文件，私有绑定或清单问题独立阻止通过，不伪造全绿。
         catalog_valid, canonical = False, {}
         catalog_issues.append({"code": "catalog_validation_failed"})
     entries = runner.discover()
@@ -152,7 +157,7 @@ def collect_release(root=ROOT):
             raise ValueError("runner_catalog_source_identity_rules_differ")
         rows[entry["path"]] = {**entry, "identity": identity, "targets": _targets(root, entry, catalog), "attempts": []}
     report_issues = []
-    for path in sorted((root / "verification/examples").glob("*.json")):
+    for path in sorted((root / PRIVATE_EVIDENCE / "verification/examples").glob("*.json")):
         relative = path.relative_to(root).as_posix()
         if not path.resolve().is_relative_to(root):
             report_issues.append({"report": relative, "code": "report_outside_repository"})
@@ -211,175 +216,95 @@ def collect_release(root=ROOT):
             "catalog_issues": catalog_issues, "report_issues": report_issues, "ready": ready}
 
 
-def _link(path, label="报告"):
-    return f"[{label}](../{path})"
+def collect_code_directory(root=ROOT):
+    """Public inventory only: no evidence, file hashes, credentials, or requests."""
+    root = Path(root).resolve()
+    catalog, runner = dependencies(root)
+    catalogs = catalog.load_catalogs(root)
+    maintained = {row["path"]: row for row in catalog.select_examples(catalogs)}
+    entries = runner.discover()
+    if not entries or len({entry["path"] for entry in entries}) != len(entries):
+        raise ValueError("empty_or_duplicate_example_inventory")
+    rows = []
+    for entry in entries:
+        declared = maintained.get(entry["path"])
+        command = declared["run_command"] if declared else f"python {entry['path']}"
+        rows.append({
+            "path": entry["path"], "vendor": entry["vendor"], "model_id": entry["model_id"],
+            "capability": entry["capability"], "run_command": command,
+        })
+    return {"rows": rows}
 
 
-def render_page(release, language="zh"):
-    if language == "en":
-        return _render_page_en(release)
-    if language != "zh":
+def render_page(directory, language="zh"):
+    if language not in {"zh", "en"}:
         raise ValueError("Unknown page language")
-    passed, total = release["counts"]["passed"], release["total"]
+    english = language == "en"
+    prefix = "../../" if english else "../"
     lines = [
-        "# 示例实测状态", "",
-        "中文 | [English](../en/docs/example-status.md)", "",
-        "> 本页由 `tests/check_example_release.py --write` 生成；核查过程不读取 `.env`、不执行示例、不发送 API 请求。", "",
-        f"当前可执行示例 **{total}** 个；当前源码完整 HTTP 证据通过 **{passed}/{total}**。"
-        f"发布门槛：**{'通过' if release['ready'] else '未满足'}**。", "",
-        "这里核对逐文件报告，不把型号能力报告、旧源码通过、仅进程退出或缺失 finish/content 的旧记录算作完整实测。"
-        "Python / TypeScript / cURL 的传输分别须为 `real_httpx` / `real_fetch` / `real_curl`；"
-        "还核对源码与支持文件（含对应旁观辅助代码）哈希、厂商/型号、HTTP 成功、最终正常结束、非空正文、流结束标志及服务端业务状态。"
-        "工具调用须最终回到正文，多厂商入口须各目标型号均完成。", "",
-        "同一当前源码若有多次执行，优先选择示例清单登记且严格通过的报告；其余记录按报告路径稳定选择，不按测试时间排序。历史失败仍在下表保留。"
-        "“缺完整证据”表示观测不足，不是断言接口不支持该能力。`passed` 也不代表所有参数组合或语义正确率均已验证。", "",
-        "```bash", "python tests/check_example_release.py --write", "python tests/check_example_release.py --check",
-        "python tests/check_example_release.py --check --require-passed", "```", "",
-        "默认检查/生成允许状态页呈现未通过；`--require-passed` 在未全通过时退出 1。"
-        "输入/清单错误或生成页不一致退出 2；不需要主机私密路径。", "",
-        f"型号示例清单校验：{'通过' if release['catalog_valid'] and not release['catalog_issues'] else '未通过'}；"
-        f"报告结构问题：{len(release['report_issues'])}。", "",
-        "## 当前源码逐文件证据", "",
-        "| 文件 | 厂商 / 型号 | 当前状态 | 有效证据 / 报告 | HTTP 请求数 |",
-        "|---|---|---|---|---|",
+        "# Calling code directory" if english else "# 调用代码目录", "",
+        "[中文](../../docs/示例实测状态.md) | English" if english else "中文 | [English](../en/docs/example-status.md)", "",
+        "> Generated by `tests/check_example_release.py --write`. This public directory reads registered source metadata only; it does not read local execution records, keys, or send API requests."
+        if english else
+        "> 本页由 `tests/check_example_release.py --write` 生成；公开目录仅读取已登记代码资料，不读取本地执行记录、Key，也不发送 API 请求。", "",
+        "Use the files to understand calling patterns and review Agent-written code. The directory does not publish execution records or assert that a call currently works."
+        if english else
+        "这些文件用于学习调用方式和检查 Agent 写出的代码。目录不公开执行记录，也不声称当前调用一定成功。", "",
+        "[Model manuals and parameters](../../models/README.en.md) · [Full code reading guide](../../human/examples/README.en.md) · [Official-documentation example index](example-index.md)"
+        if english else
+        "[型号说明书与参数](../models/README.md) · [完整代码阅读](../human/examples/README.md) · [官方功能示例索引](官方示例索引.md)", "",
+        "Run from the repository root after installing the documented dependencies and setting the required environment variables. Running a file may send a billable request; only use authorized keys and input material."
+        if english else
+        "在仓库根目录安装说明中的依赖、配置所需环境变量后运行。执行文件可能发送计费请求，请仅使用获准的 Key 和输入素材。", "",
+        "```bash", "python tests/check_example_release.py --write", "python tests/check_example_release.py --check", "```", "",
+        "| File | Vendor / model | Purpose (capability key) | Run command |"
+        if english else "| 文件 | 厂商 / 型号 | 用途（能力词） | 运行命令 |",
+        "|---|---|---|---|",
     ]
-    for row in release["rows"]:
-        selected = row["selected"]
-        evidence = _link(selected["report"]) if selected else "—"
-        lines.append(f"| {_link(row['path'], row['path'])} | {row['vendor']} / `{row['model_id']}` | {LABELS.get(row['status'], '证据无效')} | {evidence} | {selected['request_count'] if selected else 0} |")
-    missing = [row for row in release["rows"] if row["status"] != "passed"]
-    lines.extend(["", "## 尚未取得有效通过证据", ""])
-    if missing:
-        lines.extend(f"- `{row['path']}`：{LABELS.get(row['status'], '证据无效')}。" for row in missing)
-    else:
-        lines.append("无；所有当前文件均有严格通过证据。")
-    lines.extend(["", "## 历史失败、旧通过与观测不足", "", "历史报告不覆盖、不删除；旧记录不会因重试成功而消失。", "",
-                  "| 文件 | 记录状态 | 源码身份 | 报告 |", "|---|---|---|---|"])
-    history_count = 0
-    for row in release["rows"]:
-        for attempt in row["attempts"]:
-            if attempt["strict_passed"]:
-                continue
-            history_count += 1
-            state = LABELS.get(attempt["reported_status"], "证据无效")
-            if attempt["reported_status"] == "passed":
-                state = "旧记录自报通过（不计入当前）" if not attempt["current_source"] else "自报通过，但缺完整/有效证据"
-                if attempt["issue"] in {"incomplete_http_metadata", "incomplete_completion_metadata"}:
-                    state = "自报通过，但缺完整 HTTP 证据"
-            if attempt["issue"] == "invalid_evidence":
-                state = "记录身份/元数据无效"
-            lines.append(f"| `{row['path']}` | {state} | {'当前' if attempt['current_source'] else '不匹配当前源码'} | {_link(attempt['report'])} |")
-    if not history_count:
-        lines.append("| — | 无历史失败或观测不足记录 | — | — |")
-    if release["catalog_issues"] or release["report_issues"]:
-        lines.extend(["", "## 输入与清单问题", ""])
-        for issue in release["catalog_issues"]:
-            lines.append(f"- `{issue.get('path', 'models/*/*/examples/sources.json')}`：`{issue['code']}`。")
-        for issue in release["report_issues"]:
-            lines.append(f"- {_link(issue['report'])}：`{issue['code']}`。")
+    for row in directory["rows"]:
+        command = row["run_command"].replace("|", "&#124;").replace("\n", " ")
+        lines.append(
+            f"| [{row['path']}]({prefix}{row['path']}) | {row['vendor']} / `{row['model_id']}` | "
+            f"`{row['capability']}` | `{command}` |"
+        )
     lines.append("")
     return "\n".join(lines)
 
 
-def _render_page_en(release):
-    def link(path, label="Report"):
-        return f"[{label}](../../{path})"
-
-    passed, total = release["counts"]["passed"], release["total"]
-    lines = [
-        "# Example execution status", "",
-        "[中文](../../docs/示例实测状态.md) | English", "",
-        "> Generated by `tests/check_example_release.py --write`. Checking does not read `.env`, execute examples, or send API requests.", "",
-        f"Current executable examples: **{total}**. Complete HTTP evidence for current source: **{passed}/{total}**. "
-        f"Release gate: **{'passed' if release['ready'] else 'not satisfied'}**.", "",
-        "This page checks file-execution reports. Model-capability reports, old-source passes, process exit alone, and old records without finish/content observations do not count as complete evidence. "
-        "Python / TypeScript / cURL require `real_httpx` / `real_fetch` / `real_curl`, respectively. "
-        "Checks cover source and support-file hashes (including transport observers), vendor/model identity, HTTP success, normal final completion, nonempty text, stream termination, and server business status. "
-        "Tool workflows must return to final text; the multi-vendor entry point must complete for every target model.", "",
-        "For repeated executions of identical current source, prefer the catalog-registered report when it strictly passes. Otherwise select deterministically by report path, not by test time. Historical failures remain below. "
-        "Incomplete evidence means insufficient observation, not a conclusion that the API lacks the capability. "
-        "A pass does not validate every parameter combination or semantic accuracy. Read the [English model manuals and parameter notes](../../models/README.en.md).", "",
-        "```bash", "python tests/check_example_release.py --write", "python tests/check_example_release.py --check",
-        "python tests/check_example_release.py --check --require-passed", "```", "",
-        "Default generation/checking may succeed while the page honestly reports incomplete execution. `--require-passed` exits 1 unless the release gate is satisfied. "
-        "Invalid inputs/catalogs or a stale generated page exit 2. No host-private paths are required.", "",
-        f"Model example catalogs: {'valid' if release['catalog_valid'] and not release['catalog_issues'] else 'invalid'}. "
-        f"Report-structure issues: {len(release['report_issues'])}.", "",
-        "Related evidence: [official-documentation example index](example-index.md) and [historical workflow status](verification-status.md).", "",
-        "## Current-source evidence by file", "",
-        "| File | Vendor / model | Current status | Effective evidence / report | HTTP requests |",
-        "|---|---|---|---|---|",
-    ]
-    for row in release["rows"]:
-        selected = row["selected"]
-        evidence = link(selected["report"]) if selected else "—"
-        lines.append(f"| {link(row['path'], row['path'])} | {row['vendor']} / `{row['model_id']}` | {LABELS_EN.get(row['status'], 'Invalid evidence')} | {evidence} | {selected['request_count'] if selected else 0} |")
-    missing = [row for row in release["rows"] if row["status"] != "passed"]
-    lines.extend(["", "## Files without an effective pass", ""])
-    if missing:
-        lines.extend(f"- `{row['path']}`: {LABELS_EN.get(row['status'], 'Invalid evidence')}." for row in missing)
-    else:
-        lines.append("None. Every current file has strict passing evidence.")
-    lines.extend(["", "## Historical failures, old passes, and incomplete observations", "",
-                  "Historical reports are neither overwritten nor deleted; a successful retry does not erase earlier records.", "",
-                  "| File | Recorded outcome | Source identity | Report |", "|---|---|---|---|"])
-    history_count = 0
-    for row in release["rows"]:
-        for attempt in row["attempts"]:
-            if attempt["strict_passed"]:
-                continue
-            history_count += 1
-            state = LABELS_EN.get(attempt["reported_status"], "Invalid evidence")
-            if attempt["reported_status"] == "passed":
-                state = "Old record reports a pass (not current evidence)" if not attempt["current_source"] else "Reports a pass, but complete/valid evidence is missing"
-                if attempt["issue"] in {"incomplete_http_metadata", "incomplete_completion_metadata"}:
-                    state = "Reports a pass, but complete HTTP evidence is missing"
-            if attempt["issue"] == "invalid_evidence":
-                state = "Invalid record identity/metadata"
-            source = "Current" if attempt["current_source"] else "Does not match current source"
-            lines.append(f"| `{row['path']}` | {state} | {source} | {link(attempt['report'])} |")
-    if not history_count:
-        lines.append("| — | No historical failure or incomplete observation | — | — |")
-    if release["catalog_issues"] or release["report_issues"]:
-        lines.extend(["", "## Input and catalog issues", ""])
-        for issue in release["catalog_issues"]:
-            lines.append(f"- `{issue.get('path', 'models/*/*/examples/sources.json')}`: `{issue['code']}`.")
-        for issue in release["report_issues"]:
-            lines.append(f"- {link(issue['report'])}: `{issue['code']}`.")
-    lines.append("")
-    return "\n".join(lines)
-
-
-def page_outputs(release):
-    return {PAGE: render_page(release), EN_PAGE: render_page(release, language="en")}
+def page_outputs(directory):
+    return {PAGE: render_page(directory), EN_PAGE: render_page(directory, language="en")}
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT, help="待检查仓库根目录，默认由脚本位置推导")
     action = parser.add_mutually_exclusive_group()
-    action.add_argument("--check", action="store_true", help="检查已生成状态页是否一致")
-    action.add_argument("--write", action="store_true", help="生成状态页")
-    parser.add_argument("--require-passed", action="store_true", help="所有当前示例均有完整真实 HTTP 通过证据时才成功")
+    action.add_argument("--check", action="store_true", help="检查公开调用代码目录是否一致")
+    action.add_argument("--write", action="store_true", help="生成公开调用代码目录")
+    parser.add_argument("--require-passed", action="store_true", help="额外严格检查本地私有证据，所有当前示例真实 HTTP 通过时才成功")
     args = parser.parse_args(argv)
     try:
-        release = collect_release(args.root)
-        for relative, content in page_outputs(release).items():
+        directory = collect_code_directory(args.root)
+        for relative, content in page_outputs(directory).items():
             target = args.root / relative
             if args.write:
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(content, encoding="utf-8")
             if args.check and (not target.is_file() or target.read_text(encoding="utf-8") != content):
-                print(f"示例状态页过期：{relative.as_posix()}，请运行 --write", file=sys.stderr)
+                print(f"调用代码目录过期：{relative.as_posix()}，请运行 --write", file=sys.stderr)
                 return 2
+        print(f"公开调用代码目录：{len(directory['rows'])} 个文件。")
+        if not args.require_passed:
+            return 0
+        release = collect_release(args.root)
         print(f"当前示例 {release['total']}；完整 HTTP 通过 {release['counts']['passed']}；发布门槛 {'通过' if release['ready'] else '未满足'}")
         for row in release["rows"]:
             if row["status"] != "passed":
                 print(f"{row['path']}: {row['status']}")
         if not release["catalog_valid"] or release["catalog_issues"] or release["report_issues"]:
-            print("清单或报告校验存在问题，详见生成页。", file=sys.stderr)
+            print("本地私有绑定、清单或报告校验存在问题。", file=sys.stderr)
             return 2
-        return 1 if args.require_passed and not release["ready"] else 0
+        return 0 if release["ready"] else 1
     except (ValueError, TypeError, KeyError, OSError, AttributeError):
         # 不打印可能来自不可信输入的原始异常/字段值。
         print("无法建立有效示例清单或源码身份，请检查仓库内资料。", file=sys.stderr)

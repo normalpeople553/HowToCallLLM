@@ -18,7 +18,7 @@ For integration, migration, debugging or verification, read [SKILL.en.md](../ski
 | Change provider, model or SDK | Source and target cards, message/thinking/budget/tool differences, preserved business behavior and regression checks |
 | Empty answers, truncation, interrupted streams, errors or tool loops | Sanitized request, real statuses, finish reasons, usage and official evidence; never ask for a full key |
 | Use an unlisted model | Check that exact model's official identity and support; do not rename the default card |
-| Review evidence or run a real test | Exact file, current hashes, report scope and user authorization; mocks are not online success |
+| Review evidence or run a real test | Exact file, check scope and user authorization; mocks are not online success |
 
 These are project workflows, not provider guarantees. See [workflows](../skills/model-manual/references/workflows.en.md) for details and delivery requirements.
 
@@ -26,7 +26,7 @@ These are project workflows, not provider guarantees. See [workflows](../skills/
 
 ### Resource map
 
-People find models through the [model directory](../models/README.en.md); machines query the shared resources below by exact ID. Catalog entries, model cards, executable examples and test reports represent different coverage.
+People find models through the [model directory](../models/README.en.md); machines query the shared resources below by exact ID. Catalog entries, official model cards and executable examples represent different coverage; execution records stay local.
 
 | Resource | Canonical location | Use |
 |---|---|---|
@@ -34,10 +34,10 @@ People find models through the [model directory](../models/README.en.md); machin
 | Other language-model IDs | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [Model directory](../models/README.en.md) | People browse the directory; machines query exact IDs, official sources and lifecycle. Coverage is joined separately, not automatic card or live evidence |
 | Exact-model facts | [references/models](../skills/model-manual/references/models/) | Read identity, capabilities and generation; resolve each source reference |
 | Parameter explanations | [Parameter navigation](../en/docs/parameters.md) | Read the relevant model only; distinguish SDK options, server parameters and local safety limits |
-| Existing feature code | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | Query exact model/capability, provenance, inputs, commands and evidence |
+| Existing feature code | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | Query exact model/capability, provenance, inputs, commands and official attribution |
 | New combinations | [generate_snippet.py](../skills/model-manual/scripts/generate_snippet.py) | Generate supported language/task combinations without inheriting old passing evidence |
-| Current per-file results | [Execution status](../en/docs/example-status.md) · [Raw reports](../verification/examples/) | Check identity, evidence identifier, source/support hashes, normal completion and evidence scope |
-| Older capability checks | [Historical workflow status](../en/docs/verification-status.md) | Use only for its fixed test cases, not as per-file execution proof |
+| Calling-file directory | [Complete code directory](../en/docs/example-status.md) | Find files, exact models, purposes and commands without private records |
+| Local verification rules | [Verification notes](../en/docs/verification-status.md) | Live calls require authorization; execution records are unpublished |
 
 Run queries and generation from the repository root. These commands do not send model requests:
 
@@ -52,7 +52,7 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 
 ### Example search
 
-Find existing files by exact model and capability, then read the file's input variables, sources and current evidence.
+Find existing files by exact model and capability, then read the file's input variables, official sources and run requirements.
 
 ```bash
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
@@ -80,14 +80,14 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool
 Provide the exact model and official sources, code or project changes, dependencies and variable names, run commands, and checks actually completed or still outstanding. Add behavior differences for migration and supporting evidence for debugging. [Contract](../skills/model-manual/SKILL.en.md)
 
 - Read keys from the required environment variable or an ignored local file, never from hard-coded examples or output. A normal coding task does not automatically authorize billable real requests or uploading material.
-- Generation and offline tests are not online verification. Historical evidence covers its model, parameters, inputs and execution scope. Changed source or dependencies need new evidence.
+- Generation and offline tests are not online verification. An original result does not guarantee other inputs or combinations. Recheck changed source or dependencies; reports, replies, statistics and execution fingerprints must not be uploaded.
 - Explicitly label simulated tool data. Do not remove completion checks, tool-result round trips or required thinking history to manufacture a pass.
-- No model-level workflow report does not imply no real file execution; conversely, one passing file does not verify the entire model card.
+- Public private markers mean records are unpublished, not unexecuted or publicly auditable proof of a pass.
 
 See [evidence workflow](../skills/model-manual/references/workflows.en.md#evidence-and-verification) and [verification](../en/docs/verification.md) for boundaries and authorized execution. Machine JSON, CLI options and example paths are shared contracts: do not translate keys or silently change API regions.
 
 ## Chinese and compatibility entry points
 
-The [Chinese guide](README.md) reads [SKILL.md](../skills/model-manual/SKILL.md) and the [Chinese workflow](../skills/model-manual/references/workflows.md), backed by the same cards, code and reports.
+The [Chinese guide](README.md) reads [SKILL.md](../skills/model-manual/SKILL.md) and the [Chinese workflow](../skills/model-manual/references/workflows.md), backed by the same official cards and calling code.
 
 The old [agents/SKILL.md](SKILL.md) is a compatibility redirect. The old vendors/snippets directories contain migration notices, not separate authoritative facts or source templates. [Old provider-card notice](vendors/README.md) · [Old snippet notice](snippets/README.md)

@@ -2,7 +2,7 @@
 
 [中文](README.md) · [Human guide](../../../human/README.en.md) · [Parameter reference](parameters.en.md)
 
-English translation of the [Chinese manual](README.md), source-checked there on **2026-10-13**. Code, source manifests and reports are shared; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [`qwen-flash.json`](../../../skills/model-manual/references/models/qwen-flash.json).
+English translation of the [Chinese manual](README.md), source-checked there on **2026-10-13**. Calling code and official source manifests are shared; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [`qwen-flash.json`](../../../skills/model-manual/references/models/qwen-flash.json).
 
 Find files and attribution in [sources.json](examples/sources.json) or the [example index](../../../en/docs/example-index.md). Keep [historical unified tests](../../../en/docs/verification-status.md) separate from [per-file execution](../../../en/docs/example-status.md). Evidence covers only recorded source, parameters, input and environment; fragments, modified requests and generated combinations do not inherit passes. [Evidence policy](../../../en/docs/evidence-policy.md)
 
@@ -22,7 +22,7 @@ This is the older exact Qwen Flash model, not a newer-generation Flash. Its deta
 
 The official recommendation is a Workspace-specific endpoint, `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`. The older `https://dashscope.aliyuncs.com/compatible-mode/v1` remains documented; production projects should prefer the address supplied by their console. [API][api]
 
-The older endpoint's historical execution evidence is the [Historical strict report](verification/2026-10-13-strict.json); current file results are in [example status](../../../en/docs/example-status.md). Key creation and `DASHSCOPE_API_KEY` follow the [first-call guide](https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen).
+Key creation and `DASHSCOPE_API_KEY` follow the [first-call guide](https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen). Endpoint execution records stay local and are not published.
 
 Run the shared [01_basic.py](examples/01_basic.py), rather than a new English variant. From the repository root, after setting DASHSCOPE_API_KEY:
 
@@ -63,7 +63,7 @@ Region, deployment and tier affect pricing. This translation is not a fresh quot
 
 The shared example configuration is provider qwen, exact model qwen-flash, key variable DASHSCOPE_API_KEY, the older Beijing compatible Base URL above and text input. Explicit thinking-off Python configuration is `extra_body={"enable_thinking":False}`. [Model list][models] · [API][api]
 
-The [legacy smoke report](verification/2026-10-13.json) retains its original scope. Read [historical unified results](../../../en/docs/verification-status.md) and [current file results](../../../en/docs/example-status.md) separately. The shared unified-verifier command is `python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`; it sends real requests, not a complete execution of every example. Setup, per-file commands and exit codes are in [verification](../../../en/docs/verification.md).
+Calling code and official attribution are in [sources.json](examples/sources.json). Execution records stay local; see [reproduction](../../../en/docs/verification.md) for setup and checks.
 
 ## 7. Budget pitfalls
 

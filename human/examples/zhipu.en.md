@@ -133,17 +133,15 @@ if __name__ == "__main__":
 
 ## What should count as success
 
-The code writes final content to stdout and usage statistics to stderr. Wording is not fixed: the original reports intentionally omit answer text. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper.
+The code writes final content to stdout and usage statistics to stderr. Wording is not fixed. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper.
 
 [Actual output/check logic](../../models/zhipu/glm-4.7/examples/01_basic.py) · [Evidence boundaries](../../en/docs/evidence-policy.md)
 
-## Original execution evidence
+## Public record boundaries
 
-The current source has passed real HTTP evidence. [Original sanitized report](../../verification/examples/2026-10-14-zhipu-paid-attempt2.json) · [Current status](../../en/docs/example-status.md)
+The maintainer's execution records are local and not published with this repository. This page only checks the public source, exact request identity, reading anchors and official-source links; it does not consult private reports or claim a publicly verifiable pass.
 
-Source SHA-256: `ad0906242fa2c9590a4885b4a35fca59fbc40c97baef2e4ce8880a3062664469`
-
-This page is a reading view of that exact file, not another live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or present account availability.
+This is a reading view, not a live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or current account availability.
 
 ## Official sources and advanced examples
 

@@ -1,7 +1,6 @@
 {
   "schema_version": 2,
   "scope": "OpenAI-compatible text chat completions",
-  "verified_at": "2026-10-13",
   "selection_policy": {
     "default_billing": "paid",
     "scope": "maintained_examples_and_generated_defaults",
@@ -22,19 +21,19 @@
         }
       },
       "capabilities": {
-        "chat_completions": "verified",
-        "streaming": "verified",
-        "thinking": "verified",
-        "json_object": "verified",
-        "tool_calling": "verified",
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking": "documented",
+        "json_object": "documented",
+        "tool_calling": "documented",
         "strict_tool_calling": "documented",
-        "vision": "verified",
+        "vision": "documented",
         "responses_api": "documented",
         "anthropic_api": "documented",
         "context_caching": "documented",
         "chat_prefix_completion": "documented",
         "fim_completion": "documented",
-        "thinking_off": "verified"
+        "thinking_off": "documented"
       },
       "sources": {
         "api": "https://api-docs.deepseek.com/",
@@ -57,8 +56,8 @@
         }
       ],
       "model_card": "models/deepseek-flash.json",
-      "verification": "models/deepseek/deepseek-flash/verification/2026-10-13-strict.json",
-      "verification_scope": "strict_workflow"
+      "verification": null,
+      "verification_scope": "private"
     },
     "kimi": {
       "name": "Kimi（月之暗面）",
@@ -74,15 +73,15 @@
         }
       },
       "capabilities": {
-        "chat_completions": "verified",
-        "streaming": "verified",
-        "thinking": "verified",
-        "json_object": "verified",
-        "tool_calling": "verified",
-        "vision": "verified",
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking": "documented",
+        "json_object": "documented",
+        "tool_calling": "documented",
+        "vision": "documented",
         "video_input": "documented",
         "context_caching": "documented",
-        "thinking_off": "verified"
+        "thinking_off": "documented"
       },
       "sources": {
         "api": "https://platform.kimi.com/docs/api/overview",
@@ -102,8 +101,8 @@
         }
       ],
       "model_card": "models/kimi-k2.6.json",
-      "verification": "models/kimi/kimi-k2.6/verification/2026-10-13-strict.json",
-      "verification_scope": "strict_workflow"
+      "verification": null,
+      "verification_scope": "private"
     },
     "zhipu": {
       "name": "智谱 GLM",
@@ -159,13 +158,13 @@
         "enable_thinking": false
       },
       "capabilities": {
-        "chat_completions": "verified",
-        "streaming": "verified",
-        "thinking": "verified",
-        "json_object": "verified",
-        "tool_calling": "verified",
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking": "documented",
+        "json_object": "documented",
+        "tool_calling": "documented",
         "vision": "unknown",
-        "thinking_off": "verified"
+        "thinking_off": "documented"
       },
       "sources": {
         "api": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/",
@@ -184,8 +183,8 @@
         }
       ],
       "model_card": "models/qwen-flash.json",
-      "verification": "models/qwen/qwen-flash/verification/2026-10-13-strict.json",
-      "verification_scope": "strict_workflow"
+      "verification": null,
+      "verification_scope": "private"
     },
     "doubao": {
       "name": "豆包（火山方舟）",
@@ -202,13 +201,13 @@
         }
       },
       "capabilities": {
-        "chat_completions": "verified",
-        "streaming": "verified",
-        "thinking": "verified",
-        "structured_output": "verified",
-        "tool_calling": "verified",
-        "vision": "verified",
-        "thinking_off": "verified"
+        "chat_completions": "documented",
+        "streaming": "documented",
+        "thinking": "documented",
+        "structured_output": "documented",
+        "tool_calling": "documented",
+        "vision": "documented",
+        "thinking_off": "documented"
       },
       "sources": {
         "api": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh",
@@ -228,8 +227,8 @@
         }
       ],
       "model_card": "models/doubao-seed-2-1-pro-260628.json",
-      "verification": "models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json",
-      "verification_scope": "strict_workflow"
+      "verification": null,
+      "verification_scope": "private"
     },
     "minimax": {
       "name": "MiniMax",

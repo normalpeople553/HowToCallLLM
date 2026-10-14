@@ -2,9 +2,9 @@
 
 [中文](parameters.md) · [Human guide](../../../human/README.en.md) · [Model manual](README.en.md)
 
-English translation of the [Chinese reference](parameters.md), source-checked **2026-10-14**. Shared code, manifests and reports are unchanged by translation; official URLs, including Chinese pages, are retained. Translation does not rerun API verification.
+English translation of the [Chinese reference](parameters.md), source-checked **2026-10-14**. Calling code and official manifests are shared unchanged by translation; official URLs, including Chinese pages, are retained. Translation does not rerun API verification.
 
-This page explains actual fields in [seven independent executables](examples/sources.json), not successful execution of arbitrary combinations. Consult [file reports](../../../en/docs/example-status.md) matching current source. This paid text model does not inherit free Flash defaults or evidence; current amounts are linked to [official pricing][pricing]. [GLM-4.7][model] · [Evidence policy](../../../en/docs/evidence-policy.md)
+This page explains actual fields in [seven independent executables](examples/sources.json), not successful execution of arbitrary combinations. Find [calling files](../../../en/docs/example-status.md); private records are not published. This paid text model does not inherit free Flash defaults or evidence; current amounts are linked to [official pricing][pricing]. [GLM-4.7][model] · [Evidence policy](../../../en/docs/evidence-policy.md)
 
 ## 1. Actual parameters by file
 

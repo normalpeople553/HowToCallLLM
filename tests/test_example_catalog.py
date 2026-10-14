@@ -35,12 +35,9 @@ class ExampleCatalogTests(unittest.TestCase):
         self.assertEqual({(ROOT / item["catalog_path"]).parent.parent for item in catalogs}, directories)
         rows = catalog.select_examples(catalogs)
         self.assertGreaterEqual(len(rows), 40)
-        self.assertTrue(all(row["verification"]["live"] in catalog.LIVE_STATES for row in rows))
+        self.assertTrue(all(row["verification"]["live"] in catalog.PUBLIC_LIVE_STATES for row in rows))
         for row in rows:
-            if row["verification"]["live"] != "not_run":
-                self.assertIn("report", row["verification"])
-                self.assertTrue(row["verification"].get("evidence_id") or row["verification"].get("legacy_evidence") is True)
-            self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(row["verification"]))
+            self.assertEqual(set(row["verification"]), {"offline", "live", "note"})
 
     def test_exact_model_and_capability_filter_does_not_fallback(self):
         catalogs = catalog.load_catalogs()
@@ -75,8 +72,6 @@ class ExampleCatalogTests(unittest.TestCase):
                 state = f"{row['verification']['offline']} / {row['verification']['live']}"
                 self.assertIn(state, chinese)
                 self.assertIn(state, english)
-                if row["verification"]["live"] != "not_run":
-                    self.assertIn(f"](../../{row['verification']['report']})", english)
                 for source in row["sources"]:
                     self.assertIn(f"]({source['url']})", english)
         for model in catalogs:
@@ -93,6 +88,10 @@ class ExampleCatalogTests(unittest.TestCase):
                     self.assertIn(f"]({source['url']})", english)
         with self.assertRaises(ValueError):
             catalog.render_index(catalogs, language="unknown")
+        for page in (chinese, english):
+            self.assertNotIn("verification/", page)
+            self.assertNotIn(".local/", page)
+            self.assertNotIn("evidence_id", page)
 
     def test_missing_capability_exposes_exact_model_boundaries(self):
         catalogs = catalog.load_catalogs()
@@ -210,13 +209,13 @@ class FileExecutionEvidenceTests(unittest.TestCase):
     def test_not_run_needs_no_report_and_parameter_page_is_required_reading(self):
         self.fixture(live="not_run")
         self.assertFalse(self.report_path.exists())
-        catalogs = catalog.load_catalogs(self.root)
+        catalogs = catalog.load_catalogs(self.root, private_evidence=True)
         rows = catalog.select_examples(catalogs)
         self.assertEqual(rows[0]["verification"]["live"], "not_run")
         self.assertEqual(rows[0]["parameters_path"], "models/deepseek/deepseek-flash/parameters.md")
         rendered = catalog.render_index(catalogs)
         self.assertIn("调用前必读：[逐参数说明与文件映射](../models/deepseek/deepseek-flash/parameters.md)", rendered)
-        self.assertIn("不代表语义正确率", rendered)
+        self.assertIn("不保证任意参数组合、语义正确率", rendered)
 
     def test_bilingual_cli_writes_only_fixture_pages_and_detects_english_staleness(self):
         self.fixture(live="not_run")
@@ -251,16 +250,17 @@ class FileExecutionEvidenceTests(unittest.TestCase):
 
     def test_legacy_report_validates_time_but_exposes_only_legacy_identity_and_http_scope(self):
         _, report = self.fixture()
-        catalogs = catalog.load_catalogs(self.root)
-        verification = catalog.select_examples(catalogs)[0]["verification"]
+        catalogs = catalog.load_catalogs(self.root, private_evidence=True)
+        verification = catalogs[0]["examples"][0]["verification"]
         self.assertIs(verification["legacy_evidence"], True)
         self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(verification))
         self.assertEqual(catalog.evidence_metadata(report, report["results"][0]),
                          {"legacy_tested_at": "2026-10-14T03:04:05+00:00"})
         self.assertEqual(verification["evidence_scope"], catalog.HTTP_SCOPE)
         rendered = catalog.render_index(catalogs)
-        self.assertIn("mock_tested / passed", rendered)
-        self.assertIn("[报告](../verification/examples/synthetic.json)<br>HTTP 元数据", rendered)
+        self.assertIn("mock_tested / private", rendered)
+        self.assertNotIn("verification/examples/synthetic.json", rendered)
+        self.assertEqual(set(catalog.select_examples(catalogs)[0]["verification"]), {"offline", "live", "note"})
         for language in ("zh", "en"):
             rendered = catalog.render_index(catalogs, language=language)
             self.assertNotIn(report["results"][0]["tested_at"], rendered)
@@ -280,12 +280,12 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         self.version_two(report)
         self.save(manifest, report)
         self.assertEqual(catalog.evidence_metadata(report, report["results"][0]), {"evidence_id": report["evidence_id"]})
-        catalogs = catalog.load_catalogs(self.root)
-        verification = catalog.select_examples(catalogs)[0]["verification"]
+        catalogs = catalog.load_catalogs(self.root, private_evidence=True)
+        verification = catalogs[0]["examples"][0]["verification"]
         self.assertEqual(verification["evidence_id"], report["evidence_id"])
         self.assertEqual(verification["evidence_scope"], catalog.HTTP_SCOPE)
         self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at", "legacy_evidence"}.intersection(verification))
-        for language, title in (("zh", "报告 / 证据"), ("en", "Report / evidence")):
+        for language, title in (("zh", "线上记录"), ("en", "online records")):
             page = catalog.render_index(catalogs, language=language)
             self.assertIn(title, page)
             self.assertNotIn("2026-10-14T03:04:05", page)
@@ -299,7 +299,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
             mutation(broken)
             self.save(manifest, broken)
             with self.assertRaises(ValueError):
-                catalog.load_catalogs(self.root)
+                catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_v2_requires_a_canonical_uuid4_and_explicit_false_time_privacy_flags(self):
         _, report = self.fixture()
@@ -346,15 +346,100 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         verification = manifest["examples"][0]["verification"]
         verification.update(tested_at="private-legacy-time", duration_seconds=1, legacy_tested_at="private-legacy-time")
         self.save(manifest)
-        loaded = catalog.load_catalogs(self.root)
-        self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(catalog.select_examples(loaded)[0]["verification"]))
-        # Even direct selection of an in-memory catalog cannot reintroduce the fields.
-        loaded[0]["examples"][0]["verification"].update(verification)
-        self.assertNotIn("private-legacy-time", json.dumps(catalog.select_examples(loaded)))
+        with self.assertRaises(ValueError):
+            catalog.load_catalogs(self.root)
+        # Even direct selection of an internal in-memory catalog strips private fields.
+        manifest["catalog_path"] = self.manifest_path.relative_to(self.root).as_posix()
+        self.assertNotIn("private-legacy-time", json.dumps(catalog.select_examples([manifest])))
+
+    def private_fixture(self):
+        manifest, report = self.fixture()
+        self.version_two(report)
+        original = dict(manifest["examples"][0]["verification"])
+        manifest["examples"][0]["verification"] = {"offline": "mock_tested", "live": "private", "note": "实测记录仅在本地保存，不作公开通过声明"}
+        self.save(manifest)
+        bindings = self.root / ".local/evidence/bindings.json"
+        bindings.parent.mkdir(parents=True, exist_ok=True)
+        data = {"schema_version": 1, "examples": {self.source_path: original}}
+        bindings.write_text(json.dumps(data), encoding="utf-8")
+        mirror = self.root / ".local/evidence" / original["report"]
+        mirror.parent.mkdir(parents=True, exist_ok=True)
+        mirror.write_text(json.dumps(report), encoding="utf-8")
+        return manifest, report, data, bindings, mirror
+
+    def test_public_mode_never_reads_local_bindings_reports_or_computes_evidence_hashes(self):
+        self.private_fixture()
+        original_open = Path.open
+        def public_open(path, *args, **kwargs):
+            self.assertNotIn(".local", path.parts)
+            self.assertNotIn("verification", path.parts)
+            return original_open(path, *args, **kwargs)
+        with patch.object(Path, "open", public_open), patch.object(catalog, "file_identity", side_effect=AssertionError("public lookup cannot hash evidence")):
+            loaded = catalog.load_catalogs(self.root)
+            row = catalog.select_examples(loaded)[0]
+            self.assertEqual(row["verification"]["live"], "private")
+            self.assertEqual(set(row["verification"]), {"offline", "live", "note"})
+            self.assertNotIn("verification/", catalog.render_index(loaded))
+
+    def test_explicit_private_mode_resolves_local_binding_and_still_fails_changed_sources(self):
+        _, report, _, _, _ = self.private_fixture()
+        loaded = catalog.load_catalogs(self.root, private_evidence=True)
+        private = loaded[0]["examples"][0]["verification"]
+        self.assertEqual(private["live"], "passed")
+        self.assertEqual(private["evidence_id"], report["evidence_id"])
+        self.assertEqual(private["report"], ".local/evidence/verification/examples/synthetic.json")
+        self.assertEqual(catalog.select_examples(loaded)[0]["verification"]["live"], "private")
+        self.assertNotIn(report["evidence_id"], json.dumps(catalog.select_examples(loaded)))
+        (self.root / self.source_path).write_text("# changed synthetic source\n", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            catalog.load_catalogs(self.root, private_evidence=True)
+        self.assertEqual(catalog.load_catalogs(self.root)[0]["examples"][0]["verification"]["live"], "private")
+
+    def test_missing_private_records_remain_private_not_passed_or_not_run(self):
+        _, _, _, bindings, _ = self.private_fixture()
+        bindings.unlink()
+        checked = catalog.load_catalogs(self.root, private_evidence=True)[0]["examples"][0]["verification"]
+        self.assertEqual(checked["live"], "private")
+        self.assertEqual(set(checked), {"offline", "live", "note"})
+
+    def test_invalid_private_binding_is_rejected_only_in_explicit_private_mode(self):
+        for case in ("schema", "examples", "source", "verification", "escape", "missing_report"):
+            with self.subTest(case=case):
+                _, _, data, bindings, _ = self.private_fixture()
+                if case == "schema":
+                    data["schema_version"] = True
+                elif case == "examples":
+                    data["examples"] = []
+                elif case == "source":
+                    data["examples"]["../synthetic.py"] = data["examples"].pop(self.source_path)
+                elif case == "verification":
+                    data["examples"][self.source_path]["live"] = "forged"
+                elif case == "escape":
+                    data["examples"][self.source_path]["report"] = "../synthetic.json"
+                else:
+                    data["examples"][self.source_path]["report"] = "verification/examples/missing.json"
+                bindings.write_text(json.dumps(data), encoding="utf-8")
+                self.assertEqual(catalog.load_catalogs(self.root)[0]["examples"][0]["verification"]["live"], "private")
+                with self.assertRaises(ValueError):
+                    catalog.load_catalogs(self.root, private_evidence=True)
+
+    def test_public_private_states_reject_extra_evidence_fields_and_public_pass_claims(self):
+        for case in ("report", "evidence_id", "source_sha256", "requests", "passed"):
+            with self.subTest(case=case):
+                manifest, _ = self.fixture(live="not_run")
+                check = manifest["examples"][0]["verification"]
+                check["live"] = "private"
+                if case == "passed":
+                    check["live"] = "passed"
+                else:
+                    check[case] = "synthetic-private-value"
+                self.save(manifest)
+                with self.assertRaises(ValueError):
+                    catalog.load_catalogs(self.root)
 
     def test_all_observed_failure_and_missing_condition_statuses_are_allowed(self):
         manifest, report = self.fixture()
-        for status in sorted(catalog.LIVE_STATES - {"not_run", "passed"}):
+        for status in sorted(catalog.LIVE_STATES - catalog.PUBLIC_LIVE_STATES - {"passed"}):
             with self.subTest(status=status):
                 manifest["examples"][0]["verification"]["live"] = status
                 result = report["results"][0]
@@ -363,7 +448,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 result.pop("exit_code", None)
                 result.pop("evidence_scope", None)
                 self.save(manifest, report)
-                loaded = catalog.load_catalogs(self.root)
+                loaded = catalog.load_catalogs(self.root, private_evidence=True)
                 self.assertEqual(loaded[0]["examples"][0]["verification"]["live"], status)
 
     def test_report_identity_privacy_and_status_must_match(self):
@@ -392,7 +477,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 mutation(report)
                 self.save(manifest, report)
                 with self.assertRaises(ValueError):
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_unavailable_nonrelative_and_escaping_reports_are_rejected(self):
         manifest, report = self.fixture()
@@ -402,7 +487,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 verification["report"] = path
                 self.save(manifest, report)
                 with self.assertRaises(ValueError):
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
         with tempfile.TemporaryDirectory() as directory:
             external = Path(directory) / "external.json"
             external.write_text(json.dumps(report), encoding="utf-8")
@@ -410,7 +495,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
             verification["report"] = "escaped.json"
             self.save(manifest, report)
             with self.assertRaises(ValueError):
-                catalog.load_catalogs(self.root)
+                catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_changed_source_or_support_or_new_helper_invalidates_report(self):
         for filename in ("01_basic.py", "_support.py", "_new_helper.py"):
@@ -419,7 +504,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 target = self.manifest_path.parent / filename
                 target.write_text("# changed after execution\n", encoding="utf-8")
                 with self.assertRaisesRegex(ValueError, "支持文件已变更"):
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
                 if filename == "_new_helper.py":
                     target.unlink()
 
@@ -457,14 +542,14 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 mutation(report["results"][0])
                 self.save(manifest, report)
                 with self.assertRaises(ValueError):
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_success_after_a_failed_http_attempt_is_not_rejected(self):
         manifest, report = self.fixture()
         requests = report["results"][0]["requests"]
         requests.insert(0, {**requests[0], "http_status": 429})
         self.save(manifest, report)
-        self.assertEqual(catalog.load_catalogs(self.root)[0]["examples"][0]["verification"]["live"], "passed")
+        self.assertEqual(catalog.load_catalogs(self.root, private_evidence=True)[0]["examples"][0]["verification"]["live"], "passed")
 
     def test_paid_glm_rejects_explicit_served_conflict_even_before_a_later_normal_reply(self):
         for early_conflict in (False, True):
@@ -479,10 +564,10 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                         requests.append({**requests[0], "served_model": "glm-4.7"})
                     self.save(manifest, report)
                     with self.assertRaises(ValueError):
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                     requests[0]["served_model"] = "glm-4.7"
                     self.save(manifest, report)
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
                 finally:
                     self.root = previous
 
@@ -490,7 +575,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         manifest, report = self.fixture()
         report["results"][0]["requests"][0]["served_model"] = "deepseek-v4-flash"
         self.save(manifest, report)
-        catalog.load_catalogs(self.root)
+        catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_all_languages_require_complete_matching_real_http_evidence(self):
         for suffix in (".py", ".sh", ".ts"):
@@ -500,18 +585,19 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                 self.root = Path(directory)
                 try:
                     manifest, report = self.fixture(suffix=suffix)
-                    rendered = catalog.render_index(catalog.load_catalogs(self.root))
-                    self.assertIn("<br>HTTP 元数据", rendered)
+                    rendered = catalog.render_index(catalog.load_catalogs(self.root, private_evidence=True))
+                    self.assertIn("mock_tested / private", rendered)
+                    self.assertNotIn("verification/examples/synthetic.json", rendered)
                     result = report["results"][0]
                     request = result["requests"][0]
                     result.update(evidence_scope=catalog.PROCESS_SCOPE, requests=[])
                     self.save(manifest, report)
                     with self.assertRaises(ValueError):
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                     result.update(evidence_scope=catalog.HTTP_SCOPE, requests=[{**request, "transport": "mock"}])
                     self.save(manifest, report)
                     with self.assertRaises(ValueError):
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                 finally:
                     self.root = previous
 
@@ -531,7 +617,7 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                             request["parameters"]["stream"] = True
                             request["sse_done" if mode == "done" else "transport_eof"] = True
                         self.save(manifest, report)
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                     finally:
                         self.root = previous
 
@@ -540,19 +626,19 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         requests = report["results"][0]["requests"]
         requests.insert(0, {**requests[0], "finish_reasons": ["tool_calls"], "has_tool_calls": True, "content_chars": 0})
         self.save(manifest, report)
-        catalog.load_catalogs(self.root)
+        catalog.load_catalogs(self.root, private_evidence=True)
         requests.reverse()
         self.save(manifest, report)
         with self.assertRaises(ValueError):
-            catalog.load_catalogs(self.root)
+            catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_failed_process_only_record_remains_transparent_but_not_passed(self):
         manifest, report = self.fixture(live="failed")
         report["results"][0].update(exit_code=1, requests=[], evidence_scope=catalog.PROCESS_SCOPE)
         self.save(manifest, report)
-        rendered = catalog.render_index(catalog.load_catalogs(self.root))
-        self.assertIn("mock_tested / failed", rendered)
-        self.assertIn("<br>进程及自身检查", rendered)
+        rendered = catalog.render_index(catalog.load_catalogs(self.root, private_evidence=True))
+        self.assertIn("mock_tested / private", rendered)
+        self.assertNotIn("verification/examples/synthetic.json", rendered)
 
     def test_transport_helpers_are_part_of_source_identity_when_present(self):
         for suffix, helper_path in catalog.TRACE_HELPERS.items():
@@ -567,23 +653,23 @@ class FileExecutionEvidenceTests(unittest.TestCase):
                     helper.write_text("# synthetic transport observer\n", encoding="utf-8")
                     self.assertIn(helper_path, catalog.file_identity(self.root, self.source_path))
                     with self.assertRaisesRegex(ValueError, "支持文件已变更"):
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                     self.fixture(suffix=suffix)
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
                     helper.write_text("# changed observer\n", encoding="utf-8")
                     with self.assertRaisesRegex(ValueError, "支持文件已变更"):
-                        catalog.load_catalogs(self.root)
+                        catalog.load_catalogs(self.root, private_evidence=True)
                 finally:
                     self.root = previous
 
     def test_not_run_with_report_and_unknown_live_status_are_rejected(self):
         manifest, report = self.fixture()
-        for live in ("not_run", "unverified"):
+        for live in ("not_run", "private", "unverified"):
             with self.subTest(live=live):
                 manifest["examples"][0]["verification"]["live"] = live
                 self.save(manifest, report)
                 with self.assertRaises(ValueError):
-                    catalog.load_catalogs(self.root)
+                    catalog.load_catalogs(self.root, private_evidence=True)
 
     def test_hash_identity_matches_the_real_runner_without_running_it(self):
         runner_spec = importlib.util.spec_from_file_location("example_file_runner_identity", ROOT / "tests/run_example_files.py")

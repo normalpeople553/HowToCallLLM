@@ -2,7 +2,7 @@
 
 [中文](../../docs/00-前言.md) · [Human guide](../../human/README.en.md) · [Agent guide](../../agents/README.en.md)
 
-Model Manual has two reading paths: the [human guide](../../human/README.en.md) explains how to use it, compare models, and interpret test coverage; the [Agent guide](../../agents/README.en.md) routes a coding agent to the material needed for an implementation task. The [repository README](../../README.en.md) is the common gateway. Both paths share the same model cards and original reports rather than maintaining separate sets of model facts. These are role-based paths, not separate beginner and expert editions. [Evidence policy](evidence-policy.md)
+Model Manual has two reading paths: the [human guide](../../human/README.en.md) explains how to use it, compare models, and interpret test coverage; the [Agent guide](../../agents/README.en.md) routes a coding agent to the material needed for an implementation task. The [repository README](../../README.en.md) is the common gateway. Both paths share the same official model cards and calling code rather than maintaining separate sets of model facts. These are role-based paths, not separate beginner and expert editions. [Evidence policy](evidence-policy.md)
 
 ## For agents
 
@@ -17,7 +17,7 @@ Copy a task instruction from the [human guide](../../human/README.en.md) to your
 - Capabilities and limits: use the [model manuals](../../models/README.en.md) and their official sources.
 - Calling differences and failures: read the [compatible-API pattern](compatible-api.md), [troubleshooting](troubleshooting.md), and [production pitfalls](production-pitfalls.md).
 - Pricing and quotas: use the [official pricing links](pricing.md).
-- Whether tests cover your needs: read the [unified verification status](verification-status.md) and original reports; use [verification and reproduction](verification.md) when rerunning tests yourself.
+- Verify your own calls: read [verification notes](verification-status.md) and [reproduction](verification.md). Maintainer execution records are not published.
 
 The [first-call tutorial](first-call.md) remains an optional walkthrough for running code manually. There is no requirement to read the chapters in order.
 
@@ -26,7 +26,7 @@ The [first-call tutorial](first-call.md) remains an optional walkthrough for run
 | Label | Meaning in this project |
 |---|---|
 | Official | A vendor's official source is linked in the same paragraph or table row. |
-| Tested | An evidence identifier, test scope, redacted report, and corresponding script are provided. |
+| Tested | Maintainers check calls locally; public material provides calling code and reproduction instructions. |
 | Project recommendation | An editorial recommendation about workflow, safety, or selection. |
 | Unknown | Official documentation or repository tests do not provide enough evidence; no conclusion is inferred. |
 

@@ -2,11 +2,11 @@
 
 [中文](../../docs/验证与复现.md) · [Human guide](../../human/README.en.md)
 
-This page defines installation and the two layers of real verification. Commands, exit codes, and report fields are implemented by the [unified verifier](../../tests/provider_verify.py), [file executor](../../tests/run_example_files.py), and [locked dependencies](../../requirements-lock.txt). See [parameters and tuning](parameters.md) for field explanations and the [evidence policy](evidence-policy.md) for scope.
+This page defines installation, public offline checks and local live verification. Commands, exit codes and private report fields are implemented by the [unified verifier](../../tests/provider_verify.py), [file executor](../../tests/run_example_files.py) and [locked dependencies](../../requirements-lock.txt). See [parameters and tuning](parameters.md) for field explanations and the [evidence policy](evidence-policy.md) for scope.
 
 ## Reproducible environment
 
-At the repository root, create an isolated Python 3.10+ environment and install the full lock file. Dependency upgrades do not rewrite the Python/SDK versions recorded in historical reports.
+At the repository root, create an isolated Python 3.10+ environment and install the full lock file. Private execution records are not included in downloads or required for public offline checks.
 
 ```bash
 python3 -m venv .venv
@@ -15,7 +15,7 @@ python -m pip install -r requirements-lock.txt
 python -c 'import sys, openai; print(sys.version); print(openai.__version__)'
 ```
 
-For Windows PowerShell, activate with `.venv\Scripts\Activate.ps1`. The [CI template](../../ci/offline-checks.yml) defines a Linux/Windows and Python 3.10/3.13 matrix, but is not currently enabled as GitHub Actions. Actual verified environments are those in reports; a template is not evidence that those platforms passed.
+For Windows PowerShell, activate with `.venv\Scripts\Activate.ps1`. The [CI template](../../ci/offline-checks.yml) defines a Linux/Windows and Python 3.10/3.13 matrix, but is not currently enabled as GitHub Actions. A template is not evidence that those platforms passed.
 
 ## Offline checks
 
@@ -42,31 +42,26 @@ python skills/model-manual/scripts/model_catalog.py --check
 python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
 ```
 
-`--write-pages` generates the index and six vendor pages in both languages; `--check` detects stale generated pages. Filters cannot be combined with page operations. An unmatched exact ID, invalid catalog or existing evidence, or stale page exits `2`; success exits `0`. Queries read documentation snapshots and saved evidence, not keys or the network, and do not inventory live models. Sources must use the corresponding vendor's allowed official HTTPS hosts. Host/schema validation does not automatically verify factual meaning.
+`--write-pages` generates the index and six vendor pages in both languages; `--check` detects stale generated pages. Filters cannot be combined with page operations. An unmatched exact ID, invalid catalog or stale page exits `2`; success exits `0`. Queries read documentation snapshots and registered code, not private records, keys or the network, and do not inventory live models. Sources must use the corresponding vendor's allowed official HTTPS hosts. Host/schema validation does not automatically verify factual meaning.
 
 Adding discovery entries does not change default cards or example source. Full integration needs a separately maintained exact-model card, parameter guide and actually executed examples. Passing evidence for existing example files does not transfer to newly listed models. [Evidence boundaries](evidence-policy.md)
 
 ## Human code-reading pages (no requests)
 
-[Code reading and human review](../../human/examples/README.en.md) displays the complete executed basic files for the six maintained models. Source changes still need the original real-execution procedure first. The renderer generates both editions only when current source has complete passing HTTP evidence and reading anchors still match. It creates no new calling code and makes no requests.
+[Code reading and human review](../../human/examples/README.en.md) displays complete basic calling files for the six maintained models. Maintainers must still verify changed calls. The renderer checks public source, exact model and reading anchors without reading private reports. It creates no new calling code and makes no requests.
 
 ```bash
 python scripts/render_human_examples.py --write
 python scripts/render_human_examples.py --check
 ```
 
-No arguments defaults to read-only checking. Invalid source, evidence, reading anchors or stale pages exit `2`; successful checking or writing exits `0`. `--write` updates only the 14 reading pages in `human/examples/`. Both editions preserve the actual source code, with explanations from one bilingual set of reading prompts. An Agent implementation with changed calling fields or prompts still needs separate verification. Source and support-dependency evidence rules are in the [evidence policy](evidence-policy.md).
+No arguments defaults to read-only checking. Invalid source, exact model, reading anchors or stale pages exit `2`; successful checking or writing exits `0`. `--write` updates only the 14 reading pages in `human/examples/`. Both editions preserve actual source code, with explanations from one bilingual set of reading prompts. An Agent implementation with changed calling fields or prompts still needs separate verification. See the [publishing policy](evidence-policy.md).
 
-## Two layers of real evidence
+## Local live verification
 
-| Path | What it actually checks | Where to read results |
-|---|---|---|
-| [Unified verifier](../../tests/provider_verify.py) | Fixed models and capability test cases; it does not run every example source file. | [Historical unified verification status](verification-status.md) and card-linked reports. |
-| [File executor](../../tests/run_example_files.py) | Registered original files, source fingerprints, real HTTP observations, and the files' own validation. | [File-level example status](example-status.md) and original reports. |
+Maintainers must actually run calling code before publication. Execution records stay local. The unified verifier covers fixed checks; the file executor runs registered originals. Neither inherits the other's results, and missing records do not mean passing. Public private markers mean unpublished records, not public proof or lack of execution. [Publishing policy](evidence-policy.md)
 
-MiniMax M2.7 is not integrated into the five-vendor fixed-model unified verifier below. Its card's `verification=null` marks only that layer's missing report, not an absence of file-level real calls. Read its concrete file outcomes in [example status](example-status.md), just like the other models. Adding a key, passing offline tests, HTTP 200, or exit code 0 alone does not establish that all capabilities passed. [M2.7 manual](../../models/minimax/MiniMax-M2.7/README.en.md) · [Evidence policy](evidence-policy.md)
-
-## Unified verifier: fixed capability tests
+## Unified verifier: fixed checks
 
 Configure only the vendors you intend to verify, using environment variables or the Git-ignored root `.env`. Vendors missing keys are skipped. A full run makes real API requests. [Key policy](evidence-policy.md)
 
@@ -79,9 +74,9 @@ python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json
 python tests/verify_deepseek_flash.py --report /tmp/deepseek-flash-verification.json
 ```
 
-`/tmp/` is a macOS/Linux example; use an appropriate temporary directory on Windows. Existing reports are not overwritten by default; `--overwrite` is an explicit replacement option. When committing knowledge-base evidence, add a new report and update the model card's `verification` pointer while retaining history.
+`/tmp/` is a macOS/Linux example; use an appropriate temporary directory on Windows. Existing reports are not overwritten by default; `--overwrite` is an explicit replacement option. New reports default to Git-ignored `.local/evidence/`; an explicit local path outside the repository is also supported. Do not commit reports, replies, statistics or execution fingerprints to GitHub, or put report paths in public cards.
 
-Reports record the runtime, commit and dirty-worktree marker, endpoint, actual safe parameters, termination, token counts, and classified outcomes. They do not save keys, question text, model answers, reasoning text, tool arguments, or request IDs. Errors retain only a category and permitted business codes, not raw vendor error text. [Implementation and fields](../../tests/provider_verify.py)
+Local-only reports record the runtime, commit and dirty-worktree marker, endpoint, actual safe parameters, termination, token counts, and classified outcomes. They do not save keys, question text, model answers, reasoning text, tool arguments, or request IDs. Errors retain only a category and permitted business codes, not raw vendor error text. [Implementation and fields](../../tests/provider_verify.py)
 
 The tests define the coverage: ordinary/JSON requests check normal completion and parsable results; tools run a simulated-weather loop; images identify the color of a generated image. One pass proves that fixed example, not general accuracy or another model's capability. [Verifier](../../tests/provider_verify.py)
 
@@ -133,7 +128,7 @@ Explanatory code blocks and arbitrary generated combinations are not covered by 
 
 ### File-level release gate
 
-The [release check](../../tests/check_example_release.py) reads current source hashes and saved reports without reading keys or sending requests. It rechecks real HTTP transport, normal completion, and nonempty content instead of trusting an old `passed` string. Earlier observation scopes are explained in the [report notes](../../verification/README.md).
+The [release check](../../tests/check_example_release.py) generates or checks the public calling-code directory by default, without private records, execution hashing or requests. Only explicit `--require-passed` checks local reports against current source and requires real HTTP, normal completion and nonempty content. Missing local records cannot become a pass. [Local notes](../../verification/README.en.md).
 
 ```bash
 python tests/check_example_release.py --write
@@ -141,11 +136,11 @@ python tests/check_example_release.py --check
 python tests/check_example_release.py --check --require-passed
 ```
 
-`--check` verifies page synchronization and may truthfully show unpassed items. `--require-passed` additionally requires complete passing evidence for every current example; an unmet gate returns `1`, while a stale page or structurally invalid material returns `2`. Do not claim universal success before the gate is satisfied. [Implementation](../../tests/check_example_release.py)
+`--check` verifies public code-directory synchronization without requiring private reports. `--require-passed` separately checks maintainer-local evidence; an unmet gate returns `1`, while a stale page or structurally invalid material returns `2`. View that result locally, not in public pages. [Implementation](../../tests/check_example_release.py)
 
 ## Bilingual synchronization and translation review
 
-Both languages use the same model cards, source files, provenance manifests and reports; translation does not trigger new API calls. These generators now produce both editions, and their check commands detect stale pages in either edition. They do not read keys or send requests.
+Both languages use the same official model cards, calling source and attribution manifests; translation does not trigger new API calls. These generators produce both editions, and their check commands detect stale pages in either edition. They read no keys and send no requests.
 
 ```bash
 python skills/model-manual/scripts/example_catalog.py --write-index
@@ -160,11 +155,11 @@ Static translation pairs are recorded in the [manifest](../translations.json). A
 
 ## Synchronize capability summaries
 
-Historical unified-verifier vendor summaries and status pages are generated from reports registered by model cards. After updating a `verification` pointer, run:
+Public vendor summaries and verification notes derive only from official card sources and publication boundaries, not private reports. After changing official facts, run:
 
 ```bash
 python skills/model-manual/scripts/sync_verification.py
 python skills/model-manual/scripts/sync_verification.py --check
 ```
 
-The synchronizer reads existing unified reports; it sends no requests, does not turn failure into unsupported capability, and does not promote file results into model-wide capability. Read the two layers separately: [unified status](verification-status.md) and [file-level status](example-status.md).
+The synchronizer sends no requests, reads no private records and outputs no statistics or report links. Maintenance observations are not provider capability guarantees. See [official attribution and local verification notes](verification-status.md) and the [calling-code directory](example-status.md).

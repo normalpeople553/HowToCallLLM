@@ -28,7 +28,8 @@ API_HOSTS = {
     "doubao": {"ark.cn-beijing.volces.com"}, "minimax": {"api.minimax.cn"},
 }
 OFFLINE_STATES = {"not_run", "compile_checked", "mock_tested"}
-LIVE_STATES = {"not_run", "passed", "failed", "rate_limited", "missing_key", "missing_input", "missing_runtime", "timeout"}
+LIVE_STATES = {"private", "not_run", "passed", "failed", "rate_limited", "missing_key", "missing_input", "missing_runtime", "timeout"}
+PUBLIC_LIVE_STATES = {"private", "not_run"}
 PRIVACY_FLAGS = {"api_key_saved", "response_content_saved", "reasoning_content_saved", "raw_error_saved", "request_messages_saved"}
 HTTP_SCOPE = "original_file_and_real_http_metadata"
 PROCESS_SCOPE = "original_file_process_exit_and_its_response_checks"
@@ -180,8 +181,8 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     _require(isinstance(verification.get("note"), str) and bool(verification["note"].strip()), "文件级验证缺少范围说明")
     for key in ("tested_at", "duration_seconds", "legacy_tested_at", "evidence_id", "legacy_evidence"):
         verification.pop(key, None)
-    if live == "not_run":
-        _require(not verification.get("report"), "not_run 不能引用线上验证报告")
+    if live in PUBLIC_LIVE_STATES:
+        _require(not verification.get("report"), "private/not_run 不能引用公开线上验证报告")
         return
     report_path = _report_path(root, verification.get("report"))
     if report_path not in reports:
@@ -219,9 +220,49 @@ def _verify_live(root, source_path, vendor, model, verification, reports):
     verification["evidence_scope"] = scope
 
 
-def load_catalogs(root=ROOT):
+def _public_verification(verification):
+    """Never publish private report bindings, including from a private caller."""
+    return {"offline": verification["offline"],
+            "live": verification["live"] if verification["live"] in PUBLIC_LIVE_STATES else "private",
+            "note": verification["note"]}
+
+
+def _validate_public_verification(verification):
+    _require(isinstance(verification, dict) and set(verification) == {"offline", "live", "note"},
+             "公开 verification 只能含 offline/live/note")
+    _require(verification.get("offline") in OFFLINE_STATES, "未知离线验证状态")
+    _require(verification.get("live") in PUBLIC_LIVE_STATES, "公开线上记录只能为 private 或 not_run，不能声称公开实测通过")
+    _require(isinstance(verification.get("note"), str) and bool(verification["note"].strip()), "文件级验证缺少范围说明")
+
+
+def _private_bindings(root):
+    path = root / ".local/evidence/bindings.json"
+    if not path.is_file():
+        return {}
+    _require(path.resolve().is_relative_to(root.resolve()), "私有绑定不能指向仓库之外")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    _require(isinstance(data, dict) and type(data.get("schema_version")) is int
+             and data["schema_version"] == 1 and isinstance(data.get("examples"), dict), "私有绑定 schema 无效")
+    for source, verification in data["examples"].items():
+        _require(isinstance(source, str) and not Path(source).is_absolute() and "\\" not in source
+                 and all(part not in {"", ".", ".."} for part in source.split("/")), "私有绑定源码路径无效")
+        _require(isinstance(verification, dict) and verification.get("offline") in OFFLINE_STATES
+                 and verification.get("live") in LIVE_STATES
+                 and isinstance(verification.get("note"), str) and bool(verification["note"].strip()), "私有 verification 无效")
+    return data["examples"]
+
+
+def load_catalogs(root=ROOT, private_evidence=False):
+    """Default public lookup never opens local reports or their bindings.
+
+    Explicit private mode validates local bindings with the original strict
+    report/identity/HTTP rules. Legacy synthetic fixtures can still provide
+    direct report bindings in this mode. Missing local records remain private,
+    not a pass and not an assertion that no test was performed.
+    """
     root = Path(root)
     catalogs, reports = [], {}
+    bindings = _private_bindings(root) if private_evidence else {}
     for path in sorted((root / "models").glob("*/*/examples/sources.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
         vendor, model = path.parts[-4], path.parts[-3]
@@ -248,7 +289,20 @@ def load_catalogs(root=ROOT):
             verification = entry.get("verification", {})
             _require(isinstance(verification, dict), "示例 verification 必须为对象")
             _require(verification.get("offline") in OFFLINE_STATES, "未知离线验证状态")
-            _verify_live(root, (path.parent / filename).relative_to(root).as_posix(), vendor, model, verification, reports)
+            source_path = (path.parent / filename).relative_to(root).as_posix()
+            if not private_evidence or verification.get("live") in PUBLIC_LIVE_STATES:
+                _validate_public_verification(verification)
+            if private_evidence:
+                if source_path in bindings:
+                    verification = dict(bindings[source_path])
+                    entry["verification"] = verification
+                    if verification.get("report"):
+                        original = verification["report"]
+                        _require(isinstance(original, str) and not Path(original).is_absolute()
+                                 and "\\" not in original and all(part not in {"", ".", ".."} for part in original.split("/")),
+                                 "私有 report 必须是安全相对路径")
+                        verification["report"] = (Path(".local/evidence") / original).as_posix()
+                _verify_live(root, source_path, vendor, model, verification, reports)
         runnable = {p.name for p in path.parent.iterdir() if p.suffix in {".py", ".ts", ".sh"} and not p.name.startswith("_")}
         _require(files == runnable, f"{path}: 清单与可运行文件不一致：{sorted(files ^ runnable)}")
         for item in data.get("not_integrated", []):
@@ -271,10 +325,9 @@ def select_examples(catalogs, vendor=None, model=None, capability=None):
         for entry in catalog["examples"]:
             if capability and entry["capability"] != capability:
                 continue
-            public_entry = {**entry, "verification": {
-                key: value for key, value in entry["verification"].items()
-                if key not in {"tested_at", "duration_seconds", "legacy_tested_at"}
-            }}
+            public_entry = {key: entry[key] for key in (
+                "id", "file", "title", "capability", "origin", "sources", "required_env", "run_command", "adaptations")}
+            public_entry["verification"] = _public_verification(entry["verification"])
             result.append({
                 "vendor": catalog["vendor"], "model_id": catalog["model_id"],
                 "checked_at": catalog["checked_at"], "catalog_path": catalog["catalog_path"],
@@ -309,7 +362,7 @@ def render_index(catalogs, language="zh"):
         "中文 | [English](../en/docs/example-index.md)", "",
         "> 本页由各型号的 `examples/sources.json` 生成；修改清单后运行同步命令，不手改本页。", "",
         "这里的代码是**基于官方文档改写的项目示例**，不是厂商发布的 SDK，也不是官方示例原文镜像。"
-        "每项清单记录官方链接、准确型号、所需环境变量、运行命令、改写说明和文件级验证范围。", "",
+        "每项清单记录官方链接、准确型号、所需环境变量、运行命令和改写说明；维护者的实测记录仅在本地保存，不随仓库发布。", "",
         "## 如何使用", "",
         "在仓库根目录安装 [requirements-lock.txt](../requirements-lock.txt)，设置对应 Key 和输入变量后运行文件。"
         "Python 示例共用锁定环境；TypeScript 的 Node.js 与 SDK 要求见 [package.json](../package.json)，可用 `npm ci` 安装锁定 SDK。"
@@ -325,13 +378,13 @@ def render_index(catalogs, language="zh"):
         "输出 JSON 含完整命令与改写说明；能力词不确定时先仅传 `--model` 列出该型号的示例。"
         "找不到型号或功能时退出码为 2，已收录型号同时给出候选能力和匹配的未集成说明，不回退到别的型号。"
         "下表中环境变量的 `|` 表示二选一（Key 始终必需），可选变量见文件说明。", "",
-        "## 验证标记", "",
+        "## 校验与记录边界", "",
         "- `mock_tested`：用假 SDK 执行代码检查请求/消息/失败分支，不代表服务端接受或识别质量。",
         "- `compile_checked`：仅语法编译检查；`not_run`：该类检查未执行。",
-        "- `live=passed`：当前文件及支持文件哈希匹配真实逐文件报告，进程退出及示例自身响应检查通过。Python / TypeScript / cURL 分别须有 `real_httpx` / `real_fetch` / `real_curl` HTTP 证据；当前型号最后一次请求须成功、正常结束、最终正文非空、无未处理工具调用和业务/旁观错误，流式请求还须有 `[DONE]` 或真实传输结束标志。旧进程模式报告保留，但不能作为清单的 `passed` 证据。",
-        "- `passed` 不等于所有参数组合都受支持，不代表语义正确率、图片/视频识别质量或未来仍可调用；参数含义请先读对应型号的参数页。",
-        "- `failed` / `rate_limited` / `timeout` 是未通过；`missing_key` / `missing_input` / `missing_runtime` 是缺少运行条件，不能当作真实调用成功。",
-        "- `live=not_run` 表示没有该文件的线上执行证据。非 `not_run` 项须链接真实逐文件报告，并核对型号、状态、源码和支持文件哈希；不展示实测时间或耗时。型号历史报告见[验证状态](验证状态.md)，不能继承为示例文件的实测证据。", "",
+        "- `live=private`：线上记录仅在维护者本地保存，不是公开可核验的通过结论，也不表示未测试。公开查询不读取本地报告。",
+        "- `live=not_run`：清单明确标记尚未执行线上检查；不能把缺少公开记录的 `private` 改读成此状态。",
+        "- 保留完整代码及其响应校验，不公开实测 JSON、请求记录、证据编号、源码指纹或实测统计。运行前仍需确认账户权限、地域、官方生命周期与输入要求。",
+        "- 维护代码不保证任意参数组合、语义正确率、图片/视频识别质量或未来可调用；参数含义请先读对应型号的参数页。", "",
     ]
     for catalog in catalogs:
         directory = Path(catalog["catalog_path"]).parent.as_posix()
@@ -342,18 +395,14 @@ def render_index(catalogs, language="zh"):
         if "parameters_path" in catalog:
             lines.extend([f"调用前必读：[逐参数说明与文件映射](../{catalog['parameters_path']})。", ""])
         lines.extend([
-            "| 功能 / 文件 | 能力检索词 | 必需环境变量 | 官方来源 | 离线 / 逐文件线上 | 报告 / 证据 |",
-            "|---|---|---|---|---|---|",
+            "| 功能 / 文件 | 能力检索词 | 必需环境变量 | 官方来源 | 离线检查 / 线上记录 |",
+            "|---|---|---|---|---|",
         ])
         for entry in catalog["examples"]:
             sources = " · ".join(f"[{s['title'].replace('|', '/')}]({s['url']})" for s in entry["sources"])
             env = "<br>".join(v.replace("|", "或") for v in entry["required_env"])
-            check = entry["verification"]
-            evidence = "—"
-            if check["live"] != "not_run":
-                scope = {HTTP_SCOPE: "HTTP 元数据", PROCESS_SCOPE: "进程及自身检查"}.get(check.get("evidence_scope"), "未取得执行证据")
-                evidence = f"[报告](../{check['report']})<br>{scope}"
-            lines.append(f"| [{entry['title']}](../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} | {evidence} |")
+            check = _public_verification(entry["verification"])
+            lines.append(f"| [{entry['title']}](../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} |")
         if catalog.get("not_integrated"):
             lines.extend(["", "尚未集成的官方功能或型号边界（不把“没有示例”直接解释为不支持）：", ""])
             for item in catalog["not_integrated"]:
@@ -369,7 +418,7 @@ def _render_index_en(catalogs):
         "[中文](../../docs/官方示例索引.md) | English", "",
         "> Generated from each model's `examples/sources.json`. Update the manifests and regenerate; do not edit this page by hand.", "",
         "These are project examples adapted from official documentation, not a vendor SDK or a verbatim mirror of official samples. "
-        "Each manifest records the exact model, official sources, required environment variables, commands, adaptations, and file-level evidence.", "",
+        "Each manifest records the exact model, official sources, required environment variables, commands and adaptations. Maintainer execution records remain local and are not published with the repository.", "",
         "## Usage", "",
         "Install [requirements-lock.txt](../../requirements-lock.txt) from the repository root, then set the required key and inputs. "
         "Python examples share the locked environment. TypeScript runtime/SDK requirements are in [package.json](../../package.json); `npm ci` installs the locked SDK. "
@@ -385,18 +434,13 @@ def _render_index_en(catalogs):
         "Use `--model` alone to list capability keys. An unknown model or capability exits with code 2 and never falls back to another model; "
         "known models include available keys and relevant integration boundaries in the diagnostics. "
         "`or` in the environment column means either input is sufficient; the API key is always required. Optional variables are documented in the files.", "",
-        "## Evidence labels", "",
+        "## Check and record boundaries", "",
         "- `mock_tested`: a fake SDK checks request construction, message history, and failure handling; it does not prove server acceptance or answer quality.",
         "- `compile_checked`: syntax compilation only. `not_run`: that class of check has not run.",
-        "- `live=passed`: the example and support-file hashes match a real file-execution report, the process and the example's own checks succeeded, "
-        "and Python / TypeScript / cURL recorded `real_httpx` / `real_fetch` / `real_curl`. The last request for the target model must succeed, finish normally, "
-        "and return nonempty final text with no unresolved tools, business error, or telemetry failure. Streaming also needs `[DONE]` or a real transport EOF marker. "
-        "Old process-only reports remain available but cannot establish canonical `passed` status.",
-        "- `passed` does not establish support for every parameter combination, semantic accuracy, visual recognition quality, or future availability. Read the model-specific parameter page.",
-        "- `failed`, `rate_limited`, and `timeout` are not passes. `missing_key`, `missing_input`, and `missing_runtime` mean execution prerequisites were missing.",
-        "- `live=not_run` has no online execution evidence for that file. Other states require a report with matching model, status, and current source/support hashes; "
-        "execution timestamps and durations are not displayed. [Historical workflow checks](verification-status.md) cannot substitute for file-level evidence. "
-        "The complete repository release view is [example execution status](example-status.md).", "",
+        "- `live=private`: online records are kept only by the maintainer. This is neither a publicly verifiable pass nor a claim that no test ran. Public lookup does not read local reports.",
+        "- `live=not_run`: the manifest explicitly marks the online check as not run. Do not reinterpret unpublished `private` records as this state.",
+        "- Complete code and response checks remain public; execution JSON, request records, evidence IDs, source fingerprints and test statistics do not. Check account access, region, official lifecycle and input requirements before running.",
+        "- Maintained code does not establish support for every parameter combination, semantic accuracy, visual recognition quality or future availability. Read the model-specific parameter page.", "",
     ]
     for catalog in catalogs:
         directory = Path(catalog["catalog_path"]).parent.as_posix()
@@ -410,18 +454,14 @@ def _render_index_en(catalogs):
             parameters = Path(catalog["parameters_path"]).with_name("parameters.en.md").as_posix()
             lines.extend([f"Required reading: [parameter reference and file mapping](../../{parameters}).", ""])
         lines.extend([
-            "| Capability / file | Search key | Required environment | Official sources | Offline / file execution | Report / evidence |",
-            "|---|---|---|---|---|---|",
+            "| Capability / file | Search key | Required environment | Official sources | Offline check / online records |",
+            "|---|---|---|---|---|",
         ])
         for entry in catalog["examples"]:
             sources = " · ".join(f"[Official source {index}]({source['url']})" for index, source in enumerate(entry["sources"], 1))
             env = "<br>".join(value.replace("|", " or ") for value in entry["required_env"])
-            check = entry["verification"]
-            evidence = "—"
-            if check["live"] != "not_run":
-                scope = {HTTP_SCOPE: "HTTP metadata", PROCESS_SCOPE: "Process and internal checks"}.get(check.get("evidence_scope"), "No execution evidence obtained")
-                evidence = f"[Report](../../{check['report']})<br>{scope}"
-            lines.append(f"| [{entry['capability']} · {entry['file']}](../../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} | {evidence} |")
+            check = _public_verification(entry["verification"])
+            lines.append(f"| [{entry['capability']} · {entry['file']}](../../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} |")
         if catalog.get("not_integrated"):
             lines.extend(["", "### Integration gaps and model-specific boundaries", "",
                           "A missing example does not establish that the model lacks the capability. These entries are taken from the same source manifest.", ""])

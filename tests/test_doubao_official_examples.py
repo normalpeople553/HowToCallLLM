@@ -41,9 +41,9 @@ class TrackingStream:
 
 
 class DoubaoOfficialExamplesTests(unittest.TestCase):
-    def test_manifest_covers_all_examples_and_live_status_requires_strict_evidence(self):
+    def test_manifest_covers_all_examples_with_public_sources_and_private_records(self):
         catalog = json.loads((EXAMPLES / "sources.json").read_text(encoding="utf-8"))
-        # 只读验证器会核对真实报告身份、当前源码/支持文件哈希和最终 HTTP 响应。
+        # 默认公开目录只校验源码/来源，不打开维护者本地报告。
         validator = runpy.run_path(str(ROOT / "skills/model-manual/scripts/example_catalog.py"), run_name="offline_catalog_validation")
         validated = next(item for item in validator["load_catalogs"](ROOT) if item["vendor"] == "doubao" and item["model_id"] == MODEL)
         verified_entries = {entry["file"]: entry for entry in validated["examples"]}
@@ -60,13 +60,9 @@ class DoubaoOfficialExamplesTests(unittest.TestCase):
                 verification = entry["verification"]
                 checked = verified_entries[entry["file"]]["verification"]
                 self.assertEqual(verification["live"], checked["live"])
-                if verification["live"] == "not_run":
-                    self.assertFalse(verification.get("report"))
-                else:
-                    self.assertTrue((ROOT / verification["report"]).is_file())
-                    self.assertEqual(verification["report"], checked["report"])
-                    self.assertTrue(checked.get("evidence_id") or checked.get("legacy_evidence") is True)
-                    self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(checked))
+                self.assertEqual(set(checked), {"offline", "live", "note"})
+                self.assertEqual(set(verification), {"offline", "live", "note"})
+                self.assertIn(checked["live"], {"private", "not_run"})
                 self.assertEqual(entry["verification"]["offline"], "mock_tested")
                 self.assertIn("ARK_API_KEY", entry["required_env"])
                 self.assertIn(entry["file"], entry["run_command"])

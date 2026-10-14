@@ -2,7 +2,7 @@
 
 [中文](parameters.md) · [Human guide](../../../human/README.en.md) · [Model manual](README.en.md)
 
-English translation of the [Chinese parameter reference](parameters.md), checked there on **2026-10-14**. Code, source manifests and reports are shared; official URLs are unchanged, including Chinese sources. Translation does not rerun API verification. An SDK's ability to serialize a field is not evidence of DeepSeek support. Project settings below are attributed to the linked executable sources; current execution evidence is in [example status](../../../en/docs/example-status.md) and [sources.json](examples/sources.json).
+English translation of the [Chinese parameter reference](parameters.md), checked there on **2026-10-14**. Calling code and official source manifests are shared; official URLs are unchanged, including Chinese sources. Translation does not rerun API verification. An SDK's ability to serialize a field is not evidence of DeepSeek support. Project settings below are attributed to the linked executable sources; calling files are in the [code directory](../../../en/docs/example-status.md) and [sources.json](examples/sources.json).
 
 Jump to [identity](#identity), [sampling](#sampling), [budget/thinking](#budget), [streaming](#streaming), [tools](#tools), [JSON](#json), [images/files](#vision-files), [Responses](#responses), [Beta/FIM](#beta), [SDK/local checks](#sdk), or the [file map](#example-map).
 

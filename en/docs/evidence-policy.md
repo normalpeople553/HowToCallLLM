@@ -1,88 +1,43 @@
-# Sources and evidence policy
+# Source and publishing policy
 
-[中文](../../docs/来源与核验规则.md) · [Human guide](../../human/README.en.md) · [Agent guide](../../agents/README.en.md)
+[中文](../../docs/来源与核验规则.md) · English
 
-The project separates information into three categories. These are repository editorial rules; this document defines the rules themselves.
+These are repository editing and publishing rules, not vendor promises.
 
-- **Official:** vendor facts—model IDs, endpoints, parameter behavior, prices, quotas, lifecycle—must link to official vendor documentation in the same paragraph, table row, or immediately adjacent text.
-- **Tested:** link a redacted report with an evidence identifier and its registered script. A test proves only that execution, account, model, and explicit scope, not present availability. Report generation is explained in [verification and reproduction](verification.md).
-- **Project convention:** editorial choices about selection, defaults, security habits, or troubleshooting order must be identified as project recommendations or rules, not presented as vendor promises.
+## What is public
 
-Prices and free quotas change quickly. Copied numbers are not a permanent source of truth; link directly to official pages: [DeepSeek](https://api-docs.deepseek.com/quick_start/pricing/), [Kimi](https://platform.kimi.com/docs/pricing/chat), [Zhipu GLM](https://docs.bigmodel.cn/cn/guide/start/pricing), [Qwen](https://help.aliyun.com/zh/model-studio/model-pricing), [Doubao / Ark](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh), [MiniMax](https://platform.minimax.cn/docs/guides/pricing-paygo).
+Publish manuals, parameter explanations, official sources, executable calling code, pinned dependencies and offline checking tools. Do not publish execution JSON, model replies, reasoning text, HTTP request records, token statistics, execution source fingerprints or test times. Existing execution material stays local to the maintainer; see [local verification notes](../../verification/README.en.md).
+
+Maintainers must actually run calling code before publishing it. Public pages omit the testing process and do not guarantee identical behavior for other accounts, regions, inputs or future service states. Readers should [reproduce calls](verification.md) in their own environment. Changed parameters, prompts, tools or media do not inherit the original result.
+
+## Official facts and project conventions
+
+Link official pages beside model identity, endpoint, parameter, pricing and lifecycle facts. Label defaults, security habits and troubleshooting choices as project recommendations or rules. Leave unconfirmed capabilities unknown; missing examples, rate limits or unpublished records do not establish lack of support.
+
+Use official pricing entries: [DeepSeek](https://api-docs.deepseek.com/quick_start/pricing/), [Kimi](https://platform.kimi.com/docs/pricing/chat), [Zhipu GLM](https://docs.bigmodel.cn/cn/guide/start/pricing), [Qwen](https://help.aliyun.com/zh/model-studio/model-pricing), [Doubao Ark](https://docs.volcengine.com/docs/ark/model-pricing?lang=zh), [MiniMax](https://platform.minimax.cn/docs/guides/pricing-paygo).
 
 ## Paid-model selection (project rule)
 
-Vendor defaults, maintained examples, and default generated code use paid models only. Do not choose free models to save cost or silently fall back to them after an error. Each maintained model card records `billing.type` as `paid` with an official pricing source; the vendor catalog records this project rule in `selection_policy`. Promotional credits or balance deductions do not change a model's metered billing category, and the name `Flash` does not itself mean free. Current prices come only from the official pages above; paid models are not guaranteed to avoid rate limits.
+Provider defaults, maintained examples and generated defaults use paid models. Do not choose free models to save money or silently fall back after errors. Model-card `billing.type` references official pricing; credits do not change pay-as-you-go billing, and `Flash` does not imply free access. Check explicitly requested alternatives by exact ID instead of renaming them.
 
-On 2026-10-14, the maintained Zhipu target changed from free `glm-4.7-flash` to the same-generation paid `glm-4.7`. Original report outcomes remain historical troubleshooting evidence, not passing evidence for the new model. [Official Zhipu pricing](https://docs.bigmodel.cn/cn/guide/start/pricing) Check an explicitly requested different model by its exact ID and explain any difference from current coverage; never rename it to a cataloged model and claim success.
+## Three entry points and shared facts
 
-## Three entry paths, one set of facts
+The [human guide](../../human/README.en.md) supports learning and review, the [model directory](../../models/README.en.md) groups manuals, parameters and code by exact model, and the [Agent guide](../../agents/README.en.md) provides integration, migration and troubleshooting. The canonical Agent entry is [SKILL.en.md](../../skills/model-manual/SKILL.en.md).
 
-The [repository entry](../../README.en.md) has three primary paths: the [human guide](../../human/README.en.md) for learning and manual review, the [model directory](../../models/README.en.md) for manuals, parameters, code, official prices and evidence by provider/model, and the [Agent guide](../../agents/README.en.md) for execution workflows and query/generation tools. Verification, source rules and maintenance material belong in the homepage maintenance area, not alongside the three usage paths.
+Maintain exact-model official facts in [model cards](../../skills/model-manual/references/models/); the [provider catalog](../../skills/model-manual/references/vendors.json) handles routing and defaults. The discovery [language-model lists](model-lists/README.md) track officially sourced lifecycle, modalities and pricing. Exclude retired models; aliases and families do not inherit repository coverage.
 
-The [Skill](../../skills/model-manual/SKILL.en.md) remains the canonical execution entry for agents. All three navigation paths share facts and evidence; reorganizing navigation does not move existing source, cards or reports. Human tutorials are optional reference material rather than required sequential reading. Existing list/manual URLs remain accessible as lower-level resources under the model directory, not separate homepage starting points.
+Label official adaptations `adapted_from_official`. Each `examples/sources.json` retains official sources, documentation check dates, environment variables, run commands and project adaptations. Public `verification.live=private` means execution records are unpublished, not `not_run` or publicly auditable proof of a pass. Model-card `verification=null` with `verification_scope=private` has the same publishing meaning; `not_run` means that shared workflow has no record. Public capability summaries derive `documented` or `unknown` from official sources, not `verified` from private records.
 
-### Bilingual maintenance rules
+The [example index](example-index.md), [calling-code directory](example-status.md) and [human complete-code pages](../../human/examples/README.en.md) show code, purpose and attribution without private report links. Reading pages copy canonical source unchanged, do not introduce a second executable and do not claim the page itself was executed. Completion, JSON parsing and tool-loop checks remain in the code.
 
-Chinese and English provide human and agent guides, general chapters, model manuals and parameter references, but share machine cards, executable code and raw reports. Translation must not change model IDs, API regions, request parameters, prompts or verification states. A code change still requires the original real-verification procedure; translation cannot justify inheriting old evidence.
+## Local verification and time minimization (project rule)
 
-The [translation manifest](../translations.json) maps static pages and records hashes of Chinese source revisions reviewed by a person or agent. After a source change, the [translation checker](../../scripts/check_translations.py) requests review of the English version and checks cited external URLs and parameter-page example mappings. A hash identifies a revision needing review, not semantic translation accuracy. Do not blindly refresh hashes without reviewing the translation.
+Local reports default to the Git-ignored `.local/evidence/`. Source fingerprints only help maintainers identify changes and are not displayed publicly. New reports omit execution dates, timestamps and durations, keys, message/reply/reasoning bodies, raw errors and request IDs. Functional timeouts, bounded retries and output-integrity checks remain. Never change old fingerprints to impersonate a rerun; absent local evidence stays explicitly absent rather than passing.
 
-The two example indexes, file-execution status pages and historical model status pages are generated from the same facts and reports; generation/check commands handle both languages. Do not create translated model cards, executable examples or execution reports, or change source paths merely for translation. Model migrations use new paths and fresh verification while retaining original reports. [Synchronization and reproduction](verification.md)
+Ordinary integration and offline checks do not authorize live model requests. Run potentially billable tests that upload input only when explicitly requested. See [reproduction](verification.md). Removing records from the current public tree does not erase previously published Git history; do not automatically rewrite history or force-push. Keep official-document check dates and model lifecycle dates, which are not test dates.
 
-Model-level machine facts live in [skills/model-manual/references/models/](../../skills/model-manual/references/models/). [vendors.json](../../skills/model-manual/references/vendors.json) provides vendor entry points, default models, and compatible summaries only. Exact-model constraints take precedence over vendor summaries; an unknown model cannot inherit the default model's thinking switch.
+## Bilingual maintenance (project rule)
 
-| Content | Maintained in | How other entry points use it |
-|---|---|---|
-| Official language-model discovery, lifecycle, billing and input modalities | [data/model-lists](../../data/model-lists/) | Bilingual [model lists](model-lists/README.md) are generated; entries do not register detailed cards, generator support or live tests. |
-| Exact-model parameters, capabilities, and official sources | Model machine cards | The generator reads them; human manuals reference and explain them, with corresponding prose updated when facts change. |
-| Historical unified-verifier identifiers, scope, and outcomes | Original redacted reports referenced by model cards | The synchronizer derives vendor summaries and [unified verification status](verification-status.md). |
-| Real executions of specific runnable files | [File-execution reports](../../verification/examples/) | [Example status](example-status.md) interprets files, source fingerprints, and actual requests; it does not automatically rewrite model capability. |
-| Default models and vendor entry points | Routing fields in `vendors.json` | Agents locate material; nondefault models require lookup by exact ID. |
-| Integration, migration, and troubleshooting workflows | [Agent workflows](../../skills/model-manual/references/workflows.en.md) | The Skill routes by task; the README supplies usage instructions. |
-| Official-example sources, adaptations, and commands | Each model's `examples/sources.json` | The [example index](example-index.md) is generated from manifests; agents query by model/capability. |
-| Complete code and line explanations for human readers | [Reading-page renderer](../../scripts/render_human_examples.py) | [Human code-reading pages](../../human/examples/README.en.md) copy original files unchanged and join current-source evidence; they do not create a second executable example set. |
+Both languages share official cards and calling code. Do not create English report copies or rerun models for translation. Source hashes in the [translation manifest](../translations.json) track translation review, not execution fingerprints. Review the English text before updating a reviewed hash. Generation and checking commands are in [reproduction](verification.md).
 
-### Model discovery rules
-
-Each exact API ID has an official model page, pricing entry and supplemental sources, a check date and bilingual notes. A retained pricing row, open-weight name or subscription shorthand is not proof of a currently callable API. Retired models are excluded from discovery source lists, bilingual pages and Agent queries. Historical test outcomes remain unchanged; list cleanup does not delete evidence. Compatibility aliases that still accept requests and models with future retirement dates may remain, with routing or cutoff restrictions. Distinguish officially listed, preview, still-listed legacy, alias and availability-unconfirmed entries, using row-specific restrictions and sources. Do not claim exhaustive region, account or historical coverage. Free models may appear for discovery, without changing paid-only maintained examples and generated defaults.
-
-Discovery data does not store hand-entered passing results or card paths. The [query tool](../../skills/model-manual/scripts/model_catalog.py) derives repository coverage from maintained cards and current-source per-file reports by exact vendor and ID; aliases and families cannot inherit it. A new discovery entry needs neither a fabricated detailed card nor an API test. Adding calling examples still follows the source, parameter and real-execution rules below. See [maintenance commands](verification.md).
-
-### Rules for integrating official examples
-
-Code adapted from official documentation is labeled `adapted_from_official`, not called an unmodified official example. Its manifest records the exact Model ID, capability, official pages, source-check date, required environment variables, run command, and project adaptations. Simulated data, validation, and loop limits are project additions rather than vendor requirements. If a vendor example changes to a new model, find explicit support for the collected model before adapting it; do not merely replace the name.
-
-Record `verification.offline` and `verification.live` separately. `live=not_run` means the manifest has no registered live-execution evidence. Every other live status must reference an actual file-level report matching evidence identifier, model, status, source, and support-file fingerprints. `passed` additionally requires the exact model's final real HTTP request to finish normally with nonempty final content. Streaming needs a termination event or actual transport EOF, not just a process exit code. See the [catalog validator](../../skills/model-manual/scripts/example_catalog.py).
-
-A historical model-level pass cannot be copied into a new file's status. Cross-check later manifests and reports against [file-level status](example-status.md). Offline mocks establish only simulated scenarios, not API acceptance or result reliability. Explain nonintegrated capabilities with reasons and official sources; “no example yet” is not “unsupported.” Maintenance commands are in [verification and reproduction](verification.md).
-
-For model identity, capability, and common-parameter changes, update the exact card and sources first, then affected examples and human explanations. Maintain example sources/adaptations in the model's manifest. For unified-verifier evidence, add a new report, update the card pointer, and run the synchronizer. For file-level evidence, preserve the new original report and source fingerprints, then check the current files against [example status](example-status.md). Do not hand-edit derived capability summaries or fabricate outcomes or change old source fingerprints. The six [parameter guides](parameters.md) are human explanations that must agree with cards, executable source, and official sources.
-
-## Minimize execution-time information (project rule)
-
-File reports use `schema_version=2`; strict unified-verifier reports use `schema_version=3`. They use a random UUIDv4 `evidence_id`, without test dates, timestamps, or execution durations. `privacy.test_timestamps_saved=false` and `privacy.duration_saved=false` declare that constraint. Pages and machine queries also omit execution times. Identifiers do not express ordering or establish real-time availability.
-
-Existing reports receive privacy-only redaction: remove `tested_at` and `duration_seconds`, add evidence identifiers and privacy flags, and preserve outcomes, request metadata, and source fingerprints. This is not a new model call. Legacy basic reports remain basic evidence. Normal new executions still create new reports instead of overwriting outcomes.
-
-Keep official-document check dates, model/version/lifecycle dates, and functional timeout/retry settings. Existing filenames and paths remain stable for references and source binding and may still contain dates. Git-history timestamps are not erased, so this is not historical anonymization. Interpret undated evidence through the manifest's selected report and strict current-source, model, HTTP, and completion checks; do not infer “latest” from filenames.
-
-## Capability states and verification evidence
-
-For the unified-verifier summaries, `verified`, `documented`, and `unknown` respectively mean: the corresponding test passed; official support is documented but that test has no passing evidence; or no reliable conclusion is available. Read them with the evidence scope in [unified verification status](verification-status.md), not as real-time states of every example. `unknown` does not mean unsupported. [Synchronizer](../../skills/model-manual/scripts/sync_verification.py)
-
-Official statements and test results are recorded separately. Official links support capability claims; reports support particular executions. A rate limit does not rewrite capability as unsupported. An accepted request does not establish a complete tool loop, output-boundary handling, or image-content recognition.
-
-`verification=null` and `verification_scope=not_run` mean there is no **unified-verifier report registered by that model card**. They do not mean the file executor has never called the model; for MiniMax and other models, also inspect [example status](example-status.md). Do not create an empty success report or inherit another model's evidence. A nonempty pointer to a missing report is a validation failure. [Synchronizer](../../skills/model-manual/scripts/sync_verification.py)
-
-Older reports checked only nonempty content, initial tool arguments, or image-request shape. Preserve them as historical basic verification; do not fill in unrecorded `finish_reason` or complete-loop outcomes as passing. New strict-verification reports record the actual SDK/code versions, safe parameters, termination, and classified outcomes. Keep independent execution records in new reports. [Historical report example](../../models/kimi/kimi-k2.6/verification/2026-10-13.json)
-
-The file executor runs the original file and observes real network transport, without substituting mock responses for vendor results. Reports retain only allowlisted metadata. Judgments combine the file's own checks, actual requests, and normal completion—not process exit alone. Retain failures, rate limits, missing inputs/runtimes, and evidence gaps; do not promise that every manifest entry succeeds. [Executor](../../tests/run_example_files.py) · [File-level status and reports](example-status.md)
-
-Do not claim “every example passed live testing” until every current executable file has complete passing evidence. The [release check](../../tests/check_example_release.py) with `--check` checks page synchronization only; add `--require-passed` to fail the release gate on remaining unpassed files. Earlier observation scopes and historical-report retention are explained in the [report notes](../../verification/README.en.md).
-
-Explanatory code blocks, generator output, and changed input/parameter combinations do not inherit a linked file's passing result. Rerun the relevant path after source, helper, runtime, or parameter changes. Even a real model/tool loop using explicitly simulated data is not verification of live weather or a real business system. These are project evidence rules; parameter details are in the [tuning guide](parameters.md).
-
-The [human complete-code reading pages](../../human/examples/README.en.md) are an explicit display-only exception: full code is copied unchanged from original files with valid current-source HTTP evidence. Source hashes and explanatory line anchors are checked, and the pages reference those original reports without claiming another execution. They are not separate executables and do not establish passing evidence for an Agent's rewrite or another parameter combination. [Renderer tests](../../tests/test_human_examples.py) check source copying, bilingual code equality and evidence rejection conditions.
-
-The repository requires Python 3.10+ and uses [locked dependencies](../../requirements-lock.txt) for reproduction. Installation, offline checks, and real API verification commands are in [verification and reproduction](verification.md).
+The repository requires Python 3.10+ and [pinned dependencies](../../requirements-lock.txt). Offline mocks establish simulated boundaries, not API acceptance or business accuracy. Weather, order and inventory tools are teaching simulations, not live business systems.

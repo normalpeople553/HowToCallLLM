@@ -31,9 +31,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -63,9 +62,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -91,9 +89,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -123,9 +120,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -155,9 +151,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -188,9 +183,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的本地纯红 PNG，不代表其他输入分支或图像识别准确率已验证。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -220,9 +214,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -253,9 +246,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -286,9 +278,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次使用官方视频教程的公开教学 URL。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -318,9 +309,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 仅验证重复前缀调用与用量读取，不保证每次命中缓存。",
-        "report": "verification/examples/2026-10-14-doubao-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     }
   ],

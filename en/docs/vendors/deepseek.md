@@ -30,4 +30,4 @@ The documented Python disabling syntax is `extra_body={"thinking": {"type": "dis
 
 Use the currency and peak/off-peak rules currently displayed by the official pricing page. This page does not copy numbers that could continue circulating after a price change. [Official pricing](https://api-docs.deepseek.com/quick_start/pricing/)
 
-The historical basic verification covered ordinary requests, streaming, thinking switches, JSON, initial tool calls, and image-request shape. It did not record final termination, verify tool-result return, or verify image-content recognition. [Historical redacted report](../../../models/deepseek/deepseek-flash/verification/2026-10-13.json) Consult [unified verification status](../verification-status.md) for the recorded results and [verification and reproduction](../verification.md) to rerun tests.
+Calling files and official attribution: [model manual](../../../models/deepseek/deepseek-flash/README.en.md) and [sources.json](../../../models/deepseek/deepseek-flash/examples/sources.json). Execution records stay local. Setup and commands: [reproduction](../verification.md).

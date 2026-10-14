@@ -2,7 +2,7 @@
 
 [中文](README.md) · [Human guide](../../../human/README.en.md) · [Parameter reference](parameters.en.md)
 
-English translation of the [Chinese manual](README.md), whose official-source check date is **2026-10-13**. Code, manifests and reports are shared; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [`kimi-k2.6.json`](../../../skills/model-manual/references/models/kimi-k2.6.json).
+English translation of the [Chinese manual](README.md), whose official-source check date is **2026-10-13**. Calling code and official manifests are shared; original official URLs are retained, including Chinese pages. Translation does not rerun API verification. Machine facts: [`kimi-k2.6.json`](../../../skills/model-manual/references/models/kimi-k2.6.json).
 
 Use [sources.json](examples/sources.json) and the [example index](../../../en/docs/example-index.md) to find code. Read [historical unified verification](../../../en/docs/verification-status.md) separately from [per-file execution](../../../en/docs/example-status.md). Results apply only to recorded source, parameters, input and environment. Fragments, modified requests and arbitrary generated combinations do not inherit passes. [Evidence policy](../../../en/docs/evidence-policy.md)
 
@@ -77,7 +77,7 @@ Use exponential backoff for 429, bounded retries for 5xx, and correct a 400 requ
 
 The shared configuration is provider kimi, exact model kimi-k2.6, Base URL `https://api.moonshot.cn/v1`, and key variable MOONSHOT_API_KEY. Explicit thinking-off Python configuration is `extra_body={"thinking":{"type":"disabled"}}`; it is not the model's default. [Quick start][start] · [K2.6][model] · [Thinking][thinking]
 
-The [Legacy smoke report](verification/2026-10-13.json) retains its original scope. Read strict unified-verifier results in [historical status](../../../en/docs/verification-status.md), and original-file runs in [example status](../../../en/docs/example-status.md). The shared unified entry point is `python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`; it sends real requests, and does not automatically execute every advanced file. Commands, environment and exit codes: [verification](../../../en/docs/verification.md).
+Calling code and official attribution are in [sources.json](examples/sources.json). Execution records stay local; see [reproduction](../../../en/docs/verification.md) for setup and checks.
 
 ## 10. Production checks
 

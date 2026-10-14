@@ -48,8 +48,10 @@ def offline_only():
     original_open = builtins.open
 
     def check_path(value):
-        if isinstance(value, (str, os.PathLike)) and Path(value).name.startswith(".env"):
-            raise AssertionError("credential_file_must_not_be_read")
+        if isinstance(value, (str, os.PathLike)):
+            path = Path(value)
+            if path.name.startswith(".env") or ".local" in path.parts or "verification" in path.parts:
+                raise AssertionError("credentials_or_private_evidence_must_not_be_read")
 
     def path_open(path, *args, **kwargs):
         check_path(path)
@@ -77,7 +79,6 @@ def source_snapshot(root):
     paths = list((root / "data/model-lists").glob("*.json"))
     paths += list((root / "skills/model-manual/references/models").glob("*.json"))
     paths += [root / "skills/model-manual/references/vendors.json"]
-    paths += list((root / "verification/examples").glob("*.json"))
     paths += [
         path for path in (root / "models").glob("*/*/examples/*")
         if path.is_file() and path.suffix in {".py", ".ts", ".sh"}
@@ -96,7 +97,6 @@ class ModelCatalogTests(unittest.TestCase):
     def setUpClass(cls):
         with offline_only():
             cls.catalog = load_module("model_catalog_under_test", SCRIPT)
-            cls.release = load_module("model_catalog_release_reference", ROOT / "tests/check_example_release.py")
 
     def temporary_catalogs(self):
         temporary = tempfile.TemporaryDirectory()
@@ -294,7 +294,7 @@ class ModelCatalogTests(unittest.TestCase):
                     self.assertNotIn(retired_id, content)
             self.assertEqual(original, json.dumps(injected, sort_keys=True))
 
-    def test_new_and_alias_ids_do_not_inherit_manuals_generation_or_live_results(self):
+    def test_new_and_alias_ids_do_not_inherit_manuals_generation_or_code(self):
         with offline_only():
             catalogs = self.catalog.load_catalogs(ROOT)
             coverage = self.catalog.project_coverage(ROOT)
@@ -308,32 +308,26 @@ class ModelCatalogTests(unittest.TestCase):
                 self.assertFalse(coverage["manual_path"])
                 self.assertFalse(coverage["parameters_path"])
                 self.assertFalse(coverage["example_files"])
-                self.assertFalse(coverage["live_passed_files"])
+                self.assertNotIn("live_passed_files", coverage)
                 self.assertFalse(coverage["generation_registered"])
                 self.assertFalse(coverage["default_for_vendor"])
-                self.assertEqual(coverage["evidence_status"], "no_examples")
+                self.assertNotIn("evidence_status", coverage)
 
-    def test_repository_coverage_is_derived_from_exact_release_rows_not_family_names(self):
+    def test_repository_coverage_is_derived_from_exact_public_sources_not_reports(self):
         with offline_only():
             coverage = self.catalog.project_coverage(ROOT)
-            release = self.release.collect_release(ROOT)
-        self.assertEqual(release["total"], 59, "The existing 59-file release must not be expanded by catalog-only rows")
         for vendor, model in DEFAULTS.items():
             with self.subTest(model=model):
                 current = coverage[(vendor, model)]
-                expected = [row for row in release["rows"] if row["vendor"] == vendor and row["model_id"] == model]
-                self.assertEqual(set(current["example_files"]), {row["path"] for row in expected})
-                self.assertEqual(set(current["live_passed_files"]), {row["path"] for row in expected if row["status"] == "passed"})
+                directory = ROOT / "models" / vendor / model / "examples"
+                expected = {path.relative_to(ROOT).as_posix() for path in directory.iterdir()
+                            if path.suffix in {".py", ".ts", ".sh"} and not path.name.startswith("_")}
+                self.assertEqual(set(current["example_files"]), expected)
+                self.assertEqual(set(current), {"manual_path", "parameters_path", "example_files", "generation_registered", "default_for_vendor"})
                 self.assertTrue(current["generation_registered"])
                 self.assertTrue(current["default_for_vendor"])
                 self.assertTrue((ROOT / current["manual_path"]).is_file())
                 self.assertTrue((ROOT / current["parameters_path"]).is_file())
-                self.assertEqual(
-                    current["evidence_status"],
-                    "all_registered_examples_passed"
-                    if expected and all(row["status"] == "passed" for row in expected)
-                    else "incomplete_evidence",
-                )
 
     def test_read_only_catalog_paths_never_read_env_or_connect_to_network(self):
         before = source_snapshot(ROOT)
@@ -343,6 +337,21 @@ class ModelCatalogTests(unittest.TestCase):
             self.catalog.project_coverage(ROOT)
             self.catalog.expected_pages(ROOT)
         self.assertEqual(before, source_snapshot(ROOT))
+
+    def test_supplied_private_coverage_cannot_escape_into_public_json(self):
+        with offline_only():
+            catalogs = self.catalog.load_catalogs(ROOT)
+            coverage = self.catalog.project_coverage(ROOT)
+            private = copy.deepcopy(coverage)
+            private[("deepseek", "deepseek-flash")].update(
+                live_passed_files=["synthetic-private-pass"], evidence_status="all_registered_examples_passed",
+                evidence_id="synthetic-private-id", report=".local/evidence/synthetic.json")
+            rows = self.catalog.select_models(catalogs, model="deepseek-flash", coverage=private)
+        self.assertEqual(rows[0]["repository_coverage"], coverage[("deepseek", "deepseek-flash")])
+        public = json.dumps(rows)
+        self.assertNotIn("synthetic-private", public)
+        self.assertNotIn("live_passed_files", public)
+        self.assertNotIn("evidence_status", public)
 
     def test_bilingual_pages_share_model_ids_official_links_and_dynamic_coverage(self):
         with offline_only():
@@ -373,8 +382,13 @@ class ModelCatalogTests(unittest.TestCase):
                     en_heading = re.findall(r"^## (.+)$", english[:english.index(exact_id)], re.M)[-1]
                     self.assertRegex(zh_heading, r"(未确认|待确认)")
                     self.assertIn("unconfirmed", en_heading.lower())
-            self.assertIn("示例实测状态.md", chinese)
-            self.assertIn("example-status.md", english)
+            self.assertIn("来源与核验规则.md", chinese)
+            self.assertIn("evidence-policy.md", english)
+            for text in (chinese, english):
+                self.assertNotIn("verification/", text)
+                self.assertNotIn(".local/", text)
+                self.assertNotIn("files passed", text)
+                self.assertNotIn("文件实测通过", text)
         for path, expected in outputs.items():
             self.assertEqual((ROOT / path).read_text(encoding="utf-8"), expected, path.as_posix())
 

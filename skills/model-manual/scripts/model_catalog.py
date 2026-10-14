@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Official language-model discovery, distinct from maintained cards and live evidence.
+"""Official language-model discovery and public exact-ID code coverage.
 
 Default: read-only JSON query; no network, credentials or model requests.
 --write-pages regenerates both editions; --check detects stale generated pages.
@@ -125,8 +125,7 @@ def load_catalogs(root=ROOT):
 
 def _empty_coverage():
     return {"manual_path": None, "parameters_path": None, "example_files": [],
-            "live_passed_files": [], "generation_registered": False,
-            "default_for_vendor": False, "evidence_status": "no_examples"}
+            "generation_registered": False, "default_for_vendor": False}
 
 
 def project_coverage(root=ROOT):
@@ -152,25 +151,15 @@ def project_coverage(root=ROOT):
         value["generation_registered"] = isinstance(card.get("generation"), dict)
         value["default_for_vendor"] = vendors[vendor]["default_model"] == identity
         result[key] = value
-    spec = importlib.util.spec_from_file_location("model_inventory_release", ROOT / "tests/check_example_release.py")
-    release_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(release_module)
-    release = release_module.collect_release(root)
-    if not release["catalog_valid"] or release["catalog_issues"] or release["report_issues"]:
-        raise ValueError("invalid_repository_example_evidence")
-    for row in release["rows"]:
-        if row["vendor"] == "shared":
-            continue  # Multi-vendor demos are not exact-model manuals or alias tests.
-        value = result.setdefault((row["vendor"], row["model_id"]), _empty_coverage())
-        value["example_files"].append(row["path"])
-        if row["status"] == "passed":
-            value["live_passed_files"].append(row["path"])
+    spec = importlib.util.spec_from_file_location("model_inventory_examples", ROOT / "skills/model-manual/scripts/example_catalog.py")
+    examples = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(examples)
+    for row in examples.select_examples(examples.load_catalogs(root)):
+        value = result.get((row["vendor"], row["model_id"]))
+        if value is not None:
+            value["example_files"].append(row["path"])
     for value in result.values():
         value["example_files"].sort()
-        value["live_passed_files"].sort()
-        if value["example_files"]:
-            value["evidence_status"] = ("all_registered_examples_passed" if
-                len(value["example_files"]) == len(value["live_passed_files"]) else "incomplete_evidence")
     return result
 
 
@@ -188,7 +177,8 @@ def select_models(catalogs, vendor=None, model=None, billing=None, status=None, 
                 continue
             rows.append({**entry, "vendor": catalog["vendor"], "checked_at": catalog["checked_at"],
                          "official_catalog_url": catalog["official_catalog_url"], "scope_note": catalog["scope_note"],
-                         "repository_coverage": coverage.get((catalog["vendor"], entry["model_id"]), _empty_coverage())})
+                         "repository_coverage": {key: coverage.get((catalog["vendor"], entry["model_id"]), {}).get(key, value)
+                                                 for key, value in _empty_coverage().items()}})
     return rows
 
 
@@ -213,12 +203,8 @@ def _coverage_text(page, value, english):
         primary = next((path for path in value["example_files"] if path.endswith("/examples/01_basic.py")),
                        value["example_files"][0])
         parts.append(_link(page, primary, "Code" if english else "代码"))
-    count, passed = len(value["example_files"]), len(value["live_passed_files"])
-    if count:
-        status_path = "en/docs/example-status.md" if english else "docs/示例实测状态.md"
-        parts.append(_link(page, status_path, f"{passed}/{count} files passed" if english else f"{passed}/{count} 文件实测通过"))
     else:
-        parts.append("No per-file live evidence" if english else "无逐文件实测证据")
+        parts.append("No maintained example" if english else "无维护示例")
     if value["default_for_vendor"]:
         parts.append("Project default" if english else "项目默认")
     return " · ".join(parts)
@@ -243,8 +229,8 @@ def expected_pages(root=ROOT):
                   if english else "范围：对话、推理、编程语言模型，包含有官方依据的多模态理解；不含图片/视频生成、独立语音、Embedding、Rerank 和第三方托管型号。各厂商的完整性、账户、地域和接入限制见各页；不是你账户的 /models 返回，也不是所有历史版本的档案。"), "",
                  ("Prices are linked to official pages, not frozen here. Free entries are discovery records only: maintained examples and generated defaults remain paid, with no silent fallback. Retired models are excluded from these lists and Agent queries. Unconfirmed availability appears separately and is not a recommendation to call."
                   if english else "价格只链接官方页面，不在这里固化数字。免费条目仅用于发现：维护示例和生成器默认仍全部采用付费型号，不静默回退。已下线型号不出现在清单和 Agent 查询中；可用性未确认的条目单列，不作为调用建议。"), "",
-                 ("Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or passed tests."
-                  if english else "官方生命周期和输入标签是核对日的文档快照，不是在线调用测试。“付费”不等于可以按量接入，预览可能仅限订阅。别名不继承另一个 ID 的说明书、参数或实测。"), "",
+                 ("Official lifecycle and input labels are dated documentation snapshots, not live API tests. A paid label is not proof of pay-as-you-go access; previews may require subscriptions. An alias does not inherit another ID's manual, parameters or code. Maintainer execution records remain local and are not published."
+                  if english else "官方生命周期和输入标签是核对日的文档快照，不是在线调用测试。“付费”不等于可以按量接入，预览可能仅限订阅。别名不继承另一个 ID 的说明书、参数或代码。维护者的实测记录仅保留在本地，不随仓库发布。"), "",
                  "| Vendor | Checked | Listed IDs (retired excluded; includes uncertain) | Detailed manuals | Official catalog |" if english else "| 厂商 | 核对日期 | 收录 ID（不含已下线；含待确认） | 详细说明书 | 官方目录 |",
                  "|---|---|---|---|---|"]
         for catalog in catalogs:
@@ -275,8 +261,8 @@ def expected_pages(root=ROOT):
                      f"[{'Official catalog' if english else '官方目录'}]({catalog['official_catalog_url']}) · " +
                      _link(page, f"data/model-lists/{vendor}.json", "Source data" if english else "来源数据"), "",
                      catalog["scope_note"][lang], "",
-                     ("Availability is a dated official-document snapshot, not an account-level or live-call guarantee. Billing links do not imply API access; read each row's restrictions. Coverage is joined by exact ID from maintained cards and current-source HTTP reports, not inherited through aliases or family names."
-                      if english else "可用性是有日期的官方文档快照，不保证你账户具备权限，也不表示本次实际调用。定价入口不等于接入权限，限制见逐行说明。仓库覆盖按准确 ID 关联维护卡片和当前源码 HTTP 报告，不按别名或系列继承。"), "",
+                     ("Availability is a dated official-document snapshot, not an account-level or live-call guarantee. Billing links do not imply API access; read each row's restrictions. Coverage joins exact IDs to public manuals, parameters and code, never private execution records or another alias/family's coverage."
+                      if english else "可用性是有日期的官方文档快照，不保证你账户具备权限，也不表示本次实际调用。定价入口不等于接入权限，限制见逐行说明。仓库覆盖只按准确 ID 关联公开说明书、参数和代码，不读取私有实测记录，也不按别名或系列继承。"), "",
                      ("Text output is the scope; modality labels describe input understanding, not image/audio generation. No entry here expands the snippet generator's supported models."
                       if english else "本清单以语言输出为范围；模态表示输入理解，不是图像/音频生成能力。出现在这里不自动扩展代码生成器支持的型号。"), ""]
             groups = [(False, "Documented / restricted / legacy entries" if english else "官方列出 / 受限 / 旧版入口"),
@@ -308,8 +294,8 @@ def expected_pages(root=ROOT):
                               (note + " " if note else "") + " · ".join(source_links)]
                     lines.append("| " + " | ".join(_cell(field) for field in fields) + " |")
                 lines.append("")
-            lines += [(_link(page, "en/docs/example-status.md" if english else "docs/示例实测状态.md",
-                             "Per-file live evidence and limits" if english else "逐文件实测及证据边界")), ""]
+            lines += [(_link(page, "en/docs/evidence-policy.md" if english else "docs/来源与核验规则.md",
+                             "Source and verification boundaries" if english else "来源与核验边界")), ""]
             pages[page] = "\n".join(lines)
     return pages
 
@@ -353,7 +339,7 @@ def main(argv=None):
             print(json.dumps({"schema_version": 1, "kind": "official_language_model_discovery",
                               "live_api_calls": False, "models": rows}, ensure_ascii=False, indent=2))
     except (ValueError, TypeError, KeyError, AttributeError, OSError):
-        print(json.dumps({"error": "invalid_catalog_or_repository_evidence"}), file=sys.stderr)
+        print(json.dumps({"error": "invalid_catalog_or_public_code"}), file=sys.stderr)
         return 2
     return 0
 

@@ -57,13 +57,9 @@ class ModelCardTests(unittest.TestCase):
         self.assertEqual(manifest["model_id"], "glm-4.7")
         for example in manifest["examples"]:
             check = example["verification"]
-            if check["live"] == "not_run":
-                self.assertFalse(check.get("report"))
-                continue
-            report = json.loads((ROOT / check["report"]).read_text(encoding="utf-8"))
-            matching = [result for result in report["results"] if result["path"] == f"models/zhipu/glm-4.7/examples/{example['file']}"]
-            self.assertEqual(len(matching), 1)
-            self.assertEqual(matching[0]["model_id"], "glm-4.7")
+            self.assertIn(check["live"], {"private", "not_run"})
+            self.assertFalse(check.get("report"))
+            self.assertLessEqual(set(check), {"offline", "live", "note"})
 
     def test_sources_are_official_and_reachable_by_reference(self):
         for card in self.cards:
@@ -107,39 +103,10 @@ class ModelCardTests(unittest.TestCase):
     def test_verification_record_matches_card(self):
         for card in self.cards:
             with self.subTest(model=card["model_id"]):
-                if card.get("verification") is None:
-                    self.assertEqual(self.card_scope(card), "not_run")
-                    self.assertFalse(any(capability["status"] == "verified" for capability in card["capabilities"].values()))
-                    self.assertFalse(card.get("historical_verification"), "未实测型号不能继承其他型号的旧报告")
-                    continue
-                verification_path = (MODEL_CARDS / card["verification"]).resolve()
-                self.assertTrue(verification_path.is_file())
-                result = json.loads(verification_path.read_text(encoding="utf-8"))
-                self.assertEqual(result["model_id"], card["model_id"])
-                self.assertFalse(result["privacy"]["api_key_saved"])
-                self.assertFalse(result["privacy"]["response_content_saved"])
-                if result["schema_version"] >= 2:
-                    self.assertEqual(self.card_scope(card), "strict_workflow")
-                    self.assertFalse(any(result["privacy"].values()))
-                    self.assertFalse(result["source_git_dirty"])
-                    self.assertRegex(result["source_git_commit"], r"^[0-9a-f]{40}$")
-                    self.assertRegex(result["source_git_diff_sha256"], r"^[0-9a-f]{64}$")
-                    for test in result["results"]:
-                        self.assertIn(test["status"], {"passed", "failed", "rate_limited", "skipped"})
-                        if test["status"] != "passed":
-                            continue
-                        self.assertTrue(test["requests"])
-                        for request in test["requests"]:
-                            self.assertTrue(request["response_received"])
-                            self.assertIn(request["response"]["finish_reason"], {"stop", "tool_calls"})
-                        final = test["requests"][-1]["response"]
-                        self.assertEqual(final["finish_reason"], "stop")
-                        self.assertGreater(final["content_chars"], 0)
-                        if test["id"] == "streaming":
-                            self.assertTrue(final["stream_completed"])
-                        if test["id"] == "tool_calling":
-                            self.assertGreaterEqual(len(test["requests"]), 2)
-                            self.assertTrue(test["requests"][0]["response"]["tool_arguments_validated"])
+                self.assertIsNone(card.get("verification"))
+                self.assertIn(self.card_scope(card), {"private", "not_run"})
+                self.assertFalse(card.get("historical_verification"))
+                self.assertFalse(any(capability["status"] == "verified" for capability in card["capabilities"].values()))
 
     @staticmethod
     def card_scope(card):

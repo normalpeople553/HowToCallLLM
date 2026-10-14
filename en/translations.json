@@ -9,42 +9,42 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "07ceb28e07ae68959957667d579b330541e2ce7c275fab4d8ff024af71872a81"
+      "source_sha256": "482904d869d6c3c66a24d92bf2b537fd2638375072ba7f98d8986667dca1dd14"
     },
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "283df0a20365814d6c990c878ccdd879443b8c10438760df855d2942db93a39c"
+      "source_sha256": "b7539d130300782e72425f908b6731864828a245d10c6c0ae8cd9d896f4eb094"
     },
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "e7528afed94af97afd7f7714d181b9a006a523d8d451be2d083fa9bebdcdeeb0"
+      "source_sha256": "7b467bc0a1492d90c5981fcc2add4f62cf16e61a9ee2f31791a328dcfdf8de62"
     },
     {
       "source": "models/README.md",
       "target": "models/README.en.md",
-      "source_sha256": "eae376b64d79509939ac6ac9bf30ddc2877b1a9415beb950309b7066092f8098"
+      "source_sha256": "4d4e9acddff6a6edeb98db7ae3c815e96f13a030ae69af71cff6ccc321563e1f"
     },
     {
       "source": "skills/model-manual/SKILL.md",
       "target": "skills/model-manual/SKILL.en.md",
-      "source_sha256": "3c94cc3378e69e2c27abcced6ca3fcf8af748e9977e1b9bd52f4575143af5bc2"
+      "source_sha256": "bc89c11632d1ace7ee6fbd46be00b340ba4872d095adc18a4456b5cd4813d0d1"
     },
     {
       "source": "skills/model-manual/references/workflows.md",
       "target": "skills/model-manual/references/workflows.en.md",
-      "source_sha256": "6a6e97aaf13360f058bcbca2f464c555bc25835228fc3e2df478bb680cda8067"
+      "source_sha256": "f9496e413fc6092532fe3a3140c692b916cd182cae8b51a786d079c0c6e71648"
     },
     {
       "source": "verification/README.md",
       "target": "verification/README.en.md",
-      "source_sha256": "e140ed073bf2204e08ff76b7d00e4905e50fd79f60e9e1c8cfc393f02f4f71ac"
+      "source_sha256": "4ed3aeba34a4381de5e19608fd902c18f10f2dc2d52d8e61b093751ca9d08fb8"
     },
     {
       "source": "docs/00-前言.md",
       "target": "en/docs/introduction.md",
-      "source_sha256": "eaaaebb43c45791fb66cf3241219a8bda2b89f006321f284c7504b28b005a54d"
+      "source_sha256": "6ff2bfdb292688ee0091cbd02b7b2da35a6836e075f75768f5f78e9260a98252"
     },
     {
       "source": "docs/01-5分钟跑通第一次调用.md",
@@ -69,37 +69,37 @@
     {
       "source": "docs/06-真实踩雷与生产检查.md",
       "target": "en/docs/production-pitfalls.md",
-      "source_sha256": "c5b058a0bab2f0c32785f0238bb0f201d9a9345acee2233346408b555fe2a43e"
+      "source_sha256": "bf2d5bdd1b88aaa1ec1079e8cc0e51c9bbc7e8d376e284c29951a1ddd174bbaf"
     },
     {
       "source": "docs/参数说明与调参.md",
       "target": "en/docs/parameters.md",
-      "source_sha256": "9e8d94a815f2bcbdad9b2e16dfbcc0984eebf593088ceb44def3aeed971fb1e6"
+      "source_sha256": "e52cb166280df2b656d29040fec085c8a4043421b4e97ec3b8ec27f3862d7dfd"
     },
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "31299a1a0ba552e242df21de146c22f216bebd6fbf72fd1d852d911d431d2017"
+      "source_sha256": "c1aa8dae805f4bc5bf0f1fecc9183073e53b1f6ac2b20171c92bc907fe1ce251"
     },
     {
       "source": "docs/验证与复现.md",
       "target": "en/docs/verification.md",
-      "source_sha256": "86882c6e7b09b7deab3dbbfd96d7490811e8941335b69d4e641c3f0db0cb84d6"
+      "source_sha256": "6a4812e0802fd70fdfb11fb4d41ba76f011d6357147439d2415189dd03c8ec5c"
     },
     {
       "source": "docs/03-厂商攻略/deepseek.md",
       "target": "en/docs/vendors/deepseek.md",
-      "source_sha256": "52107376fe756c924e782ebe26bbb39b394ec9c4841b9cbc01cef418474cf6ef"
+      "source_sha256": "21e0ea5e385bf874fcbca801555d16d800122ef725b96c936a1cc426abcd5f18"
     },
     {
       "source": "docs/03-厂商攻略/doubao.md",
       "target": "en/docs/vendors/doubao.md",
-      "source_sha256": "5e571d76a77a938a3cb82fc1e33d79e1b0ae42679c52187caba16bc92e28dfe3"
+      "source_sha256": "aad7957c6743e6839142a6a5855f58645508a068aa82e3fb5bd1113d52ec0015"
     },
     {
       "source": "docs/03-厂商攻略/kimi.md",
       "target": "en/docs/vendors/kimi.md",
-      "source_sha256": "59da6c336dcb90d6ad57e86f24ae4499eccae927b7b99f31e31cca2ec4407f82"
+      "source_sha256": "ecba71737e7b1577e7eeef193e48cd526246046525bfa3b0d33624c5862fe0b3"
     },
     {
       "source": "docs/03-厂商攻略/minimax.md",
@@ -109,17 +109,17 @@
     {
       "source": "docs/03-厂商攻略/qwen.md",
       "target": "en/docs/vendors/qwen.md",
-      "source_sha256": "5caa0ef0b26a8a51211e27777a8a174dd84c793fa8c8d16aebe7cdb5d174fda0"
+      "source_sha256": "7613b703afde7088f2893a5bab8ebc67b815e60596c33fbe7eeaae226d5a9e3f"
     },
     {
       "source": "docs/03-厂商攻略/zhipu.md",
       "target": "en/docs/vendors/zhipu.md",
-      "source_sha256": "291629b8e62613dc433d65acbe8db604f957478104c7cf36db50769950d6584d"
+      "source_sha256": "0599a43eef1c919737a602d7eb8641b097ed07fcdc69f5a7653803afdbb566de"
     },
     {
       "source": "models/deepseek/deepseek-flash/README.md",
       "target": "models/deepseek/deepseek-flash/README.en.md",
-      "source_sha256": "036db9b5a347551d12c7fba81d8a61ee0b25f170ffc1e17ce00bf0104d832fbc"
+      "source_sha256": "5eccac3a4dd0aa8e19f3e3fb9c9c968a4a644cb4acd76dee5f2b83c4fb0c7ab1"
     },
     {
       "source": "models/deepseek/deepseek-flash/parameters.md",
@@ -129,27 +129,27 @@
     {
       "source": "models/doubao/doubao-seed-2-1-pro-260628/README.md",
       "target": "models/doubao/doubao-seed-2-1-pro-260628/README.en.md",
-      "source_sha256": "03dfe078cf631147936b01a6b7e9526a5651dbcbc65d1698d78a997d88f0cc01"
+      "source_sha256": "7a195842e81762f0f1d58e1958a8a5665d5a45e8d2afc79f690ed5824798cb5a"
     },
     {
       "source": "models/doubao/doubao-seed-2-1-pro-260628/parameters.md",
       "target": "models/doubao/doubao-seed-2-1-pro-260628/parameters.en.md",
-      "source_sha256": "f28e34aabdb5e09c1ac102651ff451a287bbc8ec441abbe3db7408d8c4232e9a"
+      "source_sha256": "6d504ab318dd5743edfc4c77afd52679706ec39fd0888536c293fef8cc8a9fb7"
     },
     {
       "source": "models/kimi/kimi-k2.6/README.md",
       "target": "models/kimi/kimi-k2.6/README.en.md",
-      "source_sha256": "e426c006344c56b4cb4891001b0417260683b0b15414097894d17655d1a0c6a1"
+      "source_sha256": "50752dcea4eb8b83377e9912da321beffb726eb7c931ddfa3b64d19ed0577d1c"
     },
     {
       "source": "models/kimi/kimi-k2.6/parameters.md",
       "target": "models/kimi/kimi-k2.6/parameters.en.md",
-      "source_sha256": "464d67ab5b0190b0f41bd242fe32655b8c24ce3edd9afbb3a2ef5048baaebd84"
+      "source_sha256": "f16306f8d2ed0ea872ead3ae6f415231cb7d50e596c194740ea03957702bf8e3"
     },
     {
       "source": "models/minimax/MiniMax-M2.7/README.md",
       "target": "models/minimax/MiniMax-M2.7/README.en.md",
-      "source_sha256": "7245a29c4f05df8c729304668a3b7d2a95f0ed0aa778aad20344dafaa9b0b3cf"
+      "source_sha256": "787e25f5c40a882f82291a7de2c545ba4ec03e93e77756802d03b39580b8d12b"
     },
     {
       "source": "models/minimax/MiniMax-M2.7/parameters.md",
@@ -159,27 +159,27 @@
     {
       "source": "models/qwen/qwen-flash/README.md",
       "target": "models/qwen/qwen-flash/README.en.md",
-      "source_sha256": "29c5bf3cddbf27186321eb12825671e96e688488c29072a237bf5948f714fae1"
+      "source_sha256": "d9470babee7e80bc9dba0495dffc8ad3e8dc836e786e1f41bc0bbb025a7b2a53"
     },
     {
       "source": "models/qwen/qwen-flash/parameters.md",
       "target": "models/qwen/qwen-flash/parameters.en.md",
-      "source_sha256": "79f0405ff0322eb9cc738b7bcaa495cfd4eef43086a30cadfa1ecaf2d9cdea3d"
+      "source_sha256": "e9d46a8342d95986b72a9fe6cfbd6ffd4b8fcb399a5c7a7a3ceec2b64da9c62f"
     },
     {
       "source": "models/zhipu/glm-4.7-flash/README.md",
       "target": "models/zhipu/glm-4.7-flash/README.en.md",
-      "source_sha256": "0a65cd16f32327e271f648a740dada8da1faeb24fc5f33e30ab5f9d664436fd6"
+      "source_sha256": "b399f62bd1b7abc011e9dd0123c8d59e556d3b591946cfad012d5e3c56ce8a5f"
     },
     {
       "source": "models/zhipu/glm-4.7/README.md",
       "target": "models/zhipu/glm-4.7/README.en.md",
-      "source_sha256": "33d3e0bf87242d19ebfbea47f6cfb41e5a6f870c88cf393d85a4a10f8ef2eaaf"
+      "source_sha256": "bc53adaa5fc988e00ec05dbc290af222f14bd7ef316cd88af9cf5e0296d87af7"
     },
     {
       "source": "models/zhipu/glm-4.7/parameters.md",
       "target": "models/zhipu/glm-4.7/parameters.en.md",
-      "source_sha256": "b6f14e07ed425078356a00d214859effb698afbb6871abe5cc4c5cb1d09fe2aa"
+      "source_sha256": "92413157be63f07df8488fe87706da3332fcf1366070b3f7051f5fe8de21d907"
     }
   ],
   "generated": [

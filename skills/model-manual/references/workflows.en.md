@@ -83,9 +83,9 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek
 python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
 ```
 
-Queries only read the local official-document snapshot and existing evidence, not keys or the network. Explain `checked_at`, `status`, row restrictions and official sources. `available` means officially listed, not a successful request by the current account. `billing=paid` does not establish pay-as-you-go access; previews may be subscription-only. Recheck official pages for current availability; live calls require separate authorization.
+Queries only read the local official-document snapshot and registered code, not private records, keys or the network. Explain `checked_at`, `status`, row restrictions and official sources. `available` means officially listed, not a successful request by the current account. `billing=paid` does not establish pay-as-you-go access; previews may be subscription-only. Recheck official pages for current availability; live calls require separate authorization.
 
-`repository_coverage` joins exact vendor and ID: `manual_path` / `parameters_path` refer to maintained-card pages, while `example_files` / `live_passed_files` refer to current-source evidence for that exact ID. Defaults, aliases, families and served versions do not transfer coverage. Discovery entries without cards do not enter the generator; free discovery entries do not change paid-default policy. Unknown IDs return no match, never a silent replacement.
+`repository_coverage` joins exact vendor and ID: `manual_path` / `parameters_path` refer to maintained-card pages, while `example_files` identifies calling code for that exact ID. Public queries omit private execution statistics. Defaults, aliases, families and served versions do not transfer coverage. Discovery entries without cards do not enter the generator; free discovery entries do not change paid-default policy. Unknown IDs return no match, never a silent replacement.
 
 If the user asks only for a model list, maintain bilingual fields and official sources in `data/model-lists/<vendor>.json`, then regenerate pages. Do not thereby create detailed cards, claim live tests or change defaults.
 
@@ -95,61 +95,49 @@ If the requested model has no machine card, do not overwrite the default card's 
 
 1. First use discovery to locate the exact ID and sources, then check availability, lifecycle, required task capabilities and model-specific parameters in official model/API documentation. Retain official links and the check date. Absence from discovery does not establish lack of official support.
 2. If the user only needs their project integrated, handwritten implementation from official sources is allowed with an explicit not-cataloged/not-live-tested scope. Do not expand this knowledge base without a request. State any unresolved critical behavior instead of guessing parameters.
-3. If the user requests an addition to this manual, create a separate card in [models/](models/) and a manual plus necessary examples under repository `models/<vendor>/<model-id>/`. Follow neighboring card structures and generator validation. Every `value` or `status` source must resolve; do not copy other models' facts or reports. Use the schema's applicable unknown state for undocumented capabilities. `verified` requires a real report for that model.
+3. If the user requests an addition to this manual, create a separate card in [models/](models/) and a manual plus necessary examples under repository `models/<vendor>/<model-id>/`. Follow neighboring card structures and generator validation. Every `value` or `status` source must resolve; do not copy other models' facts or records. Use the schema's applicable unknown state for undocumented capabilities. Actually run new calling code before publication; keep execution records local.
 4. Change a vendor's `default_model` only when the user requests it. Current verifiers fix their test models, and the [synchronizer](../scripts/sync_verification.py) only derives default-model vendor summaries. A new card does not automatically become the default or gain a verifier. Update affected offline checks and verification scripts when expanding coverage, so a new model is not accidentally tested as an old one.
 
-For a new model without a shared-workflow report, use `verification: null` and `verification_scope: "not_run"`, not a fabricated path. The synchronizer shows this layer as untested/no registered report, uses — rather than zero counts, and never inherits another model's state. A broken nonempty reference still fails. MiniMax M2.7's model card keeps this state, but its standalone examples have separate file-level evidence; neither layer replaces the other. New models still need a card, manual, example source manifest, and offline checks.
+For a new model without a shared-workflow record, use `verification: null` and `verification_scope: "not_run"`, not a fabricated path. For an existing unpublished record, use `verification:null` and `verification_scope:private`. Public synchronization shows official attribution and publication boundaries, not counts or reports, and reads no local execution records. New models still need a card, manual, example source manifest and offline checks.
 
 ## Evidence and verification
 
-First distinguish a request for historical results, code verification, or new live calls. Ordinary integration permits code generation and offline checks, not unsolicited potentially billable model calls.
+Distinguish explanation, offline checking and live reproduction. Ordinary integration does not authorize potentially billable requests or input uploads.
 
-| Information | Source and reporting scope |
-|---|---|
-| Official support and parameter rules | Resolve source → sources in the model card; state the official claim and check date |
-| Model-level shared workflow | Read the card's verification report for evidence identifier, model, parameters, and checks; null/not_run means this layer lacks a report. The [historical workflow page](../../../en/docs/verification-status.md) is a derived view |
-| Current offline checks | Report commands and actual outcomes; do not call them successful online requests |
-| Current status of a specific example | Read [example execution status](../../../en/docs/example-status.md), the model's examples/sources.json, and the referenced file report, evidence_scope, evidence identifier, and hashes; do not infer from a historical model report |
-| Newly generated/rewritten code | Report only compilation, mocks, or live execution actually performed; a similar example's pass does not cover new parameter/task/tool/input combinations |
+The public repository provides official attribution, parameters, canonical code and run commands, not execution reports, model replies, statistics or execution fingerprints. `verification.live=private` and `verification_scope=private` mean records are unpublished, not unexecuted or publicly auditable proof of a pass. State missing local records explicitly; model cards, code existence and offline mocks do not establish live success.
 
-`mock_tested` is not server verification. Report `live=not_run`, missing keys/inputs/runtime, rate limits, timeouts, and failures separately; none counts as a pass. A model card may legitimately retain `verification: null` while a specific example has real HTTP passing evidence. Conversely, an old model workflow report cannot cover every advanced file. Read current results dynamically; never prewrite that all examples passed.
-
-Compare `source_sha256` with current file and dependency identity. Dependencies include same-directory `_*.py`; the cross-model entry point also includes model cards and the vendor catalog; language-specific trace helpers are included according to executor/catalog rules. Mismatched hashes mean old evidence cannot represent the current version: re-execute and retain a new report. Never edit old report hashes to repair status. `example_catalog.py --check` checks linked file evidence against current source without sending requests. The [English example index](../../../en/docs/example-index.md) is generated from those manifests.
-
-Read real HTTP metadata alongside the original file's process result. Telemetry collection/decompression failure does not establish that the original API call failed; inspect exit_code, telemetry_error/telemetry_overflow, and completion evidence. Older Shell/TypeScript reports may only contain original_file_process_exit_and_its_response_checks; do not claim observed HTTP status, usage, or served-model metadata for those records. A normal response pass only establishes the recorded input/parameter workflow, not general accuracy.
+- Calling guidance: locate the exact model's source and official attribution without requiring the reader to supply private maintainer records.
+- Present availability: recheck official lifecycle, account and input requirements; historical maintenance results do not guarantee current access.
+- Generated or changed code: report only compilation, mocks or authorized live execution actually performed, without inheriting an original example's pass.
+- Maintainer checking: read `.local/evidence/` only when needed; retain source/dependency identity, real HTTP and completion checks, without rewriting old hashes to impersonate a rerun. Missing, broken or stale private evidence cannot become a pass.
 
 ### Reproduce real examples only as authorized
 
-For integration/explanation alone, use offline checks. Execute only authorized vendors/files after the user explicitly requests live calls. Run the following from the repository root after installing locked dependencies. The default inventory command reads no key and calls no model:
+After installing pinned dependencies, query inventory from the repository root. The default reads no key and sends no request:
 
 ```bash
 python tests/run_example_files.py --vendor kimi
 ```
 
-Executing a registered file requires explicit `--execute` and a new, nonexistent report path, for example:
+Execute only after explicit authorization. Reports default to the Git-ignored local directory:
 
 ```bash
-python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/examples/01_basic.py --report /tmp/model-manual-kimi-example-new.json
+python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/examples/01_basic.py
 ```
 
-Configure only the needed environment variables; do not echo or commit keys, or print `.env` to check its existence. The executor defaults to generated image/video teaching fixtures. If Doubao video needs an authorized public HTTPS input, provide it explicitly with `--video-url`; do not accidentally inherit private media. File selection, timeouts/delays, and language dependencies follow the [executor's help](../../../tests/run_example_files.py). Unregistered generated files cannot use this entry point to impersonate evidence for a registered file.
+Read only needed environment credentials or an ignored .env; do not echo or commit them. Do not accidentally upload private media. Inputs, video options, timeout/delay controls and exit codes are in [reproduction](../../../en/docs/verification.md). Private reports omit execution times, durations and reply bodies. Never publish them in the public repository. The unified verifier covers its fixed checks, not every example.
 
-The original shared verifier still covers its fixed checks; see [verification and reproduction](../../../en/docs/verification.md) for entry points and exit codes. Its coverage differs from the file executor. After adding a file report, update sources.json references only when the target file, dependency hashes, and outcomes match, then regenerate the index. Do not also promote the entire model to verified.
+Maintainers may explicitly run `python tests/check_example_release.py --check --require-passed` to inspect complete local evidence. Ordinary public clones use `--check` for the code directory and must not claim a private pass without records. Public pages and queries must not change based on private records.
 
-Resolve paths relative to the file defining them: vendors.json model_card/model_manual paths are relative to its directory, but vendor-summary verification paths are repository-root-relative. A model card's verification path is relative to the card directory. Do not mix the two report-path rules.
-
-A card's last_checked_at is the official-document check date and remains intact. New file reports use schema 2 and strict unified reports use schema 3, with a random UUIDv4 evidence_id. Do not store or display tested_at or duration_seconds; privacy.test_timestamps_saved and privacy.duration_saved are both false. An identifier does not express order or prove real-time availability. Privacy redaction must not promote basic reports to strict verification. See the [time-minimization rule](../../../en/docs/evidence-policy.md#minimize-execution-time-information-project-rule). verified also requires matching specific checks; a historical smoke check does not establish a complete strict workflow. Preserve failed, rate-limited, and skipped outcomes instead of relabeling them unsupported.
-
-If asked whether a model works now, historical results cannot establish present availability. State the evidence scope and freshness limitations and rerun only when the user requests live verification. Recheck official sources when documentation conflicts with a card; locate differences in original reports when summaries disagree. Do not rewrite historical outcomes to make wording consistent.
-
-After maintaining cards or reports, run from the repository root:
+After maintaining public cards, source or documentation, run:
 
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
 python skills/model-manual/scripts/example_catalog.py --check
+python skills/model-manual/scripts/model_catalog.py --check
+python scripts/render_human_examples.py --check
+python tests/check_example_release.py --check
 ```
 
-To update derived summaries, run synchronization without --check first, then recheck. Rules for live requests, report storage, and exit codes remain in [verification and reproduction](../../../en/docs/verification.md).
-
-Deliver what the task needs: actual vendor/model and sources, code/changes, dependencies and environment variables, commands, completed checks, and unverified parts. For migration, include behavior differences; for troubleshooting, include evidence for the cause and how to check the fix.
+Regenerate affected pages before checking. Deliver the chosen model, official attribution, code, environment variables, run instructions and checks actually performed; explain uncertainty in troubleshooting and behavior changes in migrations. Do not label offline checking as a new live pass.

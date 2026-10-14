@@ -271,7 +271,7 @@ class MiniMaxExampleTests(unittest.TestCase):
             self.assertEqual(len(sdk.calls), 2)
             self.assertEqual(handler.call_count, 1)
 
-    def test_manifest_omits_unsupported_json_and_requires_evidence_for_live_status(self):
+    def test_manifest_omits_unsupported_json_and_keeps_execution_records_private(self):
         manifest = json.loads((DIRECTORY / "sources.json").read_text(encoding="utf-8"))
         validator = runpy.run_path(str(ROOT / "skills/model-manual/scripts/example_catalog.py"), run_name="offline_catalog_validation")
         validated = next(item for item in validator["load_catalogs"](ROOT) if item["vendor"] == "minimax" and item["model_id"] == "MiniMax-M2.7")
@@ -282,13 +282,9 @@ class MiniMaxExampleTests(unittest.TestCase):
             verification = entry["verification"]
             checked = verified_entries[entry["file"]]["verification"]
             self.assertEqual(verification["live"], checked["live"])
-            if verification["live"] == "not_run":
-                self.assertFalse(verification.get("report"))
-            else:
-                self.assertTrue((ROOT / verification["report"]).is_file())
-                self.assertEqual(verification["report"], checked["report"])
-                self.assertTrue(checked.get("evidence_id") or checked.get("legacy_evidence") is True)
-                self.assertFalse({"tested_at", "duration_seconds", "legacy_tested_at"}.intersection(checked))
+            self.assertEqual(set(checked), {"offline", "live", "note"})
+            self.assertEqual(set(verification), {"offline", "live", "note"})
+            self.assertIn(checked["live"], {"private", "not_run"})
             self.assertNotIn(entry["capability"], {"json_object", "json_schema"})
         not_integrated = {entry["capability"] for entry in manifest["not_integrated"]}
         self.assertTrue({"json_object", "json_schema", "thinking_off", "vision"} <= not_integrated)

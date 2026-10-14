@@ -3,6 +3,11 @@
 *.key
 *secret*
 
+# 本地实测资料（不随调用代码发布）
+.local/
+verification/**/*.json
+models/*/*/verification/*.json
+
 # Python
 __pycache__/
 *.py[cod]

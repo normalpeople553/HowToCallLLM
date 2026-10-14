@@ -2,6 +2,7 @@
 
 默认只列清单；--execute 才发送真实请求。Python 使用原 SDK 的真实 HTTPTransport，
 记录器只旁观传输，不改请求/响应。Shell/TS 同样旁观真实网络元数据。
+实测记录不发布，默认保存于 .local/evidence/example-files/<UUID>.json。
 """
 
 import argparse
@@ -489,6 +490,9 @@ def validate_report_privacy(value):
 def write_report(path, report):
     validate_report_privacy(report)
     path = Path(path)
+    resolved = path.resolve()
+    if resolved.is_relative_to(ROOT.resolve()) and not resolved.is_relative_to(ROOT.resolve() / ".local"):
+        raise ValueError("report_destination_inside_public_repository")
     path.parent.mkdir(parents=True, exist_ok=True)
     # 每次报告独立路径；拒绝覆盖既有证据。
     with path.open("x", encoding="utf-8") as handle:
@@ -501,7 +505,7 @@ def main():
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--vendor", choices=[*KEYS, "shared"])
     parser.add_argument("--file", action="append", help="精确仓库相对路径，可重复；只允许已登记的真实文件")
-    parser.add_argument("--report")
+    parser.add_argument("--report", type=Path, help="本地报告路径；默认 .local/evidence/example-files/<UUID>.json。可指定仓库外路径（如 /tmp）；仓库内仅允许 .local。")
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--delay", type=float, default=0, help="文件间隔秒数（0–60），用于低并发/RPM账户")
     parser.add_argument("--video-url", help="Doubao 视频示例使用的获准公开 HTTPS 测试素材")
@@ -518,10 +522,10 @@ def main():
     if not args.execute:
         print(json.dumps(entries, ensure_ascii=False, indent=2))
         return 0
-    if not args.report:
-        parser.error("真实执行必须指定新的 --report 路径")
-    if Path(args.report).exists():
+    if args.report and args.report.exists():
         parser.error("报告路径已存在，请使用新路径保留历史")
+    if args.report and args.report.resolve().is_relative_to(ROOT.resolve()) and not args.report.resolve().is_relative_to(ROOT.resolve() / ".local"):
+        parser.error("本地报告在仓库内只能保存到 .local；也可指定仓库外路径")
     env = credentials()
     report = make_report()
     with tempfile.TemporaryDirectory(prefix="model-manual-live-") as temporary:
@@ -534,9 +538,15 @@ def main():
                 time.sleep(args.delay)
             result = execute_entry(entry, env, directory, args.timeout)
             report["results"].append(result)
-            print(json.dumps({"file": entry["path"], "status": result["status"], "requests": len(result.get("requests", [])), "error_type": result.get("error_type")}, ensure_ascii=False), flush=True)
+            print(json.dumps({"file": entry["path"], "status": result["status"]}, ensure_ascii=False), flush=True)
     report["summary"] = {state: sum(item["status"] == state for item in report["results"]) for state in sorted(LIVE_STATUSES)}
-    write_report(args.report, report)
+    destination = args.report or ROOT / ".local/evidence/example-files" / f"{report['evidence_id']}.json"
+    try:
+        write_report(destination, report)
+    except (OSError, ValueError):
+        print("FAILED report_write code=report_not_written")
+        return 1
+    print("本地验证记录已保存，不对外发布。")
     return 0 if all(item["status"] == "passed" for item in report["results"]) else 1
 
 

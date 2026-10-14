@@ -38,9 +38,8 @@
       "run_command": "python models/minimax/MiniMax-M2.7/examples/01_basic.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -78,9 +77,8 @@
       "run_command": "python models/minimax/MiniMax-M2.7/examples/02_streaming.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-stream-attempt4.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -118,9 +116,8 @@
       "run_command": "python models/minimax/MiniMax-M2.7/examples/03_thinking.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -159,9 +156,8 @@
       "run_command": "python models/minimax/MiniMax-M2.7/examples/05_tool_calling.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -199,9 +195,8 @@
       "run_command": "python models/minimax/MiniMax-M2.7/examples/06_multi_turn.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -244,9 +239,8 @@
       "run_command": "bash models/minimax/MiniMax-M2.7/examples/07_native_curl.sh",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-minimax-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     }
   ],

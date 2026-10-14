@@ -31,9 +31,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/01_basic.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -68,9 +67,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/02_streaming.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -101,9 +99,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/03_thinking.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -134,9 +131,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/04_json_output.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -168,9 +164,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/05_tool_calling.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -207,9 +202,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/06_vision.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的本地纯红 PNG，不代表其他输入分支或图像识别准确率已验证。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -241,9 +235,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/07_multi_turn.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -281,9 +274,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/08_thinking_tools.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -320,9 +312,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/09_video.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次使用本地生成短视频。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     },
     {
@@ -355,9 +346,8 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/10_json_schema.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "passed",
-        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
-        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
+        "live": "private",
+        "note": "实测记录仅在维护者本地保存，不随仓库发布；其他账户、输入或参数需自行验证。"
       }
     }
   ],

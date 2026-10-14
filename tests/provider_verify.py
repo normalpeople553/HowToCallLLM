@@ -1,4 +1,4 @@
-"""五家模型共享的真实验证器；报告和终端只保留白名单元数据。
+"""五家模型共享的本地真实验证器；实测记录不发布，默认保存于 .local/evidence。
 
 依赖由 requirements-lock.txt 固定。离线单元测试使用 mock，不发送请求。
 每次真实调用的结束原因、参数和 token 用量由同一套规则检查并记录。
@@ -498,6 +498,9 @@ def validate_report_privacy(value):
 def write_report(destination, report, overwrite=False):
     validate_report_privacy(report)
     target = Path(destination)
+    resolved = target.resolve()
+    if resolved.is_relative_to(ROOT.resolve()) and not resolved.is_relative_to(ROOT.resolve() / ".local"):
+        raise ValueError("report_destination_inside_public_repository")
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("w" if overwrite else "x", encoding="utf-8") as handle:
         json.dump(report, handle, ensure_ascii=False, indent=2)
@@ -522,7 +525,7 @@ def main(argv=None, single_vendor=None):
     parser = argparse.ArgumentParser(description="真实 API 验证；仅正常完成的回答或工具闭环会通过。")
     if not single_vendor:
         parser.add_argument("vendors", nargs="*", metavar="VENDOR")
-    parser.add_argument("--report", type=Path, help="生成脱敏 JSON 报告；目标已存在则拒绝。")
+    parser.add_argument("--report", type=Path, help="本地报告路径；默认 .local/evidence/provider-workflow/<UUID>.json。可指定仓库外路径（如 /tmp）；仓库内仅允许 .local，目标已存在则拒绝。")
     parser.add_argument("--overwrite", action="store_true", help="明确允许覆盖 --report 目标。")
     parser.add_argument("--base-url", help="覆盖单一厂商 HTTPS base URL；不允许凭据/query/fragment。")
     parser.add_argument("--timeout", type=float, default=60, help="单次请求超时秒数，默认 60。")
@@ -536,6 +539,8 @@ def main(argv=None, single_vendor=None):
         parser.error("--overwrite 必须同时提供 --report")
     if args.report and args.report.exists() and not args.overwrite:
         parser.error("报告目标已存在；请选择新路径或明确使用 --overwrite")
+    if args.report and args.report.resolve().is_relative_to(ROOT.resolve()) and not args.report.resolve().is_relative_to(ROOT.resolve() / ".local"):
+        parser.error("本地报告在仓库内只能保存到 .local；也可指定仓库外路径")
     if args.base_url and len(vendors) != 1:
         parser.error("--base-url 只支持一次选择一个厂商")
     if not 0 < args.timeout <= 180:
@@ -568,12 +573,11 @@ def main(argv=None, single_vendor=None):
             results.append(result)
             print_result(result)
     report = make_report(results, source=source, single_vendor=single_vendor)
-    if args.report:
-        try:
-            write_report(args.report, report, overwrite=args.overwrite)
-        except OSError:
-            print("FAILED report_write code=report_not_written")
-            return 1
-        print("脱敏 JSON 报告已生成。")
-    print("结果：" + ", ".join(f"{status}={report['counts'][status]}" for status in STATUSES))
+    destination = args.report or ROOT / ".local/evidence/provider-workflow" / f"{report['evidence_id']}.json"
+    try:
+        write_report(destination, report, overwrite=args.overwrite)
+    except (OSError, ValueError):
+        print("FAILED report_write code=report_not_written")
+        return 1
+    print("本地验证记录已保存，不对外发布。")
     return result_exit_code(report["counts"])

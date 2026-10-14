@@ -18,7 +18,7 @@
 | 换厂商、型号或 SDK | 源与目标卡片、消息/思考/预算/工具差异、业务逻辑保留与回归 |
 | 空回复、截断、断流、错误码或工具循环 | 脱敏请求、真实状态、结束原因、用量与官方依据；不索要完整 Key |
 | 用户指定未收录型号 | 先核对该型号的官方身份和能力，不用默认卡片换名冒充 |
-| 询问实测或要求复测 | 精确文件、当前哈希、报告范围与用户授权，不把 mock 写成线上成功 |
+| 询问实测或要求复测 | 准确源码、检查范围与用户授权，不把 mock 写成线上成功 |
 
 这些是项目工作流，不是厂商保证；详细步骤和交付规则见[任务流程](../skills/model-manual/references/workflows.md)。
 
@@ -26,7 +26,7 @@
 
 ### 资料地图
 
-人查型号走[模型目录](../models/README.md)，机器按准确 ID 查询下面的共享资料；清单、型号卡、可执行示例和实测报告分别表达不同的覆盖范围。
+人查型号走[模型目录](../models/README.md)，机器按准确 ID 查询下面的共享资料；清单、官方型号卡与可执行代码分别表达不同的资料覆盖；测试记录只留本地。
 
 | 资料 | 规范入口 | 怎么用 |
 |---|---|---|
@@ -34,10 +34,10 @@
 | 厂商还有哪些语言型号 | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [模型目录](../models/README.md) | 人读目录、机器查准确 ID 和官方来源/生命周期；覆盖独立关联，清单不等于有卡片或实测 |
 | 准确型号事实 | [references/models](../skills/model-manual/references/models/) | 读取 identity、capabilities、generation，并解析每条 source |
 | 参数解释 | [参数导航](../docs/参数说明与调参.md) | 按任务只读对应型号；区分 SDK 配置、模型参数与本地安全限制 |
-| 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与证据 |
+| 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与官方出处 |
 | 生成新组合 | [generate_snippet.py](../skills/model-manual/scripts/generate_snippet.py) | 根据支持的语言/任务组合生成，不自动继承现成文件通过状态 |
-| 当前逐文件结果 | [实测状态](../docs/示例实测状态.md) · [原始报告](../verification/examples/) | 核对身份、证据编号、源码/支持文件哈希、正常结束和证据范围 |
-| 旧型号能力检查 | [历史统一验证](../docs/验证状态.md) | 只用于报告里的固定测试项，不替代逐文件执行 |
+| 调用文件目录 | [完整代码目录](../docs/示例实测状态.md) | 查看文件、准确型号、功能与命令，不读取私有记录 |
+| 本地验证规则 | [验证说明](../docs/验证状态.md) | 真实调用按授权；测试记录不发布 |
 
 查询和生成命令在仓库根目录运行，以下命令不发请求：
 
@@ -52,7 +52,7 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 
 ### 示例检索
 
-先按准确型号和能力查现成文件，再读取该文件的输入变量、来源和当前证据。
+先按准确型号和能力查现成文件，再读取该文件的输入变量、官方来源和运行要求。
 
 ```bash
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
@@ -80,14 +80,14 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool
 交付采用的准确型号与官方来源、代码或项目修改、依赖与变量名、运行命令，以及实际完成/尚未完成的检查；迁移补充行为差异，排错补充依据。[规范](../skills/model-manual/SKILL.md)
 
 - Key 只从规定环境变量或本地忽略文件读取，不写入示例或输出。普通代码任务不默认发起可能计费或上传素材的真实请求。
-- 生成器和离线测试不是在线验证；历史通过只证明报告当时的型号、参数、输入与范围。文件或依赖变更后需新证据。
+- 生成器和离线测试不是在线验证；原例结果不保证其他输入或组合。文件或依赖变更后重新验证；报告、回复、统计与执行哈希不上传。
 - 工具数据是模拟时必须明说。不要删掉结束检查、工具回传或思考历史来让测试“通过”。
-- 型号卡没有统一验证器报告，不等于独立示例没有真实执行；反过来，某文件通过也不能把整张卡升级为已验证。
+- 公开的 private 标记只是说明记录未发布，不等于未执行，也不是公开可审计的通过证明。
 
 以上边界及授权后的真实执行方式见[证据流程](../skills/model-manual/references/workflows.md#证据与验证)与[验证与复现](../docs/验证与复现.md)。机器 JSON、脚本参数和例子路径是中英文共享契约，不翻译字段名或静默替换 API 区域。
 
 ## 英文与兼容入口
 
-[English Agent guide](README.en.md)使用 [SKILL.en.md](../skills/model-manual/SKILL.en.md)和[英文任务流程](../skills/model-manual/references/workflows.en.md)，仍读取同一套卡片、源码和报告。
+[English Agent guide](README.en.md)使用 [SKILL.en.md](../skills/model-manual/SKILL.en.md)和[英文任务流程](../skills/model-manual/references/workflows.en.md)，仍读取同一套官方卡片与调用源码。
 
 旧的 [agents/SKILL.md](SKILL.md)只作兼容跳转；本目录旧 vendors/snippets 子目录也只是迁移提示，不是另一份事实或代码源。[旧厂商卡说明](vendors/README.md) · [旧片段说明](snippets/README.md)

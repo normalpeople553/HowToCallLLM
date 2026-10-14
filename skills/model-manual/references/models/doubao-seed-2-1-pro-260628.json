@@ -2,69 +2,197 @@
   "schema_version": 1,
   "model_id": "doubao-seed-2-1-pro-260628",
   "vendor": "doubao",
-  "billing": {"type": {"value": "paid", "source": "pricing"}},
+  "billing": {
+    "type": {
+      "value": "paid",
+      "source": "pricing"
+    }
+  },
   "last_checked_at": "2026-10-13",
-  "verification": "../../../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13-strict.json",
-  "verification_scope": "strict_workflow",
-  "historical_verification": ["../../../../models/doubao/doubao-seed-2-1-pro-260628/verification/2026-10-13.json"],
+  "verification": null,
+  "verification_scope": "private",
   "identity": {
-    "api_model_id": {"value": "doubao-seed-2-1-pro-260628", "source": "models"},
-    "lifecycle": {"value": "past_but_callable", "source": "models"}
+    "api_model_id": {
+      "value": "doubao-seed-2-1-pro-260628",
+      "source": "models"
+    },
+    "lifecycle": {
+      "value": "past_but_callable",
+      "source": "models"
+    }
   },
   "connection": {
-    "api_key_env": {"value": "ARK_API_KEY", "source": "chat_api"},
-    "openai_base_url": {"value": "https://ark.cn-beijing.volces.com/api/v3", "source": "chat_api"},
-    "activation_required": {"value": true, "source": "activation"}
+    "api_key_env": {
+      "value": "ARK_API_KEY",
+      "source": "chat_api"
+    },
+    "openai_base_url": {
+      "value": "https://ark.cn-beijing.volces.com/api/v3",
+      "source": "chat_api"
+    },
+    "activation_required": {
+      "value": true,
+      "source": "activation"
+    }
   },
   "limits": {
-    "context_tokens": {"value": 262144, "display": "256K", "source": "models"},
-    "max_output_tokens": {"value": 262144, "display": "256K", "source": "models"},
-    "default_output_tokens": {"value": 4096, "display": "4K", "source": "models"}
+    "context_tokens": {
+      "value": 262144,
+      "display": "256K",
+      "source": "models"
+    },
+    "max_output_tokens": {
+      "value": 262144,
+      "display": "256K",
+      "source": "models"
+    },
+    "default_output_tokens": {
+      "value": 4096,
+      "display": "4K",
+      "source": "models"
+    }
   },
   "capabilities": {
-    "chat_completions": {"status": "verified", "source": "chat_api"},
-    "streaming": {"status": "verified", "source": "chat_api"},
-    "thinking": {"status": "verified", "source": "thinking"},
-    "structured_output": {"status": "verified", "source": "models"},
-    "tool_calling": {"status": "verified", "source": "models"},
-    "vision": {"status": "verified", "source": "models"}
+    "chat_completions": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "streaming": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "thinking": {
+      "status": "documented",
+      "source": "thinking"
+    },
+    "structured_output": {
+      "status": "documented",
+      "source": "models"
+    },
+    "tool_calling": {
+      "status": "documented",
+      "source": "models"
+    },
+    "vision": {
+      "status": "documented",
+      "source": "models"
+    }
   },
   "thinking": {
-    "default": {"value": "enabled", "source": "thinking"},
-    "toggle": {"value": {"thinking": {"type": "enabled|disabled"}}, "source": "thinking"},
-    "reasoning_field": {"value": "reasoning_content", "source": "thinking"}
+    "default": {
+      "value": "enabled",
+      "source": "thinking"
+    },
+    "toggle": {
+      "value": {
+        "thinking": {
+          "type": "enabled|disabled"
+        }
+      },
+      "source": "thinking"
+    },
+    "reasoning_field": {
+      "value": "reasoning_content",
+      "source": "thinking"
+    }
   },
   "pricing_snapshot": {
-    "official_page": {"value": "see_source", "source": "pricing"},
+    "official_page": {
+      "value": "see_source",
+      "source": "pricing"
+    },
     "volatile": true
   },
   "generation": {
     "schema_version": 1,
-    "key_env": {"value": "ARK_API_KEY", "source": "chat_api"},
-    "base_url": {"value": "https://ark.cn-beijing.volces.com/api/v3", "source": "chat_api"},
-    "python_extra_body_fields": {"value": ["thinking"], "source": "thinking"},
+    "key_env": {
+      "value": "ARK_API_KEY",
+      "source": "chat_api"
+    },
+    "base_url": {
+      "value": "https://ark.cn-beijing.volces.com/api/v3",
+      "source": "chat_api"
+    },
+    "python_extra_body_fields": {
+      "value": [
+        "thinking"
+      ],
+      "source": "thinking"
+    },
     "thinking": {
-      "on": {"value": {"thinking": {"type": "enabled"}}, "source": "thinking"},
-      "off": {"value": {"thinking": {"type": "disabled"}}, "source": "thinking"}
+      "on": {
+        "value": {
+          "thinking": {
+            "type": "enabled"
+          }
+        },
+        "source": "thinking"
+      },
+      "off": {
+        "value": {
+          "thinking": {
+            "type": "disabled"
+          }
+        },
+        "source": "thinking"
+      }
     },
     "token_budget": {
-      "parameter": {"value": "max_tokens", "source": "chat_api"},
-      "min": {"value": 1, "source": "project_generation"},
-      "semantics": {"value": "unknown", "source": "project_generation"}
+      "parameter": {
+        "value": "max_tokens",
+        "source": "chat_api"
+      },
+      "min": {
+        "value": 1,
+        "source": "project_generation"
+      },
+      "semantics": {
+        "value": "unknown",
+        "source": "project_generation"
+      }
     },
-    "tool_choice": {"value": "auto", "source": "chat_api"},
+    "tool_choice": {
+      "value": "auto",
+      "source": "chat_api"
+    },
     "json_output": {
       "capability": "structured_output",
-      "response_format": {"value": {"type": "json_schema"}, "source": "models"}
+      "response_format": {
+        "value": {
+          "type": "json_schema"
+        },
+        "source": "models"
+      }
     },
-    "verification_scope": {"value": "历史报告仅覆盖其中列出的请求；工具调用只验证提出调用、图片只验证非空回答。代码生成器的完整闭环和内容识别需以相应新报告为证。", "source": "project_generation"}
+    "verification_scope": {
+      "value": "历史报告仅覆盖其中列出的请求；工具调用只验证提出调用、图片只验证非空回答。代码生成器的完整闭环和内容识别需以相应新报告为证。",
+      "source": "project_generation"
+    }
   },
   "sources": {
-    "project_generation": {"title": "项目代码生成约定：预算必须为正整数；unknown 表示预算语义未确认，不设置默认预算，不声称新增流程已实测", "url": "../../scripts/generate_snippet.py"},
-    "models": {"title": "模型列表", "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh"},
-    "chat_api": {"title": "在线推理 API", "url": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh"},
-    "thinking": {"title": "深度思考", "url": "https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh"},
-    "pricing": {"title": "模型价格", "url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"},
-    "activation": {"title": "模型开通管理", "url": "https://docs.volcengine.com/docs/ark/activation-management?lang=zh"}
+    "project_generation": {
+      "title": "项目代码生成约定：预算必须为正整数；unknown 表示预算语义未确认，不设置默认预算，不声称新增流程已实测",
+      "url": "../../scripts/generate_snippet.py"
+    },
+    "models": {
+      "title": "模型列表",
+      "url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh"
+    },
+    "chat_api": {
+      "title": "在线推理 API",
+      "url": "https://docs.volcengine.com/docs/ark/online-inference-standard?lang=zh"
+    },
+    "thinking": {
+      "title": "深度思考",
+      "url": "https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh"
+    },
+    "pricing": {
+      "title": "模型价格",
+      "url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh"
+    },
+    "activation": {
+      "title": "模型开通管理",
+      "url": "https://docs.volcengine.com/docs/ark/activation-management?lang=zh"
+    }
   }
 }

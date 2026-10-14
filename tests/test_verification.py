@@ -239,11 +239,64 @@ class ReportingTests(unittest.TestCase):
         check_private_fields(report)
 
     def test_default_cli_selects_all_vendors_without_reading_keys(self):
-        with patch.dict(os.environ, {}, clear=True), patch.object(verify, "load_env"), patch.object(verify, "source_metadata", return_value={}), contextlib.redirect_stdout(io.StringIO()) as output:
+        with patch.dict(os.environ, {}, clear=True), patch.object(verify, "load_env"), patch.object(verify, "source_metadata", return_value={}), patch.object(verify, "write_report") as write, contextlib.redirect_stdout(io.StringIO()) as output:
             status = verify.main([])
         self.assertEqual(status, 2)
+        self.assertTrue(write.call_args.args[0].is_relative_to(verify.ROOT / ".local/evidence/provider-workflow"))
         for vendor in verify.SPECS:
             self.assertIn(f"SKIPPED {vendor}/", output.getvalue())
+
+    def test_default_report_is_local_only_and_private_metadata_is_not_printed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(verify, "ROOT", root), patch.dict(os.environ, {}, clear=True), \
+                    patch.object(verify, "load_env"), patch.object(verify, "source_metadata", return_value={}), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(verify.main([]), 2)
+            files = list((root / ".local/evidence/provider-workflow").glob("*.json"))
+            self.assertEqual(len(files), 1)
+            report = json.loads(files[0].read_text(encoding="utf-8"))
+            self.assertEqual(files[0].stem, report["evidence_id"])
+            self.assertEqual(UUID(files[0].stem).version, 4)
+            self.assertNotIn(report["evidence_id"], output.getvalue())
+            self.assertNotIn(str(root), output.getvalue())
+            self.assertNotIn("counts", output.getvalue())
+            self.assertNotIn("source_git", output.getvalue())
+            self.assertEqual([path for path in root.iterdir()], [root / ".local"])
+
+    def test_public_repository_report_destination_is_rejected_before_env_or_file_writes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            destination = root / "verification/not-created.json"
+            with patch.object(verify, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):
+                    verify.write_report(destination, {"safe": True})
+                with patch.object(verify, "load_env") as load, contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as error:
+                        verify.main(["--report", str(destination)])
+                    self.assertEqual(error.exception.code, 2)
+                    load.assert_not_called()
+            self.assertFalse(destination.parent.exists())
+
+    def test_explicit_private_repository_destination_remains_supported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            destination = root / ".local/evidence/custom.json"
+            with patch.object(verify, "ROOT", root):
+                verify.write_report(destination, {"safe": True})
+            self.assertEqual(json.loads(destination.read_text(encoding="utf-8")), {"safe": True})
+
+    def test_private_directory_symlink_cannot_redirect_a_report_to_public_repository(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            public = root / "docs"
+            public.mkdir()
+            (root / ".local").symlink_to(public, target_is_directory=True)
+            destination = root / ".local/evidence/not-created.json"
+            with patch.object(verify, "ROOT", root):
+                with self.assertRaisesRegex(ValueError, "report_destination_inside_public_repository"):
+                    verify.write_report(destination, {"safe": True})
+            self.assertFalse((public / "evidence").exists())
 
     def test_unknown_or_duplicate_vendors_are_rejected_before_env_loading(self):
         for args in (["unknown"], ["kimi", "kimi"]):

@@ -7,7 +7,7 @@ description: Integrate, migrate, or troubleshoot model API calls for DeepSeek, K
 
 [Chinese](SKILL.md) | English · [Agent guide](../../agents/README.en.md) · [Human guide](../../human/README.en.md)
 
-This is the English reading entry for the same `model-manual` Skill, not another installable Skill. Complete the user's model-calling task in their project; there is no need to read the whole tutorial in sequence. Machine cards, scripts, examples, and reports are shared across languages. A translation is not new execution evidence.
+This is the English reading entry for the same `model-manual` Skill, not another installable Skill. Complete the user's model-calling task in their project; there is no need to read the whole tutorial in sequence. Official cards, scripts and calling examples are shared across languages; execution records stay local. A translation is not new execution evidence.
 
 ## Identify the task and exact model
 
@@ -25,7 +25,7 @@ For functional code, first query the [official-example catalog](scripts/example_
 | Errors, empty text, interrupted streams, or tool loops | Troubleshooting | Diagnose with the actual response and exact model |
 | Discover a provider's other language models | Model discovery | Official catalog, lifecycle and repository coverage; defaults are not complete inventories |
 | A model absent from the catalog | Unknown models | Check official sources; do not inherit default-model parameters |
-| Capability evidence or explicitly requested live tests | Evidence and verification | Separate model reports, file evidence, and generated code; execute only as authorized |
+| Capability evidence or explicitly requested live tests | Evidence and verification | Separate official support, offline checks and authorized live calls |
 
 ## Generate calling code
 
@@ -47,10 +47,10 @@ Languages are `python`, `typescript`, and `curl`; the script's help and exact mo
 - Cite official sources from the card for vendor parameter/capability claims. Link prices and quotas directly to official pages. Label project judgments as project recommendations under the [evidence policy](../../en/docs/evidence-policy.md).
 - Read keys from the model's specified environment variables; never hardcode or echo them. Unless the user explicitly requests live calls, only generate/modify code or perform offline checks.
 - Preserve output-integrity checks: finish reasons and nonempty text for ordinary/JSON results; empty `choices` and completion state for streams; validated tool names/arguments, matching `tool_call_id`, full assistant messages, and bounded loops for tools. Example tool data is simulated.
-- Model-card `verification: null` / `verification_scope: not_run` means only that the model-level shared workflow has no report. It cannot override an example's real HTTP report, and one passing file cannot upgrade an entire model card. Follow [evidence and verification](references/workflows.en.md#evidence-and-verification) to check original reports, scope, and current hashes.
-- A passing existing file does not validate arbitrary generated parameter/task combinations. Changed file or support-dependency hashes require re-execution. `verified` is limited to the report's execution, model, and checks; rate limits, missing keys, or missing evidence do not establish unsupported functionality.
-- Use random UUIDv4 identifiers for execution evidence, without storing or displaying execution dates, timestamps, or durations. Keep official-document check and lifecycle dates. Format and compatibility rules are in the verification workflow of [workflows.en.md](references/workflows.en.md).
+- Public `verification.live=private` or model-card `verification_scope=private` means execution records are unpublished, not unexecuted or publicly auditable proof of a pass. Explain parameters and capabilities through official attribution.
+- Recheck changed source, inputs or parameters instead of inheriting an original example's result. Rate limits, missing keys or absent private records do not establish unsupported functionality.
+- Publish manuals, official attribution and calling code only. Reports, replies, usage statistics, execution fingerprints and test times stay local and must not be uploaded. Keep official-document check and lifecycle dates. See the verification workflow in [workflows.en.md](references/workflows.en.md).
 - Do not invent a thinking-off switch for a model that cannot disable thinking. Formatting options such as `reasoning_split` are not thinking-off controls. Read request defaults, budget names, and permitted thinking modes from the exact card.
-- Resolve summary conflicts using the exact card and original reports. The [file executor](../../tests/run_example_files.py) lists examples by default; only `--execute` sends requests. Authorization, commands, and report synchronization are covered in [evidence and verification](references/workflows.en.md#evidence-and-verification). Compilation, mocks, and historical tests must not be reported as a new live pass.
+- Resolve public summary conflicts using the exact card and official sources. The [file executor](../../tests/run_example_files.py) lists examples by default; only `--execute` sends requests. Authorization, commands and local-record rules are covered in [evidence and verification](references/workflows.en.md#evidence-and-verification). Compilation, mocks and historical tests must not be reported as a new live pass.
 
 The generator mainly covers cataloged models' Chat Completions. Advanced examples include additional APIs/features checked for their exact model; use their source manifests. Chat Completions compatibility does not establish compatibility with every OpenAI API, and one example does not prove every parameter is supported.

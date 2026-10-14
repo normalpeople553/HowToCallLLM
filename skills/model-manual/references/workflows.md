@@ -83,9 +83,9 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek
 python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
 ```
 
-查询只读本地官方资料快照和现有证据，不读取 Key、不发请求。按 `checked_at`、`status`、逐行说明和官方来源解释；`available` 是官方文档列出，不是当前账户调用成功。`billing=paid` 不能推断按量入口，预览可能仅限订阅。实时可用性仍需复核官方页面，真实调用另按授权。
+查询只读本地官方资料快照与已登记代码，不读取 Key、不发请求。按 `checked_at`、`status`、逐行说明和官方来源解释；`available` 是官方文档列出，不是当前账户调用成功。`billing=paid` 不能推断按量入口，预览可能仅限订阅。实时可用性仍需复核官方页面，真实调用另按授权。
 
-`repository_coverage` 按准确厂商和 ID 关联：`manual_path` / `parameters_path` 为维护卡片对应页面，`example_files` / `live_passed_files` 为该准确 ID 的当前源码文件证据。默认、别名、系列和实际服务版本之间不转移覆盖。无卡片的清单条目不会加入代码生成器；免费发现条目也不改变项目付费默认规则。未知 ID 返回未命中，不静默替换。
+`repository_coverage` 按准确厂商和 ID 关联：`manual_path` / `parameters_path` 为维护卡片对应页面，`example_files` 为该准确 ID 的调用文件；公开查询不返回私有实测统计。默认、别名、系列和实际服务版本之间不转移覆盖。无卡片的清单条目不会加入代码生成器；免费发现条目也不改变项目付费默认规则。未知 ID 返回未命中，不静默替换。
 
 用户只要求增加型号清单时，维护 `data/model-lists/<vendor>.json` 的双语字段和官方来源，再生成页面即可；不因此创建详细卡片、宣称实测或更改默认型号。
 
@@ -95,61 +95,49 @@ python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model de
 
 1. 先查发现清单定位准确 ID 与来源，再从该厂商官方模型页和接口资料核对是否可调用、生命周期、所需任务能力与专属参数；保留官方链接和核对日期。清单未收录不等于官方不支持。
 2. 用户只要求完成其项目接入时，可按官方资料手写实现，明确“尚未收录/尚未实测”，无需擅自扩展本知识库。关键行为无法确认时说明缺失项，不猜参数。
-3. 用户要求补充本手册时，在 [models/](models/) 新建独立型号卡片，并在仓库 `models/<vendor>/<model-id>/` 增加说明书与必要示例；按相邻卡片的结构和生成器校验要求填写字段。每个 `value` 或 `status` 对应的 `source` 必须能解析，不能复制其他型号事实或报告。缺少文档的能力使用现有结构适用的未知状态；`verified` 必须有该型号的真实报告支持。
+3. 用户要求补充本手册时，在 [models/](models/) 新建独立型号卡片，并在仓库 `models/<vendor>/<model-id>/` 增加说明书与必要示例；按相邻卡片的结构和生成器校验要求填写字段。每个 `value` 或 `status` 对应的 `source` 必须能解析，不能复制其他型号事实或报告。缺少文档的能力使用现有结构适用的未知状态；新增调用代码必须先真实运行，本地记录不得公开。
 4. 厂商 `default_model` 只在用户要求更改默认型号时修改。当前验证器明确固定了测试型号，[同步脚本](../scripts/sync_verification.py)只生成厂商默认型号摘要；新增卡片不自动获得验证入口或成为默认型号。扩展目录时同步调整受影响的离线检查和验证脚本，避免把新型号测试成旧型号。
 
-新增型号没有统一验证器报告时使用 `verification: null` 和 `verification_scope: "not_run"`，不填写虚构路径。同步器显示该层未实测/报告空缺，计数不填零，不继承其他型号状态；损坏的非空报告引用仍会失败。MiniMax M2.7 的型号卡保留此状态，但其独立示例是否真实执行必须另外查逐文件证据；不能互相代替。新增型号仍需卡片、说明书、示例来源清单和离线检查。
+新增型号没有统一验证器报告时使用 `verification: null` 和 `verification_scope: "not_run"`，不填写虚构路径。已有统一记录不公开时使用 `verification:null` 与 `verification_scope:private`；公开同步器只展示官方依据与发布边界，不输出计数或报告，也不读取本地记录。新增型号仍需卡片、说明书、示例来源清单和离线检查。
 
 ## 证据与验证
 
-先确定用户要查历史结果、验证代码，还是发起真实调用。普通接入任务允许生成和离线检查，但不主动发送可能计费的模型请求。
+先区分解释调用、离线检查和真实复测。普通接入不授权可能计费或上传输入的调用。
 
-| 信息 | 读取位置与表述 |
-|---|---|
-| 官方支持及参数规则 | 型号卡片的 source → sources，说明官方声明与核对日期 |
-| 型号统一验证器 | 卡片 `verification` 指向的原始报告，说明证据编号、型号、参数与测试项；`null/not_run` 仅表示这一层没有报告 |
-| 本次离线检查 | 实际运行的命令与结果，不能写成线上调用成功 |
-| 具体示例当前状态 | [示例实测状态](../../../docs/示例实测状态.md)及该型号 `examples/sources.json`；读取所指逐文件报告、`evidence_scope`、证据编号和哈希，不从型号历史报告推断 |
-| 新生成/改写的调用 | 只报告实际完成的编译、mock 或本次真实执行；相似示例通过不覆盖新的参数、任务、工具或输入组合 |
+公开仓库提供官方出处、参数、规范代码和运行方式，不提供实测报告、模型回复、统计或执行哈希。`verification.live=private` 与 `verification_scope=private` 只表示记录未公开，不等于未执行，也不是可以公开审计的通过证明。缺少本地记录时明确说明，不能从型号卡、代码存在或离线 mock 推断线上成功。
 
-`mock_tested` 不是服务端验证；`live=not_run`、缺 Key/输入/运行时、限流、超时或失败分别说明，不能汇总成通过。即使某个示例有真实 HTTP 通过证据，型号卡仍可合法保持 `verification: null`；也不能用旧型号统一验证器覆盖所有进阶文件。当前结果动态读取，不预写“所有示例均通过”。
-
-读取逐文件报告时核对 `source_sha256` 与当前文件及依赖身份；依赖包括同目录 `_*.py`，跨型号入口还包括型号卡和厂商目录，其他语言的追踪辅助文件按执行器/目录校验实现纳入。哈希不匹配时旧证据不能代表当前版本，必须重新执行并保留新报告；不要改旧报告的哈希“修复”状态。`example_catalog.py --check` 会检查已关联的文件级证据与当前源文件，不发送请求。
-
-真实 HTTP 元数据与原文件的进程结果同时阅读：旁观采集/解压失败不等于原脚本 API 调用失败，须检查 `exit_code`、`telemetry_error`/`telemetry_overflow` 和完成证据。Shell/TypeScript 旧证据可能只有 `original_file_process_exit_and_its_response_checks`；不能描述成已采集 HTTP 状态、usage 或服务型号。正常响应通过也只证明报告里该输入/参数的流程，不证明通用准确率。
+- 查调用方式：按准确型号检索源码与官方出处，不要求读者提供维护者的私有记录。
+- 查当前可用性：复核官方生命周期、账户和输入要求；历史维护结果不保证现在能用。
+- 新生成或改写的代码：仅报告实际完成的编译、mock 或获授权的真实调用，不能继承原例结果。
+- 维护者核验：只在明确需要时读 `.local/evidence/`；按源码/依赖指纹、真实 HTTP 与完整结束检查，不改旧哈希冒充复测。私有目录缺失、记录损坏或指纹变化都不能补成通过。
 
 ### 按授权复现真实示例
 
-用户仅要求接入/解释时使用离线检查；明确要求真实调用后，才执行已授权厂商和文件。下列命令均在仓库根目录，先安装锁定依赖；默认清单命令不读取 Key、不调用模型：
+安装锁定依赖后，在仓库根目录查询清单；默认不读 Key、不发请求：
 
 ```bash
 python tests/run_example_files.py --vendor kimi
 ```
 
-真正执行一个已登记文件时必须显式 `--execute` 并选择**尚不存在**的新报告路径，例如：
+仅在用户明确授权后执行；报告默认保存在被 Git 忽略的本地目录：
 
 ```bash
-python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/examples/01_basic.py --report /tmp/model-manual-kimi-example-new.json
+python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/examples/01_basic.py
 ```
 
-只配置需要的环境变量，勿回显或提交 Key；不需要为检查存在性打印 `.env`。逐文件执行器默认使用自己生成的图片/视频教学素材；Doubao 视频需要经授权的公开 HTTPS 地址时通过 `--video-url` 显式提供，不能无意继承私有媒体。文件选择、超时/间隔与语言依赖以[执行器帮助](../../../tests/run_example_files.py)为准；未登记的新生成文件不能靠这个入口冒充已登记文件的证据。
+Key 只从所需环境变量或忽略的 .env 读取，不回显或提交。不要无意上传私人媒体；素材、视频选项、超时/间隔和退出码见[验证与复现](../../../docs/验证与复现.md)。私有报告不保存执行时间、耗时或回复正文，任何报告均不得上传公开仓库。统一验证器只覆盖自己的固定测试项，不代表执行了所有示例。
 
-原统一验证器仍用于其固定测试项，入口与退出码见[验证与复现](../../../docs/验证与复现.md)；它和逐文件工具不是同一份覆盖。新增逐文件报告后，仅在目标文件、依赖哈希和结果匹配时维护其 `sources.json` 引用，再生成索引；不要顺手把整个型号标为 `verified`。
+维护者可显式运行 `python tests/check_example_release.py --check --require-passed` 核验本地完整证据；普通公开克隆只使用 `--check` 检查代码目录，没有私有记录时不宣称通过。公共页面和查询不得因本地记录有无而改变。
 
-路径以各文件自身为基准：`vendors.json` 中 `model_card`、`model_manual` 相对于该目录，厂商摘要的 `verification` 相对于仓库根目录；型号卡片的 `verification` 相对于型号卡片目录。不要混用两个报告路径规则。
-
-卡片的 `last_checked_at` 表示官方资料核对日期，保留此字段。新的逐文件报告使用 schema 2、严格统一报告使用 schema 3，以随机 UUIDv4 `evidence_id` 标识，不保存或展示 `tested_at`、`duration_seconds`；相应 `privacy.test_timestamps_saved` 和 `privacy.duration_saved` 均为 `false`。证据编号不能表达先后或证明实时可用，旧基础报告不能借隐私清理升级为严格验证。详见[时间最小化规则](../../../docs/来源与核验规则.md#实测时间最小化项目规则)。`verified` 还必须核对具体测试项，历史基础验证不证明严格流程完整通过。失败、限流、跳过保留为运行结果，不改写成能力不支持。
-
-若用户问“现在是否可用”，历史结果不足以证明当前状态；说明证据范围和时效限制，并在用户要求真实验证时复测。官方页面与卡片冲突时复核来源，摘要与报告冲突时以原始报告定位差异，不能为了统一文字改写历史结果。
-
-维护卡片或报告后，在仓库根目录执行：
+维护公开卡片、源码或资料后执行：
 
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
 python skills/model-manual/scripts/sync_verification.py --check
 python skills/model-manual/scripts/example_catalog.py --check
+python skills/model-manual/scripts/model_catalog.py --check
+python scripts/render_human_examples.py --check
+python tests/check_example_release.py --check
 ```
 
-需要更新派生摘要时先运行不带 `--check` 的同步命令，再复查。真实请求、报告保存规则和退出码统一见[验证与复现](../../../docs/验证与复现.md)。
-
-交付时按任务提供必要信息：实际采用的厂商/型号与来源、代码或修改、依赖与环境变量、运行方式、完成的检查、尚未验证的部分；迁移补充行为差异，排错补充原因依据与修复后的检查方法。
+资料变更后先更新相应派生页再检查。交付采用的型号、官方来源、代码、环境变量、运行方法与实际完成的检查；排错说明依据与未确认项，迁移说明行为差异。不要把离线检查写成本次线上通过。

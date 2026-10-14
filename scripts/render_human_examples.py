@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render human-readable code and review guides from current live-tested files.
+"""Render public code and official-source reading guides without local evidence.
 
 Never imports or executes an example, reads a key, or calls a model.
 The Python blocks are exact source copies, not newly generated API requests.
@@ -7,7 +7,6 @@ The Python blocks are exact source copies, not newly generated API requests.
 
 import argparse
 import ast
-import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -104,17 +103,12 @@ def _module(name, path):
 
 def dependencies(root):
     # Code comes from this tool's checkout, fixture data from the supplied root.
-    return (_module("human_example_catalog", ROOT / "skills/model-manual/scripts/example_catalog.py"),
-            _module("human_example_release", ROOT / "tests/check_example_release.py"))
+    return _module("human_example_catalog", ROOT / "skills/model-manual/scripts/example_catalog.py")
 
 
 def build_views(root=ROOT):
     root = Path(root).resolve()
-    catalog, release_tool = dependencies(root)
-    release = release_tool.collect_release(root)
-    if not release["catalog_valid"] or release["catalog_issues"] or release["report_issues"]:
-        raise ValueError("invalid_example_evidence")
-    evidence = {row["path"]: row for row in release["rows"]}
+    catalog = dependencies(root)
     entries = catalog.select_examples(catalog.load_catalogs(root))
     references = root / "skills/model-manual/references"
     defaults = json.loads((references / "vendors.json").read_text(encoding="utf-8"))["vendors"]
@@ -129,18 +123,22 @@ def build_views(root=ROOT):
         if len(basic) != 1:
             raise ValueError("missing_exact_basic_example")
         entry = basic[0]
-        row = evidence.get(entry["path"], {})
-        selected = row.get("selected") or {}
-        if (row.get("status") != "passed" or row.get("model_id") != model or row.get("vendor") != vendor
-                or not selected.get("strict_passed") or not selected.get("current_source")):
-            raise ValueError("basic_example_lacks_current_http_evidence")
         source_path = root / entry["path"]
         if not source_path.resolve().is_relative_to(root):
             raise ValueError("example_outside_repository")
         source = source_path.read_bytes().decode("utf-8")
         if "```" in source or not source.endswith("\n"):
             raise ValueError("source_cannot_be_embedded_as_python_fence")
-        ast.parse(source)  # Syntax only; importing this source would make API calls.
+        syntax = ast.parse(source)  # Syntax only; importing this source would make API calls.
+        requested_models = [keyword.value.value
+                            for node in ast.walk(syntax) if isinstance(node, ast.Call)
+                            for keyword in node.keywords
+                            if keyword.arg == "model" and isinstance(keyword.value, ast.Constant)]
+        if requested_models != [model]:
+            raise ValueError("reading_guide_request_identity_needs_review")
+        parameters = root / entry.get("parameters_path", "")
+        if not parameters.resolve().is_relative_to(root) or not parameters.is_file():
+            raise ValueError("missing_public_parameter_page")
         notes = {"zh": [], "en": []}
         for anchor, chinese, english in READING[vendor]:
             locations = [i for i, line in enumerate(source.splitlines(), 1) if anchor in line]
@@ -148,13 +146,8 @@ def build_views(root=ROOT):
                 raise ValueError("reading_anchor_needs_editorial_review")
             for lang, description in (("zh", chinese), ("en", english)):
                 notes[lang].append({"line": locations[0], "anchor": anchor, "description": description})
-        identities = catalog.file_identity(root, entry["path"])
-        digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
-        if identities.get(entry["path"]) != digest:
-            raise ValueError("example_source_identity_mismatch")
         views.append({"vendor": vendor, "model_id": model, "path": entry["path"],
-                      "source_text": source, "source_sha256": digest, "support_sha256": identities,
-                      "evidence_id": selected.get("evidence_id"), "report": selected["report"],
+                      "source_text": source,
                       "parameters_path": entry["parameters_path"],
                       "sources": [source["url"] for source in entry["sources"]],
                       "notes": notes, "required_env": entry["required_env"], "run_command": entry["run_command"],
@@ -176,10 +169,10 @@ def expected_pages(root=ROOT):
         lines = ["# Read model calls and review Agent code" if english else "# 阅读模型调用代码并检查 Agent 实现", "",
                  _link(index, "human/README" + suffix, "Human guide" if english else "人类篇") + " · " +
                  _link(index, "human/examples/README" + (".md" if english else ".en.md"), "中文" if english else "English"), "",
-                 ("Choose a model below to read complete, executable Python code with line-linked explanations, parameter references, run commands and original execution evidence. Use it to learn the call and review an Agent's implementation."
-                  if english else "选择下面的型号，直接阅读完整可运行的 Python 代码、关键行解释、参数说明、运行方式和原始实测证据。既可以照着学习调用，也可以用来人工检查 Agent 的实现。"), "",
-                 ("Code blocks are copied unchanged from the canonical files in models/, not shortened teaching fragments. Both languages show the same executed code, including its original comments and prompts. Review identity, request semantics and completion checks; variable names and wrappers need not look identical. Changes to model, parameters, inputs or protocol require their own verification."
-                  if english else "代码块逐字来自 models/ 下的规范文件，不是删掉校验的教学短片段；中英文展示同一份执行过的代码，保留原注释和提示词。核对的是型号身份、请求语义和结果验收，不要求变量名或封装完全一样。型号、参数、输入或协议改变后，需要验证改变后的路径。"), "",
+                 ("Choose a model below to read complete Python code with line-linked explanations, parameter references, run commands and official sources. Use it to learn the call and review an Agent's implementation."
+                  if english else "选择下面的型号，直接阅读完整 Python 代码、关键行解释、参数说明、运行方式和官方出处。既可以照着学习调用，也可以用来人工检查 Agent 的实现。"), "",
+                 ("Code blocks are copied unchanged from the canonical files in models/, not shortened teaching fragments. Both languages show the same source, including its original comments and prompts. Maintainer execution records remain local and are not published here; these pages do not guarantee current account access. Review identity, request semantics and completion checks. Changes to model, parameters, inputs or protocol require their own verification."
+                  if english else "代码块逐字来自 models/ 下的规范文件，不是删掉校验的教学短片段；中英文展示同一份源码，保留原注释和提示词。维护者的实测记录仅保留在本地，不随仓库发布；本页不保证当前账户可用。核对的是型号身份、请求语义和结果验收。型号、参数、输入或协议改变后，需要验证改变后的路径。"), "",
                  "## Choose a worked example" if english else "## 按型号看完整代码", "",
                  "| Model | Code and review notes |" if english else "| 准确型号 | 代码与人工核对 |", "|---|---|"]
         for view in views:
@@ -199,8 +192,8 @@ def expected_pages(root=ROOT):
                    if english else "2. 参数：分清 SDK 配置、模型请求和本地业务校验；输出预算不是上下文窗口设置，省略字段不是显式开关。思考和预算语义按准确型号查证。"),
                   ("3. Results: check normal completion, final content and any provider business status. Thinking-only content, truncation and a pending tool call are not a complete final answer."
                    if english else "3. 结果：检查正常结束、最终正文及适用的厂商业务状态；仅有思考、截断或待处理工具调用，都不是完整最终答案。"),
-                  ("4. Evidence: request exact changed files, commands and test scope. Offline mocks, accepted HTTP requests, old-file reports and the Agent's own assertion are different evidence."
-                   if english else "4. 证据：索要实际修改文件、运行命令与测试范围；离线 mock、HTTP 请求被接受、旧文件报告和 Agent 自称成功不是同一层证据。"), "",
+                  ("4. Verification: review exact changed files, commands and your own authorized checks. Offline mocks, accepted HTTP requests and the Agent's own assertion are different checks; maintainer private records are not public proof."
+                   if english else "4. 验证：核对实际修改文件、运行命令，并在自己授权的环境检查；离线 mock、HTTP 请求被接受和 Agent 自称成功不是同一层校验，维护者的私有记录不是公开证明。"), "",
                   _link(index, "docs/参数说明与调参.md" if not english else "en/docs/parameters.md", "Parameter definitions" if english else "参数定义与官方出处") + " · " +
                   _link(index, "docs/来源与核验规则.md" if not english else "en/docs/evidence-policy.md", "Evidence and safety rules" if english else "证据与安全规则"), "",
                   "## Review advanced behavior" if english else "## 继续检查进阶调用", ""]
@@ -208,9 +201,8 @@ def expected_pages(root=ROOT):
             folder = Path("models") / vendor / MODELS[vendor]
             lines += ["- " + _link(index, folder / "examples" / filename, en if english else zh) + "：" +
                       (translated if english else chinese) + " " + _link(index, folder / ("parameters" + suffix), "Parameters" if english else "参数依据")]
-        lines += ["", ("These links open the existing full files, not generic cross-model templates. Check their current per-file status and input requirements before running; the basic examples' reports do not cover every advanced combination."
-                       if english else "上述链接打开已有完整源文件，不是跨型号通用模板。运行前核对各自的逐文件状态和输入要求；基础示例的报告不覆盖任意进阶组合。"), "",
-                  _link(index, "en/docs/example-status.md" if english else "docs/示例实测状态.md", "Per-file status" if english else "逐文件实测状态") + " · " +
+        lines += ["", ("These links open the existing full files, not generic cross-model templates. Check the official lifecycle, your account access and input requirements before running; reading basic code does not verify every advanced combination."
+                       if english else "上述链接打开已有完整源文件，不是跨型号通用模板。运行前核对官方生命周期、账户权限和输入要求；读过基础代码不等于已验证任意进阶组合。"), "",
                   _link(index, "en/docs/example-index.md" if english else "docs/官方示例索引.md", "All feature examples" if english else "全部功能示例") + " · " +
                   _link(index, "scripts/render_human_examples.py", "Page renderer" if english else "页面生成器"), ""]
         pages[index] = "\n".join(lines)
@@ -242,17 +234,15 @@ def expected_pages(root=ROOT):
             lines += ["", "## What should count as success" if english else "## 运行后应该检查什么", "",
                       (("The code writes final content to stdout and usage statistics to stderr. " if english else "代码把最终正文写到标准输出，把用量写到标准错误流。")
                        if view["vendor"] == "zhipu" else ("The code prints final content and usage statistics. " if english else "代码打印最终正文和用量统计。")) +
-                      ("Wording is not fixed: the original reports intentionally omit answer text. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper."
-                       if english else "回答措辞不是固定值，原始报告也刻意不保存回答正文。正常结束、非空正文是验收条件，不证明答案事实准确。抛出异常表示相应检查未通过，不应通过删除校验函数掩盖。"), "",
+                      ("Wording is not fixed. Normal completion and nonempty final content are acceptance checks, not proof of factual answer accuracy. A thrown error is a failed check, not something to hide by removing the helper."
+                       if english else "回答措辞不是固定值。正常结束、非空正文是验收条件，不证明答案事实准确。抛出异常表示相应检查未通过，不应通过删除校验函数掩盖。"), "",
                       _link(page, view["path"], "Actual output/check logic" if english else "实际输出与校验逻辑") + " · " +
                       _link(page, "en/docs/evidence-policy.md" if english else "docs/来源与核验规则.md", "Evidence boundaries" if english else "证据边界"), "",
-                      "## Original execution evidence" if english else "## 对应的原始实测证据", "",
-                      ("The current source has passed real HTTP evidence. " if english else "当前源码已有通过的真实 HTTP 证据。") +
-                      _link(page, view["report"], "Original sanitized report" if english else "原始脱敏报告") + " · " +
-                      _link(page, "en/docs/example-status.md" if english else "docs/示例实测状态.md", "Current status" if english else "当前状态"), "",
-                      ("Source SHA-256: " if english else "源文件 SHA-256：") + f"`{view['source_sha256']}`", "",
-                      ("This page is a reading view of that exact file, not another live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or present account availability."
-                       if english else "本页是该准确文件的阅读视图，不是又一次线上实测；它不验证 Agent 改写后的代码、任意提示词/参数组合、其他型号或当前账户可用性。"), "",
+                      "## Public record boundaries" if english else "## 公开记录边界", "",
+                      ("The maintainer's execution records are local and not published with this repository. This page only checks the public source, exact request identity, reading anchors and official-source links; it does not consult private reports or claim a publicly verifiable pass."
+                       if english else "维护者的实测记录仅在本地保存，不随仓库发布。本页只校验公开源码、准确请求型号、阅读行号与官方出处，不读取私有报告，也不声称公开可核验的通过结论。"), "",
+                      ("This is a reading view, not a live run. It does not verify an Agent's changed code, arbitrary prompts or parameters, other model IDs, or current account availability."
+                       if english else "本页是代码阅读视图，不是线上调用；它不验证 Agent 改写后的代码、任意提示词/参数组合、其他型号或当前账户可用性。"), "",
                       "## Official sources and advanced examples" if english else "## 官方出处与进阶示例", ""]
             lines.extend(f"- [Official source {i}]({url})" if english else f"- [官方出处 {i}]({url})"
                          for i, url in enumerate(view["sources"], 1))
@@ -287,7 +277,7 @@ def main(argv=None):
         print(json.dumps({"written_pages" if args.write else "checked_pages": len(pages), "stale_pages": stale}))
         return 2 if stale else 0
     except (ValueError, SyntaxError, OSError, KeyError, TypeError, AttributeError):
-        print(json.dumps({"error": "invalid_source_or_current_http_evidence"}), file=sys.stderr)
+        print(json.dumps({"error": "invalid_public_source_or_catalog"}), file=sys.stderr)
         return 2
 
 

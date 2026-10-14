@@ -4,7 +4,7 @@
 
 逐项理解示例中的参数、默认值与副作用：见[参数详解与逐文件映射](parameters.md)。
 
-按功能查找[官方改写来源与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。验证分为[历史统一流程](../../../docs/验证状态.md)与[当前逐文件实测](../../../docs/示例实测状态.md)，以对应报告的源码、参数、输入和环境为准，不互相继承通过状态。[证据规则](../../../docs/来源与核验规则.md)
+调用文件与出处见[来源清单](examples/sources.json)和[完整代码目录](../../../docs/示例实测状态.md)。测试报告、回复、统计与哈希只留本地，不对外展示；新参数或输入仍需验证。[发布规则](../../../docs/来源与核验规则.md)
 
 本页代码块是说明性片段；运行与验证以链接的完整文件为准。片段、自改参数及生成器任意新组合不继承文件的实测结果。[参数与文件映射](parameters.md)；[证据边界](../../../docs/来源与核验规则.md)
 
@@ -108,7 +108,7 @@ thinking_off_extra_body:
   thinking: {type: disabled}
 ```
 
-这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。[历史基础报告](verification/2026-10-13.json)保留当时结果；统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_kimi_k2_6.py --report /tmp/kimi-k2.6-verification.json`；逐文件命令、环境、范围与退出码见[验证与复现](../../../docs/验证与复现.md)。
+这些字段分别来自[快速开始](https://platform.kimi.com/docs/get-api-key)、[K2.6 页面](https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart)和[思考模型](https://platform.kimi.com/docs/guide/use-thinking-models)。调用代码与官方出处见[来源清单](examples/sources.json)。测试记录只留本地，不展示运行过程；安装与运行方式见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 10. 必看踩雷
 
