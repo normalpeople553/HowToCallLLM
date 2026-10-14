@@ -54,7 +54,7 @@
     {
       "source": "docs/02-一个套路调遍所有模型.md",
       "target": "en/docs/compatible-api.md",
-      "source_sha256": "a9345269db26b4b85c82545b25215b13aa40390888cceebffd59f8342c633319"
+      "source_sha256": "e80a971de665cb0009f02d966b27e02cc79ecab7120dd9daea501d2f6b94b92b"
     },
     {
       "source": "docs/04-免费额度与省钱攻略.md",
@@ -139,7 +139,7 @@
     {
       "source": "models/kimi/kimi-k2.6/README.md",
       "target": "models/kimi/kimi-k2.6/README.en.md",
-      "source_sha256": "50752dcea4eb8b83377e9912da321beffb726eb7c931ddfa3b64d19ed0577d1c"
+      "source_sha256": "8e2cc932ef1f3320ee911b5ab1c883d6144e39e37c3c4db115ed850bfce6a7d4"
     },
     {
       "source": "models/kimi/kimi-k2.6/parameters.md",

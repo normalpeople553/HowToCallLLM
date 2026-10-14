@@ -105,6 +105,15 @@ class EvidencePrivacyTests(unittest.TestCase):
             card = json.loads(path.read_text(encoding="utf-8"))
             self.assertRegex(card["last_checked_at"], r"^\d{4}-\d{2}-\d{2}$")
 
+    def test_tutorial_prose_does_not_reveal_dated_execution_results(self):
+        # 文档核对/生命周期日期允许存在，明确的历史运行日期与结果不能公开。
+        paths = list((ROOT / "docs").rglob("*.md")) + list((ROOT / "en/docs").rglob("*.md"))
+        paths += list((ROOT / "models").glob("*/*/README*.md"))
+        pattern = re.compile(r"historical verification on\s+\d{4}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}\s*[^。\n]{0,20}历史验证记录为", re.I)
+        for path in paths:
+            with self.subTest(page=path.relative_to(ROOT).as_posix()):
+                self.assertFalse(pattern.search(path.read_text(encoding="utf-8")), "dated execution outcome in public prose")
+
 
 if __name__ == "__main__":
     unittest.main()

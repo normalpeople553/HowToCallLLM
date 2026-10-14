@@ -37,7 +37,7 @@ extra_body={"thinking": {"type": "disabled"}}
 extra_body={"enable_thinking": False}
 ```
 
-GLM-4.7 and Doubao behavior must be checked separately in [Zhipu thinking mode](https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode) and [Ark deep thinking](https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh). Zhipu's historical verification on 2026-10-13 was rate-limited; consult [verification status](verification-status.md) for the recorded results. Do not transfer GLM-4.7's disabling configuration to GLM-5.3. [GLM-5.3 documentation](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)
+GLM-4.7 and Doubao behavior must be checked separately in [Zhipu thinking mode](https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode) and [Ark deep thinking](https://docs.volcengine.com/docs/ark/deep-thinking?lang=zh). Do not transfer GLM-4.7's disabling configuration to GLM-5.3. [GLM-5.3 documentation](https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash)
 
 The disabling examples above do **not** apply to MiniMax M2.7. It accepts `thinking.type=disabled` without disabling thinking; `reasoning_split=true` only separates reasoning from the answer. The generator rejects `--thinking off` for this model. The native `/text/chatcompletion_v2` endpoint is also not the OpenAI SDK Base URL. See the [M2.7 manual](../../models/minimax/MiniMax-M2.7/README.en.md) and [official behavior](https://platform.minimax.cn/docs/api-reference/text-chat-openai).
 
