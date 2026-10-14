@@ -182,7 +182,9 @@ class TextOfficialExampleTests(unittest.TestCase):
                     runpy.run_path(str(path), run_name="__main__")
                 self.assertEqual(len(sdk.calls), 4)
 
-    def test_source_manifests_cover_actual_files_and_only_official_sources(self):
+    def test_source_manifests_cover_files_official_sources_and_evidenced_live_status(self):
+        validator = runpy.run_path(str(ROOT / "skills/model-manual/scripts/example_catalog.py"), run_name="offline_catalog_validation")
+        validated = {(item["vendor"], item["model_id"]): item for item in validator["load_catalogs"](ROOT)}
         for vendor, config in PROVIDERS.items():
             directory = examples_dir(vendor)
             manifest = json.loads((directory / "sources.json").read_text(encoding="utf-8"))
@@ -190,13 +192,22 @@ class TextOfficialExampleTests(unittest.TestCase):
             self.assertEqual(manifest["model_id"], config["model"])
             self.assertEqual(manifest["checked_at"], "2026-10-14")
             entries = manifest["examples"]
+            verified_entries = {entry["file"]: entry for entry in validated[(vendor, config["model"])]["examples"]}
             self.assertEqual({entry["file"] for entry in entries}, {path.name for path in directory.glob("*.py")})
             self.assertEqual(len({entry["id"] for entry in entries}), len(entries))
             for entry in entries:
                 self.assertEqual(entry["required_env"], [config["key"]])
                 self.assertEqual(entry["run_command"], "python " + str((directory / entry["file"]).relative_to(ROOT)))
                 self.assertEqual(entry["origin"], "adapted_from_official")
-                self.assertEqual(entry["verification"]["live"], "not_run")
+                verification = entry["verification"]
+                checked = verified_entries[entry["file"]]["verification"]
+                self.assertEqual(verification["live"], checked["live"])
+                if verification["live"] == "not_run":
+                    self.assertFalse(verification.get("report"))
+                else:
+                    self.assertTrue((ROOT / verification["report"]).is_file())
+                    self.assertEqual(verification["report"], checked["report"])
+                    self.assertIn("tested_at", checked)
                 self.assertIn(entry["verification"]["offline"], {"mock_tested", "compile_checked"})
                 compile((directory / entry["file"]).read_text(encoding="utf-8"), entry["file"], "exec")
             for item in entries + manifest["not_integrated"]:

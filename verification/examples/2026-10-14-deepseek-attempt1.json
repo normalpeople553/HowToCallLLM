@@ -1,0 +1,695 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T02:46:28.909714+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/deepseek/deepseek-flash/examples/01_basic.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T02:46:29.032018+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/01_basic.py": "bcd589398bfc2ed984cd9bddff6d2268b08bd5f3600a2dddb91852df63e4e767",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {},
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 3.443
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/02_streaming.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T02:46:32.475293+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/02_streaming.py": "e55bd1b4cf91c0df5fb6e6e1a633bc564d250044a86c0c7030b1b25e6e2aec80",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "stream": true,
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.97
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/03_thinking.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "thinking",
+      "tested_at": "2026-10-14T02:46:34.445507+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/03_thinking.py": "b7633157da189c29810fda8cbd6d352a67240c14cc8c7bd1129fce6855aadc2a",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "enabled"
+            },
+            "reasoning_effort": "high"
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.82
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/04_json_output.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "json_object",
+      "tested_at": "2026-10-14T02:46:37.265960+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/04_json_output.py": "3f9d204ee5c3882acd95cde5dc2c41b916167797c4c3c08daa69fff395b7b2ce",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "response_format": {
+              "type": "json_object"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.511
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/05_tool_calling.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "tool_calling",
+      "tested_at": "2026-10-14T02:46:38.776566+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/05_tool_calling.py": "4443f3f977684b1bbdcb4fc1eca20bfd7887e639bac26e9164ebcb7870e8e8af",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.461
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/06_vision.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "vision",
+      "tested_at": "2026-10-14T02:46:41.237414+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/06_vision.py": "4ade7b74f5a553cc7644c33e660ff876ac2646c3311084bbfbb85d9c142b3123",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.841
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/07_typescript.ts",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T02:46:43.078270+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/07_typescript.ts": "c70a8ae0b9200870541d6f5a64ac9ade6118a893909f0d17be57263925567da4",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [],
+      "evidence_scope": "original_file_process_exit_and_its_response_checks",
+      "duration_seconds": 2.63
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/08_curl.sh",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T02:46:45.708818+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/08_curl.sh": "d219f504992a516dd50c4511b28cb333a506f8f53a9c9dfdd1932a3c5774f946",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [],
+      "evidence_scope": "original_file_process_exit_and_its_response_checks",
+      "duration_seconds": 1.449
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/09_multi_turn.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "multi_turn",
+      "tested_at": "2026-10-14T02:46:47.158267+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/09_multi_turn.py": "5db70e856f10142a248cf110ba086ff32abbe43f759328bd4b7e98bf4c72441d",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.782
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/10_vision_files.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "vision_files",
+      "tested_at": "2026-10-14T02:46:48.940692+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/10_vision_files.py": "d95280be75e5ea13005556b7ced562b5987807220d9f2a9756021e9100cebd50",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/files",
+          "transport": "real_httpx",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.783
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/11_responses_vision.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "responses_vision",
+      "tested_at": "2026-10-14T02:46:50.723732+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/11_responses_vision.py": "18b9ab46228939bb143f627952baec250730a5299a111243aa51fb2d8de9592c",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/responses",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_output_tokens": 2048,
+            "reasoning": {
+              "effort": "none"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.791
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/12_thinking_tools.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "thinking_tool_calling",
+      "tested_at": "2026-10-14T02:46:52.514758+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/12_thinking_tools.py": "889b701390c698e34e5b1eaa2133834a529b3ba4d868574109ce121512cff8f8",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "tool_choice": "auto",
+            "thinking": {
+              "type": "enabled"
+            },
+            "max_tokens": 16384
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "tool_choice": "auto",
+            "thinking": {
+              "type": "enabled"
+            },
+            "max_tokens": 16384
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.947
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/13_strict_tools.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "strict_tool_calling",
+      "tested_at": "2026-10-14T02:46:55.461604+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/13_strict_tools.py": "b8e3f22b181fb149606abd8f76232e379f8732791b66cf92fe4c8e2c2ce276aa",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/beta/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "tool_choice": "auto",
+            "max_tokens": 2048
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/beta/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "tool_choice": "auto",
+            "max_tokens": 2048
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.264
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/14_prefix_completion.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "chat_prefix_completion",
+      "tested_at": "2026-10-14T02:46:57.725324+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/14_prefix_completion.py": "1e3bc63e6dfab558dc220910b0f134cbf3474e7086946168a8df1e9f60a562d1",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/beta/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 1024,
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.524
+    },
+    {
+      "path": "models/deepseek/deepseek-flash/examples/15_fim_completion.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "fim_completion",
+      "tested_at": "2026-10-14T02:46:59.249285+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/15_fim_completion.py": "7187a66a2005366d816facb1bb31db0c21463d7b4df5570a7c046d67fc6572c0",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/beta/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 128
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.232
+    },
+    {
+      "path": "examples/01_quickstart.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "shared_example",
+      "tested_at": "2026-10-14T02:47:00.481132+00:00",
+      "source_sha256": {
+        "examples/01_quickstart.py": "a79d4f41fe142e93ff08eb382897df2d82a61b3efdba7a410a44a19775309631"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {},
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.372
+    },
+    {
+      "path": "examples/03_streaming.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "shared_example",
+      "tested_at": "2026-10-14T02:47:02.852713+00:00",
+      "source_sha256": {
+        "examples/03_streaming.py": "01b6fc7089df43c16a1570b087072530166d68718556b4890d4e4b3e6549b080"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "stream": true,
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.449
+    },
+    {
+      "path": "examples/04_multi_turn.py",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "shared_example",
+      "tested_at": "2026-10-14T02:47:04.301367+00:00",
+      "source_sha256": {
+        "examples/04_multi_turn.py": "7831696c3a4e91d87e606bf0b254d292bfb1dacf6243335059a9a41afe7d35d5"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            }
+          },
+          "requested_model": "deepseek-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.986
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 18,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

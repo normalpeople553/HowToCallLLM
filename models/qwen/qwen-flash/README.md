@@ -1,6 +1,10 @@
 # `qwen-flash` 调用说明书
 
-按功能查找本型号的[官方改写示例与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。清单单独标明文件的官方出处、改写与验证范围；本次新增示例未执行真实 API 调用，不继承历史报告的通过状态。
+逐项理解示例中的参数、默认值与副作用：见[参数详解与逐文件映射](parameters.md)。
+
+按功能查找[官方改写来源与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。验证分为[历史统一流程](../../../docs/验证状态.md)与[当前逐文件实测](../../../docs/示例实测状态.md)，以对应报告的源码、参数、输入和环境为准，不互相继承通过状态。[证据规则](../../../docs/来源与核验规则.md)
+
+本页代码块是说明性片段；运行与验证以链接的完整文件为准。片段、自改参数及生成器任意新组合不继承文件的实测结果。[参数与文件映射](parameters.md)；[证据边界](../../../docs/来源与核验规则.md)
 
 > 核对日期：**2026-10-13**。官方事实均附原始链接；机器卡片见 [`qwen-flash.json`](../../../skills/model-manual/references/models/qwen-flash.json)。
 
@@ -16,7 +20,7 @@
 
 ## 2. 地址选择与最小调用
 
-官方当前推荐 Workspace 专属地址 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`；旧的 `https://dashscope.aliyuncs.com/compatible-mode/v1` 仍在兼容文档中，本仓库实测后者可用。生产项目应优先采用控制台给出的 Workspace 地址。[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)
+官方当前推荐 Workspace 专属地址 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`；旧的 `https://dashscope.aliyuncs.com/compatible-mode/v1` 仍在兼容文档中。生产项目应优先采用控制台给出的 Workspace 地址。[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/) 本仓库对后者的历史运行证据见[2026-10-13 严格报告](verification/2026-10-13-strict.json)，具体文件的当前结果见[逐文件实测状态](../../../docs/示例实测状态.md)。
 
 ```python
 import os
@@ -71,7 +75,7 @@ thinking_off_extra_body:
 modalities: [text]
 ```
 
-模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果，最新严格流程结果查[验证状态](../../../docs/验证状态.md)。使用锁定依赖复测：`python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`，环境变量与退出码见[验证与复现](../../../docs/验证与复现.md)。
+模型、地址和参数来自[模型列表](https://help.aliyun.com/zh/model-studio/getting-started/models)与[接口文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)；[2026-10-13 历史基础报告](verification/2026-10-13.json)保留当时结果。统一验证器结果查[历史流程状态](../../../docs/验证状态.md)，原始示例的独立执行结果查[逐文件实测状态](../../../docs/示例实测状态.md)。统一验证器复测：`python tests/verify_qwen_flash.py --report /tmp/qwen-flash-verification.json`；逐文件命令、环境与退出码见[验证与复现](../../../docs/验证与复现.md)。
 
 ## 7. 必看踩雷
 

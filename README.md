@@ -11,7 +11,7 @@
 | Agent | [`skills/model-manual/SKILL.md`](skills/model-manual/SKILL.md) | 按任务读取对应型号卡片、示例和报告，完成接入、迁移或排错 |
 | 人类 | 本页 | 给 Agent 一条具体指令；需要判断能力、费用或失败原因时查下面的资料 |
 
-需要具体功能代码时，从[官方功能示例索引](docs/官方示例索引.md)按准确型号查找图片、视频、多轮、思考工具、结构化输出等示例。每个文件都有对应官方出处、运行命令、项目改写说明和独立的验证标记；没有示例不等于模型不支持。
+需要具体功能代码时，从[官方功能示例索引](docs/官方示例索引.md)按准确型号查找图片、视频、多轮、思考工具、结构化输出等示例；实际执行结果另查[逐文件示例实测状态](docs/示例实测状态.md)。来源清单记录出处、运行命令与改写，不把历史报告或清单录入时的验证标记自动当成当前文件的实测结论。[证据边界](docs/来源与核验规则.md)
 
 ## 让 Agent 使用
 
@@ -36,7 +36,9 @@ Agent 的任务分支、未知型号处理和交付要求见[任务流程](skill
 | 想了解什么 | 阅读位置 |
 |---|---|
 | 某个具体型号的能力、限制与示例 | [模型说明书](models/README.md) |
-| 哪些流程已验证，哪些仍是官方声明 | [验证状态](docs/验证状态.md)及其原始报告 |
+| 某个可运行示例当前是否真实执行、是否通过 | [逐文件示例实测状态](docs/示例实测状态.md)及其原始报告 |
+| 历史统一验证器检查过哪些能力 | [历史统一流程验证状态](docs/验证状态.md)及其原始报告 |
+| 每个参数是什么、怎么调、有哪些型号差异 | [参数说明与调参导航](docs/参数说明与调参.md) |
 | 为什么同一套接口仍有参数差异 | [统一调用套路](docs/02-一个套路调遍所有模型.md) |
 | 空回复、JSON、工具循环和限流怎么处理 | [真实踩雷](docs/06-真实踩雷与生产检查.md) |
 | 怎么核对价格、额度和成本 | [价格与额度](docs/04-免费额度与省钱攻略.md) |
@@ -46,13 +48,24 @@ Agent 的任务分支、未知型号处理和交付要求见[任务流程](skill
 
 ## 模型级说明书
 
-已收录六份型号说明书：[DeepSeek `deepseek-flash`](models/deepseek/deepseek-flash/README.md)、[Kimi `kimi-k2.6`](models/kimi/kimi-k2.6/README.md)、[智谱 `glm-4.7-flash`](models/zhipu/glm-4.7-flash/README.md)、[通义 `qwen-flash`](models/qwen/qwen-flash/README.md)、[豆包 `doubao-seed-2-1-pro-260628`](models/doubao/doubao-seed-2-1-pro-260628/README.md)和[MiniMax `MiniMax-M2.7`](models/minimax/MiniMax-M2.7/README.md)。型号卡片保存官方事实，示例包含结果检查与工具闭环；实测范围和结果统一见[验证状态](docs/验证状态.md)。
+已收录的准确型号、调用说明和参数解释如下；每份参数页按实际可运行文件映射字段，并分别标明官方语义与项目配置。
 
-MiniMax M2.7 当前仅官方文档收录、尚未实测，且已公告退役：2026-10-19 停止向新用户开放，2026-11-18 按量 API 下线；订阅请求的旧名称将从 10-19 起路由到新模型。使用前先查[官方通知](https://platform.minimax.cn/docs/guides/models-intro)。
+| 准确型号 | 调用说明书 | 参数详解 |
+|---|---|---|
+| DeepSeek `deepseek-flash` | [说明书](models/deepseek/deepseek-flash/README.md) | [参数与逐文件对照](models/deepseek/deepseek-flash/parameters.md) |
+| Kimi `kimi-k2.6` | [说明书](models/kimi/kimi-k2.6/README.md) | [参数与逐文件对照](models/kimi/kimi-k2.6/parameters.md) |
+| 智谱 `glm-4.7-flash` | [说明书](models/zhipu/glm-4.7-flash/README.md) | [参数与逐文件对照](models/zhipu/glm-4.7-flash/parameters.md) |
+| 通义 `qwen-flash` | [说明书](models/qwen/qwen-flash/README.md) | [参数与逐文件对照](models/qwen/qwen-flash/parameters.md) |
+| 豆包 `doubao-seed-2-1-pro-260628` | [说明书](models/doubao/doubao-seed-2-1-pro-260628/README.md) | [参数与逐文件对照](models/doubao/doubao-seed-2-1-pro-260628/parameters.md) |
+| MiniMax `MiniMax-M2.7` | [说明书](models/minimax/MiniMax-M2.7/README.md) | [参数与逐文件对照](models/minimax/MiniMax-M2.7/parameters.md) |
+
+参数入门与调节顺序见[参数说明与调参](docs/参数说明与调参.md)。实测分两层：[历史统一验证器](docs/验证状态.md)检查固定能力项，[逐文件运行](docs/示例实测状态.md)检查具体文件与当次输入；两者不能相互替代，也不证明任意参数组合都成功。[来源规则](docs/来源与核验规则.md)
+
+MiniMax M2.7 的逐文件执行情况同样见[示例实测状态](docs/示例实测状态.md)，不以历史统一验证器报告空缺推断从未真实调用。其生命周期需单独注意：2026-10-19 停止向新用户开放，2026-11-18 按量 API 下线；订阅请求的旧名称将从 10-19 起路由到新模型。使用前先查[官方通知](https://platform.minimax.cn/docs/guides/models-intro)。
 
 ## 快速参数表
 
-下表的接口与模型链接均指向厂商官方文档；“仓库验证”指向可复现的在线体检脚本，结果只代表 **2026-10-13** 当日测试环境。[核验口径](docs/来源与核验规则.md)
+下表的接口、型号与参数行为链接均指向厂商官方文档；环境变量名也可在上面的各型号示例中核对。它是配置速查，不是实测通过表；实际参数解释见[调参导航](docs/参数说明与调参.md)，运行证据见[核验口径](docs/来源与核验规则.md)。
 
 | 厂商 | Key 环境变量 | 官方接口文档 | 默认模型 / 官方模型页 | 关闭思考 | 官方价格 |
 |---|---|---|---|---|---|
@@ -68,6 +81,8 @@ MiniMax M2.7 当前仅官方文档收录、尚未实测，且已公告退役：2
 ## 最小调用
 
 DeepSeek 官方文档提供 OpenAI SDK 兼容调用方式；下面使用它当前推荐的 `deepseek-flash`。[官方接口与模型页](https://api-docs.deepseek.com/quick_start/pricing/)
+
+以下代码块是说明性片段，不在逐文件执行清单内；需要完整校验时运行[对应示例文件](models/deepseek/deepseek-flash/examples/01_basic.py)，并核对该文件的[实测记录](docs/示例实测状态.md)。片段或自改参数不继承文件结果。[项目证据规则](docs/来源与核验规则.md)
 
 ```python
 import os
@@ -112,13 +127,15 @@ python skills/model-manual/scripts/generate_snippet.py \
 
 ## 验证
 
-仓库要求 Python 3.10+，安装与离线校验见[验证与复现](docs/验证与复现.md)。在线体检会向已配置 Key 的厂商发送真实请求，报告自动记录安全元数据，具体结果见[验证状态](docs/验证状态.md)。
+仓库要求 Python 3.10+，安装与离线校验见[验证与复现](docs/验证与复现.md)。真实验证分为下面的统一验证器，以及直接执行已登记文件的[逐文件执行器](tests/run_example_files.py)；两者都会发送真实请求、分别保存报告。结果分别见[历史统一流程状态](docs/验证状态.md)与[逐文件示例状态](docs/示例实测状态.md)，不把“进程退出 0”直接扩展成所有能力都通过。[证据规则](docs/来源与核验规则.md)
 
 ```bash
 cp examples/.env.example .env
 python -m pip install -r requirements-lock.txt
 python tests/verify_calls.py kimi qwen --report /tmp/model-manual-verification.json
 ```
+
+逐文件执行器默认只列清单、不读取密钥；只有显式加 `--execute` 才发请求。运行命令、输入素材与报告字段见[验证与复现](docs/验证与复现.md)。生成器输出的任意新参数组合也不自动继承现有示例的通过状态。[执行器](tests/run_example_files.py)
 
 不发请求的检查覆盖目录、生成器、流式/截断和工具闭环；可复用的 [CI 模板](ci/offline-checks.yml)使用相同命令，当前尚未启用 GitHub Actions：
 
@@ -140,8 +157,10 @@ python skills/model-manual/scripts/sync_verification.py --check
 | [04 价格与额度](docs/04-免费额度与省钱攻略.md) | 直达官方价格、额度页面 |
 | [05 排错](docs/05-新手必会与报错速查.md) | 官方错误文档与项目排查流程 |
 | [06 真实踩雷](docs/06-真实踩雷与生产检查.md) | 思考 token、截断、JSON、工具调用、流式与限流 |
+| [参数说明与调参](docs/参数说明与调参.md) | 六家逐参数解释、文件映射、调节顺序与证据边界 |
 | [验证与复现](docs/验证与复现.md) | 锁定环境、自动报告、退出码与验证范围 |
-| [验证状态](docs/验证状态.md) | 从模型卡片与报告生成的当前能力状态 |
+| [历史统一流程状态](docs/验证状态.md) | 从模型卡片登记的统一验证器报告生成的历史能力摘要 |
+| [逐文件示例实测状态](docs/示例实测状态.md) | 当前文件对应的真实执行、参数、源码指纹与报告 |
 | [来源与核验规则](docs/来源与核验规则.md) | 每类结论如何引用与复核 |
 
 ## Key 安全

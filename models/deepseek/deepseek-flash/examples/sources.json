@@ -26,8 +26,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -52,8 +53,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -78,8 +80,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -104,8 +107,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -130,8 +134,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -158,8 +163,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的本地纯红 PNG，不代表其他输入分支或图像识别准确率已验证。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -184,8 +190,9 @@
       ],
       "verification": {
         "offline": "not_run",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-ts-attempt4.json"
       }
     },
     {
@@ -210,8 +217,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -236,8 +244,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -268,8 +277,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的纯红 PNG，Files 走本地上传分支；未覆盖已有 file_id 或所有远程 URL 分支。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -304,8 +314,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的本地纯红 PNG，不代表其他输入分支或图像识别准确率已验证。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -334,8 +345,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -361,8 +373,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -387,8 +400,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     },
     {
@@ -414,8 +428,9 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "未对该文件执行本次真实 API 调用；型号历史报告不能替代文件级验证。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-deepseek-attempt3.json"
       }
     }
   ],

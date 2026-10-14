@@ -111,7 +111,7 @@ class CatalogSyncTests(unittest.TestCase):
                 self.assertEqual(cfg["capabilities"]["thinking_off"], "unknown")
                 row = next(line for line in outputs[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
                 columns = [column.strip() for column in row.strip("|").split("|")]
-                self.assertEqual(columns[1:], ["—", "未实测", "—", "—", "—", "—", "—", "报告空缺"])
+                self.assertEqual(columns[1:], ["—", "统一验证器未运行", "—", "—", "—", "—", "—", "报告空缺"])
 
     def test_explicit_broken_or_other_model_report_is_not_treated_as_not_run(self):
         for case in ("broken_path", "other_model", "unfounded_scope"):

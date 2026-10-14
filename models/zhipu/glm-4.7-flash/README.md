@@ -1,8 +1,12 @@
 # `glm-4.7-flash` 调用说明书
 
-按功能查找本型号的[官方改写示例与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。清单单独标明文件的官方出处、改写与验证范围；本次新增示例未执行真实 API 调用，不继承历史报告的通过状态。
+按功能查找[官方改写来源与运行清单](examples/sources.json)，跨型号浏览[官方示例索引](../../../docs/官方示例索引.md)。验证分为[历史统一流程](../../../docs/验证状态.md)与[当前逐文件实测](../../../docs/示例实测状态.md)，以对应报告的源码、参数、输入和环境为准，不互相继承通过状态。[证据规则](../../../docs/来源与核验规则.md)
 
-> 核对日期：**2026-10-13**。官方事实均附原始链接；最新严格验证记录基础请求超时、流式请求限流、其余四项跳过，暂无通过结果。[严格报告](verification/2026-10-13-strict.json) 机器卡片见 [`glm-4.7-flash.json`](../../../skills/model-manual/references/models/glm-4.7-flash.json)。
+需要逐项理解参数时，阅读[参数解释与文件映射](parameters.md)：包括采样与生成预算、思考开关和历史保留、工具消息、JSON模式，以及SDK设置与本地循环的区别。
+
+本页代码块是说明性片段；运行与验证以链接的完整文件为准。片段、自改参数及生成器任意新组合不继承文件的实测结果。[参数与文件映射](parameters.md)；[证据边界](../../../docs/来源与核验规则.md)
+
+> 资料核对日期：**2026-10-13**。当天历史统一验证器记录基础请求超时、流式请求限流、其余四项跳过，无通过项；这不代表当前逐文件运行结果。[历史严格报告](verification/2026-10-13-strict.json)；[当前文件状态](../../../docs/示例实测状态.md)。机器卡片见 [`glm-4.7-flash.json`](../../../skills/model-manual/references/models/glm-4.7-flash.json)。
 
 ## 1. 一眼看懂
 
@@ -55,11 +59,11 @@ JSON 对象模式使用 `response_format={"type":"json_object"}`；工具通过 
 
 示例：[`examples/04_json_output.py`](examples/04_json_output.py) · [`examples/05_tool_calling.py`](examples/05_tool_calling.py)。应用必须自行校验 JSON 和工具参数，再执行实际函数；这是本仓库安全约定。[来源与核验规则](../../../docs/来源与核验规则.md)
 
-## 5. 当前实测状态
+## 5. 历史与逐文件实测
 
 2026-10-13 历史基础验证返回 HTTP 429，包括账户速率限制业务码 `1302` 和模型访问量过大业务码 `1305`。[历史报告](verification/2026-10-13.json) 同日的新一轮严格验证使用锁定 SDK：基础请求超时，流式请求有限重试后仍返回 429/`1305`，后续四项没有执行。[严格报告](verification/2026-10-13-strict.json) 官方能力声明保留为“已记录”，运行结果不标成通过，也不外推为能力不支持。
 
-遇到 429 应使用带抖动的指数退避并限制重试次数；持续限流的结果单独记录，不能判为模型能力不支持。[项目建议与规则](../../../docs/来源与核验规则.md) 使用锁定依赖复测：`python tests/verify_glm_4_7_flash.py --report /tmp/glm-4.7-flash-verification.json`，环境变量和退出码见[验证与复现](../../../docs/验证与复现.md)。最新结果统一查[验证状态](../../../docs/验证状态.md)。
+遇到 429 的项目建议是使用带抖动的指数退避并限制重试次数；持续限流单独记录，不能判为模型能力不支持。[项目建议与规则](../../../docs/来源与核验规则.md) 统一验证器复测：`python tests/verify_glm_4_7_flash.py --report /tmp/glm-4.7-flash-verification.json`；环境与逐文件命令见[验证与复现](../../../docs/验证与复现.md)。两层结果分别查[历史统一流程状态](../../../docs/验证状态.md)与[当前逐文件实测状态](../../../docs/示例实测状态.md)。
 
 ## 6. 给 Agent 的固定配置
 
@@ -72,9 +76,9 @@ thinking_off_extra_body:
   thinking: {type: disabled}
 ```
 
-Base URL 与模型参数来自[官方 OpenAI 兼容文档](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)和[对话补全 API](https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8)；运行状态统一查[验证状态](../../../docs/验证状态.md)，不写进固定连接配置。
+Base URL 与模型参数来自[官方 OpenAI 兼容文档](https://docs.bigmodel.cn/cn/guide/develop/openai/introduction)和[对话补全 API](https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8)；运行状态分别查[历史统一流程](../../../docs/验证状态.md)与[逐文件实测](../../../docs/示例实测状态.md)，不写进固定连接配置。
 
-[工具调用示例](examples/05_tool_calling.py)已经包含校验、模拟执行、结果回传和最终回答的完整有限循环；此处是可运行模板，真实成功状态以[验证状态](../../../docs/验证状态.md)引用的报告为准。
+[工具调用示例](examples/05_tool_calling.py)包含校验、模拟执行、结果回传和最终回答的完整有限循环；是否真实运行通过，以[逐文件状态](../../../docs/示例实测状态.md)中匹配该源码的报告为准，不从历史普通请求结果继承。
 
 ## 7. 必看踩雷
 

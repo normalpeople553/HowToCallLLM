@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T03:05:29.781093+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/deepseek/deepseek-flash/examples/07_typescript.ts",
+      "vendor": "deepseek",
+      "model_id": "deepseek-flash",
+      "required_keys": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T03:05:29.847566+00:00",
+      "source_sha256": {
+        "models/deepseek/deepseek-flash/examples/07_typescript.ts": "c70a8ae0b9200870541d6f5a64ac9ade6118a893909f0d17be57263925567da4",
+        "models/deepseek/deepseek-flash/examples/_support.py": "948c15af2fd95bf089c919db6443073c09cfdb95c9fb3a7b6d25c354b0d45446",
+        "tests/live_fetch.mjs": "85e9cd5a59ac690094acfedbede3a81a8e6fc3e82f08a5d14a85823dbd9f190c"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.deepseek.com/chat/completions",
+          "transport": "real_fetch",
+          "parameters": {},
+          "requested_model": "deepseek-flash",
+          "http_status": 200,
+          "served_model": "deepseek-flash",
+          "usage": {
+            "prompt_tokens": 34,
+            "completion_tokens": 94,
+            "total_tokens": 128,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 71
+            }
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 40,
+          "observation_status": "json_observed"
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.711
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 1,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

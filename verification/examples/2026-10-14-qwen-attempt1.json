@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T02:46:31.078004+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/qwen/qwen-flash/examples/01_basic.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T02:46:31.109434+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/01_basic.py": "db698928da659024944cf0b8a48396e6fc72d569de86352a51e9ee93ab0c163b"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {},
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.169
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/02_streaming.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T02:46:32.278642+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/02_streaming.py": "d850c2fac3acdebf2e0ea4fffd10b16c259ce8490097447cab37a5cfcc38aceb"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "enable_thinking": false,
+            "stream": true
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200,
+          "served_model": "qwen-flash",
+          "content_chars": 134,
+          "finish_reasons": [
+            "stop"
+          ],
+          "sse_done": true
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.275
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/03_thinking.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "thinking",
+      "tested_at": "2026-10-14T02:46:33.553298+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/03_thinking.py": "0be971af7fa52d446e4bc25877712d54e68fdea4f53f3979b52fb9555aa2f07a"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "enable_thinking": true
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 12.578
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/04_json_output.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "json_object",
+      "tested_at": "2026-10-14T02:46:46.131250+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/04_json_output.py": "824eb569552cd58563162631922d49d92290b8977183947b99ec3df5cae7e1c3"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "response_format": {
+              "type": "json_object"
+            },
+            "enable_thinking": false
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 0.788
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/05_tool_calling.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "tool_calling",
+      "tested_at": "2026-10-14T02:46:46.919787+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/05_tool_calling.py": "d4272db09f69912afc37ae67fd82926b20f649d2b92afc94d6e2a25a096191b6"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "enable_thinking": false
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "enable_thinking": false
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 1.387
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/06_multi_turn.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "multi_turn",
+      "tested_at": "2026-10-14T02:46:48.306641+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/06_multi_turn.py": "3a42655644b193cee9907725a5553cb72253a2582104507840299bdd8e98177c"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 1024,
+            "enable_thinking": false
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 1024,
+            "enable_thinking": false
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.378
+    },
+    {
+      "path": "models/qwen/qwen-flash/examples/07_thinking_tools.py",
+      "vendor": "qwen",
+      "model_id": "qwen-flash",
+      "required_keys": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "capability": "thinking_tool_calling",
+      "tested_at": "2026-10-14T02:46:50.685155+00:00",
+      "source_sha256": {
+        "models/qwen/qwen-flash/examples/07_thinking_tools.py": "144a2f77a1d719b079fbd5fe8fd75a65bad77961828a361eb5ad611a862d5526"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 8192,
+            "enable_thinking": true,
+            "tool_choice": "auto"
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_tokens": 8192,
+            "enable_thinking": true,
+            "tool_choice": "auto"
+          },
+          "requested_model": "qwen-flash",
+          "http_status": 200
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 4.476
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 7,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

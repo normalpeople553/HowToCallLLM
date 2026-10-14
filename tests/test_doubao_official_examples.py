@@ -41,8 +41,12 @@ class TrackingStream:
 
 
 class DoubaoOfficialExamplesTests(unittest.TestCase):
-    def test_manifest_covers_all_examples_and_does_not_claim_live_tests(self):
+    def test_manifest_covers_all_examples_and_live_status_requires_strict_evidence(self):
         catalog = json.loads((EXAMPLES / "sources.json").read_text(encoding="utf-8"))
+        # 只读验证器会核对真实报告身份、当前源码/支持文件哈希和最终 HTTP 响应。
+        validator = runpy.run_path(str(ROOT / "skills/model-manual/scripts/example_catalog.py"), run_name="offline_catalog_validation")
+        validated = next(item for item in validator["load_catalogs"](ROOT) if item["vendor"] == "doubao" and item["model_id"] == MODEL)
+        verified_entries = {entry["file"]: entry for entry in validated["examples"]}
         self.assertEqual(catalog["schema_version"], 1)
         self.assertEqual(catalog["vendor"], "doubao")
         self.assertEqual(catalog["model_id"], MODEL)
@@ -53,7 +57,15 @@ class DoubaoOfficialExamplesTests(unittest.TestCase):
         for entry in entries:
             with self.subTest(example=entry["file"]):
                 self.assertEqual(entry["origin"], "adapted_from_official")
-                self.assertEqual(entry["verification"]["live"], "not_run")
+                verification = entry["verification"]
+                checked = verified_entries[entry["file"]]["verification"]
+                self.assertEqual(verification["live"], checked["live"])
+                if verification["live"] == "not_run":
+                    self.assertFalse(verification.get("report"))
+                else:
+                    self.assertTrue((ROOT / verification["report"]).is_file())
+                    self.assertEqual(verification["report"], checked["report"])
+                    self.assertIn("tested_at", checked)
                 self.assertEqual(entry["verification"]["offline"], "mock_tested")
                 self.assertIn("ARK_API_KEY", entry["required_env"])
                 self.assertIn(entry["file"], entry["run_command"])

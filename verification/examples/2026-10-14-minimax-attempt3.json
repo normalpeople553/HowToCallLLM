@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T02:56:31.047330+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/01_basic.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "chat_completions",
+      "tested_at": "2026-10-14T02:56:31.070798+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/01_basic.py": "a0c609a9242f357e6a0d51ce83745d80a1b883d794f31390bfe96305fc41cd9b"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_completion_tokens": 16384,
+            "reasoning_split": true
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 305,
+            "prompt_tokens": 46,
+            "completion_tokens": 259
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 57
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 8.529
+    },
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/02_streaming.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T02:56:39.599855+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/02_streaming.py": "dc8880cbd62762b74d45509e0fe1d0515a1053d168a2d14873d258734c73342e"
+      },
+      "status": "failed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "reasoning_split": true,
+            "stream": true,
+            "stream_options": {
+              "include_usage": true
+            },
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "served_model": "MiniMax-M2.7",
+          "content_chars": 125,
+          "finish_reasons": [
+            "stop"
+          ],
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 252,
+            "prompt_tokens": 48,
+            "completion_tokens": 204
+          }
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 9.739
+    },
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/03_thinking.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "thinking",
+      "tested_at": "2026-10-14T02:56:49.339264+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/03_thinking.py": "0f323dfc4e222cc74fcfcd36a255849db8cc721e2244d7ffd01d0b2420310412"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "max_completion_tokens": 16384,
+            "reasoning_split": true
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 459,
+            "prompt_tokens": 61,
+            "completion_tokens": 398
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 41
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 10.824
+    },
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/05_tool_calling.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "tool_calling",
+      "tested_at": "2026-10-14T02:57:00.163260+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/05_tool_calling.py": "e81d4af8825340d3f77f84dabebd9429798b63fa1afe87c7b9310ba99656f99b"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "reasoning_split": true,
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 260,
+            "prompt_tokens": 192,
+            "completion_tokens": 68
+          },
+          "finish_reasons": [
+            "tool_calls"
+          ],
+          "has_tool_calls": true
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "reasoning_split": true,
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "content_encoding": "gzip",
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 368,
+            "prompt_tokens": 305,
+            "completion_tokens": 63
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 59
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 6.452
+    },
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/06_multi_turn.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "multi_turn",
+      "tested_at": "2026-10-14T02:57:06.615829+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/06_multi_turn.py": "6934f332d6e7610e715a79a70be5bf9d8f9a11f47575697045a0815b917c87df"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "reasoning_split": true,
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 70,
+            "prompt_tokens": 29,
+            "completion_tokens": 41
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 24
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "reasoning_split": true,
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 94,
+            "prompt_tokens": 60,
+            "completion_tokens": 34
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 11
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 6.247
+    },
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/07_native_curl.sh",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "native_chat_completions",
+      "tested_at": "2026-10-14T02:57:12.862723+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/07_native_curl.sh": "e013d3c55c7ba552465bf1a17b0b631ab9225e3066529bb2cfa90fadd85a4c2f",
+        "tests/live_curl.py": "1d837c72440d4b01104dbebb15afd7e81b1a74b8e3a27f59dffbf6578efb6dde"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/text/chatcompletion_v2",
+          "transport": "real_curl",
+          "parameters": {
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "served_model": "MiniMax-M2.7",
+          "business_status": 0,
+          "usage": {
+            "prompt_tokens": 46,
+            "completion_tokens": 274,
+            "total_tokens": 320
+          },
+          "finish_reasons": [
+            "stop"
+          ],
+          "content_chars": 60,
+          "observation_status": "json_observed"
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 9.378
+    }
+  ],
+  "summary": {
+    "failed": 1,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 5,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

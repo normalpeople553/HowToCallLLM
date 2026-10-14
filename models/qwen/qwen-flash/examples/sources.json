@@ -5,76 +5,246 @@
   "checked_at": "2026-10-14",
   "examples": [
     {
-      "id": "chat_completions", "file": "01_basic.py", "title": "基础文本对话", "capability": "chat_completions",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：请求体与返回参数"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/01_basic.py",
-      "adaptations": ["从环境变量读取密钥", "固定为已收录的 qwen-flash", "检查结束原因和非空正文"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "streaming", "file": "02_streaming.py", "title": "流式文本输出", "capability": "streaming",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：stream、stream_options 与 usage"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/02_streaming.py",
-      "adaptations": ["从环境变量读取密钥", "空 choices 块处理", "传输中断与不完整结束检查"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "thinking", "file": "03_thinking.py", "title": "启用思考并读取最终答案", "capability": "thinking",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/deep-thinking", "title": "深度思考：Qwen3 支持列表中的 qwen-flash、enable_thinking 与 reasoning_content"}, {"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：扩展参数放置方式"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/03_thinking.py",
-      "adaptations": ["Python 扩展参数放在 extra_body", "正常结束与最终正文检查"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "json_output", "file": "04_json_output.py", "title": "非思考 JSON 对象", "capability": "json_object",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-structured-output", "title": "结构化输出：支持的模型与 JSON Mode"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/04_json_output.py",
-      "adaptations": ["旧 Qwen-Flash 使用非思考 JSON Mode", "提示词显式要求 JSON", "结束检查、JSON 解析与业务字段校验"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "tool_calling", "file": "05_tool_calling.py", "title": "非思考工具完整闭环", "capability": "tool_calling",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling", "title": "Function Calling：支持的模型与完整工作流程"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/05_tool_calling.py",
-      "adaptations": ["天气数据改为明确标记的本地模拟数据", "批次参数校验和工具调用次数上限", "完整 assistant 回传与最终正文检查"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "multi_turn", "file": "06_multi_turn.py", "title": "客户端历史的两轮对话", "capability": "multi_turn",
-      "origin": "adapted_from_official",
-      "sources": [{"url": "https://help.aliyun.com/zh/model-studio/multi-round-conversation", "title": "多轮对话：维护 messages 与思考模型的历史正文"}],
-      "required_env": ["DASHSCOPE_API_KEY"],
-      "run_command": "python models/qwen/qwen-flash/examples/06_multi_turn.py",
-      "adaptations": ["固定两轮课程信息问答，避免交互式输入依赖", "关闭思考且只回传历史正文", "不完整回答不进入下一轮", "main 保护支持安全导入"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
-    },
-    {
-      "id": "thinking_tools", "file": "07_thinking_tools.py", "title": "思考与模拟库存工具闭环", "capability": "thinking_tool_calling",
+      "id": "chat_completions",
+      "file": "01_basic.py",
+      "title": "基础文本对话",
+      "capability": "chat_completions",
       "origin": "adapted_from_official",
       "sources": [
-        {"url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling", "title": "Function Calling：Qwen-Flash 支持列表与工具闭环"},
-        {"url": "https://help.aliyun.com/zh/model-studio/deep-thinking", "title": "深度思考：Qwen3 下 qwen-flash 混合思考与商业模型同步输出"},
-        {"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：enable_thinking、max_tokens、assistant 与 tool 消息"}
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：请求体与返回参数"
+        }
       ],
-      "required_env": ["DASHSCOPE_API_KEY"],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/01_basic.py",
+      "adaptations": [
+        "从环境变量读取密钥",
+        "固定为已收录的 qwen-flash",
+        "检查结束原因和非空正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式文本输出",
+      "capability": "streaming",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：stream、stream_options 与 usage"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/02_streaming.py",
+      "adaptations": [
+        "从环境变量读取密钥",
+        "空 choices 块处理",
+        "传输中断与不完整结束检查"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "启用思考并读取最终答案",
+      "capability": "thinking",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/deep-thinking",
+          "title": "深度思考：Qwen3 支持列表中的 qwen-flash、enable_thinking 与 reasoning_content"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：扩展参数放置方式"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/03_thinking.py",
+      "adaptations": [
+        "Python 扩展参数放在 extra_body",
+        "正常结束与最终正文检查"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "json_output",
+      "file": "04_json_output.py",
+      "title": "非思考 JSON 对象",
+      "capability": "json_object",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-structured-output",
+          "title": "结构化输出：支持的模型与 JSON Mode"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/04_json_output.py",
+      "adaptations": [
+        "旧 Qwen-Flash 使用非思考 JSON Mode",
+        "提示词显式要求 JSON",
+        "结束检查、JSON 解析与业务字段校验"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "tool_calling",
+      "file": "05_tool_calling.py",
+      "title": "非思考工具完整闭环",
+      "capability": "tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling",
+          "title": "Function Calling：支持的模型与完整工作流程"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/05_tool_calling.py",
+      "adaptations": [
+        "天气数据改为明确标记的本地模拟数据",
+        "批次参数校验和工具调用次数上限",
+        "完整 assistant 回传与最终正文检查"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "multi_turn",
+      "file": "06_multi_turn.py",
+      "title": "客户端历史的两轮对话",
+      "capability": "multi_turn",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/multi-round-conversation",
+          "title": "多轮对话：维护 messages 与思考模型的历史正文"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
+      "run_command": "python models/qwen/qwen-flash/examples/06_multi_turn.py",
+      "adaptations": [
+        "固定两轮课程信息问答，避免交互式输入依赖",
+        "关闭思考且只回传历史正文",
+        "不完整回答不进入下一轮",
+        "main 保护支持安全导入"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
+    },
+    {
+      "id": "thinking_tools",
+      "file": "07_thinking_tools.py",
+      "title": "思考与模拟库存工具闭环",
+      "capability": "thinking_tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling",
+          "title": "Function Calling：Qwen-Flash 支持列表与工具闭环"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/deep-thinking",
+          "title": "深度思考：Qwen3 下 qwen-flash 混合思考与商业模型同步输出"
+        },
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：enable_thinking、max_tokens、assistant 与 tool 消息"
+        }
+      ],
+      "required_env": [
+        "DASHSCOPE_API_KEY"
+      ],
       "run_command": "python models/qwen/qwen-flash/examples/07_thinking_tools.py",
-      "adaptations": ["本地固定模拟库存，整批校验工具参数", "回传完整 assistant，包括可能的 reasoning_content", "不使用新版专属 preserve_thinking 和 max_completion_tokens", "仅至少执行一次工具后才接受最终答案", "四次模型调用上限与最终结束检查"],
-      "verification": {"offline": "mock_tested", "live": "not_run", "note": "此清单不声称文件级实测，型号历史报告另查"}
+      "adaptations": [
+        "本地固定模拟库存，整批校验工具参数",
+        "回传完整 assistant，包括可能的 reasoning_content",
+        "不使用新版专属 preserve_thinking 和 max_completion_tokens",
+        "仅至少执行一次工具后才接受最终答案",
+        "四次模型调用上限与最终结束检查"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-qwen-attempt3.json"
+      }
     }
   ],
   "not_integrated": [
-    {"capability": "vision", "reason": "官方 Function Calling 支持表将 Qwen-Flash 列为文本生成型号；本次未核验它的图片输入，不能迁移 Qwen-VL 或新版多模态型号示例。", "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling", "title": "Function Calling：文本生成与多模态型号支持表"}]},
-    {"capability": "preserved_thinking", "reason": "当前 preserve_thinking 支持列表未列出旧 qwen-flash；思考工具例仅回传完整消息，不添加该参数。", "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：preserve_thinking 支持的模型"}]},
-    {"capability": "max_completion_tokens", "reason": "官方参数支持列表从 Qwen3.5-Flash 起，未为旧 qwen-flash 直接迁移；使用已登记的 max_tokens 正文预算。", "sources": [{"url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions", "title": "OpenAI兼容-Chat：max_tokens 与 max_completion_tokens"}]}
+    {
+      "capability": "vision",
+      "reason": "官方 Function Calling 支持表将 Qwen-Flash 列为文本生成型号；本次未核验它的图片输入，不能迁移 Qwen-VL 或新版多模态型号示例。",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-function-calling",
+          "title": "Function Calling：文本生成与多模态型号支持表"
+        }
+      ]
+    },
+    {
+      "capability": "preserved_thinking",
+      "reason": "当前 preserve_thinking 支持列表未列出旧 qwen-flash；思考工具例仅回传完整消息，不添加该参数。",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：preserve_thinking 支持的模型"
+        }
+      ]
+    },
+    {
+      "capability": "max_completion_tokens",
+      "reason": "官方参数支持列表从 Qwen3.5-Flash 起，未为旧 qwen-flash 直接迁移；使用已登记的 max_tokens 正文预算。",
+      "sources": [
+        {
+          "url": "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "title": "OpenAI兼容-Chat：max_tokens 与 max_completion_tokens"
+        }
+      ]
+    }
   ]
 }

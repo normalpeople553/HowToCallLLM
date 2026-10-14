@@ -11,10 +11,10 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 
 1. 从用户要求和现有项目确定厂商、型号、语言及调用方式；缺少会影响实现的信息时再问。没有现有项目且用户未指定语言时使用 Python，未指定型号时读取厂商的 `default_model`。
 2. 从 [references/vendors.json](references/vendors.json) 定位对应厂商，再读取指定型号的 [references/models/](references/models/) 卡片。目录中的 `model_card` 和 `model_manual` 只指默认型号，用户指定其他型号时必须按准确 Model ID 查找。
-3. 型号参数读取卡片的 `generation`，能力读取 `capabilities`，每个事实的 `source` 在该卡片的 `sources` 中解析。先检查 `identity` 中的生命周期与订阅路由差异；不要把旧 Model ID 当作实际服务版本保证。需要解释限制或查看示例时读取 [models/](../../models/) 中对应说明书；声称“已实测”前读取 `verification` 原始报告，`null` / `not_run` 表示没有该型号实测证据。
+3. 型号参数读取卡片的 `generation`，能力读取 `capabilities`，事实的 `source` 在该卡片的 `sources` 中解析。先检查 `identity` 的生命周期与订阅路由；旧 Model ID 不保证实际服务版本。解释参数时按[任务流程的六型号参数入口](references/workflows.md#接入)读取对应 `parameters.md`，不把 SDK 选项、服务端参数和示例业务限制混为一谈。
 4. 按下表读取[任务流程](references/workflows.md)中相关部分，完成实现和检查。
 
-需要具体功能代码时先查询[官方示例目录](scripts/example_catalog.py)：`python skills/model-manual/scripts/example_catalog.py --model <准确型号> --capability <能力词>`。返回文件、官方来源、环境变量、运行命令及改写/验证范围；只读取命中的示例及其本目录依赖。人类索引见[官方示例索引](../../docs/官方示例索引.md)。不存在的组合不会回退到其他型号；示例缺失也不代表不支持。
+需要具体功能代码时先查询[官方示例目录](scripts/example_catalog.py)：`python skills/model-manual/scripts/example_catalog.py --model <准确型号> --capability <能力词>`。返回文件、参数说明路径、官方来源、环境变量、运行命令及验证范围；只读命中示例及其依赖。人类索引见[官方示例索引](../../docs/官方示例索引.md)，当前逐文件状态见[示例实测状态](../../docs/示例实测状态.md)。不存在的组合不会回退到其他型号；缺示例也不代表不支持。
 
 | 用户任务 | 任务流程中的部分 | 重点 |
 |---|---|---|
@@ -22,7 +22,7 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 | 换厂商、换型号、升级 SDK | 迁移 | 比较源与目标，保留业务行为，处理参数和消息差异 |
 | 报错、空正文、断流或工具循环 | 排错 | 结合实际响应和具体型号定位原因 |
 | 指定未收录型号 | 未知型号 | 核对官方资料，避免继承默认型号参数 |
-| 查能力或要求真实复测 | 证据与验证 | 分开说明官方声明、历史结果和本次检查 |
+| 查能力或要求真实复测 | 证据与验证 | 区分型号报告、逐文件证据与新生成代码；按授权运行 |
 
 ## 生成调用代码
 
@@ -44,8 +44,9 @@ python skills/model-manual/scripts/generate_snippet.py --vendor qwen --task json
 - 参数与能力的厂商结论附卡片中的官方来源；价格和额度直接链接官方页面。项目判断按[来源规则](../../docs/来源与核验规则.md)标为“项目建议”。
 - Key 从型号规定的环境变量读取，不硬编码、不回显。除非用户明确要求真实调用，否则只生成、修改代码或执行离线检查。
 - 保留输出完整性检查：普通/JSON 检查结束原因和空正文；流式处理空 `choices` 与结束状态；工具验证名称和参数、回传 `tool_call_id`、保留完整 assistant 消息并限制轮次。示例中的工具数据为模拟数据。
-- `verified` 仅代表报告中的日期、型号和测试范围；官方支持与本次失败分别说明。历史基础验证不证明完整工具闭环或图片内容识别，限流不代表不支持。
+- 型号 `verification: null` / `verification_scope: not_run` 仅表示未完成该型号统一验证器，不能覆盖独立示例的真实 HTTP 报告；反向也不能由一个文件通过升级整张型号卡。按[证据与验证](references/workflows.md#证据与验证)核对原始报告、范围与当前文件哈希。
+- 现成文件通过不代表任意新生成的参数/任务组合通过；文件或支持依赖哈希变更必须重新执行。`verified` 限于报告日期、型号和测试项，限流、缺 Key 或缺证据不等于能力不支持。
 - 思考不能关闭的型号不生成假开关；`reasoning_split` 等输出格式参数不能当成关闭思考。请求默认字段、预算名称和允许的思考模式均从准确卡片读取。
-- 以准确型号卡片和原始报告处理摘要冲突；维护或复测后按[验证与复现](../../docs/验证与复现.md)检查同步。源码编译、模拟测试和历史实测不能写成“本次线上通过”。
+- 以准确卡片和原始报告处理摘要冲突；[逐文件执行器](../../tests/run_example_files.py)默认只列清单，`--execute` 才会真实调用。授权、命令与报告同步见[证据与验证](references/workflows.md#证据与验证)；编译、mock 与历史实测不能写成“本次线上通过”。
 
 生成器主要覆盖已收录型号的 Chat Completions；进阶示例另外提供按准确型号核对的 API/功能，依据其来源清单使用。不能将 Chat Completions 兼容扩大为全部 OpenAI API 兼容，也不能用单个示例推断所有参数都可用。

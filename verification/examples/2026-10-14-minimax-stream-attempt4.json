@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T02:57:59.735391+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/minimax/MiniMax-M2.7/examples/02_streaming.py",
+      "vendor": "minimax",
+      "model_id": "MiniMax-M2.7",
+      "required_keys": [
+        "MINIMAX_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T02:57:59.755982+00:00",
+      "source_sha256": {
+        "models/minimax/MiniMax-M2.7/examples/02_streaming.py": "dc8880cbd62762b74d45509e0fe1d0515a1053d168a2d14873d258734c73342e"
+      },
+      "status": "passed",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 0,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://api.minimax.cn/v1/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "stream_options": {
+              "include_usage": true
+            },
+            "reasoning_split": true,
+            "stream": true,
+            "max_completion_tokens": 16384
+          },
+          "requested_model": "MiniMax-M2.7",
+          "http_status": 200,
+          "served_model": "MiniMax-M2.7",
+          "content_chars": 130,
+          "finish_reasons": [
+            "stop"
+          ],
+          "business_status": 0,
+          "usage": {
+            "total_tokens": 306,
+            "prompt_tokens": 48,
+            "completion_tokens": 258
+          },
+          "transport_eof": true
+        }
+      ],
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 9.038
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 1,
+    "rate_limited": 0,
+    "timeout": 0
+  }
+}

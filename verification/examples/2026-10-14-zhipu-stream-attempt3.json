@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "example_file_execution",
+  "execution": "real_vendor_api",
+  "tested_at": "2026-10-14T02:57:02.313553+00:00",
+  "runtime": {
+    "python": "3.13.13",
+    "openai": "2.54.0"
+  },
+  "privacy": {
+    "api_key_saved": false,
+    "response_content_saved": false,
+    "reasoning_content_saved": false,
+    "raw_error_saved": false,
+    "request_messages_saved": false
+  },
+  "results": [
+    {
+      "path": "models/zhipu/glm-4.7-flash/examples/02_streaming.py",
+      "vendor": "zhipu",
+      "model_id": "glm-4.7-flash",
+      "required_keys": [
+        "ZHIPU_API_KEY"
+      ],
+      "capability": "streaming",
+      "tested_at": "2026-10-14T02:57:02.370555+00:00",
+      "source_sha256": {
+        "models/zhipu/glm-4.7-flash/examples/02_streaming.py": "1804d827c3a1d06477ee6e07657cf1ad069bef321e514906288ce1b9730e1021"
+      },
+      "status": "rate_limited",
+      "execution": "real_vendor_api",
+      "input_fixture": "synthetic_local_image_or_video_or_official_public_url",
+      "exit_code": 1,
+      "requests": [
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "stream": true
+          },
+          "requested_model": "glm-4.7-flash",
+          "http_status": 429,
+          "telemetry_error": true
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "stream": true
+          },
+          "requested_model": "glm-4.7-flash",
+          "http_status": 429,
+          "telemetry_error": true
+        },
+        {
+          "method": "POST",
+          "endpoint": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "transport": "real_httpx",
+          "parameters": {
+            "thinking": {
+              "type": "disabled"
+            },
+            "stream": true
+          },
+          "requested_model": "glm-4.7-flash",
+          "http_status": 429,
+          "provider_error_code": "1305"
+        }
+      ],
+      "error_type": "RateLimitError",
+      "http_status": 429,
+      "evidence_scope": "original_file_and_real_http_metadata",
+      "duration_seconds": 2.197
+    }
+  ],
+  "summary": {
+    "failed": 0,
+    "missing_input": 0,
+    "missing_key": 0,
+    "missing_runtime": 0,
+    "passed": 0,
+    "rate_limited": 1,
+    "timeout": 0
+  }
+}

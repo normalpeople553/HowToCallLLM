@@ -7,10 +7,21 @@
 适用于新增模型调用，以及 JSON、流式、工具或图片等具体任务。
 
 1. 检查项目已有客户端、配置、依赖和调用入口，确定修改位置；从任务需求判断需要哪些能力，不默认开启思考或增加工具。
-2. 读取准确型号卡片的 `identity`、`capabilities` 与 `generation`。核对接口、Key 环境变量、生命周期、思考开关、输出预算语义和任务约束；`documented` 可作为官方支持依据，不能报告为实测通过。未知能力先核对官方资料。
-3. 需要现成功能代码时，先用 [example_catalog.py](../scripts/example_catalog.py) 按准确型号/能力检索对应 `examples/sources.json`，读取官方出处和改写说明；没有相应例子再查看 [generate_snippet.py](../scripts/generate_snippet.py) 的 `--help` 生成支持的组合。将请求和结果检查融入项目；Python 的厂商扩展字段按卡片放入 `extra_body`，其他 API 按命中示例的官方来源核对，不套用 Chat 参数。
+2. 读取准确型号卡片的 `identity`、`capabilities` 与 `generation`；需要解释/调整字段时再读下表对应的参数说明。核对接口、Key 环境变量、生命周期、思考开关、输出预算语义和任务约束；`documented` 是官方支持依据，不是实测通过。未知能力先核对官方资料。
+3. 需要现成功能代码时，先用 [example_catalog.py](../scripts/example_catalog.py) 按准确型号/能力检索 `examples/sources.json`，读取官方出处、参数说明与验证范围；没有相应例子再查看 [generate_snippet.py](../scripts/generate_snippet.py) 的 `--help` 生成支持的组合。将请求和结果检查融入项目；Python 的厂商扩展字段按卡片放入 `extra_body`，其他 API 按命中示例核对，不套用 Chat 参数。改写后的新组合没有自动获得原文件的线上通过证据。
 4. JSON 任务检查结束原因、解析结果并校验业务字段；工具任务使用允许的工具与参数、回传执行结果、保留完整消息并限制轮次。图片任务使用用户提供的输入，不将仅接受图片请求描述成识别准确率验证。
 5. 运行与修改相关的离线检查，交付运行命令及未完成的线上验证项。已有项目遵循其依赖管理方式；独立运行本仓库示例使用锁定依赖，见[验证与复现](../../../docs/验证与复现.md)。
+
+参数说明按示例文件映射字段、默认/范围、模式与副作用；只读当前任务对应的一份。厂商事实仍核对其中的官方出处，项目预算和业务校验不当作服务端上限。
+
+| 准确型号 | 参数说明 |
+|---|---|
+| `deepseek-flash` | [逐项参数](../../../models/deepseek/deepseek-flash/parameters.md) |
+| `kimi-k2.6` | [逐项参数](../../../models/kimi/kimi-k2.6/parameters.md) |
+| `glm-4.7-flash` | [逐项参数](../../../models/zhipu/glm-4.7-flash/parameters.md) |
+| `qwen-flash` | [逐项参数](../../../models/qwen/qwen-flash/parameters.md) |
+| `doubao-seed-2-1-pro-260628` | [逐项参数](../../../models/doubao/doubao-seed-2-1-pro-260628/parameters.md) |
+| `MiniMax-M2.7` | [逐项参数](../../../models/minimax/MiniMax-M2.7/parameters.md) |
 
 以下命令在仓库根目录运行，只生成示例代码：
 
@@ -70,7 +81,7 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --model kim
 3. 用户要求补充本手册时，在 [models/](models/) 新建独立型号卡片，并在仓库 `models/<vendor>/<model-id>/` 增加说明书与必要示例；按相邻卡片的结构和生成器校验要求填写字段。每个 `value` 或 `status` 对应的 `source` 必须能解析，不能复制其他型号事实或报告。缺少文档的能力使用现有结构适用的未知状态；`verified` 必须有该型号的真实报告支持。
 4. 厂商 `default_model` 只在用户要求更改默认型号时修改。当前验证器明确固定了测试型号，[同步脚本](../scripts/sync_verification.py)只生成厂商默认型号摘要；新增卡片不自动获得验证入口或成为默认型号。扩展目录时同步调整受影响的离线检查和验证脚本，避免把新型号测试成旧型号。
 
-新增型号没有报告时使用 `verification: null` 和 `verification_scope: "not_run"`，不填写虚构报告路径。同步器会显示未实测和报告空缺，计数不填零，不继承其他型号的通过状态；非空但损坏的报告引用仍会失败。MiniMax M2.7 是该文档收录路径的现有例子。新增型号仍需卡片、说明书、示例来源清单和离线检查，不能用空报告冒充完整验证。
+新增型号没有统一验证器报告时使用 `verification: null` 和 `verification_scope: "not_run"`，不填写虚构路径。同步器显示该层未实测/报告空缺，计数不填零，不继承其他型号状态；损坏的非空报告引用仍会失败。MiniMax M2.7 的型号卡保留此状态，但其独立示例是否真实执行必须另外查逐文件证据；不能互相代替。新增型号仍需卡片、说明书、示例来源清单和离线检查。
 
 ## 证据与验证
 
@@ -79,10 +90,34 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --model kim
 | 信息 | 读取位置与表述 |
 |---|---|
 | 官方支持及参数规则 | 型号卡片的 source → sources，说明官方声明与核对日期 |
-| 历史实测 | verification 指向的原始报告，说明日期、型号、参数、测试项和结果 |
+| 型号统一验证器 | 卡片 `verification` 指向的原始报告，说明日期、型号、参数与测试项；`null/not_run` 仅表示这一层没有报告 |
 | 本次离线检查 | 实际运行的命令与结果，不能写成线上调用成功 |
-| 具体示例的来源与验证 | 该型号 `examples/sources.json`；`mock_tested` 不是服务端验证，`live=not_run` 不能继承型号历史报告 |
-| 本次真实验证 | 用户明确要求后执行对应验证器，新增脱敏报告并说明范围 |
+| 具体示例当前状态 | [示例实测状态](../../../docs/示例实测状态.md)及该型号 `examples/sources.json`；读取所指逐文件报告、`evidence_scope`、时间和哈希，不从型号历史报告推断 |
+| 新生成/改写的调用 | 只报告实际完成的编译、mock 或本次真实执行；相似示例通过不覆盖新的参数、任务、工具或输入组合 |
+
+`mock_tested` 不是服务端验证；`live=not_run`、缺 Key/输入/运行时、限流、超时或失败分别说明，不能汇总成通过。即使某个示例有真实 HTTP 通过证据，型号卡仍可合法保持 `verification: null`；也不能用旧型号统一验证器覆盖所有进阶文件。当前结果动态读取，不预写“所有示例均通过”。
+
+读取逐文件报告时核对 `source_sha256` 与当前文件及依赖身份；依赖包括同目录 `_*.py`，跨型号入口还包括型号卡和厂商目录，其他语言的追踪辅助文件按执行器/目录校验实现纳入。哈希不匹配时旧证据不能代表当前版本，必须重新执行并保留新报告；不要改旧报告的哈希“修复”状态。`example_catalog.py --check` 会检查已关联的文件级证据与当前源文件，不发送请求。
+
+真实 HTTP 元数据与原文件的进程结果同时阅读：旁观采集/解压失败不等于原脚本 API 调用失败，须检查 `exit_code`、`telemetry_error`/`telemetry_overflow` 和完成证据。Shell/TypeScript 旧证据可能只有 `original_file_process_exit_and_its_response_checks`；不能描述成已采集 HTTP 状态、usage 或服务型号。正常响应通过也只证明报告里该输入/参数的流程，不证明通用准确率。
+
+### 按授权复现真实示例
+
+用户仅要求接入/解释时使用离线检查；明确要求真实调用后，才执行已授权厂商和文件。下列命令均在仓库根目录，先安装锁定依赖；默认清单命令不读取 Key、不调用模型：
+
+```bash
+python tests/run_example_files.py --vendor kimi
+```
+
+真正执行一个已登记文件时必须显式 `--execute` 并选择**尚不存在**的新报告路径，例如：
+
+```bash
+python tests/run_example_files.py --execute --file models/kimi/kimi-k2.6/examples/01_basic.py --report /tmp/model-manual-kimi-example-new.json
+```
+
+只配置需要的环境变量，勿回显或提交 Key；不需要为检查存在性打印 `.env`。逐文件执行器默认使用自己生成的图片/视频教学素材；Doubao 视频需要经授权的公开 HTTPS 地址时通过 `--video-url` 显式提供，不能无意继承私有媒体。文件选择、超时/间隔与语言依赖以[执行器帮助](../../../tests/run_example_files.py)为准；未登记的新生成文件不能靠这个入口冒充已登记文件的证据。
+
+原统一验证器仍用于其固定测试项，入口与退出码见[验证与复现](../../../docs/验证与复现.md)；它和逐文件工具不是同一份覆盖。新增逐文件报告后，仅在目标文件、依赖哈希和结果匹配时维护其 `sources.json` 引用，再生成索引；不要顺手把整个型号标为 `verified`。
 
 路径以各文件自身为基准：`vendors.json` 中 `model_card`、`model_manual` 相对于该目录，厂商摘要的 `verification` 相对于仓库根目录；型号卡片的 `verification` 相对于型号卡片目录。不要混用两个报告路径规则。
 

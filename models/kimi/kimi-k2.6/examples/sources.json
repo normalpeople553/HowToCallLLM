@@ -31,8 +31,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/01_basic.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -67,8 +68,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/02_streaming.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -99,8 +101,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/03_thinking.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -131,8 +134,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/04_json_output.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -164,8 +168,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/05_tool_calling.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -202,8 +207,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/06_vision.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "此清单不声称文件级实测，型号历史报告另查；本轮只做离线请求形状和边界检查。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次输入为生成的本地纯红 PNG，不代表其他输入分支或图像识别准确率已验证。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -235,8 +241,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/07_multi_turn.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -274,8 +281,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/08_thinking_tools.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -312,8 +320,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/09_video.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。 本次使用本地生成短视频。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     },
     {
@@ -346,8 +355,9 @@
       "run_command": "python models/kimi/kimi-k2.6/examples/10_json_schema.py",
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "新增示例没有真实 API 复测，历史型号报告不能替代；mock 只验证代码路径和请求形状。"
+        "live": "passed",
+        "note": "真实运行当前原文件，HTTP 元数据、正常结束与原文件校验均通过；仅覆盖此次提示词和参数，不证明任意组合或语义正确率。",
+        "report": "verification/examples/2026-10-14-kimi-attempt3.json"
       }
     }
   ],

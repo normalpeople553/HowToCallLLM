@@ -12,4 +12,4 @@
 | 密钥 | [官方密钥管理](https://platform.minimax.cn/console/access?tab=api-keys) |
 | 费用 | [官方按量计费](https://platform.minimax.cn/docs/guides/pricing-paygo) |
 
-目前仅完成文档收录和离线检查，未进行真实 API 调用；不会继承其他厂商报告。[验证状态](../验证状态.md)
+参数逐项解释及每个实际文件的字段映射见[M2.7 参数说明](../../models/minimax/MiniMax-M2.7/parameters.md)。实测按两层查阅：[历史统一流程状态](../验证状态.md)目前没有此型号的统一验证器报告，[逐文件示例实测状态](../示例实测状态.md)单独记录原始示例的真实执行，不能用前者的空缺推断从未调用，也不能继承其他厂商或任意参数组合的结果。[证据规则](../来源与核验规则.md)
