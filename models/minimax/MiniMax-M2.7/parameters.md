@@ -1,5 +1,7 @@
 # `MiniMax-M2.7` 示例参数说明
 
+[English](parameters.en.md) · [人类篇](../../../human/README.md)
+
 资料核对：2026-10-14。本页只解释 **M2.7 托管 API** 与本目录现有文件，不将 M3 / M3.1 的视觉、思考深度或其他新参数移植到 M2.7。参数出处不等于调用成功证据；文件级验证范围另查[来源清单](examples/sources.json)。
 
 调用前先核对生命周期：官方已公告 M2.7 系列于 2026-10-19 停止向新用户开放，按量 API 于 2026-11-18 下线；M Plan / Token Plan 的旧名称从 2026-10-19 起路由至 M3.1 Flash Preview。因此，旧 Model ID 不能证明实际仍运行旧型号。本页不自动替换用户指定的 M2.7。[官方生命周期通知](https://platform.minimax.cn/docs/guides/models-intro)

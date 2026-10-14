@@ -1,5 +1,7 @@
 # 智谱 GLM 官方资料卡
 
+[English](../../en/docs/vendors/zhipu.md)
+
 核对日期：**2026-10-13**。厂商事实以 [智谱开放文档](https://docs.bigmodel.cn/llms.txt)为准；仓库实测口径见[来源与核验规则](../来源与核验规则.md)。
 
 | 项目 | 值与官方来源 |

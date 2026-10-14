@@ -1,0 +1,64 @@
+# Agent 篇
+
+中文 · [English](README.en.md) · [项目首页](../README.md) · [人类篇](../human/README.md)
+
+这篇面向执行接入、迁移、排错和验证任务的编程 Agent。规范执行入口是 [model-manual Skill](../skills/model-manual/SKILL.md)，本页提供任务地图和使用指令；概念学习走[人类篇](../human/README.md)，不要求先读完整套教程。
+
+## 开始一个任务
+
+先完整读取 [SKILL.md](../skills/model-manual/SKILL.md)，再按用户任务读取[任务流程](../skills/model-manual/references/workflows.md)的相关部分，不默认加载所有型号。
+
+| 用户要做什么 | 读取与执行重点 |
+|---|---|
+| 接入或增加 JSON、流式、工具、图片等功能 | 项目现状 → 准确型号卡 → 能力/参数 → 对应完整示例或生成器 |
+| 换厂商、型号或 SDK | 源与目标卡片、消息/思考/预算/工具差异、业务逻辑保留与回归 |
+| 空回复、截断、断流、错误码或工具循环 | 脱敏请求、真实状态、结束原因、用量与官方依据；不索要完整 Key |
+| 用户指定未收录型号 | 先核对该型号的官方身份和能力，不用默认卡片换名冒充 |
+| 询问实测或要求复测 | 精确文件、当前哈希、报告范围与用户授权，不把 mock 写成线上成功 |
+
+这些是项目工作流，不是厂商保证；详细步骤和交付规则见[任务流程](../skills/model-manual/references/workflows.md)。
+
+## 资料地图
+
+| 资料 | 规范入口 | 怎么用 |
+|---|---|---|
+| 厂商路由 | [vendors.json](../skills/model-manual/references/vendors.json) | 定位默认型号，不把默认型号规则推广至同厂所有型号 |
+| 准确型号事实 | [references/models](../skills/model-manual/references/models/) | 读取 identity、capabilities、generation，并解析每条 source |
+| 参数解释 | [参数导航](../docs/参数说明与调参.md) | 按任务只读对应型号；区分 SDK 配置、模型参数与本地安全限制 |
+| 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与证据 |
+| 生成新组合 | [generate_snippet.py](../skills/model-manual/scripts/generate_snippet.py) | 根据支持的语言/任务组合生成，不自动继承现成文件通过状态 |
+| 当前逐文件结果 | [实测状态](../docs/示例实测状态.md) · [原始报告](../verification/examples/) | 核对身份、时间、源码/支持文件哈希、正常结束和证据范围 |
+| 旧型号能力检查 | [历史统一验证](../docs/验证状态.md) | 只用于报告里的固定测试项，不替代逐文件执行 |
+
+查询和生成命令在仓库根目录运行，以下命令不发请求：
+
+```bash
+python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
+python skills/model-manual/scripts/generate_snippet.py --help
+python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool --thinking off
+```
+
+## 给 Agent 的任务指令
+
+**接入：** 阅读本仓库的 skills/model-manual/SKILL.md，根据我的项目接入 Kimi。先检查现有语言、依赖和调用入口；读取准确型号资料，给出实现、运行方式和验证范围。不要回显密钥。
+
+**迁移：** 按本仓库的 Skill，把项目里的 Kimi 调用迁移到通义。逐项比较思考、输出预算、JSON、流式和完整工具消息，保留业务行为，不只替换地址与模型名。
+
+**排错：** 按本仓库的 Skill，排查我提供的脱敏错误和最小调用。先依据实际响应区分鉴权、限流、预算和协议问题，再给出最小修复和检查方法；没有证据的原因标为待核实。
+
+## 输出与证据约定
+
+交付采用的准确型号与官方来源、代码或项目修改、依赖与变量名、运行命令，以及实际完成/尚未完成的检查；迁移补充行为差异，排错补充依据。[规范](../skills/model-manual/SKILL.md)
+
+- Key 只从规定环境变量或本地忽略文件读取，不写入示例或输出。普通代码任务不默认发起可能计费或上传素材的真实请求。
+- 生成器和离线测试不是在线验证；历史通过只证明报告当时的型号、参数、输入与范围。文件或依赖变更后需新证据。
+- 工具数据是模拟时必须明说。不要删掉结束检查、工具回传或思考历史来让测试“通过”。
+- 型号卡没有统一验证器报告，不等于独立示例没有真实执行；反过来，某文件通过也不能把整张卡升级为已验证。
+
+以上边界及授权后的真实执行方式见[证据流程](../skills/model-manual/references/workflows.md#证据与验证)与[验证与复现](../docs/验证与复现.md)。机器 JSON、脚本参数和例子路径是中英文共享契约，不翻译字段名或静默替换 API 区域。
+
+## 英文与兼容入口
+
+[English Agent guide](README.en.md)使用 [SKILL.en.md](../skills/model-manual/SKILL.en.md)和[英文任务流程](../skills/model-manual/references/workflows.en.md)，仍读取同一套卡片、源码和报告。
+
+旧的 [agents/SKILL.md](SKILL.md)只作兼容跳转；本目录旧 vendors/snippets 子目录也只是迁移提示，不是另一份事实或代码源。[旧厂商卡说明](vendors/README.md) · [旧片段说明](snippets/README.md)

@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "languages": [
+    "zh-CN",
+    "en"
+  ],
+  "reviewed_at": "2026-10-14",
+  "translations": [
+    {
+      "source": "README.md",
+      "target": "README.en.md",
+      "source_sha256": "a7df4a8ccda0e9a1ec16b943f58e4f51a4c07a1a407b9779f772772413745c18"
+    },
+    {
+      "source": "human/README.md",
+      "target": "human/README.en.md",
+      "source_sha256": "90015d0a91528063d15abacdea6f7331a4a8b7d70279148aed1d5dfc827dd7f0"
+    },
+    {
+      "source": "agents/README.md",
+      "target": "agents/README.en.md",
+      "source_sha256": "9bd6d29d0b52d0a52b16c4c116360cffe718eed08fb4a7b4297bc53e2b30b13f"
+    },
+    {
+      "source": "models/README.md",
+      "target": "models/README.en.md",
+      "source_sha256": "1830fe13e85c4603c4cc83400fd1d166de0a4bfb34357ca01e1d57188dcdf6bd"
+    },
+    {
+      "source": "skills/model-manual/SKILL.md",
+      "target": "skills/model-manual/SKILL.en.md",
+      "source_sha256": "4d695ae441d748b755b8ccd14ac2e7b2b5c97127fa328d5a825c77a62f5df20d"
+    },
+    {
+      "source": "skills/model-manual/references/workflows.md",
+      "target": "skills/model-manual/references/workflows.en.md",
+      "source_sha256": "edeef0c828760bccebe6df930d0ed61c402c681f1c92d84abb1b8310b123a9c8"
+    },
+    {
+      "source": "verification/README.md",
+      "target": "verification/README.en.md",
+      "source_sha256": "fddf90febd6fe11a8c2de502ecef346902525ade1a1f6cfdbfd9d7b699e6e601"
+    },
+    {
+      "source": "docs/00-前言.md",
+      "target": "en/docs/introduction.md",
+      "source_sha256": "f34ad6e97ff3f3ed20fdd48f3afe9c2ab6e5d5412892f922c3450667c2c0aea1"
+    },
+    {
+      "source": "docs/01-5分钟跑通第一次调用.md",
+      "target": "en/docs/first-call.md",
+      "source_sha256": "8ff204888aa8d2e38cea1484b1c812dbbd92bac8efde9be89cd8e41fc04d1e0d"
+    },
+    {
+      "source": "docs/02-一个套路调遍所有模型.md",
+      "target": "en/docs/compatible-api.md",
+      "source_sha256": "a476b9310b73dad54794fbe9be4968cf9278b1131a60e408e378bb854bb46ac0"
+    },
+    {
+      "source": "docs/04-免费额度与省钱攻略.md",
+      "target": "en/docs/pricing.md",
+      "source_sha256": "f8361852916b43e10a7982c6e9d3665e1b3b193bdfba180202da46b2d8086d5f"
+    },
+    {
+      "source": "docs/05-新手必会与报错速查.md",
+      "target": "en/docs/troubleshooting.md",
+      "source_sha256": "88db347453af0fff28be9b6c3fee4067919eb75c0c13f07ec9a170634e42aa74"
+    },
+    {
+      "source": "docs/06-真实踩雷与生产检查.md",
+      "target": "en/docs/production-pitfalls.md",
+      "source_sha256": "559a5e069740f96f2d6984c3720ea306b37b90b2229228f20876d04bd6ffbf68"
+    },
+    {
+      "source": "docs/参数说明与调参.md",
+      "target": "en/docs/parameters.md",
+      "source_sha256": "5051bc85795389c1e563c159a7243b893d6b792759b3543efec8729895dbb133"
+    },
+    {
+      "source": "docs/来源与核验规则.md",
+      "target": "en/docs/evidence-policy.md",
+      "source_sha256": "ebf8e4ab300446071b0f2d176ca175045dcde1d83f5019c2abd023177de35bee"
+    },
+    {
+      "source": "docs/验证与复现.md",
+      "target": "en/docs/verification.md",
+      "source_sha256": "aec76099d9beb4cbbd91b2422e40ea54973dde87f010f25a4f9dd9a9d3c76d7b"
+    },
+    {
+      "source": "docs/03-厂商攻略/deepseek.md",
+      "target": "en/docs/vendors/deepseek.md",
+      "source_sha256": "37b089dac53764f4bfb056ecfd7f49ab3d977211aa1b8dadc9dfc77bd13e5e28"
+    },
+    {
+      "source": "docs/03-厂商攻略/doubao.md",
+      "target": "en/docs/vendors/doubao.md",
+      "source_sha256": "78f90437ab6db4e4d292d7a614aa2d9ba4c3e4c971e978b690e8394c4d7ffffd"
+    },
+    {
+      "source": "docs/03-厂商攻略/kimi.md",
+      "target": "en/docs/vendors/kimi.md",
+      "source_sha256": "244d5cb0fe86679b53a36de1aa4d19abcc97baf850180b5a8a6f7d303603f348"
+    },
+    {
+      "source": "docs/03-厂商攻略/minimax.md",
+      "target": "en/docs/vendors/minimax.md",
+      "source_sha256": "16abd5583f3418010107520a0c047fbc142bdac6fa4cbc90dd5efbf6c326fe3d"
+    },
+    {
+      "source": "docs/03-厂商攻略/qwen.md",
+      "target": "en/docs/vendors/qwen.md",
+      "source_sha256": "9bbd2ebf7bf446ba3cfc675a8c2e683b15376251bd798e4aa7ea94db1b0c84eb"
+    },
+    {
+      "source": "docs/03-厂商攻略/zhipu.md",
+      "target": "en/docs/vendors/zhipu.md",
+      "source_sha256": "fcc155d4b22e127b72a9304dffdbd0dc322b4b465c78ea5099f7961a62c5d300"
+    },
+    {
+      "source": "models/deepseek/deepseek-flash/README.md",
+      "target": "models/deepseek/deepseek-flash/README.en.md",
+      "source_sha256": "07154195dceca29fff7641a4e0c10a2b96f2818b0b7b6f1df05d853009a287e9"
+    },
+    {
+      "source": "models/deepseek/deepseek-flash/parameters.md",
+      "target": "models/deepseek/deepseek-flash/parameters.en.md",
+      "source_sha256": "e39e3e7281e6a9ad6e70ef7733eacdd0fca804cd37962918daf300f96cfa210f"
+    },
+    {
+      "source": "models/doubao/doubao-seed-2-1-pro-260628/README.md",
+      "target": "models/doubao/doubao-seed-2-1-pro-260628/README.en.md",
+      "source_sha256": "717896fe620de2f8eb3327b32ae54fd58a459329ec80ba263852555fbcf5d7c2"
+    },
+    {
+      "source": "models/doubao/doubao-seed-2-1-pro-260628/parameters.md",
+      "target": "models/doubao/doubao-seed-2-1-pro-260628/parameters.en.md",
+      "source_sha256": "f28e34aabdb5e09c1ac102651ff451a287bbc8ec441abbe3db7408d8c4232e9a"
+    },
+    {
+      "source": "models/kimi/kimi-k2.6/README.md",
+      "target": "models/kimi/kimi-k2.6/README.en.md",
+      "source_sha256": "59ef3f4331fd7854a5069e18a23db291b9147221efee7726eafc3b55e6dcbace"
+    },
+    {
+      "source": "models/kimi/kimi-k2.6/parameters.md",
+      "target": "models/kimi/kimi-k2.6/parameters.en.md",
+      "source_sha256": "464d67ab5b0190b0f41bd242fe32655b8c24ce3edd9afbb3a2ef5048baaebd84"
+    },
+    {
+      "source": "models/minimax/MiniMax-M2.7/README.md",
+      "target": "models/minimax/MiniMax-M2.7/README.en.md",
+      "source_sha256": "7245a29c4f05df8c729304668a3b7d2a95f0ed0aa778aad20344dafaa9b0b3cf"
+    },
+    {
+      "source": "models/minimax/MiniMax-M2.7/parameters.md",
+      "target": "models/minimax/MiniMax-M2.7/parameters.en.md",
+      "source_sha256": "184c040dcc42a4df6c942b8361e41f48391b0fcbb9bf93fbc35c2bad9f09cea2"
+    },
+    {
+      "source": "models/qwen/qwen-flash/README.md",
+      "target": "models/qwen/qwen-flash/README.en.md",
+      "source_sha256": "5ba6a22b505d4940ba3d61c86a57ee8589bb418892972f6bd04196fa7b90e98c"
+    },
+    {
+      "source": "models/qwen/qwen-flash/parameters.md",
+      "target": "models/qwen/qwen-flash/parameters.en.md",
+      "source_sha256": "79f0405ff0322eb9cc738b7bcaa495cfd4eef43086a30cadfa1ecaf2d9cdea3d"
+    },
+    {
+      "source": "models/zhipu/glm-4.7-flash/README.md",
+      "target": "models/zhipu/glm-4.7-flash/README.en.md",
+      "source_sha256": "e79ddd72fa83c6a956bac0df6a7a6b3fd24525fdd4afeed55a8b0eb2ef44752d"
+    },
+    {
+      "source": "models/zhipu/glm-4.7-flash/parameters.md",
+      "target": "models/zhipu/glm-4.7-flash/parameters.en.md",
+      "source_sha256": "4d1982346771eb0527a6abaa1283348826e23919719b08ee46437c720dd651bd"
+    }
+  ],
+  "generated": [
+    {
+      "source": "docs/官方示例索引.md",
+      "target": "en/docs/example-index.md",
+      "generator": "skills/model-manual/scripts/example_catalog.py"
+    },
+    {
+      "source": "docs/示例实测状态.md",
+      "target": "en/docs/example-status.md",
+      "generator": "tests/check_example_release.py"
+    },
+    {
+      "source": "docs/验证状态.md",
+      "target": "en/docs/verification-status.md",
+      "generator": "skills/model-manual/scripts/sync_verification.py"
+    }
+  ]
+}

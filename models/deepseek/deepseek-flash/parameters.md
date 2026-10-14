@@ -1,5 +1,7 @@
 # `deepseek-flash` 示例参数说明
 
+[English](parameters.en.md) · [人类篇](../../../human/README.md)
+
 资料核对：2026-10-14。本页解释本目录实际示例，不把“SDK 能传这个字段”当成“DeepSeek 支持这个功能”。官方事实逐项附链接；标为“项目约定”的内容来自链接的示例代码。文件级运行证据另见[来源与验证清单](examples/sources.json)，参数释义本身不是实测报告。
 
 快速定位：[身份与消息](#identity) · [采样](#sampling) · [预算与思考](#budget) · [流式](#streaming) · [工具](#tools) · [JSON](#json) · [图片与文件](#vision-files) · [Responses](#responses) · [Beta / FIM](#beta) · [SDK 与本地检查](#sdk) · [逐文件对照](#example-map)。

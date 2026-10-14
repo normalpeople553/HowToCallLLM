@@ -1,6 +1,8 @@
 """不发请求的证据、派生摘要和报告统计一致性检查。"""
 
 import importlib.util
+import contextlib
+import io
 import json
 import tempfile
 import unittest
@@ -17,7 +19,7 @@ spec.loader.exec_module(sync)
 
 class CatalogSyncTests(unittest.TestCase):
     def test_generated_catalog_and_status_page_are_current(self):
-        for path, expected in sync.expected_outputs().items():
+        for path, expected in sync.all_expected_outputs().items():
             with self.subTest(path=str(path)):
                 self.assertEqual(path.read_text(encoding="utf-8"), expected)
 
@@ -128,6 +130,64 @@ class CatalogSyncTests(unittest.TestCase):
                 with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=root / "status.md"):
                     with self.assertRaises(ValueError):
                         sync.expected_outputs()
+
+    def test_bilingual_outputs_use_one_catalog_and_relative_report_counts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, references, catalog_path, card_path = self.fixture_without_verification(directory)
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            card.update(verification="fixture-report.json", verification_scope="strict_workflow")
+            card_path.write_text(json.dumps(card), encoding="utf-8")
+            report_path = card_path.parent / "fixture-report.json"
+            report_path.write_text(json.dumps({
+                "schema_version": 2, "model_id": "MiniMax-M2.7", "tested_at": "2026-10-14T01:00:00+00:00",
+                "runtime": {"openai": "2.54.0"}, "results": [
+                    {"id": "chat_completions", "status": "passed"},
+                    {"id": "streaming", "status": "rate_limited"},
+                    {"id": "thinking_enabled", "status": "skipped"},
+                ],
+            }), encoding="utf-8")
+            status_page = root / "docs/验证状态.md"
+            with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page):
+                chinese, english = sync.expected_outputs(), sync.expected_outputs(language="en")
+                reads = []
+                original_read = Path.read_text
+                def record_read(path, *args, **kwargs):
+                    reads.append(path.resolve())
+                    return original_read(path, *args, **kwargs)
+                with patch.object(Path, "read_text", record_read):
+                    both = sync.all_expected_outputs()
+                self.assertEqual(len(reads), len(set(reads)))
+            english_page = root / "en/docs/verification-status.md"
+            self.assertEqual(json.loads(chinese[catalog_path]), json.loads(english[catalog_path]))
+            self.assertEqual(set(both), {catalog_path, status_page, english_page})
+            self.assertTrue(all(path.is_relative_to(root) for path in both))
+            zh_row = next(line for line in chinese[status_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
+            en_row = next(line for line in english[english_page].splitlines() if line.startswith("| [MiniMax-M2.7]"))
+            zh_columns = [value.strip() for value in zh_row.strip("|").split("|")]
+            en_columns = [value.strip() for value in en_row.strip("|").split("|")]
+            self.assertEqual(zh_columns[3:8], en_columns[3:8])
+            self.assertEqual(en_columns[3:7], ["1", "0", "1", "1"])
+            self.assertIn("../../" + report_path.relative_to(root).as_posix(), en_row)
+            self.assertIn("README.en.md", en_row)
+            self.assertIn("../en/docs/verification-status.md", chinese[status_page])
+            self.assertIn("../../docs/验证状态.md", english[english_page])
+
+    def test_bilingual_cli_is_fixture_isolated_and_detects_english_staleness(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, references, catalog_path, _ = self.fixture_without_verification(directory)
+            status_page = root / "docs/验证状态.md"
+            english_page = root / "en/docs/verification-status.md"
+            with patch.multiple(sync, ROOT=root, REFERENCES=references, CATALOG=catalog_path, STATUS_PAGE=status_page), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(sync.main([]), 0)
+                self.assertTrue(status_page.is_file())
+                self.assertTrue(english_page.is_file())
+                original_chinese = status_page.read_text(encoding="utf-8")
+                self.assertEqual(sync.main(["--check"]), 0)
+                english_page.write_text("stale English", encoding="utf-8")
+                self.assertEqual(sync.main(["--check"]), 1)
+                self.assertEqual(status_page.read_text(encoding="utf-8"), original_chinese)
+                self.assertEqual(sync.main([]), 0)
+                self.assertEqual(sync.main(["--check"]), 0)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 # MiniMax
 
+[English](../../en/docs/vendors/minimax.md)
+
 已收录 [`MiniMax-M2.7` 调用说明书](../../models/minimax/MiniMax-M2.7/README.md)：国区 Chat Completions、用户原生 cURL、思考输出、流式、多轮和工具闭环；示例与官方出处见[功能索引](../官方示例索引.md)。
 
 官方已公告 M2.7 系列于 2026-10-19 停止向新用户开放、2026-11-18 按量 API 下线；M Plan/Token Plan 从 10-19 起旧名请求路由到 M3.1 Flash Preview。[生命周期公告](https://platform.minimax.cn/docs/guides/models-intro)

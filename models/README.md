@@ -1,5 +1,7 @@
 # 模型级说明书
 
+[English](README.en.md) · [人类篇](../human/README.md)
+
 本目录为每个可调用模型提供独立说明书与示例；机器可读事实仍以 [`skills/model-manual/references/models/`](../skills/model-manual/references/models/)为唯一来源。[仓库来源规则](../docs/来源与核验规则.md)
 
 当前已完成：
@@ -8,7 +10,7 @@
 - [Kimi `kimi-k2.6`](kimi/kimi-k2.6/README.md)
 - [智谱 `glm-4.7-flash`](zhipu/glm-4.7-flash/README.md)（历史统一验证器报告为超时、限流和跳过；当前文件状态另见[示例实测状态](../docs/示例实测状态.md)）
 - [通义千问 `qwen-flash`](qwen/qwen-flash/README.md)
-- [豆包 `doubao-seed-2-1-pro-260628`](doubao/doubao-seed-2-1-pro-260628/README.md)（官方列为往期模型）
+- [豆包 `doubao-seed-2-1-pro-260628`](doubao/doubao-seed-2-1-pro-260628/README.md)（[官方列为往期模型](https://docs.volcengine.com/docs/ark/model-list?lang=zh)）
 - [MiniMax `MiniMax-M2.7`](minimax/MiniMax-M2.7/README.md)（逐文件执行证据见[示例实测状态](../docs/示例实测状态.md)；[官方已公告退役](https://platform.minimax.cn/docs/guides/models-intro)）
 
 每份模型说明书应包含身份与生命周期、接口配置、能力矩阵、限制、价格官方入口、普通与流式调用、思考模式、结构化输出、工具调用、多模态、错误处理和生产检查清单；厂商未明确说明的能力必须标为未知。[仓库来源规则](../docs/来源与核验规则.md)

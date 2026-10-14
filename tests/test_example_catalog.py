@@ -1,6 +1,8 @@
 """清单、官方来源、精确型号检索与生成索引的离线回归。"""
 
 import importlib.util
+import contextlib
+import io
 import json
 from pathlib import Path
 import shutil
@@ -8,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from urllib.parse import urlparse
 
 
@@ -50,8 +53,44 @@ class ExampleCatalogTests(unittest.TestCase):
         self.assertEqual(catalog.select_examples(catalogs, "deepseek", "MiniMax-M2.7"), [])
 
     def test_generated_index_is_current(self):
-        expected = catalog.render_index(catalog.load_catalogs())
-        self.assertEqual((ROOT / catalog.INDEX).read_text(encoding="utf-8"), expected)
+        for relative, expected in catalog.index_outputs(catalog.load_catalogs()).items():
+            with self.subTest(path=relative.as_posix()):
+                self.assertEqual((ROOT / relative).read_text(encoding="utf-8"), expected)
+
+    def test_bilingual_indices_share_canonical_data_sources_and_file_links(self):
+        catalogs = catalog.load_catalogs()
+        before = json.dumps(catalogs, sort_keys=True)
+        chinese, english = catalog.render_index(catalogs), catalog.render_index(catalogs, language="en")
+        self.assertEqual(catalog.render_index(catalogs, language="zh"), chinese)
+        self.assertEqual(before, json.dumps(catalogs, sort_keys=True))
+        self.assertIn("../en/docs/example-index.md", chinese)
+        self.assertIn("../../docs/官方示例索引.md", english)
+        for row in catalog.select_examples(catalogs):
+            with self.subTest(path=row["path"]):
+                self.assertIn(f"](../{row['path']})", chinese)
+                self.assertIn(f"](../../{row['path']})", english)
+                state = f"{row['verification']['offline']} / {row['verification']['live']}"
+                self.assertIn(state, chinese)
+                self.assertIn(state, english)
+                if row["verification"]["live"] != "not_run":
+                    self.assertIn(row["verification"]["tested_at"], english)
+                    self.assertIn(f"](../../{row['verification']['report']})", english)
+                for source in row["sources"]:
+                    self.assertIn(f"]({source['url']})", english)
+        for model in catalogs:
+            directory = Path(model["catalog_path"]).parent.parent
+            self.assertIn(f"](../../{directory.as_posix()}/README.en.md)", english)
+            if "parameters_path" in model:
+                parameters = Path(model["parameters_path"]).with_name("parameters.en.md")
+                self.assertIn(f"](../../{parameters.as_posix()})", english)
+            for item in model.get("not_integrated", []):
+                # 所有当前译文均与canonical理由指纹匹配；资料变化后不能沿用旧译文。
+                record = catalog.GAP_TRANSLATIONS[f"{model['vendor']}:{item['capability']}"]
+                self.assertEqual(catalog._gap_reason_en(model["vendor"], item), record[1])
+                for source in item["sources"]:
+                    self.assertIn(f"]({source['url']})", english)
+        with self.assertRaises(ValueError):
+            catalog.render_index(catalogs, language="unknown")
 
     def test_missing_capability_exposes_exact_model_boundaries(self):
         catalogs = catalog.load_catalogs()
@@ -176,6 +215,37 @@ class FileExecutionEvidenceTests(unittest.TestCase):
         rendered = catalog.render_index(catalogs)
         self.assertIn("调用前必读：[逐参数说明与文件映射](../models/deepseek/deepseek-flash/parameters.md)", rendered)
         self.assertIn("不代表语义正确率", rendered)
+
+    def test_bilingual_cli_writes_only_fixture_pages_and_detects_english_staleness(self):
+        self.fixture(live="not_run")
+        def run(*args):
+            output = io.StringIO()
+            with patch.object(catalog, "ROOT", self.root), contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
+                code = catalog.main(list(args))
+            return code, output.getvalue()
+        self.assertEqual(run("--write-index")[0], 0)
+        chinese, english = self.root / catalog.INDEX, self.root / catalog.EN_INDEX
+        self.assertTrue(chinese.is_file())
+        self.assertTrue(english.is_file())
+        original_chinese = chinese.read_text(encoding="utf-8")
+        self.assertEqual(run("--check")[0], 0)
+        english.write_text("stale English only", encoding="utf-8")
+        self.assertEqual(run("--check")[0], 2)
+        self.assertEqual(chinese.read_text(encoding="utf-8"), original_chinese)
+        self.assertEqual(run("--write-index")[0], 0)
+        code, output = run("--model", "deepseek-flash")
+        self.assertEqual(code, 0)
+        # 查询JSON仍返回源标题和结构，不把面向机器的内容替换成页面译文。
+        row = json.loads(output)[0]
+        self.assertEqual(row["title"], "基础调用")
+        self.assertEqual(row["capability"], "chat_completions")
+        self.assertEqual(row["verification"]["live"], "not_run")
+
+    def test_new_or_changed_gap_reason_cannot_reuse_an_old_translation(self):
+        item = {"capability": "vision", "reason": "new canonical reason"}
+        translated = catalog._gap_reason_en("zhipu", item)
+        self.assertNotIn(item["reason"], translated)
+        self.assertNotEqual(translated, catalog.GAP_TRANSLATIONS["zhipu:vision"][1])
 
     def test_valid_report_exposes_recorded_time_and_http_scope(self):
         self.fixture()

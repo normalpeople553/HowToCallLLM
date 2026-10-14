@@ -5,7 +5,9 @@ description: 为 DeepSeek、Kimi、智谱 GLM、通义千问、豆包和 MiniMax
 
 # 模型说明书 · Agent 入口
 
-根据用户的项目完成模型调用任务。人类阅读入口是[仓库 README](../../README.md)；无需按顺序读取整套教程。
+中文 · [English](SKILL.en.md) · [Agent 篇](../../agents/README.md) · [人类篇](../../human/README.md)
+
+根据用户的项目完成模型调用任务。人类解释、学习路线与参数导航见人类篇；无需按顺序读取整套教程。中英文说明共用卡片、脚本、示例和报告，不将翻译当作新的实测。
 
 ## 先定位任务与型号
 

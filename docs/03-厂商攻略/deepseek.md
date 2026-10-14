@@ -1,5 +1,7 @@
 # DeepSeek 官方资料卡
 
+[English](../../en/docs/vendors/deepseek.md)
+
 核对日期：**2026-10-13**。厂商事实以 [DeepSeek API 文档](https://api-docs.deepseek.com/)为准；仓库实测口径见[来源与核验规则](../来源与核验规则.md)。
 
 `deepseek-flash` 的参数、能力、价格快照与八个完整示例已经整理为独立的[模型级调用说明书](../../models/deepseek/deepseek-flash/README.md)。

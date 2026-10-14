@@ -1,5 +1,7 @@
 # Agent 任务流程
 
+中文 · [English](workflows.en.md) · [Agent 篇](../../../agents/README.md)
+
 本文件记录项目工作流，按任务读取；型号名、参数值与能力结论仍从 [models/](models/) 卡片读取。资料与证据的维护规则见[来源与核验规则](../../../docs/来源与核验规则.md)。
 
 ## 接入

@@ -99,6 +99,32 @@ class ExampleReleaseTests(unittest.TestCase):
         self.assertTrue(data["ready"])
         self.assertEqual(data["counts"]["passed"], 1)
 
+    def test_bilingual_pages_share_counts_paths_and_canonical_evidence(self):
+        self.report("failure.json", [self.record(status="rate_limited", hour=1)])
+        self.report("pass.json", [self.record(hour=2)])
+        data = self.collect()
+        before = copy.deepcopy(data)
+        chinese, english = release.render_page(data), release.render_page(data, language="en")
+        self.assertEqual(data, before)
+        self.assertEqual(release.render_page(data, language="zh"), chinese)
+        outputs = release.page_outputs(data)
+        self.assertEqual(set(outputs), {release.PAGE, release.EN_PAGE})
+        summary = f"**{data['counts']['passed']}/{data['total']}**"
+        self.assertIn(summary, chinese)
+        self.assertIn(summary, english)
+        self.assertIn("../en/docs/example-status.md", chinese)
+        self.assertIn("../../docs/示例实测状态.md", english)
+        self.assertIn("../../models/README.en.md", english)
+        for row in data["rows"]:
+            self.assertIn(f"](../{row['path']})", chinese)
+            self.assertIn(f"](../../{row['path']})", english)
+            for attempt in row["attempts"]:
+                self.assertIn(f"](../{attempt['report']})", chinese)
+                self.assertIn(f"](../../{attempt['report']})", english)
+                self.assertIn(attempt["tested_at"], english)
+        with self.assertRaises(ValueError):
+            release.render_page(data, language="unknown")
+
     def test_latest_valid_pass_is_selected_but_later_and_earlier_failures_survive(self):
         self.report("old-failure.json", [self.record(status="failed", hour=1)])
         self.report("effective-pass.json", [self.record(hour=2)])
@@ -267,8 +293,15 @@ class ExampleReleaseTests(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 return release.main(["--root", str(self.root), *args])
         self.assertEqual(run("--write"), 0)
+        self.assertTrue((self.root / release.EN_PAGE).is_file())
         self.assertEqual(run("--check"), 0)
         self.assertEqual(run("--check", "--require-passed"), 1)
+        chinese_before = (self.root / release.PAGE).read_text(encoding="utf-8")
+        (self.root / release.EN_PAGE).write_text("stale English only", encoding="utf-8")
+        self.assertEqual(run("--check"), 2)
+        self.assertEqual((self.root / release.PAGE).read_text(encoding="utf-8"), chinese_before)
+        self.assertEqual(run("--write"), 0)
+        self.assertEqual(run("--check"), 0)
         (self.root / release.PAGE).write_text("stale", encoding="utf-8")
         self.assertEqual(run("--check"), 2)
         self.report("current.json", [self.record()])

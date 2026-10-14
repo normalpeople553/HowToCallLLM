@@ -1,5 +1,7 @@
 # `MiniMax-M2.7` 调用说明书
 
+[English](README.en.md) · [人类篇](../../../human/README.md)
+
 逐项理解请求字段、思考限制、SDK 配置及每个可运行文件，见[参数说明与逐文件对照](parameters.md)。
 
 > 资料核对：2026-10-14。机器事实见[型号卡片](../../../skills/model-manual/references/models/MiniMax-M2.7.json)，示例出处与运行方式见[来源清单](examples/sources.json)，跨型号查找见[官方示例索引](../../../docs/官方示例索引.md)。

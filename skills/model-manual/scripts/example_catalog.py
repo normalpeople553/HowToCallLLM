@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[3]
 INDEX = Path("docs/官方示例索引.md")
+EN_INDEX = Path("en/docs/example-index.md")
 HOSTS = {
     "deepseek": {"api-docs.deepseek.com"},
     "kimi": {"platform.kimi.com"},
@@ -32,6 +33,32 @@ HTTP_SCOPE = "original_file_and_real_http_metadata"
 PROCESS_SCOPE = "original_file_process_exit_and_its_response_checks"
 TRANSPORTS = {".py": "real_httpx", ".ts": "real_fetch", ".sh": "real_curl"}
 TRACE_HELPERS = {".ts": "tests/live_fetch.mjs", ".sh": "tests/live_curl.py"}
+# Human translations only; evidence, statuses, and source URLs always come from the manifests.
+GAP_TRANSLATIONS = {
+    "deepseek:anthropic_api": ("9fdfd08558ba05252de04736ee5f31c15e56690202d5d7e12cb9c38f87396843", "An official compatible endpoint exists. This batch adds neither the anthropic dependency nor an example; that is not a claim of unsupported functionality."),
+    "deepseek:context_caching": ("56982493939e92c5263989b7091d93e24e813814af0053d03b4abcb22563799e", "No dedicated cache-observation example was added in this batch. The official cache rules remain authoritative."),
+    "doubao:explicit_cache": ("c85c85568c368f88a5c398f187afea0643a11e50460640340bf4c599b0d7da3a", "The official matrix lists Responses API prefix and session caching for this model. This batch uses Chat API and only observes implicit caching without creating resources; explicit cache creation, reuse, expiration, and storage billing are not covered."),
+    "doubao:files_video_preprocessing": ("719e2701c6b951c8d05a92a852a786cd2f789474fdbde011e0b1e1d9b75b151d", "The current Files video tutorial uses version 260915 and model-specific preprocessing settings. Their applicability to 260628 has not been checked individually, so the example only uses video_url.url without an upload."),
+    "doubao:video_embedded_audio": ("3b1c7a0aac1901e8ab3c10e0fb368166eed6226ae772d8a69cda09062d3eaa08", "This batch covers visual video understanding only. Embedded-audio limits and parameters for this historical model have not been independently verified; a visual-input pass is not an audio-understanding pass."),
+    "doubao:responses_builtin_tools": ("dabb27e13d1fceebf3f7280d6250fe17765162307e865ad225eb7cd8862ff8db", "The official matrix lists Responses tools such as web access and MCP for this model. These complete tool examples use local simulated functions through Chat API and do not mix tool schemas from different APIs."),
+    "kimi:remote_image_url": ("e845925736654d4657fd7fce5ab1a69178e751a1c69f8a1b1a0a2ec9370e2bfa", "The current vision and Chat API documentation lists base64 or ms:// file references and explicitly excludes remote image URLs. Example 06 no longer forwards those URLs directly."),
+    "kimi:complex_json_schema_and_partial_mode": ("d633072f6e1cdcdc2a6be4f39b84020a9c3ac4b02b2d1c4fe720504ad9e665fd", "The K2.6 documentation warns that complex $ref/oneOf and Partial Mode combinations may be unstable. This batch includes simple schemas plus application validation, not complex combinations."),
+    "kimi:builtin_web_search": ("c01372589823f0e234249c76a1ed26d49f7b5f50a70549038dc6a986810d2b49", "The K2.6 page says web-search documentation is being upgraded and discourages current use. Built-in $web_search also has thinking-mode compatibility restrictions, so it is not integrated here."),
+    "kimi:uploaded_video_file_reference": ("017640f2f88d96a02dfe2c4ef47131fd75437ac76d6c377025cebb36e982b3db", "Official vision documentation describes uploads and ms:// references. This batch only includes local short MP4/base64 input; file lifecycle and upload-polling workflows are not integrated."),
+    "minimax:json_object": ("6e1c7c9309efa8364a88bf334b2732b6aea01a4a7492e104217e74d5bede427c", "The hosted native API limits response_format to MiniMax-Text-01; a hosted M2.7 JSON-guarantee parameter is unconfirmed in the OpenAI-compatible API. Self-hosted documentation or a JSON prompt is not treated as hosted JSON Mode support; no 04_json_output.py is created."),
+    "minimax:json_schema": ("b937aa02e8fe1cd2b8fc8eafe88fef4542e705c85537e00b08822a98267415e7", "Hosted MiniMax-M2.7 response_format/json_schema support is unconfirmed. Native documentation names MiniMax-Text-01 only; support is not inherited from other models or self-hosted APIs."),
+    "minimax:thinking_off": ("697f7dc8b3e7f6b42eecf84fa2cb7db1a37cb984051267cc4c8f154dc55947de", "Official documentation says M2.x thinking cannot be disabled: disabled is accepted but ignored. reasoning_split only changes output formatting."),
+    "minimax:reasoning_effort_control": ("a775c5cf052549ebfa6129762ff02f55bd739f2a6e76362572eeffc2bd72be6e", "Current documentation only declares reasoning_effort effective for MiniMax-M3.1-Flash-Preview. M2.7 examples do not add an ineffective thinking-effort control."),
+    "minimax:vision": ("157e53c0796c85be9ec58d93c629d3e6027040d4146c686707602b646125a2b5", "Current official OpenAI-compatible image input covers MiniMax-M3.1-Flash-Preview and MiniMax-M3. Image input for M2.7 is unconfirmed here; examples from other models are not reused."),
+    "minimax:video_input": ("af0036c5db32f52324d65fb8d044e9cc1132ab1d80d7f63af3c862c76fa48bab", "Current official multimodal-input instructions target the M3 family. This batch does not transplant its video_url protocol to M2.7."),
+    "minimax:legacy_minimaxi_domain_verification": ("78c3a83093dbf195795f1f408f3a561e1eac1437501c9b4f80e6d53f8449c24f", "Current mainland documentation lists api.minimax.cn and international documentation lists api.minimax.io. The old api.minimaxi.com domain was not live-tested in this batch; no alias-compatibility promise is made."),
+    "minimax:subscription_alias_identity_after_migration": ("a173fcf9ddf977ac3150ee1217044f9e6d277f36f51cc27c6c81d033b02e88fa", "The official notice stops new-user M2.7 access on 2026-10-19 and retires its pay-as-you-go API on 2026-11-18. M Plan/Token Plan requests using old names reroute to M3.1 Flash Preview from 2026-10-19. These examples retain the exact model name; rerouted subscription responses are not original-M2.7 test evidence."),
+    "qwen:vision": ("fca87e8f4ce01c01f8eefa4626be2454b18a318cd97820eb597ff7c25ee83e8e", "The official Function Calling matrix lists Qwen-Flash as a text-generation model. Its image input was not verified here; Qwen-VL or newer multimodal examples must not be transplanted."),
+    "qwen:preserved_thinking": ("70d7e93456d909047468302b2d25077d0a21f931adda10401be30b46ad4ec2f8", "The current preserve_thinking support list does not include the older qwen-flash. Thinking-tool examples return complete messages without adding that parameter."),
+    "qwen:max_completion_tokens": ("38120c4d69188d1056282f1a83c630d3850e4746dd6168976dfc0c7306c773f7", "The documented parameter support list starts at Qwen3.5-Flash. It is not directly applied to the older qwen-flash; the examples retain the documented max_tokens answer budget."),
+    "zhipu:vision": ("9079d62c7901b72a0c62cebf34e2a38bf4f8d4bef0b9b8e85d80d92ce1e398e7", "The official model page lists text for both input and output modalities. Image examples for GLM vision models must not be transplanted."),
+    "zhipu:context_caching": ("1461f4b8c1a4cca1f22f5dc7a3607e6dab19488ad5f7509646dc6347253850eb", "The official page lists context caching, but this batch adds no cache-hit observation example. Model-specific usage fields still need checking; two requests do not guarantee a cache hit."),
+}
 
 
 def _require(condition, message):
@@ -216,15 +243,20 @@ def selection_diagnostics(catalogs, vendor=None, model=None, capability=None):
     return result
 
 
-def render_index(catalogs):
+def render_index(catalogs, language="zh"):
+    if language == "en":
+        return _render_index_en(catalogs)
+    _require(language == "zh", "未知页面语言")
     lines = [
         "# 官方功能示例索引", "",
+        "中文 | [English](../en/docs/example-index.md)", "",
         "> 本页由各型号的 `examples/sources.json` 生成；修改清单后运行同步命令，不手改本页。", "",
         "这里的代码是**基于官方文档改写的项目示例**，不是厂商发布的 SDK，也不是官方示例原文镜像。"
         "每项清单记录官方链接、准确型号、所需环境变量、运行命令、改写说明和文件级验证范围。", "",
         "## 如何使用", "",
         "在仓库根目录安装 [requirements-lock.txt](../requirements-lock.txt)，设置对应 Key 和输入变量后运行文件。"
-        "Python 示例共用锁定环境；TypeScript 另需 Node.js、`openai` 与 `tsx`，cURL 例子另需 curl/bash/Python。"
+        "Python 示例共用锁定环境；TypeScript 的 Node.js 与 SDK 要求见 [package.json](../package.json)，可用 `npm ci` 安装锁定 SDK。"
+        "清单里的 `npx tsx` 命令另需 tsx，逐文件执行器则直接使用 Node；具体方式见[验证与复现](验证与复现.md)。cURL 例子另需 curl/bash/Python。"
         "图片或视频会发送到对应厂商，请仅使用获准上传的内容。", "",
         "按功能给 Agent 查询（只读取清单，不发送请求）：", "",
         "```bash",
@@ -274,27 +306,111 @@ def render_index(catalogs):
     return "\n".join(lines)
 
 
+def _render_index_en(catalogs):
+    lines = [
+        "# Official-documentation example index", "",
+        "[中文](../../docs/官方示例索引.md) | English", "",
+        "> Generated from each model's `examples/sources.json`. Update the manifests and regenerate; do not edit this page by hand.", "",
+        "These are project examples adapted from official documentation, not a vendor SDK or a verbatim mirror of official samples. "
+        "Each manifest records the exact model, official sources, required environment variables, commands, adaptations, and file-level evidence.", "",
+        "## Usage", "",
+        "Install [requirements-lock.txt](../../requirements-lock.txt) from the repository root, then set the required key and inputs. "
+        "Python examples share the locked environment. TypeScript runtime/SDK requirements are in [package.json](../../package.json); `npm ci` installs the locked SDK. "
+        "The catalog's `npx tsx` command additionally uses tsx, while the file executor invokes Node directly; see [reproduction](verification.md). cURL examples need curl, bash, and Python. "
+        "Images and videos are sent to the relevant vendor: use only material you are authorized to upload.", "",
+        "Read the [English model manuals](../../models/README.en.md) and parameter notes before calling a model. "
+        "Query by capability without sending requests:", "", "```bash",
+        "python skills/model-manual/scripts/example_catalog.py --vendor deepseek --capability vision",
+        "python skills/model-manual/scripts/example_catalog.py --model kimi-k2.6 --capability video_input",
+        "python skills/model-manual/scripts/example_catalog.py --write-index",
+        "python skills/model-manual/scripts/example_catalog.py --check", "```", "",
+        "The machine-readable JSON remains in its canonical schema, including the original source metadata. "
+        "Use `--model` alone to list capability keys. An unknown model or capability exits with code 2 and never falls back to another model; "
+        "known models include available keys and relevant integration boundaries in the diagnostics. "
+        "`or` in the environment column means either input is sufficient; the API key is always required. Optional variables are documented in the files.", "",
+        "## Evidence labels", "",
+        "- `mock_tested`: a fake SDK checks request construction, message history, and failure handling; it does not prove server acceptance or answer quality.",
+        "- `compile_checked`: syntax compilation only. `not_run`: that class of check has not run.",
+        "- `live=passed`: the example and support-file hashes match a real file-execution report, the process and the example's own checks succeeded, "
+        "and Python / TypeScript / cURL recorded `real_httpx` / `real_fetch` / `real_curl`. The last request for the target model must succeed, finish normally, "
+        "and return nonempty final text with no unresolved tools, business error, or telemetry failure. Streaming also needs `[DONE]` or a real transport EOF marker. "
+        "Old process-only reports remain available but cannot establish canonical `passed` status.",
+        "- `passed` does not establish support for every parameter combination, semantic accuracy, visual recognition quality, or future availability. Read the model-specific parameter page.",
+        "- `failed`, `rate_limited`, and `timeout` are not passes. `missing_key`, `missing_input`, and `missing_runtime` mean execution prerequisites were missing.",
+        "- `live=not_run` has no online execution evidence for that file. Other states require a report with matching model, status, and current source/support hashes; "
+        "the time is read from that report. [Historical workflow checks](verification-status.md) cannot substitute for file-level evidence. "
+        "The complete repository release view is [example execution status](example-status.md).", "",
+    ]
+    for catalog in catalogs:
+        directory = Path(catalog["catalog_path"]).parent.as_posix()
+        model_directory = Path(directory).parent.as_posix()
+        lines.extend([
+            f"## {catalog['vendor']} · `{catalog['model_id']}`", "",
+            f"Sources checked: {catalog['checked_at']}. [Canonical sources, commands, and adaptations](../../{catalog['catalog_path']}). "
+            f"[English model manual](../../{model_directory}/README.en.md).", "",
+        ])
+        if "parameters_path" in catalog:
+            parameters = Path(catalog["parameters_path"]).with_name("parameters.en.md").as_posix()
+            lines.extend([f"Required reading: [parameter reference and file mapping](../../{parameters}).", ""])
+        lines.extend([
+            "| Capability / file | Search key | Required environment | Official sources | Offline / file execution | Time / report / evidence |",
+            "|---|---|---|---|---|---|",
+        ])
+        for entry in catalog["examples"]:
+            sources = " · ".join(f"[Official source {index}]({source['url']})" for index, source in enumerate(entry["sources"], 1))
+            env = "<br>".join(value.replace("|", " or ") for value in entry["required_env"])
+            check = entry["verification"]
+            evidence = "—"
+            if check["live"] != "not_run":
+                scope = {HTTP_SCOPE: "HTTP metadata", PROCESS_SCOPE: "Process and internal checks"}.get(check.get("evidence_scope"), "No execution evidence obtained")
+                evidence = f"{check['tested_at']}<br>[Report](../../{check['report']})<br>{scope}"
+            lines.append(f"| [{entry['capability']} · {entry['file']}](../../{directory}/{entry['file']}) | `{entry['capability']}` | {env} | {sources} | {check['offline']} / {check['live']} | {evidence} |")
+        if catalog.get("not_integrated"):
+            lines.extend(["", "### Integration gaps and model-specific boundaries", "",
+                          "A missing example does not establish that the model lacks the capability. These entries are taken from the same source manifest.", ""])
+            for item in catalog["not_integrated"]:
+                sources = " · ".join(f"[Official source {index}]({source['url']})" for index, source in enumerate(item["sources"], 1))
+                reason = _gap_reason_en(catalog["vendor"], item)
+                lines.append(f"- `{item['capability']}`: {reason} {sources}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def _gap_reason_en(vendor, item):
+    """Translations are fingerprinted to the canonical reason; changed facts never reuse stale wording."""
+    record = GAP_TRANSLATIONS.get(f"{vendor}:{item['capability']}")
+    if record and hashlib.sha256(item["reason"].encode("utf-8")).hexdigest() == record[0]:
+        return record[1]
+    return "Not integrated in this example collection. The model-specific reason is new or changed; consult the English model manual, canonical source manifest, and linked official documentation before use."
+
+
+def index_outputs(catalogs):
+    return {INDEX: render_index(catalogs), EN_INDEX: render_index(catalogs, language="en")}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--vendor", choices=sorted(HOSTS))
     parser.add_argument("--model")
     parser.add_argument("--capability", help="精确能力词；不确定时先仅用 --model 列出该型号示例")
     action = parser.add_mutually_exclusive_group()
-    action.add_argument("--write-index", action="store_true", help="从清单生成中文 Markdown 索引")
-    action.add_argument("--check", action="store_true", help="检查清单与生成索引是否一致")
+    action.add_argument("--write-index", action="store_true", help="从清单生成中英文 Markdown 索引")
+    action.add_argument("--check", action="store_true", help="检查清单与中英文生成索引是否一致")
     args = parser.parse_args(argv)
     if (args.write_index or args.check) and (args.vendor or args.model or args.capability):
         parser.error("索引生成/检查不能使用筛选参数")
     try:
-        catalogs = load_catalogs()
+        catalogs = load_catalogs(ROOT)
         if args.write_index or args.check:
-            content = render_index(catalogs)
-            if args.write_index:
-                (ROOT / INDEX).write_text(content, encoding="utf-8")
-                print(INDEX.as_posix())
-            elif not (ROOT / INDEX).exists() or (ROOT / INDEX).read_text(encoding="utf-8") != content:
-                raise ValueError("索引过期，请运行 --write-index")
-            else:
+            for relative, content in index_outputs(catalogs).items():
+                target = ROOT / relative
+                if args.write_index:
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_text(content, encoding="utf-8")
+                    print(relative.as_posix())
+                elif not target.is_file() or target.read_text(encoding="utf-8") != content:
+                    raise ValueError(f"索引过期：{relative.as_posix()}，请运行 --write-index")
+            if args.check:
                 print("示例清单与索引一致")
         else:
             result = select_examples(catalogs, args.vendor, args.model, args.capability)

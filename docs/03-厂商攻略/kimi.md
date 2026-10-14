@@ -1,5 +1,7 @@
 # Kimi 官方资料卡
 
+[English](../../en/docs/vendors/kimi.md)
+
 核对日期：**2026-10-13**。厂商事实以 [Kimi 开放平台文档](https://platform.kimi.com/docs/llms.txt)为准；仓库实测口径见[来源与核验规则](../来源与核验规则.md)。
 
 | 项目 | 值与官方来源 |

@@ -1,5 +1,7 @@
 # `doubao-seed-2-1-pro-260628` 参数解释
 
+[English](parameters.en.md) · [人类篇](../../../human/README.md)
+
 核对日期：2026-10-14。本页按[本目录示例清单](examples/sources.json)解释实际字段；运行状态另查[示例实测状态](../../../docs/示例实测状态.md)。官方把本 ID 列在往期模型中，下面的型号说明不外推到新版本。[模型列表：往期模型][d-models]
 
 ## 先看每个文件实际发送什么
