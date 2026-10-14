@@ -1,46 +1,20 @@
-# 人类篇：找到用法，理解参数，读懂证据
+# 人类篇：学习调用、阅读代码、检查实现
 
-[项目首页](../README.md) · [English](README.en.md) · [Agent 篇](../agents/README.md)
+[项目首页](../README.md) · [模型目录](../models/README.md) · [Agent 篇](../agents/README.md) · [English](README.en.md)
 
-这里面向需要做判断、运行示例或给 Agent 下任务的人，不按新手/老手分组。人类篇与 Agent 篇共享[型号卡片](../skills/model-manual/references/models/)、示例源码和报告，不各自维护一套模型事实。[来源规则](../docs/来源与核验规则.md)
-
-想直接看代码或检查 Agent 的实现，先打开[代码阅读与人工核对](examples/README.md)：六个已维护型号各有完整 Python 示例、关键行解释、运行方式和原始实测报告；另有流式、JSON、工具和图片的人工验收清单。代码直接取自实测原文件，不另写一套简化版本。
+这篇帮助你跑通调用、读懂参数和代码，并检查 Agent 的实现。人类篇与 Agent 篇共用[型号卡片](../skills/model-manual/references/models/)、示例源码和原始报告；事实与实测范围按[来源规则](../docs/来源与核验规则.md)核对。
 
 <a id="reading-path"></a>
 ## 按你现在的问题阅读
 
-| 你想做什么 | 从这里开始 | 读完要能确认什么 |
-|---|---|---|
-| 第一次调模型 | [第一次调用](../docs/01-5分钟跑通第一次调用.md) | 环境、Key、地址、型号与可运行文件 |
-| 读调用代码、检查 Agent 写得对不对 | [代码阅读与人工核对](examples/README.md) | 准确型号、配置、请求字段、正常结束与实测范围 |
-| 用熟悉的 SDK 接另一家 | [兼容接口套路](../docs/02-一个套路调遍所有模型.md) | 哪些结构共用，哪些字段必须按型号处理 |
-| 查某家还有哪些语言模型 | [六家语言模型清单](../docs/model-lists/README.md) | 准确 ID、当前文档状态、官方价格与仓库实际覆盖 |
-| 找准确型号的用法 | [型号目录](../models/README.md)及下表 | API ID、接口、生命周期和官方来源 |
-| 理解或调整参数 | [参数说明与调参](../docs/参数说明与调参.md) | 字段作用、默认/未知、预算与模式副作用 |
-| 查价格与额度 | [官方费用入口](../docs/04-免费额度与省钱攻略.md) | 当前账户/地域适用规则，不依赖手抄价格 |
-| 请求报错 | [排错与 Key 安全](../docs/05-新手必会与报错速查.md) | 脱敏后保留哪些信息、先检查哪一层 |
-| 避免截断、空答与工具雷区 | [生产踩雷](../docs/06-真实踩雷与生产检查.md) | 结束原因、思考预算、完整历史和业务校验 |
-| 想知道到底测过没有 | [逐文件实测状态](../docs/示例实测状态.md)与[验证复现](../docs/验证与复现.md) | 当前源码、输入、参数、环境和报告范围 |
-| 让 Agent 帮你接入/迁移/排错 | [Agent 篇](../agents/README.md) | 给出业务目标和约束，按任务读取准确资料 |
+- 学习调用：[第一次调用](../docs/01-5分钟跑通第一次调用.md)讲环境、Key、接口和运行步骤；[兼容接口套路](../docs/02-一个套路调遍所有模型.md)讲共用结构与型号差异。
+- 阅读代码、检查 Agent：[代码阅读与人工核对](examples/README.md)直接展示完整 Python 原文件、关键行解释、参数依据和原始实测报告，并提供流式、JSON、工具、图片的检查清单。
+- 理解参数与费用：[参数说明与调参](../docs/参数说明与调参.md)解释字段、预算和模式影响；[官方费用入口](../docs/04-免费额度与省钱攻略.md)链接价格与额度资料，按账户和地域核对。
+- 排错与踩坑：[排错与 Key 安全](../docs/05-新手必会与报错速查.md)帮助保留脱敏错误和定位问题；[生产踩雷](../docs/06-真实踩雷与生产检查.md)覆盖截断、空答、思考预算、工具历史与断流。
+
+查各厂商当前的语言型号、准确 API ID、说明书、参数和特色示例，统一从[模型目录](../models/README.md)开始。目录区分官方列出、仓库已维护和已有实测证据，具体能力与生命周期以准确型号的资料为准。
 
 这些章节按需查阅即可；阅读方式见[前言](../docs/00-前言.md)，无需先通读整本。
-
-## 六个已维护详细说明书的型号
-
-这六个不是厂商的全部型号。更广的[语言模型清单](../docs/model-lists/README.md)包含官方型号发现、预览、仍可用旧版和兼容别名，不列已下线型号；未维护说明书或未实测的条目会明确标注，不自动套用下表的代码。
-
-下表是资料导航，不是质量排名。“特色示例”仅指仓库已收录的代码，不是完整能力清单，也不表示所有例子或组合已通过。来源、改写与当前验证范围查[官方示例索引](../docs/官方示例索引.md)。
-
-| 准确型号 | 说明书 | 参数与逐文件映射 | 可重点看的特色示例 |
-|---|---|---|---|
-| `deepseek-flash` | [DeepSeek](../models/deepseek/deepseek-flash/README.md) | [参数](../models/deepseek/deepseek-flash/parameters.md) | [图片/File ID](../models/deepseek/deepseek-flash/examples/10_vision_files.py)、[Responses 图片](../models/deepseek/deepseek-flash/examples/11_responses_vision.py)、[FIM](../models/deepseek/deepseek-flash/examples/15_fim_completion.py) |
-| `kimi-k2.6` | [Kimi](../models/kimi/kimi-k2.6/README.md) | [参数](../models/kimi/kimi-k2.6/parameters.md) | [保留思考的工具闭环](../models/kimi/kimi-k2.6/examples/08_thinking_tools.py)、[本地视频](../models/kimi/kimi-k2.6/examples/09_video.py) |
-| `glm-4.7` | [智谱](../models/zhipu/glm-4.7/README.md) | [参数](../models/zhipu/glm-4.7/parameters.md) | [多轮历史](../models/zhipu/glm-4.7/examples/06_multi_turn.py)、[思考工具闭环](../models/zhipu/glm-4.7/examples/07_thinking_tools.py) |
-| `qwen-flash` | [通义千问](../models/qwen/qwen-flash/README.md) | [参数](../models/qwen/qwen-flash/parameters.md) | [JSON 对象](../models/qwen/qwen-flash/examples/04_json_output.py)、[思考工具闭环](../models/qwen/qwen-flash/examples/07_thinking_tools.py) |
-| `doubao-seed-2-1-pro-260628` | [豆包](../models/doubao/doubao-seed-2-1-pro-260628/README.md) | [参数](../models/doubao/doubao-seed-2-1-pro-260628/parameters.md) | [思考工具历史](../models/doubao/doubao-seed-2-1-pro-260628/examples/08_thinking_tools.py)、[隐式缓存观测](../models/doubao/doubao-seed-2-1-pro-260628/examples/10_implicit_cache.py) |
-| `MiniMax-M2.7` | [MiniMax](../models/minimax/MiniMax-M2.7/README.md) | [参数](../models/minimax/MiniMax-M2.7/parameters.md) | [模拟工具闭环](../models/minimax/MiniMax-M2.7/examples/05_tool_calling.py)、[旧原生 cURL](../models/minimax/MiniMax-M2.7/examples/07_native_curl.sh) |
-
-调用前同时读型号身份与生命周期，不把旧名仍能请求理解为固定服务版本保证。MiniMax M2.7 已有退役/订阅路由公告；具体日期与平台区别见[型号说明书](../models/minimax/MiniMax-M2.7/README.md)和[官方公告](https://platform.minimax.cn/docs/guides/models-intro)。
 
 ## 建议的动手顺序
 

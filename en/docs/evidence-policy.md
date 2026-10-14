@@ -16,9 +16,11 @@ Vendor defaults, maintained examples, and default generated code use paid models
 
 On 2026-10-14, the maintained Zhipu target changed from free `glm-4.7-flash` to the same-generation paid `glm-4.7`. Original reports remain historical troubleshooting evidence, not passing evidence for the new model. [Official Zhipu pricing](https://docs.bigmodel.cn/cn/guide/start/pricing) Check an explicitly requested different model by its exact ID and explain any difference from current coverage; never rename it to a cataloged model and claim success.
 
-## Two entry paths, one set of facts
+## Three entry paths, one set of facts
 
-The [repository entry](../../README.en.md) routes humans to the [human guide](../../human/README.en.md) and agents to the [Agent guide](../../agents/README.en.md) and [Skill](../../skills/model-manual/SKILL.en.md). Navigation and task instructions differ, but facts and evidence are shared. Human tutorials are optional reference material; agents need not read them sequentially.
+The [repository entry](../../README.en.md) has three primary paths: the [human guide](../../human/README.en.md) for learning and manual review, the [model directory](../../models/README.en.md) for manuals, parameters, code, official prices and evidence by provider/model, and the [Agent guide](../../agents/README.en.md) for execution workflows and query/generation tools. Verification, source rules and maintenance material belong in the homepage maintenance area, not alongside the three usage paths.
+
+The [Skill](../../skills/model-manual/SKILL.en.md) remains the canonical execution entry for agents. All three navigation paths share facts and evidence; reorganizing navigation does not move existing source, cards or reports. Human tutorials are optional reference material rather than required sequential reading. Existing list/manual URLs remain accessible as lower-level resources under the model directory, not separate homepage starting points.
 
 ### Bilingual maintenance rules
 

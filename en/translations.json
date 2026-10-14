@@ -9,22 +9,22 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "31d187de2372806edc629c167e9f54dc8b4fd03991352d84cd348def00f613f0"
+      "source_sha256": "07ceb28e07ae68959957667d579b330541e2ce7c275fab4d8ff024af71872a81"
     },
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "e60222c6b23f02a0399a821523340dc8fd7230bbe1f474a3fdc96f97cf75707e"
+      "source_sha256": "1d129e89b96b34feb114a7d3130bb5c57201d15921727911a33e6d9691d22241"
     },
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "3d6a870a7268675cf91159273a2832462560d11906e9a3e0344220941c5b5345"
+      "source_sha256": "33c5a5343fc4c3afbea4bd5e173343b37073f05a56fc113a13fd241c0f052a71"
     },
     {
       "source": "models/README.md",
       "target": "models/README.en.md",
-      "source_sha256": "88e34615ac7b30b60c57ba2fe8fc521e2e684dc9a8c60b5880348df1769e9867"
+      "source_sha256": "eae376b64d79509939ac6ac9bf30ddc2877b1a9415beb950309b7066092f8098"
     },
     {
       "source": "skills/model-manual/SKILL.md",
@@ -79,7 +79,7 @@
     {
       "source": "docs/来源与核验规则.md",
       "target": "en/docs/evidence-policy.md",
-      "source_sha256": "c6a368d32fe8cddd8b3737969b9e693b5a359e8c45c6b18ec70be0d33e762451"
+      "source_sha256": "15005a9fcc0ab631efc3bf4e08e84a71dc9c7874104ef1a1e830b0e500217e20"
     },
     {
       "source": "docs/验证与复现.md",

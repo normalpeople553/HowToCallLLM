@@ -1,46 +1,20 @@
-# Human guide: find a working path, understand parameters, read the evidence
+# Human guide: learn calls, read code, review implementations
 
-[Repository entry](../README.en.md) · [中文](README.md) · [Agent guide](../agents/README.en.md)
+[Repository entry](../README.en.md) · [Model directory](../models/README.en.md) · [Agent guide](../agents/README.en.md) · [中文](README.md)
 
-This guide is for people making decisions, running examples, or assigning work to an agent—not separate beginner and expert groups. Humans and agents share [model cards](../skills/model-manual/references/models/), executable source, and reports rather than maintaining independent model facts. [Evidence policy](../en/docs/evidence-policy.md)
-
-To read calls or review an Agent's implementation, start with [code reading and human review](examples/README.en.md): six maintained models each have a complete Python example, important-line explanations, run instructions and original execution evidence, plus review checklists for streaming, JSON, tools and images. Code comes directly from the executed files, not a separately simplified version.
+This guide helps you make calls, understand parameters and code, and review an Agent's implementation. Humans and agents share [model cards](../skills/model-manual/references/models/), executable source, and original reports. Check facts and test scope under the [evidence policy](../en/docs/evidence-policy.md).
 
 <a id="reading-path"></a>
 ## Read for the question you have now
 
-| What you want to do | Start here | What you should establish |
-|---|---|---|
-| Make your first model call | [First call](../en/docs/first-call.md) | Environment, key, endpoint, model, and runnable file. |
-| Read calling code and review an Agent's implementation | [Code reading and human review](examples/README.en.md) | Exact model, configuration, request fields, normal completion and evidence scope. |
-| Use a familiar SDK with another provider | [Compatible-API pattern](../en/docs/compatible-api.md) | Shared structures versus model-specific fields. |
-| Discover a provider's other language models | [Six language-model lists](../en/docs/model-lists/README.md) | Exact IDs, current documentation status, official prices and actual repository coverage. |
-| Find the exact model's instructions | [Model directory](../models/README.en.md) and the table below | API ID, interface, lifecycle, and official sources. |
-| Understand or tune parameters | [Parameters and tuning](../en/docs/parameters.md) | Purpose, defaults/unknowns, budgets, mode-specific effects. |
-| Check prices and quotas | [Official cost links](../en/docs/pricing.md) | Rules for the actual account/region, not copied prices. |
-| Diagnose a failed request | [Troubleshooting and key safety](../en/docs/troubleshooting.md) | What to retain after redaction and which layer to inspect first. |
-| Avoid truncation, empty answers, and tool pitfalls | [Production pitfalls](../en/docs/production-pitfalls.md) | Termination, thinking budgets, complete history, business validation. |
-| Find out what was actually tested | [File-level status](../en/docs/example-status.md) and [reproduction](../en/docs/verification.md) | Current source, input, parameters, environment, and report scope. |
-| Ask an agent to integrate, migrate, or debug | [Agent guide](../agents/README.en.md) | Supply the business goal and constraints; route to exact-model material. |
+- Learn to call models: [First call](../en/docs/first-call.md) covers the environment, key, endpoint, and run steps; the [compatible-API pattern](../en/docs/compatible-api.md) explains shared structures and model-specific differences.
+- Read code and review an Agent: [Code reading and human review](examples/README.en.md) displays complete original Python files, important-line explanations, parameter sources, and original execution reports, with checklists for streaming, JSON, tools, and images.
+- Understand parameters and costs: [Parameters and tuning](../en/docs/parameters.md) explains fields, budgets, and mode effects; [official cost links](../en/docs/pricing.md) lead to pricing and quota references to check for your account and region.
+- Debug and avoid pitfalls: [Troubleshooting and key safety](../en/docs/troubleshooting.md) helps retain redacted errors and locate the problem; [production pitfalls](../en/docs/production-pitfalls.md) covers truncation, empty answers, thinking budgets, tool history, and interrupted streams.
+
+Use the [model directory](../models/README.en.md) for each provider's current language models, exact API IDs, manuals, parameters, and feature examples. It distinguishes official listings, maintained material, and actual execution evidence. Check capabilities and lifecycle in the exact model's material.
 
 Read chapters as needed. The [introduction](../en/docs/introduction.md) explains the structure; there is no requirement to read the whole book first.
-
-## Six models with maintained detailed manuals
-
-These are not the providers' complete inventories. The broader [language-model lists](../en/docs/model-lists/README.md) track official discovery, previews, still-listed legacy models and compatibility aliases, excluding retired models. Missing manuals or live evidence are explicit; listed models do not automatically use the code below.
-
-This table is a directory, not a quality ranking. “Example highlights” means code collected in the repository—not an exhaustive capability list and not a claim that every example or combination passed. Sources, adaptations, and current scope are in the [example index](../en/docs/example-index.md).
-
-| Exact model | Manual | Parameters and file mapping | Example highlights |
-|---|---|---|---|
-| `deepseek-flash` | [DeepSeek](../models/deepseek/deepseek-flash/README.en.md) | [Parameters](../models/deepseek/deepseek-flash/parameters.en.md) | [Images/File IDs](../models/deepseek/deepseek-flash/examples/10_vision_files.py), [Responses images](../models/deepseek/deepseek-flash/examples/11_responses_vision.py), [FIM](../models/deepseek/deepseek-flash/examples/15_fim_completion.py). |
-| `kimi-k2.6` | [Kimi](../models/kimi/kimi-k2.6/README.en.md) | [Parameters](../models/kimi/kimi-k2.6/parameters.en.md) | [Tool loop preserving reasoning](../models/kimi/kimi-k2.6/examples/08_thinking_tools.py), [local video](../models/kimi/kimi-k2.6/examples/09_video.py). |
-| `glm-4.7` | [Zhipu](../models/zhipu/glm-4.7/README.en.md) | [Parameters](../models/zhipu/glm-4.7/parameters.en.md) | [Multi-turn history](../models/zhipu/glm-4.7/examples/06_multi_turn.py), [thinking/tool loop](../models/zhipu/glm-4.7/examples/07_thinking_tools.py). |
-| `qwen-flash` | [Qwen](../models/qwen/qwen-flash/README.en.md) | [Parameters](../models/qwen/qwen-flash/parameters.en.md) | [JSON object](../models/qwen/qwen-flash/examples/04_json_output.py), [thinking/tool loop](../models/qwen/qwen-flash/examples/07_thinking_tools.py). |
-| `doubao-seed-2-1-pro-260628` | [Doubao](../models/doubao/doubao-seed-2-1-pro-260628/README.en.md) | [Parameters](../models/doubao/doubao-seed-2-1-pro-260628/parameters.en.md) | [Thinking/tool history](../models/doubao/doubao-seed-2-1-pro-260628/examples/08_thinking_tools.py), [implicit-cache observation](../models/doubao/doubao-seed-2-1-pro-260628/examples/10_implicit_cache.py). |
-| `MiniMax-M2.7` | [MiniMax](../models/minimax/MiniMax-M2.7/README.en.md) | [Parameters](../models/minimax/MiniMax-M2.7/parameters.en.md) | [Simulated tool loop](../models/minimax/MiniMax-M2.7/examples/05_tool_calling.py), [legacy native cURL](../models/minimax/MiniMax-M2.7/examples/07_native_curl.sh). |
-
-Read identity and lifecycle before calling. An old name remaining callable does not guarantee a fixed served version. MiniMax M2.7 has a retirement/subscription-routing notice; dates and platform distinctions are in its [manual](../models/minimax/MiniMax-M2.7/README.en.md) and the [official notice](https://platform.minimax.cn/docs/guides/models-intro).
 
 ## Recommended hands-on sequence
 

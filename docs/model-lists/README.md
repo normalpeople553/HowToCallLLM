@@ -1,6 +1,6 @@
 # 语言模型清单
 
-[English](../../en/docs/model-lists/README.md)
+[模型目录](../../models/README.md) · [English](../../en/docs/model-lists/README.md)
 
 这是官方 API 型号的发现清单，不表示仓库已为每个型号维护详细说明书或完成真实调用。
 
@@ -31,4 +31,4 @@ python skills/model-manual/scripts/model_catalog.py --billing paid --status avai
 
 没有维护卡片的型号，需要先查该准确型号的官方 API 和参数再实现；代码生成器不会自动支持它。输入模态不代表各厂商格式相同，也不保证语义效果。
 
-[共享来源数据](../../data/model-lists) · [查询 / 页面生成器](../../skills/model-manual/scripts/model_catalog.py) · [维护中的说明书](../../models/README.md)
+[共享来源数据](../../data/model-lists) · [查询 / 页面生成器](../../skills/model-manual/scripts/model_catalog.py) · [模型目录](../../models/README.md)

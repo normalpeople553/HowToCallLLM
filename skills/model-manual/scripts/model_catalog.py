@@ -209,6 +209,10 @@ def _coverage_text(page, value, english):
             parts.append(_link(page, target, en if english else zh))
     if not value["manual_path"]:
         parts.append("No maintained manual" if english else "未维护详细说明书")
+    if value["example_files"]:
+        primary = next((path for path in value["example_files"] if path.endswith("/examples/01_basic.py")),
+                       value["example_files"][0])
+        parts.append(_link(page, primary, "Code" if english else "代码"))
     count, passed = len(value["example_files"]), len(value["live_passed_files"])
     if count:
         status_path = "en/docs/example-status.md" if english else "docs/示例实测状态.md"
@@ -231,6 +235,7 @@ def expected_pages(root=ROOT):
         other = Path("docs/model-lists" if english else "en/docs/model-lists")
         index = directory / "README.md"
         lines = ["# Language-model lists" if english else "# 语言模型清单", "",
+                 _link(index, "models/README.en.md" if english else "models/README.md", "Model directory" if english else "模型目录") + " · " +
                  _link(index, other / "README.md", "中文" if english else "English"), "",
                  ("Discovery only: these are official API IDs, not a claim that this repository has a detailed manual or live-tested code for every model."
                   if english else "这是官方 API 型号的发现清单，不表示仓库已为每个型号维护详细说明书或完成真实调用。"), "",
@@ -257,14 +262,15 @@ def expected_pages(root=ROOT):
                    if english else "没有维护卡片的型号，需要先查该准确型号的官方 API 和参数再实现；代码生成器不会自动支持它。输入模态不代表各厂商格式相同，也不保证语义效果。"), "",
                   _link(index, "data/model-lists", "Shared source data" if english else "共享来源数据") + " · " +
                   _link(index, "skills/model-manual/scripts/model_catalog.py", "Query / page generator" if english else "查询 / 页面生成器") + " · " +
-                  _link(index, "models/README.en.md" if english else "models/README.md", "Maintained manuals" if english else "维护中的说明书"), ""]
+                  _link(index, "models/README.en.md" if english else "models/README.md", "Model directory" if english else "模型目录"), ""]
         pages[index] = "\n".join(lines)
         for catalog in catalogs:
             vendor = catalog["vendor"]
             page = directory / (vendor + ".md")
             title = (NAMES_EN if english else NAMES)[vendor]
             lines = [f"# {title} · " + ("language-model list" if english else "语言模型清单"), "",
-                     _link(page, index, "All vendors" if english else "全部厂商") + " · " + _link(page, other / page.name, "中文" if english else "English"), "",
+                     _link(page, "models/README.en.md" if english else "models/README.md", "Model directory" if english else "模型目录") + " · " +
+                     _link(page, other / page.name, "中文" if english else "English"), "",
                      (f"Official documentation checked: {catalog['checked_at']}. " if english else f"官方文档核对日期：{catalog['checked_at']}。") +
                      f"[{'Official catalog' if english else '官方目录'}]({catalog['official_catalog_url']}) · " +
                      _link(page, f"data/model-lists/{vendor}.json", "Source data" if english else "来源数据"), "",
@@ -289,7 +295,12 @@ def expected_pages(root=ROOT):
                     source_links.extend(f"[{'Source' if english else '出处'} {i}]({url})" for i, url in enumerate(entry["sources"], 1)
                                         if url not in {entry["model_url"], entry["pricing_url"]})
                     note = entry["notes"][lang]
-                    fields = [f"`{entry['model_id']}` / {entry['family']}",
+                    if value["manual_path"]:
+                        target = value["manual_path"].replace(".md", ".en.md") if english else value["manual_path"]
+                        model_link = _link(page, target, f"`{entry['model_id']}`")
+                    else:
+                        model_link = f"[`{entry['model_id']}`]({entry['model_url']})"
+                    fields = [f"{model_link} / {entry['family']}",
                               (STATUS_EN if english else STATUS_ZH)[entry["status"]],
                               (BILLING_EN if english else BILLING_ZH)[entry["billing"]],
                               ", ".join(entry["input_modalities"] if english else [MODALITY_ZH[mode] for mode in entry["input_modalities"]]),

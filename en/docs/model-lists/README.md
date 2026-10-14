@@ -1,6 +1,6 @@
 # Language-model lists
 
-[中文](../../../docs/model-lists/README.md)
+[Model directory](../../../models/README.en.md) · [中文](../../../docs/model-lists/README.md)
 
 Discovery only: these are official API IDs, not a claim that this repository has a detailed manual or live-tested code for every model.
 
@@ -31,4 +31,4 @@ Read-only, offline JSON; unknown exact IDs return an error, never another model.
 
 If no maintained card exists, verify that exact model's official API and parameters before implementation; the snippet generator does not automatically support it. Listed input modalities do not establish a common API format or guarantee semantic quality.
 
-[Shared source data](../../../data/model-lists) · [Query / page generator](../../../skills/model-manual/scripts/model_catalog.py) · [Maintained manuals](../../../models/README.en.md)
+[Shared source data](../../../data/model-lists) · [Query / page generator](../../../skills/model-manual/scripts/model_catalog.py) · [Model directory](../../../models/README.en.md)

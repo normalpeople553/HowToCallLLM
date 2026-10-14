@@ -1,6 +1,6 @@
 # DeepSeek · 语言模型清单
 
-[全部厂商](README.md) · [English](../../en/docs/model-lists/deepseek.md)
+[模型目录](../../models/README.md) · [English](../../en/docs/model-lists/deepseek.md)
 
 官方文档核对日期：2026-10-14。[官方目录](https://api-docs.deepseek.com/quick_start/pricing/) · [来源数据](../../data/model-lists/deepseek.json)
 
@@ -14,9 +14,9 @@
 
 | 准确 API ID / 系列 | 生命周期 | 付费类型 | 输入 | 仓库覆盖 | 限制 / 官方出处 |
 |---|---|---|---|---|---|
-| `deepseek-flash` / DeepSeek V4.1 Flash | 官方列为可用 | 付费 | 文本, 图片 | [说明书](../../models/deepseek/deepseek-flash/README.md) · [参数](../../models/deepseek/deepseek-flash/parameters.md) · [18/18 文件实测通过](../示例实测状态.md) · 项目默认 | 当前主入口；服务版本为DeepSeek-V4.1-Flash。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
-| `deepseek-v4-pro` / DeepSeek V4 Pro | 官方列为可用 | 付费 | 文本 | 未维护详细说明书 · 无逐文件实测证据 | 官方API名称仍为deepseek-v4-pro；服务版本为DeepSeek-V4-Pro-0813，当前价格表标明不支持视觉输入。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
-| `deepseek-v4-flash` / DeepSeek V4 Flash | 别名 / 重路由 | 付费 | 文本, 图片 | 未维护详细说明书 · 无逐文件实测证据 | 名称仍被接受，但原模型已退役；请求转由V4.1 Flash处理，不能把旧名称当成旧权重的验证。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
-| `deepseek-v4-flash-vision-exp` / DeepSeek V4 Flash Vision | 别名 / 重路由 | 付费 | 文本, 图片 | 未维护详细说明书 · 无逐文件实测证据 | 旧实验名称仍被接受，但原模型已退役并转由V4.1 Flash处理。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [`deepseek-flash`](../../models/deepseek/deepseek-flash/README.md) / DeepSeek V4.1 Flash | 官方列为可用 | 付费 | 文本, 图片 | [说明书](../../models/deepseek/deepseek-flash/README.md) · [参数](../../models/deepseek/deepseek-flash/parameters.md) · [代码](../../models/deepseek/deepseek-flash/examples/01_basic.py) · [18/18 文件实测通过](../示例实测状态.md) · 项目默认 | 当前主入口；服务版本为DeepSeek-V4.1-Flash。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [`deepseek-v4-pro`](https://api-docs.deepseek.com/quick_start/pricing/) / DeepSeek V4 Pro | 官方列为可用 | 付费 | 文本 | 未维护详细说明书 · 无逐文件实测证据 | 官方API名称仍为deepseek-v4-pro；服务版本为DeepSeek-V4-Pro-0813，当前价格表标明不支持视觉输入。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [`deepseek-v4-flash`](https://api-docs.deepseek.com/quick_start/pricing/) / DeepSeek V4 Flash | 别名 / 重路由 | 付费 | 文本, 图片 | 未维护详细说明书 · 无逐文件实测证据 | 名称仍被接受，但原模型已退役；请求转由V4.1 Flash处理，不能把旧名称当成旧权重的验证。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [`deepseek-v4-flash-vision-exp`](https://api-docs.deepseek.com/quick_start/pricing/) / DeepSeek V4 Flash Vision | 别名 / 重路由 | 付费 | 文本, 图片 | 未维护详细说明书 · 无逐文件实测证据 | 旧实验名称仍被接受，但原模型已退役并转由V4.1 Flash处理。 [型号](https://api-docs.deepseek.com/quick_start/pricing/) · [价格](https://api-docs.deepseek.com/quick_start/pricing/) |
 
 [逐文件实测及证据边界](../示例实测状态.md)

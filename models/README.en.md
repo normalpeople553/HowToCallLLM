@@ -1,26 +1,32 @@
-# Model manuals
+# Model directory
 
-[中文](README.md) · [Human guide](../human/README.en.md)
+[Home](../README.en.md) · [中文](README.md) · [Human guide](../human/README.en.md) · [Agent guide](../agents/README.en.md)
 
-English translation of the [Chinese model index](README.md). Both languages share the same executable code, model cards, source manifests and reports. Official source URLs are retained, including Chinese-language pages; translating this index does not rerun or revalidate an API.
+Choose a provider, then an exact model. Each provider page brings model listings, official pricing and repository calling resources into the same row, so discovery and detailed manuals are not separate starting points.
 
-This directory provides manuals and examples for maintained exact models, not every callable model from each provider. Detailed calling facts remain in [`skills/model-manual/references/models/`](../skills/model-manual/references/models/). The broader [six language-model lists](../en/docs/model-lists/README.md) support discovery without automatically granting cards, parameters or live-test coverage. See the [evidence policy](../en/docs/evidence-policy.md).
+## Find a model by provider
 
-| Exact model | Manual | Parameter reference |
+| Provider (open its model list) | Model with a maintained detailed manual | Read code and review an Agent |
 |---|---|---|
-| DeepSeek `deepseek-flash` | [Manual](deepseek/deepseek-flash/README.en.md) | [Parameters](deepseek/deepseek-flash/parameters.en.md) |
-| Kimi `kimi-k2.6` | [Manual](kimi/kimi-k2.6/README.en.md) | [Parameters](kimi/kimi-k2.6/parameters.en.md) |
-| Zhipu `glm-4.7` | [Manual](zhipu/glm-4.7/README.en.md) | [Parameters](zhipu/glm-4.7/parameters.en.md) |
-| Qwen `qwen-flash` | [Manual](qwen/qwen-flash/README.en.md) | [Parameters](qwen/qwen-flash/parameters.en.md) |
-| Doubao `doubao-seed-2-1-pro-260628` | [Manual](doubao/doubao-seed-2-1-pro-260628/README.en.md) | [Parameters](doubao/doubao-seed-2-1-pro-260628/parameters.en.md) |
-| MiniMax `MiniMax-M2.7` | [Manual](minimax/MiniMax-M2.7/README.en.md) | [Parameters](minimax/MiniMax-M2.7/parameters.en.md) |
+| [DeepSeek](../en/docs/model-lists/deepseek.md) | [deepseek-flash](deepseek/deepseek-flash/README.en.md) | [Complete code and review](../human/examples/deepseek.en.md) |
+| [Kimi](../en/docs/model-lists/kimi.md) | [kimi-k2.6](kimi/kimi-k2.6/README.en.md) | [Complete code and review](../human/examples/kimi.en.md) |
+| [Zhipu GLM](../en/docs/model-lists/zhipu.md) | [glm-4.7](zhipu/glm-4.7/README.en.md) | [Complete code and review](../human/examples/zhipu.en.md) |
+| [Qwen](../en/docs/model-lists/qwen.md) | [qwen-flash](qwen/qwen-flash/README.en.md) | [Complete code and review](../human/examples/qwen.en.md) |
+| [Doubao](../en/docs/model-lists/doubao.md) | [doubao-seed-2-1-pro-260628](doubao/doubao-seed-2-1-pro-260628/README.en.md) | [Complete code and review](../human/examples/doubao.en.md) |
+| [MiniMax](../en/docs/model-lists/minimax.md) | [MiniMax-M2.7](minimax/MiniMax-M2.7/README.en.md) | [Complete code and review](../human/examples/minimax.en.md) |
 
-Zhipu now targets the same-generation paid `glm-4.7`; it does not inherit evidence from the old free Flash model. Check [per-file results](../en/docs/example-status.md). Doubao's ID is listed as a past model in its [official model list](https://docs.volcengine.com/docs/ark/model-list?lang=zh). MiniMax has an [official future retirement notice](https://platform.minimax.cn/docs/guides/models-intro), but is not yet retired on the check date; its per-file execution evidence is separate from the historical unified verifier.
+The maintained models in this table are not the providers' entire inventories. Open a provider to find other exact API IDs, input modalities, lifecycle and official pricing. Models with maintained manuals link directly to them; missing manuals or live evidence are explicit and do not inherit from a family.
 
-Project rule: all maintained models above are paid, with no default free-model fallback. Official pricing links and selection evidence are in the cards and [evidence policy](../en/docs/evidence-policy.md). Each manual covers identity and lifecycle, connection configuration, capabilities and limitations, official pricing links, basic/streaming requests, thinking, structured output, tools, multimodal inputs, errors and production checks where documented. Undocumented capabilities remain unknown, not automatically supported or unsupported.
+Retired models are excluded, and availability-unconfirmed entries have their own section. Check each row's official sources and check date for previews, aliases, subscription/region restrictions and future retirements. Listings are documentation snapshots, not proof of current account access or service capacity. [Inclusion and evidence policy](../en/docs/evidence-policy.md)
 
-For output truncation, thinking tokens, JSON validation, tool loops, streaming and rate limits across models, see [production pitfalls](../en/docs/production-pitfalls.md). Use the locked environment in [verification and reproduction](../en/docs/verification.md).
+## Find code by feature
 
-Read [per-file execution status](../en/docs/example-status.md) for current source-specific evidence and [historical verification status](../en/docs/verification-status.md) for the older unified capability checks. A file, a documentation fragment and a generated parameter combination do not inherit one another's successful result.
+[All feature examples](../en/docs/example-index.md) · [Code reading and human review](../human/examples/README.en.md) · [Per-file execution status](../en/docs/example-status.md)
 
-Browse the [official example index](../en/docs/example-index.md), or read each model's shared `examples/sources.json` for exact files, official sources, input variables, commands, adaptations and verification scope. Source manifests and historical reports are maintained separately; new files do not inherit old passes. Parameter explanations are indexed in the [parameter guide](../en/docs/parameters.md).
+Check the exact model first, then find its chat, streaming, thinking, JSON, tool, image/video or other file. Field-by-field explanations belong to that model's parameter page. Do not rename another model's example and assume support.
+
+## Use and verification
+
+Project defaults and maintained examples remain paid-only. Free discovery entries do not change that policy or enable automatic fallback. Read current prices only on official pages. [Selection policy](../en/docs/evidence-policy.md)
+
+For environments, input requirements and real calls, see [verification and reproduction](../en/docs/verification.md). Current file evidence is in per-file status; older unified capability checks are in [historical verification status](../en/docs/verification-status.md). Translation, reading views and newly generated combinations are not new online execution records.

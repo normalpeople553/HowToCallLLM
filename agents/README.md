@@ -1,14 +1,16 @@
 # Agent 篇
 
-中文 · [English](README.en.md) · [项目首页](../README.md) · [人类篇](../human/README.md)
+中文 · [English](README.en.md) · [项目首页](../README.md) · [模型目录](../models/README.md) · [人类篇](../human/README.md)
 
-这篇面向执行接入、迁移、排错和验证任务的编程 Agent。规范执行入口是 [model-manual Skill](../skills/model-manual/SKILL.md)，本页提供任务地图和使用指令；概念学习走[人类篇](../human/README.md)，不要求先读完整套教程。
+本页集中提供接入规范、查询与代码工具、迁移、排错和验证任务的入口，面向执行这些任务的编程 Agent，也供人复制任务指令。查厂商有哪些型号、阅读型号说明书和示例，统一从[模型目录](../models/README.md)进入；概念学习走[人类篇](../human/README.md)。不要求先读完整套教程。
+
+需要 Agent 执行任务时，按需进入 [model-manual Skill](../skills/model-manual/SKILL.md)；只查型号或浏览说明书，不必先读 Skill。本页不重复维护六家的型号表。
 
 ## 开始一个任务
 
 项目默认型号与维护示例全部采用付费型号，读取卡片 `billing.type` 和官方价格来源；遇到失败不静默回退免费型号。[选型规则](../docs/来源与核验规则.md)
 
-先完整读取 [SKILL.md](../skills/model-manual/SKILL.md)，再按用户任务读取[任务流程](../skills/model-manual/references/workflows.md)的相关部分，不默认加载所有型号。
+执行接入、迁移、排错或验证任务时，先完整读取 [SKILL.md](../skills/model-manual/SKILL.md)，再按用户任务读取[任务流程](../skills/model-manual/references/workflows.md)的相关部分，不默认加载所有型号。仅做查询时，可直接使用下方工具；查询结果不替代接入与验证规则。
 
 | 用户要做什么 | 读取与执行重点 |
 |---|---|
@@ -20,12 +22,16 @@
 
 这些是项目工作流，不是厂商保证；详细步骤和交付规则见[任务流程](../skills/model-manual/references/workflows.md)。
 
-## 资料地图
+## 查询与代码工具
+
+### 资料地图
+
+人查型号走[模型目录](../models/README.md)，机器按准确 ID 查询下面的共享资料；清单、型号卡、可执行示例和实测报告分别表达不同的覆盖范围。
 
 | 资料 | 规范入口 | 怎么用 |
 |---|---|---|
 | 厂商路由 | [vendors.json](../skills/model-manual/references/vendors.json) | 定位默认型号，不把默认型号规则推广至同厂所有型号 |
-| 厂商还有哪些语言型号 | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [人类清单](../docs/model-lists/README.md) | 按准确 ID 查官方来源和生命周期；覆盖独立关联，清单不等于有卡片或实测 |
+| 厂商还有哪些语言型号 | [model_catalog.py](../skills/model-manual/scripts/model_catalog.py) · [模型目录](../models/README.md) | 人读目录、机器查准确 ID 和官方来源/生命周期；覆盖独立关联，清单不等于有卡片或实测 |
 | 准确型号事实 | [references/models](../skills/model-manual/references/models/) | 读取 identity、capabilities、generation，并解析每条 source |
 | 参数解释 | [参数导航](../docs/参数说明与调参.md) | 按任务只读对应型号；区分 SDK 配置、模型参数与本地安全限制 |
 | 现成功能代码 | [example_catalog.py](../skills/model-manual/scripts/example_catalog.py) | 按准确型号/能力查来源清单、输入变量、运行命令与证据 |
@@ -35,10 +41,28 @@
 
 查询和生成命令在仓库根目录运行，以下命令不发请求：
 
+### 型号查询
+
+按厂商列出清单，或核对一个准确 ID；查询命中不代表已经有调用卡片、完整示例或实测通过。
+
 ```bash
 python skills/model-manual/scripts/model_catalog.py --vendor deepseek
 python skills/model-manual/scripts/model_catalog.py --vendor deepseek --model deepseek-v4-pro
+```
+
+### 示例检索
+
+先按准确型号和能力查现成文件，再读取该文件的输入变量、来源和当前证据。
+
+```bash
 python skills/model-manual/scripts/example_catalog.py --model deepseek-flash --capability vision
+```
+
+### 代码生成
+
+先查看支持的参数；生成新任务组合后，仍需按接入规范检查和验证，不继承其他文件的通过状态。
+
+```bash
 python skills/model-manual/scripts/generate_snippet.py --help
 python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool --thinking off
 ```
