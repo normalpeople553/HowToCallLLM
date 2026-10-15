@@ -174,7 +174,11 @@ class NavigationTests(unittest.TestCase):
         self.assertTrue({"让说明书生成代码", "快速参数表"} <= explicit_ids(read("README.md")))
 
     def test_clickable_model_ids_use_exact_manual_or_official_page_and_code_never_falls_back(self):
-        maintained = {(vendor, config["default_model"]) for vendor, config in self.providers.items()}
+        maintained = {
+            (card["vendor"], card["model_id"])
+            for path in (ROOT / "skills/model-manual/references/models").glob("*.json")
+            for card in [json.loads(path.read_text(encoding="utf-8"))]
+        }
         for vendor in VENDORS:
             data = json.loads(read(Path("data/model-lists") / (vendor + ".json")))
             for english in (False, True):

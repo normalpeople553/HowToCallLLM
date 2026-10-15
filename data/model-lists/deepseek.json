@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "vendor": "deepseek",
-  "checked_at": "2026-10-14",
+  "checked_at": "2026-10-15",
   "official_catalog_url": "https://api-docs.deepseek.com/quick_start/pricing/",
   "scope_note": {
     "zh": "范围为官方托管语言模型目录中的两个当前主入口，以及官方明确仍接受请求的旧别名；已下线接入名不列入。不把展示的模型版本号或开源权重名猜成可调用API ID。目录可用性是官方文档状态，不保证任意账户当前有权限或服务容量。",

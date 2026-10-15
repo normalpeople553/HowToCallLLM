@@ -12,7 +12,7 @@ Official lifecycle and input labels are dated documentation snapshots, not live 
 
 | Vendor | Checked | Listed IDs (retired excluded; includes uncertain) | Detailed manuals | Official catalog |
 |---|---|---|---|---|
-| [DeepSeek](deepseek.md) | 2026-10-14 | 4 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [DeepSeek](deepseek.md) | 2026-10-15 | 4 | 2 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
 | [Kimi](kimi.md) | 2026-10-14 | 4 | 1 | [Official](https://platform.kimi.com/docs/models) |
 | [Zhipu GLM](zhipu.md) | 2026-10-14 | 32 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
 | [Qwen](qwen.md) | 2026-10-14 | 81 | 1 | [Official](https://help.aliyun.com/zh/model-studio/models) |

@@ -22,7 +22,7 @@ spec = importlib.util.spec_from_file_location("example_catalog", SCRIPT)
 catalog = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(catalog)
 EXPECTED_MODELS = {
-    "deepseek-flash", "kimi-k2.6", "glm-4.7", "qwen-flash",
+    "deepseek-flash", "deepseek-v4-pro", "kimi-k2.6", "glm-4.7", "qwen-flash",
     "doubao-seed-2-1-pro-260628", "MiniMax-M2.7",
 }
 

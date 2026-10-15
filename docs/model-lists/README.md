@@ -12,7 +12,7 @@
 
 | 厂商 | 核对日期 | 收录 ID（不含已下线；含待确认） | 详细说明书 | 官方目录 |
 |---|---|---|---|---|
-| [DeepSeek](deepseek.md) | 2026-10-14 | 4 | 1 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
+| [DeepSeek](deepseek.md) | 2026-10-15 | 4 | 2 | [Official](https://api-docs.deepseek.com/quick_start/pricing/) |
 | [Kimi](kimi.md) | 2026-10-14 | 4 | 1 | [Official](https://platform.kimi.com/docs/models) |
 | [智谱 GLM](zhipu.md) | 2026-10-14 | 32 | 1 | [Official](https://docs.bigmodel.cn/cn/guide/start/model-overview) |
 | [通义千问](qwen.md) | 2026-10-14 | 81 | 1 | [Official](https://help.aliyun.com/zh/model-studio/models) |

@@ -8,7 +8,7 @@
 
 | 厂商（点击查看型号） | 已维护详细说明书的型号 | 读代码与检查 Agent |
 |---|---|---|
-| [DeepSeek](../docs/model-lists/deepseek.md) | [deepseek-flash](deepseek/deepseek-flash/README.md) | [完整代码与核对](../human/examples/deepseek.md) |
+| [DeepSeek](../docs/model-lists/deepseek.md) | [deepseek-flash](deepseek/deepseek-flash/README.md) · [deepseek-v4-pro](deepseek/deepseek-v4-pro/README.md) | [完整代码与核对](../human/examples/deepseek.md) |
 | [Kimi](../docs/model-lists/kimi.md) | [kimi-k2.6](kimi/kimi-k2.6/README.md) | [完整代码与核对](../human/examples/kimi.md) |
 | [智谱 GLM](../docs/model-lists/zhipu.md) | [glm-4.7](zhipu/glm-4.7/README.md) | [完整代码与核对](../human/examples/zhipu.md) |
 | [通义千问](../docs/model-lists/qwen.md) | [qwen-flash](qwen/qwen-flash/README.md) | [完整代码与核对](../human/examples/qwen.md) |

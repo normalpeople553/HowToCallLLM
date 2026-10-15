@@ -24,7 +24,7 @@
     {
       "source": "models/README.md",
       "target": "models/README.en.md",
-      "source_sha256": "4d4e9acddff6a6edeb98db7ae3c815e96f13a030ae69af71cff6ccc321563e1f"
+      "source_sha256": "45e1841f0939548138504552c04894d8d2f182b6b1396ab7725ce7cb720d66c5"
     },
     {
       "source": "skills/model-manual/SKILL.md",
@@ -130,6 +130,16 @@
       "source": "models/deepseek/deepseek-flash/parameters.md",
       "target": "models/deepseek/deepseek-flash/parameters.en.md",
       "source_sha256": "e39e3e7281e6a9ad6e70ef7733eacdd0fca804cd37962918daf300f96cfa210f"
+    },
+    {
+      "source": "models/deepseek/deepseek-v4-pro/README.md",
+      "target": "models/deepseek/deepseek-v4-pro/README.en.md",
+      "source_sha256": "1e9a5c36a2331f4cb47d4e84313c8a782501202aac40a918176d9f4c8676e611"
+    },
+    {
+      "source": "models/deepseek/deepseek-v4-pro/parameters.md",
+      "target": "models/deepseek/deepseek-v4-pro/parameters.en.md",
+      "source_sha256": "fa8b7b6c02e50ae227979fe6ccaa767ce70ff8f96e2b59debd7c56a940a84fc3"
     },
     {
       "source": "models/doubao/doubao-seed-2-1-pro-260628/README.md",

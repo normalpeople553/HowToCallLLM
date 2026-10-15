@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "model_id": "deepseek-v4-pro",
+  "vendor": "deepseek",
+  "billing": {
+    "type": {
+      "value": "paid",
+      "source": "models_pricing"
+    }
+  },
+  "last_checked_at": "2026-10-15",
+  "verification": null,
+  "verification_scope": "not_run",
+  "identity": {
+    "api_model_id": {
+      "value": "deepseek-v4-pro",
+      "source": "models_pricing"
+    },
+    "served_model_version": {
+      "value": "DeepSeek-V4-Pro-0813",
+      "source": "models_pricing"
+    },
+    "lifecycle": {
+      "value": "current",
+      "source": "change_log"
+    }
+  },
+  "connection": {
+    "api_key_env": {
+      "value": "DEEPSEEK_API_KEY",
+      "source": "first_call"
+    },
+    "openai_base_url": {
+      "value": "https://api.deepseek.com",
+      "source": "first_call"
+    },
+    "chat_completions_path": {
+      "value": "/chat/completions",
+      "source": "chat_api"
+    }
+  },
+  "limits": {
+    "context_tokens": {
+      "value": 1048576,
+      "display": "1M",
+      "source": "models_pricing"
+    },
+    "max_output_tokens": {
+      "value": 393216,
+      "display": "384K",
+      "source": "chat_api"
+    },
+    "default_output_tokens_non_thinking": {
+      "value": 8192,
+      "display": "8K",
+      "source": "chat_api"
+    },
+    "default_output_tokens_thinking": {
+      "value": 65536,
+      "display": "64K",
+      "source": "chat_api"
+    },
+    "default_output_tokens_max_effort": {
+      "value": 131072,
+      "display": "128K",
+      "source": "chat_api"
+    },
+    "account_concurrency": {
+      "value": 500,
+      "source": "rate_limit"
+    }
+  },
+  "capabilities": {
+    "chat_completions": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "streaming": {
+      "status": "documented",
+      "source": "chat_api"
+    },
+    "thinking": {
+      "status": "documented",
+      "source": "thinking"
+    },
+    "json_object": {
+      "status": "documented",
+      "source": "json_output"
+    },
+    "tool_calling": {
+      "status": "documented",
+      "source": "tool_calls"
+    },
+    "strict_tool_calling": {
+      "status": "beta_documented",
+      "source": "tool_calls"
+    },
+    "vision": {
+      "status": "unsupported",
+      "source": "models_pricing"
+    },
+    "responses_api": {
+      "status": "documented",
+      "source": "responses_api"
+    },
+    "anthropic_api": {
+      "status": "documented",
+      "source": "models_pricing"
+    },
+    "context_caching": {
+      "status": "automatic",
+      "source": "context_cache"
+    },
+    "chat_prefix_completion": {
+      "status": "beta_documented",
+      "source": "models_pricing"
+    },
+    "fim_completion": {
+      "status": "non_thinking_only",
+      "source": "models_pricing"
+    }
+  },
+  "thinking": {
+    "default": {
+      "value": "enabled",
+      "source": "thinking"
+    },
+    "default_effort": {
+      "value": "high",
+      "source": "thinking"
+    },
+    "toggle": {
+      "value": {
+        "thinking": {
+          "type": "enabled|disabled"
+        }
+      },
+      "source": "thinking"
+    },
+    "effort_values": {
+      "value": [
+        "none",
+        "low",
+        "high",
+        "max"
+      ],
+      "source": "chat_api"
+    },
+    "reasoning_field": {
+      "value": "reasoning_content",
+      "source": "thinking"
+    },
+    "ignored_parameters": {
+      "value": [
+        "temperature",
+        "presence_penalty",
+        "frequency_penalty"
+      ],
+      "source": "thinking"
+    }
+  },
+  "pricing_snapshot": {
+    "currency": {
+      "value": "USD",
+      "source": "models_pricing"
+    },
+    "unit": {
+      "value": "per 1M tokens",
+      "source": "models_pricing"
+    },
+    "peak": {
+      "cache_hit_input": {
+        "value": 0.044,
+        "source": "models_pricing"
+      },
+      "cache_miss_input": {
+        "value": 1.32,
+        "source": "models_pricing"
+      },
+      "output": {
+        "value": 3.96,
+        "source": "models_pricing"
+      }
+    },
+    "off_peak": {
+      "cache_hit_input": {
+        "value": 0.022,
+        "source": "models_pricing"
+      },
+      "cache_miss_input": {
+        "value": 0.66,
+        "source": "models_pricing"
+      },
+      "output": {
+        "value": 1.98,
+        "source": "models_pricing"
+      }
+    },
+    "peak_hours_utc": {
+      "value": "Monday-Friday 01:00-04:00 and 06:00-10:00 UTC, excluding Chinese public holidays",
+      "source": "models_pricing"
+    },
+    "volatile": true
+  },
+  "generation": {
+    "schema_version": 1,
+    "key_env": {
+      "value": "DEEPSEEK_API_KEY",
+      "source": "first_call"
+    },
+    "base_url": {
+      "value": "https://api.deepseek.com",
+      "source": "first_call"
+    },
+    "python_extra_body_fields": {
+      "value": [
+        "thinking"
+      ],
+      "source": "thinking"
+    },
+    "thinking": {
+      "on": {
+        "value": {
+          "thinking": {
+            "type": "enabled"
+          }
+        },
+        "source": "thinking"
+      },
+      "off": {
+        "value": {
+          "thinking": {
+            "type": "disabled"
+          }
+        },
+        "source": "thinking"
+      }
+    },
+    "token_budget": {
+      "parameter": {
+        "value": "max_tokens",
+        "source": "chat_api"
+      },
+      "min": {
+        "value": 1,
+        "source": "chat_api"
+      },
+      "max": {
+        "value": 393216,
+        "source": "chat_api"
+      },
+      "semantics": {
+        "value": "unknown",
+        "source": "project_generation"
+      }
+    },
+    "stream_options": {
+      "value": {
+        "include_usage": true
+      },
+      "source": "chat_api"
+    },
+    "tool_choice": {
+      "value": "auto",
+      "source": "chat_api"
+    },
+    "json_output": {
+      "capability": "json_object",
+      "response_format": {
+        "value": {
+          "type": "json_object"
+        },
+        "source": "json_output"
+      }
+    },
+    "verification_scope": {
+      "value": "本批次未使用真实 DEEPSEEK_API_KEY 调用；生成器组合、离线模拟和官方文档均不构成线上实测。",
+      "source": "project_generation"
+    }
+  },
+  "sources": {
+    "project_generation": {
+      "title": "项目代码生成约定：unknown 表示该型号预算语义未确认；不设置默认预算，不声称新增流程已实测",
+      "url": "../../scripts/generate_snippet.py"
+    },
+    "first_call": {
+      "title": "Your First API Call",
+      "url": "https://api-docs.deepseek.com/guides/codex"
+    },
+    "models_pricing": {
+      "title": "Models & Pricing",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/"
+    },
+    "chat_api": {
+      "title": "Chat Completions API",
+      "url": "https://api-docs.deepseek.com/api/create-chat-completion/"
+    },
+    "thinking": {
+      "title": "Thinking Mode",
+      "url": "https://api-docs.deepseek.com/guides/thinking_mode/"
+    },
+    "json_output": {
+      "title": "JSON Output",
+      "url": "https://api-docs.deepseek.com/guides/json_mode/"
+    },
+    "tool_calls": {
+      "title": "Tool Calls",
+      "url": "https://api-docs.deepseek.com/guides/tool_calls/"
+    },
+    "responses_api": {
+      "title": "Using the Responses API",
+      "url": "https://api-docs.deepseek.com/guides/responses_api/"
+    },
+    "context_cache": {
+      "title": "Context Caching",
+      "url": "https://api-docs.deepseek.com/guides/kv_cache/"
+    },
+    "rate_limit": {
+      "title": "Rate Limit & Isolation",
+      "url": "https://api-docs.deepseek.com/quick_start/rate_limit/"
+    },
+    "error_codes": {
+      "title": "Error Codes",
+      "url": "https://api-docs.deepseek.com/quick_start/error_codes/"
+    },
+    "change_log": {
+      "title": "Change Log",
+      "url": "https://api-docs.deepseek.com/updates/"
+    }
+  }
+}

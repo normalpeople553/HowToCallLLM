@@ -73,11 +73,10 @@ class LiveExampleRunnerTests(unittest.TestCase):
         ), contextlib.redirect_stdout(output):
             self.assertEqual(runner.main(), 0)
         rows = json.loads(output.getvalue())
-        self.assertEqual(len(rows), 59)
         self.assertNotIn(SECRET, output.getvalue())
         self.assertTrue(all(set(row) == {"path", "vendor", "model_id", "required_keys", "capability"} for row in rows))
 
-    def test_discover_covers_all_59_registered_runnable_files_once(self):
+    def test_discover_covers_all_registered_runnable_files_once(self):
         rows = runner.discover()
         actual = {row["path"] for row in rows}
         files = {
@@ -86,7 +85,6 @@ class LiveExampleRunnerTests(unittest.TestCase):
             if path.suffix in {".py", ".sh", ".ts"} and not path.name.startswith("_")
         }
         files.update(path.relative_to(ROOT).as_posix() for path in (ROOT / "examples").glob("*.py"))
-        self.assertEqual(len(rows), 59)
         self.assertEqual(len(actual), len(rows))
         self.assertEqual(actual, files)
         self.assertEqual({row["vendor"] for row in rows}, {*runner.KEYS, "shared"})

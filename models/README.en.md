@@ -8,7 +8,7 @@ Choose a provider, then an exact model. Each provider page brings model listings
 
 | Provider (open its model list) | Model with a maintained detailed manual | Read code and review an Agent |
 |---|---|---|
-| [DeepSeek](../en/docs/model-lists/deepseek.md) | [deepseek-flash](deepseek/deepseek-flash/README.en.md) | [Complete code and review](../human/examples/deepseek.en.md) |
+| [DeepSeek](../en/docs/model-lists/deepseek.md) | [deepseek-flash](deepseek/deepseek-flash/README.en.md) · [deepseek-v4-pro](deepseek/deepseek-v4-pro/README.en.md) | [Complete code and review](../human/examples/deepseek.en.md) |
 | [Kimi](../en/docs/model-lists/kimi.md) | [kimi-k2.6](kimi/kimi-k2.6/README.en.md) | [Complete code and review](../human/examples/kimi.en.md) |
 | [Zhipu GLM](../en/docs/model-lists/zhipu.md) | [glm-4.7](zhipu/glm-4.7/README.en.md) | [Complete code and review](../human/examples/zhipu.en.md) |
 | [Qwen](../en/docs/model-lists/qwen.md) | [qwen-flash](qwen/qwen-flash/README.en.md) | [Complete code and review](../human/examples/qwen.en.md) |

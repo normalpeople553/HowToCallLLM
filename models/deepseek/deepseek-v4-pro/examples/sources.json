@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "vendor": "deepseek",
+  "model_id": "deepseek-v4-pro",
+  "checked_at": "2026-10-15",
+  "examples": [
+    {
+      "id": "chat",
+      "file": "01_basic.py",
+      "title": "普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-v4-pro/examples/01_basic.py",
+      "adaptations": [
+        "密钥从环境变量读取",
+        "检查正常结束与非空正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "streaming",
+      "file": "02_streaming.py",
+      "title": "流式输出",
+      "capability": "streaming",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-v4-pro/examples/02_streaming.py",
+      "adaptations": [
+        "处理空 choices/usage 块",
+        "检查流的结束原因"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "thinking",
+      "file": "03_thinking.py",
+      "title": "思考模式",
+      "capability": "thinking",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/thinking_mode/",
+          "title": "Thinking Mode"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-v4-pro/examples/03_thinking.py",
+      "adaptations": [
+        "环境变量读取密钥",
+        "区分思考字段与最终正文"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "json",
+      "file": "04_json_output.py",
+      "title": "JSON 输出与业务校验",
+      "capability": "json_object",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/json_mode/",
+          "title": "JSON Output"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-v4-pro/examples/04_json_output.py",
+      "adaptations": [
+        "明确 JSON 提示词",
+        "检查结束后解析并校验业务字段"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "tools",
+      "file": "05_tool_calling.py",
+      "title": "非思考工具闭环",
+      "capability": "tool_calling",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/guides/tool_calls/",
+          "title": "Tool Calls"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "python models/deepseek/deepseek-v4-pro/examples/05_tool_calling.py",
+      "adaptations": [
+        "天气为教学模拟数据",
+        "工具允许列表、整批校验、六轮上限"
+      ],
+      "verification": {
+        "offline": "mock_tested",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "typescript",
+      "file": "07_typescript.ts",
+      "title": "TypeScript 普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "npx tsx models/deepseek/deepseek-v4-pro/examples/07_typescript.ts",
+      "adaptations": [
+        "环境变量读取密钥",
+        "结束与非空正文检查"
+      ],
+      "verification": {
+        "offline": "not_run",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    },
+    {
+      "id": "curl",
+      "file": "08_curl.sh",
+      "title": "cURL 普通对话",
+      "capability": "chat_completions",
+      "origin": "adapted_from_official",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/",
+          "title": "Chat Completions"
+        }
+      ],
+      "required_env": [
+        "DEEPSEEK_API_KEY"
+      ],
+      "run_command": "bash models/deepseek/deepseek-v4-pro/examples/08_curl.sh",
+      "adaptations": [
+        "HTTP 失败退出",
+        "Python 解析响应并检查结束原因"
+      ],
+      "verification": {
+        "offline": "compile_checked",
+        "live": "not_run",
+        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+      }
+    }
+  ],
+  "not_integrated": [
+    {
+      "capability": "vision",
+      "reason": "官方模型表明确标记 deepseek-v4-pro 不支持 Vision，因此没有视觉示例。",
+      "sources": [
+        {
+          "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "title": "Models & Pricing"
+        }
+      ]
+    }
+  ]
+}

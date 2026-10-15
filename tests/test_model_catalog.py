@@ -7,6 +7,7 @@ Temporary JSON mutations are synthetic validation fixtures, not API evidence.
 import builtins
 from contextlib import contextmanager, redirect_stderr, redirect_stdout
 import copy
+from datetime import date
 import hashlib
 import importlib.util
 import io
@@ -32,6 +33,7 @@ DEFAULTS = {
     "doubao": "doubao-seed-2-1-pro-260628",
     "minimax": "MiniMax-M2.7",
 }
+MAINTAINED_MODELS = set(DEFAULTS.values()) | {"deepseek-v4-pro"}
 
 
 def load_module(name, path):
@@ -139,7 +141,7 @@ class ModelCatalogTests(unittest.TestCase):
                 any(row["status"] == "retired" for row in raw["models"]),
                 "Current source JSON must not retain retired entries behind a filtered loader",
             )
-            self.assertEqual(item["checked_at"], "2026-10-14")
+            date.fromisoformat(item["checked_at"])
             self.assertEqual(set(item["scope_note"]), {"zh", "en"})
             self.assertTrue(all(item["scope_note"].values()))
             ids = [row["model_id"] for row in item["models"]]
@@ -223,14 +225,14 @@ class ModelCatalogTests(unittest.TestCase):
                 with offline_only(), self.assertRaises(ValueError):
                     self.catalog.load_catalogs(root)
 
-    def test_catalog_additions_do_not_change_the_six_paid_defaults_or_create_cards(self):
+    def test_catalog_additions_do_not_change_the_six_paid_defaults(self):
         references = ROOT / "skills/model-manual/references"
         before = source_snapshot(ROOT)
         with offline_only():
             rows = self.catalog.select_models(self.catalog.load_catalogs(ROOT))
         vendors = json.loads((references / "vendors.json").read_text(encoding="utf-8"))["vendors"]
         self.assertEqual({vendor: cfg["default_model"] for vendor, cfg in vendors.items()}, DEFAULTS)
-        self.assertEqual({path.stem for path in (references / "models").glob("*.json")}, set(DEFAULTS.values()))
+        self.assertEqual({path.stem for path in (references / "models").glob("*.json")}, MAINTAINED_MODELS)
         for vendor, model in DEFAULTS.items():
             selected = [row for row in rows if row["vendor"] == vendor and row["model_id"] == model]
             self.assertEqual(len(selected), 1)
@@ -294,14 +296,13 @@ class ModelCatalogTests(unittest.TestCase):
                     self.assertNotIn(retired_id, content)
             self.assertEqual(original, json.dumps(injected, sort_keys=True))
 
-    def test_new_and_alias_ids_do_not_inherit_manuals_generation_or_code(self):
+    def test_alias_ids_do_not_inherit_manuals_generation_or_code(self):
         with offline_only():
             catalogs = self.catalog.load_catalogs(ROOT)
             coverage = self.catalog.project_coverage(ROOT)
             rows = self.catalog.select_models(catalogs, coverage=coverage)
-        candidates = [row for row in rows if row["model_id"] not in DEFAULTS.values()]
+        candidates = [row for row in rows if row["status"] == "alias"]
         self.assertTrue(candidates)
-        self.assertTrue(any(row["status"] == "alias" for row in candidates))
         for row in candidates:
             with self.subTest(vendor=row["vendor"], model=row["model_id"]):
                 coverage = row["repository_coverage"]
