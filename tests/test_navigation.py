@@ -145,8 +145,9 @@ class NavigationTests(unittest.TestCase):
                 destinations = local_targets(page, text)
                 parameters = Path("en/docs/parameters.md" if suffix == ".en.md" else "docs/参数说明与调参.md")
                 pitfalls = Path("en/docs/production-pitfalls.md" if suffix == ".en.md" else "docs/06-真实踩雷与生产检查.md")
+                first_agent = Path("en/docs/build-first-agent.md" if suffix == ".en.md" else "docs/07-从模型调用到第一个Agent.md")
                 self.assertTrue({
-                    Path("human/examples") / ("README" + suffix), parameters, pitfalls,
+                    Path("human/examples") / ("README" + suffix), parameters, pitfalls, first_agent,
                     Path("models") / ("README" + suffix),
                 } <= destinations)
 

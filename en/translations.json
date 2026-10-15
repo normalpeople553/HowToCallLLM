@@ -14,7 +14,7 @@
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "b7539d130300782e72425f908b6731864828a245d10c6c0ae8cd9d896f4eb094"
+      "source_sha256": "e1ec6cdd2442cf8c4c8e7f15ae060b6511f26e68e5d41b6353088b108a7c3ee0"
     },
     {
       "source": "agents/README.md",
@@ -70,6 +70,11 @@
       "source": "docs/06-真实踩雷与生产检查.md",
       "target": "en/docs/production-pitfalls.md",
       "source_sha256": "bf2d5bdd1b88aaa1ec1079e8cc0e51c9bbc7e8d376e284c29951a1ddd174bbaf"
+    },
+    {
+      "source": "docs/07-从模型调用到第一个Agent.md",
+      "target": "en/docs/build-first-agent.md",
+      "source_sha256": "80bc872d6a6e24eb244253f36e8bf3786378dc27f32f679743e6975075a05b9e"
     },
     {
       "source": "docs/参数说明与调参.md",
