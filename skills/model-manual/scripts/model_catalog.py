@@ -265,6 +265,9 @@ def expected_pages(root=ROOT):
                       if english else "可用性是有日期的官方文档快照，不保证你账户具备权限，也不表示本次实际调用。定价入口不等于接入权限，限制见逐行说明。仓库覆盖只按准确 ID 关联公开说明书、参数和代码，不读取私有实测记录，也不按别名或系列继承。"), "",
                      ("Text output is the scope; modality labels describe input understanding, not image/audio generation. No entry here expands the snippet generator's supported models."
                       if english else "本清单以语言输出为范围；模态表示输入理解，不是图像/音频生成能力。出现在这里不自动扩展代码生成器支持的型号。"), ""]
+            if vendor == "doubao":
+                lines += [_link(page, "en/docs/verified-doubao.md" if english else "docs/豆包已验证调用.md",
+                                "Verified minimal calls and exact-model code" if english else "已验证最小调用与准确型号代码"), ""]
             groups = [(False, "Documented / restricted / legacy entries" if english else "官方列出 / 受限 / 旧版入口"),
                       (True, "Availability unconfirmed — do not assume callable" if english else "可用性待确认——不可据此认为能调用")]
             for uncertain, heading in groups:

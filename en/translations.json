@@ -142,6 +142,11 @@
       "source_sha256": "6d504ab318dd5743edfc4c77afd52679706ec39fd0888536c293fef8cc8a9fb7"
     },
     {
+      "source": "docs/豆包已验证调用.md",
+      "target": "en/docs/verified-doubao.md",
+      "source_sha256": "8bdaaee6a0ec8c3563bb2d4cdf6788eb89ee9b7231a5784ffe7e8761100b0a40"
+    },
+    {
       "source": "models/kimi/kimi-k2.6/README.md",
       "target": "models/kimi/kimi-k2.6/README.en.md",
       "source_sha256": "8e2cc932ef1f3320ee911b5ab1c883d6144e39e37c3c4db115ed850bfce6a7d4"

@@ -10,6 +10,8 @@ Availability is a dated official-document snapshot, not an account-level or live
 
 Text output is the scope; modality labels describe input understanding, not image/audio generation. No entry here expands the snippet generator's supported models.
 
+[Verified minimal calls and exact-model code](../verified-doubao.md)
+
 ## Documented / restricted / legacy entries
 
 | Exact API ID / family | Lifecycle | Billing | Input | Repository coverage | Restrictions / official sources |
