@@ -15,7 +15,18 @@ python models/doubao/voice/audio_generation_1_0.py
 python models/doubao/voice/recorded_asr_2_0.py
 ```
 
-The first script writes `.local/voice-tests/doubao-tts-2.0.mp3`; the second reads it. The third writes `.local/voice-tests/doubao-audio-generation-1.0.mp3` and a local `.url` file; the fourth submits that temporary URL to recorded-file ASR. The official direct audio-generation URL expires after **two hours**, so run the fourth promptly; alternatively provide your own `--audio-url`. TTS `--text` and `--speaker` select text and a compatible voice; audio-generation `--prompt` selects the generated content. `--key-stdin` reads a key from the terminal without echo. The scripts do not delete the original audio. [TTS parameters](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh) · [Audio-generation response](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh) · [Recorded-file API](https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh)
+Windows PowerShell runs the same Python files with PowerShell environment-variable syntax:
+
+```powershell
+python -m pip install aiohttp
+$env:DOUBAO_VOICE_API_KEY="your Doubao Voice API Key"
+python models/doubao/voice/tts_2_0.py
+python models/doubao/voice/streaming_asr_2_0.py
+python models/doubao/voice/audio_generation_1_0.py
+python models/doubao/voice/recorded_asr_2_0.py
+```
+
+The first script writes `.local/voice-tests/doubao-tts-2.0.mp3`; the second reads it. The third writes `.local/voice-tests/doubao-audio-generation-1.0.mp3` and a local `.url` file; the fourth submits that temporary URL to recorded-file ASR. The official direct audio-generation URL expires after **two hours**, so run the fourth promptly; alternatively provide your own `--audio-url`. TTS `--text` and `--speaker` select text and a compatible voice; audio-generation `--prompt` selects the generated content. `--key-stdin` uses Python's cross-platform `getpass` to read a key from the terminal without echo. The scripts do not delete the original audio. [TTS parameters](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh) · [Audio-generation response](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh) · [Recorded-file API](https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh)
 
 | Sent field | Meaning here |
 |---|---|

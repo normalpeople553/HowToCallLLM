@@ -11,41 +11,22 @@ import argparse
 import asyncio
 import gzip
 import json
-import os
 import struct
 import subprocess
-import sys
-import termios
 from pathlib import Path
 from uuid import uuid4
 
-import aiohttp
+try:
+    import aiohttp
+except ModuleNotFoundError:
+    aiohttp = None
+
+from _auth import read_key
 
 
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_AUDIO = ROOT / ".local" / "voice-tests" / "doubao-tts-2.0.mp3"
 URL = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
-
-
-def read_key(from_stdin: bool) -> str:
-    if not from_stdin:
-        key = os.environ.get("DOUBAO_VOICE_API_KEY", "").strip()
-        if not key:
-            raise RuntimeError("请设置 DOUBAO_VOICE_API_KEY")
-        return key
-    if not sys.stdin.isatty():
-        raise RuntimeError("--key-stdin 需要终端")
-    previous = termios.tcgetattr(sys.stdin)
-    hidden = previous.copy()
-    hidden[3] &= ~termios.ECHO
-    termios.tcsetattr(sys.stdin, termios.TCSANOW, hidden)
-    try:
-        key = sys.stdin.readline().strip()
-    finally:
-        termios.tcsetattr(sys.stdin, termios.TCSANOW, previous)
-    if not key:
-        raise RuntimeError("API Key 不能为空")
-    return key
 
 
 def frame(message_type: int, flags: int, sequence: int, data: bytes, json_payload: bool) -> bytes:
@@ -83,6 +64,8 @@ def parse_frame(raw: bytes) -> tuple[int, bool, dict | None, int]:
 
 
 async def recognize(audio_path: Path, key: str) -> str:
+    if aiohttp is None:
+        raise RuntimeError("缺少 aiohttp；请先运行：python -m pip install aiohttp")
     wav = subprocess.run(
         ["ffmpeg", "-v", "error", "-i", str(audio_path), "-acodec", "pcm_s16le", "-ac", "1", "-ar", "16000", "-f", "wav", "-"],
         check=True,

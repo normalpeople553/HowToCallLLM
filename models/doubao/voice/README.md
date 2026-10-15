@@ -15,7 +15,18 @@ python models/doubao/voice/audio_generation_1_0.py
 python models/doubao/voice/recorded_asr_2_0.py
 ```
 
-第一步默认生成 `.local/voice-tests/doubao-tts-2.0.mp3`；第二步默认读取同一路径。第三步生成 `.local/voice-tests/doubao-audio-generation-1.0.mp3` 和仅供本地使用的 `.url` 文件；第四步读取此临时 URL 提交录音识别任务。官方音频生成直连响应的 URL 有效期为 **2 小时**，请及时运行第四步；也可为录音识别脚本传入自己的 `--audio-url`。TTS 的 `--text` 和 `--speaker` 分别选择文本与兼容音色；音频生成的 `--prompt` 决定生成内容。若不想把 Key 写入 shell 环境，可给各脚本加 `--key-stdin`，在终端无回显输入。脚本不删除原始音频。[TTS 音色/请求参数](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh) · [音频生成响应](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh) · [录音文件接口](https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh)
+Windows PowerShell 使用同一组 Python 文件，只需改用 PowerShell 的环境变量语法：
+
+```powershell
+python -m pip install aiohttp
+$env:DOUBAO_VOICE_API_KEY="你的豆包语音 API Key"
+python models/doubao/voice/tts_2_0.py
+python models/doubao/voice/streaming_asr_2_0.py
+python models/doubao/voice/audio_generation_1_0.py
+python models/doubao/voice/recorded_asr_2_0.py
+```
+
+第一步默认生成 `.local/voice-tests/doubao-tts-2.0.mp3`；第二步默认读取同一路径。第三步生成 `.local/voice-tests/doubao-audio-generation-1.0.mp3` 和仅供本地使用的 `.url` 文件；第四步读取此临时 URL 提交录音识别任务。官方音频生成直连响应的 URL 有效期为 **2 小时**，请及时运行第四步；也可为录音识别脚本传入自己的 `--audio-url`。TTS 的 `--text` 和 `--speaker` 分别选择文本与兼容音色；音频生成的 `--prompt` 决定生成内容。若不想把 Key 写入 shell 环境，可给各脚本加 `--key-stdin`，它通过 Python 跨平台的 `getpass` 在终端无回显输入。脚本不删除原始音频。[TTS 音色/请求参数](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh) · [音频生成响应](https://docs.volcengine.com/docs/DoubaoVoice/audio-generation-http?lang=zh) · [录音文件接口](https://docs.volcengine.com/docs/DoubaoVoice/LargemodelrecordingfilerecognitionstandardversionAPI?lang=zh)
 
 | 发送的字段 | 本示例里的作用 |
 |---|---|

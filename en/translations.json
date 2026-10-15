@@ -154,7 +154,7 @@
     {
       "source": "models/doubao/voice/README.md",
       "target": "models/doubao/voice/README.en.md",
-      "source_sha256": "6b5fc6596bfa5cfd5a3e6fab3e76e7b780e1f2eb16f4f5d87ee9319eccea551d"
+      "source_sha256": "758193b9016f196e82e28b3ed95e95f10e987114c14ed15bbd1931f1e35321a4"
     },
     {
       "source": "models/kimi/kimi-k2.6/README.md",

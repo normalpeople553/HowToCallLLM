@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
-from tts_2_0 import read_key
+from _auth import read_key
 
 
 ROOT = Path(__file__).resolve().parents[3]

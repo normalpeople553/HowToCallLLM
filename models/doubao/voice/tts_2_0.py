@@ -9,39 +9,17 @@ from __future__ import annotations
 import argparse
 import base64
 import json
-import os
-import sys
-import termios
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
+from _auth import read_key
+
 
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_OUTPUT = ROOT / ".local" / "voice-tests" / "doubao-tts-2.0.mp3"
 URL = "https://openspeech.bytedance.com/api/v3/tts/unidirectional"
-
-
-def read_key(from_stdin: bool) -> str:
-    if not from_stdin:
-        key = os.environ.get("DOUBAO_VOICE_API_KEY", "").strip()
-        if not key:
-            raise RuntimeError("请设置 DOUBAO_VOICE_API_KEY")
-        return key
-    if not sys.stdin.isatty():
-        raise RuntimeError("--key-stdin 需要终端")
-    previous = termios.tcgetattr(sys.stdin)
-    hidden = previous.copy()
-    hidden[3] &= ~termios.ECHO
-    termios.tcsetattr(sys.stdin, termios.TCSANOW, hidden)
-    try:
-        key = sys.stdin.readline().strip()
-    finally:
-        termios.tcsetattr(sys.stdin, termios.TCSANOW, previous)
-    if not key:
-        raise RuntimeError("API Key 不能为空")
-    return key
 
 
 def json_events(body: str):
