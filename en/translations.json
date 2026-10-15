@@ -144,7 +144,12 @@
     {
       "source": "docs/豆包已验证调用.md",
       "target": "en/docs/verified-doubao.md",
-      "source_sha256": "43e63b5f8d90296f4a206f76b1332548e2375e560e1da74414e8a7dd0c697c42"
+      "source_sha256": "5887f42318ea9055ce91541dc8f410152422c498adf0867187c2c2cf2f934b01"
+    },
+    {
+      "source": "models/doubao/voice/README.md",
+      "target": "models/doubao/voice/README.en.md",
+      "source_sha256": "879d72a90a6f3096aa6638c82c0ba7fb9be01acd56f388f61eb940762a5aa40e"
     },
     {
       "source": "models/kimi/kimi-k2.6/README.md",
