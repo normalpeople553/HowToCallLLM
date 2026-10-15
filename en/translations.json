@@ -9,17 +9,17 @@
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "5a9ce4886c1486fdb0d333b7b9407c68bd7164685654c33f5b992571a7ef285c"
+      "source_sha256": "c1098390c38357dfbe180e9bc6df838abb660146e0faf3f9dd9050ac3fd6b483"
     },
     {
       "source": "human/README.md",
       "target": "human/README.en.md",
-      "source_sha256": "e1ec6cdd2442cf8c4c8e7f15ae060b6511f26e68e5d41b6353088b108a7c3ee0"
+      "source_sha256": "b7aff777627af17b815fdeda9afb45eca874db54669238d1bc3fa15294031c88"
     },
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "1c8070f847c81386a1f99f813bcfcbfb751823ea079e6c15ba9f378274116e55"
+      "source_sha256": "d182f9d1b1359a5d497f56c1c82edce3eeaee3731547925696b9aa945dd9979a"
     },
     {
       "source": "models/README.md",
@@ -74,7 +74,7 @@
     {
       "source": "docs/07-从模型调用到第一个Agent.md",
       "target": "en/docs/build-first-agent.md",
-      "source_sha256": "80bc872d6a6e24eb244253f36e8bf3786378dc27f32f679743e6975075a05b9e"
+      "source_sha256": "9fe1ca9643c523207dc03c840102b2cd9b54a1e027ff0f7f7c008058d8a92779"
     },
     {
       "source": "docs/参数说明与调参.md",

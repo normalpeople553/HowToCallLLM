@@ -10,15 +10,15 @@ A model API handbook for people and an implementation guide for agents. Start wi
 |---|---|
 | [Human guide](human/README.en.md) | Getting started, complete code walkthroughs, reviewing Agent implementations, common parameters and pitfalls |
 | [Model directory](models/README.en.md) | Manuals, parameters, examples, official prices and calling code by provider and exact model |
-| [Agent guide](agents/README.en.md) | Integration instructions, resource lookup, code generation, migration and debugging |
+| [Agent integration instructions](agents/README.en.md) | Resource lookup, code generation, migration and debugging rules for coding agents |
 
-Building an Agent for the first time? Start with **[From one model call to your first Agent](en/docs/build-first-agent.md)**. It uses the repository's existing real calling code to explain tool calls, message history, stop conditions and safety boundaries.
+Want to learn how to build an Agent? Continue in the standalone **[Agent Manual](https://github.com/normalpeople553/HowToBuildAgent)**, starting with tool calls, message history and stop conditions.
 
-The human and Agent guides share official model cards and calling code. Both languages use the same source; execution records stay local and are not published.
+The human guide and Agent integration instructions share official model cards and calling code. Both languages use the same source; execution records stay local and are not published.
 
 ## Give this to your Agent
 
-Give your coding agent the repository URL and this task prompt. This is project guidance, not model-calling code. The [Agent guide](agents/README.en.md) defines the integration rules.
+Give your coding agent the repository URL and this task prompt. This is project guidance, not model-calling code. The [Agent integration instructions](agents/README.en.md) define the rules.
 
 > Refer to https://github.com/normalpeople553/HowToCallLLM and integrate a basic DeepSeek text call into my current project. Start with the repository's Agent guide, use its routing to determine the paid default model, and prefer a complete existing example with response checks intact. Give me the environment-variable names and install/run commands. Run offline checks first; make real calls only after my explicit authorization. Do not echo keys or upload test records.
 

@@ -1,6 +1,6 @@
-# Agent 篇
+# Agent 接入规范（给编程 Agent 看）
 
-中文 · [English](README.en.md) · [项目首页](../README.md) · [模型目录](../models/README.md) · [人类篇](../human/README.md)
+中文 · [English](README.en.md) · [项目首页](../README.md) · [模型目录](../models/README.md) · [人类篇](../human/README.md) · [Agent 开发教程](https://github.com/normalpeople553/HowToBuildAgent)
 
 本页集中提供接入规范、查询与代码工具、迁移、排错和验证任务的入口，面向执行这些任务的编程 Agent，也供人复制任务指令。查厂商有哪些型号、阅读型号说明书和示例，统一从[模型目录](../models/README.md)进入；概念学习走[人类篇](../human/README.md)。不要求先读完整套教程。
 

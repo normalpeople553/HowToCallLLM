@@ -1,6 +1,6 @@
-# Agent Guide
+# Agent Integration Instructions (for coding agents)
 
-[中文](README.md) · English · [Home](../README.en.md) · [Model directory](../models/README.en.md) · [Human guide](../human/README.en.md)
+[中文](README.md) · English · [Home](../README.en.md) · [Model directory](../models/README.en.md) · [Human guide](../human/README.en.md) · [Agent development tutorial](https://github.com/normalpeople553/HowToBuildAgent)
 
 This page brings together integration rules, query and code tools, migration, debugging and verification. It is for coding agents performing those tasks and for people copying task prompts. To find a provider's models or read model manuals and examples, start at the [model directory](../models/README.en.md); for concepts, use the [human guide](../human/README.en.md). There is no need to read the entire tutorial first.
 

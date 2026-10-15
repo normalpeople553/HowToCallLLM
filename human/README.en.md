@@ -1,6 +1,6 @@
 # Human guide: learn calls, read code, review implementations
 
-[Repository entry](../README.en.md) · [Model directory](../models/README.en.md) · [Agent guide](../agents/README.en.md) · [中文](README.md)
+[Repository entry](../README.en.md) · [Model directory](../models/README.en.md) · [Agent integration instructions](../agents/README.en.md) · [中文](README.md)
 
 This guide helps you make calls, understand parameters and code, and review an Agent's implementation. Humans and agents share [model cards](../skills/model-manual/references/models/), calling source; execution records stay local. Check facts and test scope under the [evidence policy](../en/docs/evidence-policy.md).
 
@@ -8,7 +8,7 @@ This guide helps you make calls, understand parameters and code, and review an A
 ## Read for the question you have now
 
 - Learn to call models: [First call](../en/docs/first-call.md) covers the environment, key, endpoint, and run steps; the [compatible-API pattern](../en/docs/compatible-api.md) explains shared structures and model-specific differences.
-- Build your first Agent: [From a model call to your first Agent](../en/docs/build-first-agent.md) uses the existing tool-call source to explain model decisions, tool execution, message history, stop conditions, and safety boundaries.
+- Build your first Agent: continue in the standalone [Agent Manual](https://github.com/normalpeople553/HowToBuildAgent) to learn model decisions, tool execution, message history, stop conditions, and safety boundaries.
 - Read code and review an Agent: [Code reading and human review](examples/README.en.md) displays complete original Python files, important-line explanations, parameter sources and run instructions, with checklists for streaming, JSON, tools, and images.
 - Understand parameters and costs: [Parameters and tuning](../en/docs/parameters.md) explains fields, budgets, and mode effects; [official cost links](../en/docs/pricing.md) lead to pricing and quota references to check for your account and region.
 - Debug and avoid pitfalls: [Troubleshooting and key safety](../en/docs/troubleshooting.md) helps retain redacted errors and locate the problem; [production pitfalls](../en/docs/production-pitfalls.md) covers truncation, empty answers, thinking budgets, tool history, and interrupted streams.

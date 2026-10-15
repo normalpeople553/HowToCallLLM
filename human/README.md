@@ -1,6 +1,6 @@
 # 人类篇：学习调用、阅读代码、检查实现
 
-[项目首页](../README.md) · [模型目录](../models/README.md) · [Agent 篇](../agents/README.md) · [English](README.en.md)
+[项目首页](../README.md) · [模型目录](../models/README.md) · [Agent 接入规范](../agents/README.md) · [English](README.en.md)
 
 这篇帮助你跑通调用、读懂参数和代码，并检查 Agent 的实现。人类篇与 Agent 篇共用[型号卡片](../skills/model-manual/references/models/)、调用示例；实测记录只留本地；事实与实测范围按[来源规则](../docs/来源与核验规则.md)核对。
 
@@ -8,7 +8,7 @@
 ## 按你现在的问题阅读
 
 - 学习调用：[第一次调用](../docs/01-5分钟跑通第一次调用.md)讲环境、Key、接口和运行步骤；[兼容接口套路](../docs/02-一个套路调遍所有模型.md)讲共用结构与型号差异。
-- 开发第一个 Agent：[从模型调用到第一个 Agent](../docs/07-从模型调用到第一个Agent.md)用现有工具调用源码讲清模型决策、工具执行、消息历史、停止条件和安全边界。
+- 开发第一个 Agent：前往独立的 [Agent 说明书](https://github.com/normalpeople553/HowToBuildAgent)，学习模型决策、工具执行、消息历史、停止条件和安全边界。
 - 阅读代码、检查 Agent：[代码阅读与人工核对](examples/README.md)直接展示完整 Python 原文件、关键行解释、参数依据与运行方式，并提供流式、JSON、工具、图片的检查清单。
 - 理解参数与费用：[参数说明与调参](../docs/参数说明与调参.md)解释字段、预算和模式影响；[官方费用入口](../docs/04-免费额度与省钱攻略.md)链接价格与额度资料，按账户和地域核对。
 - 排错与踩坑：[排错与 Key 安全](../docs/05-新手必会与报错速查.md)帮助保留脱敏错误和定位问题；[生产踩雷](../docs/06-真实踩雷与生产检查.md)覆盖截断、空答、思考预算、工具历史与断流。
