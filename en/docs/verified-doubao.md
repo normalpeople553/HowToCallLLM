@@ -18,6 +18,27 @@ Lifecycle labels come from the [official model list](https://docs.volcengine.com
 
 `doubao-seed-evolving` requires manual activation in the Ark console; it is excluded from automatic activation of newly added models. [Activation management](https://docs.volcengine.com/docs/ark/activation-management?lang=zh)
 
+## How to activate the models
+
+The language models on this page and standalone STT/TTS use **two separate services: Ark and Doubao Voice**. Activate the model and create the API Key in the target project of each service. An existing `ARK_API_KEY` does not activate Doubao Voice and is not its `X-Api-Key`. [Ark API Key](https://docs.volcengine.com/docs/ark/api-key?lang=zh) · [Doubao Voice console guide](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh)
+
+### Language models on this page: Ark
+
+1. Sign in to [Ark activation management](https://docs.volcengine.com/docs/ark/activation-management?lang=zh), select the project you will call from, find the **exact Model ID**, and choose “开通服务” (activate service). Follow the confirmation dialog. A model marked “邀测中” (invitation only) cannot be activated through self-service; the official guide says to submit a support ticket. Check the console for the current status. [Activation management](https://docs.volcengine.com/docs/ark/activation-management?lang=zh)
+2. Even if automatic activation of new models is enabled, activate `doubao-seed-evolving` manually. Check its status and billing terms; neither free quota nor activation means permanently free use. [Activation management](https://docs.volcengine.com/docs/ark/activation-management?lang=zh)
+3. Create or retrieve a Key in [Ark API Key management](https://docs.volcengine.com/docs/ark/api-key?lang=zh) under the **same project** and set `ARK_API_KEY` as shown below. If the Key has Model ID or IP restrictions, ensure this call is allowed. [Ark API Key](https://docs.volcengine.com/docs/ark/api-key?lang=zh)
+
+### Standalone STT/TTS: Doubao Voice
+
+STT turns audio into text; TTS turns text into audio. Neither is in the verified model table above. These are the **official activation steps**, not a claim that the repository has a working speech example. [Doubao Voice console guide](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh)
+
+1. Open the Doubao Voice console described in the [new-console quick start](https://docs.volcengine.com/docs/DoubaoVoice/QuickStartNewConsole?lang=zh) and select the target project in the upper-left corner. First-time users should follow the official registration and identity-verification steps. An initial one-click activation may be offered; follow what your console shows. [New-console quick start](https://docs.volcengine.com/docs/DoubaoVoice/QuickStartNewConsole?lang=zh)
+2. Under “开通管理” (activation management), activate the **recorded-file recognition** or **streaming recognition** model needed for STT, and **Doubao TTS model 2.0** for TTS. Select “开通”, accept the service terms, then select “开通模型”. Activating one speech model does **not** establish access to every other speech model; check each status in the same project. [Console guide](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh) · [New-console quick start](https://docs.volcengine.com/docs/DoubaoVoice/QuickStartNewConsole?lang=zh)
+3. Create or retrieve a **Doubao Voice API Key** under “API管理”/“API Key管理” in that project. Speech requests use `X-Api-Key` plus the `X-Api-Resource-Id` of the activated capability. Do not substitute the Ark `ARK_API_KEY`. Keys and resources are isolated by project. [Console guide](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh) · [Recorded-file STT HTTP](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http?lang=zh) · [TTS HTTP](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh)
+4. Match the resource ID to the selected API: [fast recorded-file recognition](https://docs.volcengine.com/docs/DoubaoVoice/recording-file-recognition-lite-http?lang=zh) uses `volc.bigasr.auc_turbo`, while [TTS 2.0](https://docs.volcengine.com/docs/DoubaoVoice/unidirectional-streaming-text-to-speech-http?lang=zh) uses `seed-tts-2.0`. For TTS, also obtain a compatible Speaker ID from the [official voice library](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh). For real-time STT, use the [streaming recognition API](https://docs.volcengine.com/docs/DoubaoVoice/LargemodelstreamingautomaticspeechrecognitionAPI?lang=zh) rather than copying the recorded-file resource ID.
+
+Before activation, use the [Doubao Voice console guide](https://docs.volcengine.com/docs/DoubaoVoice/console-guidance?lang=zh) to find billing and resource-purchase controls. Actual prices, balance, free quota, and service status are specific to **your project's console**. If “开通管理” is missing for a subaccount, check the speech-service permission guidance in the [console FAQ](https://docs.volcengine.com/docs/DoubaoVoice/ConsoleUsageFAQ?lang=zh).
+
 ## Run it
 
 Set `ARK_API_KEY` as described in the [official API Key guide](https://docs.volcengine.com/docs/ark/api-key?lang=zh), install the `openai` Python package, and run from the repository root:
