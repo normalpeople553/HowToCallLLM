@@ -144,12 +144,17 @@
     {
       "source": "docs/豆包已验证调用.md",
       "target": "en/docs/verified-doubao.md",
-      "source_sha256": "5887f42318ea9055ce91541dc8f410152422c498adf0867187c2c2cf2f934b01"
+      "source_sha256": "032df31a89d93f923884398c61b2b5e498df1e267fa11b6e8e318c4801b0a5a2"
+    },
+    {
+      "source": "docs/豆包开通与密钥.md",
+      "target": "en/docs/doubao-access-and-keys.md",
+      "source_sha256": "bc1aebfe95e50528e485e85ab99ebf5728f71a1d60f0708f6565d1f17cb4c5e9"
     },
     {
       "source": "models/doubao/voice/README.md",
       "target": "models/doubao/voice/README.en.md",
-      "source_sha256": "879d72a90a6f3096aa6638c82c0ba7fb9be01acd56f388f61eb940762a5aa40e"
+      "source_sha256": "6b5fc6596bfa5cfd5a3e6fab3e76e7b780e1f2eb16f4f5d87ee9319eccea551d"
     },
     {
       "source": "models/kimi/kimi-k2.6/README.md",
