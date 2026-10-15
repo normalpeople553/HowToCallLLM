@@ -12,6 +12,8 @@ A model API handbook for people and an implementation guide for agents. Start wi
 | [Model directory](models/README.en.md) | Manuals, parameters, examples, official prices and calling code by provider and exact model |
 | [Agent guide](agents/README.en.md) | Integration instructions, resource lookup, code generation, migration and debugging |
 
+Building an Agent for the first time? Start with **[From one model call to your first Agent](en/docs/build-first-agent.md)**. It uses the repository's existing real calling code to explain tool calls, message history, stop conditions and safety boundaries.
+
 The human and Agent guides share official model cards and calling code. Both languages use the same source; execution records stay local and are not published.
 
 ## Give this to your Agent

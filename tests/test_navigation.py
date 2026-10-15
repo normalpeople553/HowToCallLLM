@@ -88,6 +88,8 @@ class NavigationTests(unittest.TestCase):
                 destinations = local_targets(page, text)
                 opposite = Path("README.md" if suffix == ".en.md" else "README.en.md")
                 self.assertIn(opposite, destinations)
+                first_agent = Path("en/docs/build-first-agent.md" if suffix == ".en.md" else "docs/07-从模型调用到第一个Agent.md")
+                self.assertIn(first_agent, destinations)
                 forbidden = {
                     Path("docs/model-lists/README.md"), Path("en/docs/model-lists/README.md"),
                     Path("docs/参数说明与调参.md"), Path("en/docs/parameters.md"),
