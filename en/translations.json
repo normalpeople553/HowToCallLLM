@@ -144,7 +144,7 @@
     {
       "source": "docs/豆包已验证调用.md",
       "target": "en/docs/verified-doubao.md",
-      "source_sha256": "bb0e60f1ad32cdd5dca97d3c6455d1b366c3bc1726b8b7c4ab077ca433dcd8be"
+      "source_sha256": "43e63b5f8d90296f4a206f76b1332548e2375e560e1da74414e8a7dd0c697c42"
     },
     {
       "source": "models/kimi/kimi-k2.6/README.md",
