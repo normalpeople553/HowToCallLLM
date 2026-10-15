@@ -55,6 +55,6 @@ Official documentation and model cards explain parameters and capabilities; call
 
 You can give a coding agent the following task instruction. It is not a new model API request example:
 
-> Start from this repository's Agent guide and integrate the exact model I specify. Preserve the project's language and dependency conventions. Identify required capabilities, inputs, and parameters, then change the code and run offline checks. Make real calls only within my authorization. Separate official support, existing evidence, checks performed now, and unknowns in the handoff.
+> Start from this repository's Agent integration instructions and integrate the exact model I specify. Preserve the project's language and dependency conventions. Identify required capabilities, inputs, and parameters, then change the code and run offline checks. Make real calls only within my authorization. Separate official support, existing evidence, checks performed now, and unknowns in the handoff.
 
-For migration, add the source/target models and business behavior that must be preserved. For debugging, provide redacted status codes, termination, and a minimal reproduction—not a complete key. [Agent guide](../agents/README.en.md) · [Troubleshooting](../en/docs/troubleshooting.md)
+For migration, add the source/target models and business behavior that must be preserved. For debugging, provide redacted status codes, termination, and a minimal reproduction—not a complete key. [Agent integration instructions](../agents/README.en.md) · [Troubleshooting](../en/docs/troubleshooting.md)

@@ -91,6 +91,6 @@ python skills/model-manual/scripts/generate_snippet.py --vendor kimi --task tool
 
 ## 英文与兼容入口
 
-[English Agent guide](README.en.md)使用 [SKILL.en.md](../skills/model-manual/SKILL.en.md)和[英文任务流程](../skills/model-manual/references/workflows.en.md)，仍读取同一套官方卡片与调用源码。
+[English integration instructions](README.en.md)使用 [SKILL.en.md](../skills/model-manual/SKILL.en.md)和[英文任务流程](../skills/model-manual/references/workflows.en.md)，仍读取同一套官方卡片与调用源码。
 
 旧的 [agents/SKILL.md](SKILL.md)只作兼容跳转；本目录旧 vendors/snippets 子目录也只是迁移提示，不是另一份事实或代码源。[旧厂商卡说明](vendors/README.md) · [旧片段说明](snippets/README.md)

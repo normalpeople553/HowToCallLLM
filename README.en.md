@@ -20,7 +20,7 @@ The human guide and Agent integration instructions share official model cards an
 
 Give your coding agent the repository URL and this task prompt. This is project guidance, not model-calling code. The [Agent integration instructions](agents/README.en.md) define the rules.
 
-> Refer to https://github.com/normalpeople553/HowToCallLLM and integrate a basic DeepSeek text call into my current project. Start with the repository's Agent guide, use its routing to determine the paid default model, and prefer a complete existing example with response checks intact. Give me the environment-variable names and install/run commands. Run offline checks first; make real calls only after my explicit authorization. Do not echo keys or upload test records.
+> Refer to https://github.com/normalpeople553/HowToCallLLM and integrate a basic DeepSeek text call into my current project. Start with the repository's Agent integration instructions, use their routing to determine the paid default model, and prefer a complete existing example with response checks intact. Give me the environment-variable names and install/run commands. Run offline checks first; make real calls only after my explicit authorization. Do not echo keys or upload test records.
 
 Preserve the language and dependency management of an existing project; for a new project, follow the Agent rules to choose the language. Existing examples and generator output do not replace verification of rewritten code.
 
