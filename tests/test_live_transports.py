@@ -80,6 +80,7 @@ class NativeFetchObserverTests(unittest.TestCase):
 @unittest.skipUnless(Path(curl_observer.CURL).is_file(), "requires actual /usr/bin/curl; no mock fallback")
 class NativeCurlObserverTests(unittest.TestCase):
     def test_actual_curl_forwards_original_bytes_and_records_only_safe_metadata(self):
+        self.assertIn("deepseek-v4-pro", curl_observer.MODELS)
         request_body = json.dumps({"model": "deepseek-flash", "messages": [{"role": "user", "content": PROMPT}]}).encode()
         response_body = json.dumps({
             "id": RESPONSE_ID, "model": "deepseek-flash",

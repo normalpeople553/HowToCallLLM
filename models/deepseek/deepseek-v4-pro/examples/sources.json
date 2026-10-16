@@ -26,8 +26,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者使用本仓库原文件向官方 API 发起真实请求，并通过文件内检查；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -52,8 +52,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者使用本仓库原文件向官方 API 发起真实请求，并通过文件内检查；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -78,8 +78,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者使用本仓库原文件向官方 API 发起真实请求，并通过文件内检查；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -104,8 +104,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者使用本仓库原文件向官方 API 发起真实请求，并通过文件内检查；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -130,8 +130,8 @@
       ],
       "verification": {
         "offline": "mock_tested",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者使用本仓库原文件向官方 API 发起真实请求，并通过文件内检查；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -156,8 +156,8 @@
       ],
       "verification": {
         "offline": "not_run",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者按本页 npx tsx 命令使用本仓库原文件真实调用；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     },
     {
@@ -182,8 +182,8 @@
       ],
       "verification": {
         "offline": "compile_checked",
-        "live": "not_run",
-        "note": "本机未配置 DEEPSEEK_API_KEY，本批次未发送真实请求；离线状态不代表线上可用、账户权限或额度。"
+        "live": "private",
+        "note": "维护者按本页 Bash 命令使用本仓库原文件真实调用；仅覆盖所用输入、参数及账户，密钥、回复和原始记录不公开。"
       }
     }
   ],

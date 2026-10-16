@@ -75,7 +75,7 @@ python models/deepseek/deepseek-v4-pro/examples/01_basic.py
 | [`07_typescript.ts`](examples/07_typescript.ts) | TypeScript 普通对话 |
 | [`08_curl.sh`](examples/08_curl.sh) | cURL 普通对话 |
 
-示例来源与核验状态见 [`examples/sources.json`](examples/sources.json)。本机没有配置 `DEEPSEEK_API_KEY`，所以本批次未发送真实请求；Python 核心示例通过合成响应离线测试，不能据此声称账户、额度或线上响应已经验证。
+示例来源与核验状态见 [`examples/sources.json`](examples/sources.json)。维护者使用 `deepseek-v4-pro` 准确 ID，将本页七份完整文件分别向官方 API 真实运行，包含文档所列 `npx tsx` 与 Bash 命令；均通过文件内的完成性检查。这只覆盖所用输入、参数与账户，不代表模型效果、长期可用性或并发能力。密钥、模型回复、原始记录和测试时间不随仓库发布。
 
 ## 关键能力
 

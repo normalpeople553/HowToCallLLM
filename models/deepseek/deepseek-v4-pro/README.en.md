@@ -77,7 +77,7 @@ python models/deepseek/deepseek-v4-pro/examples/01_basic.py
 | [`07_typescript.ts`](examples/07_typescript.ts) | TypeScript basic chat |
 | [`08_curl.sh`](examples/08_curl.sh) | cURL basic chat |
 
-See [`examples/sources.json`](examples/sources.json) for provenance and verification states. No `DEEPSEEK_API_KEY` is configured on this machine, so this update did not send live requests. The core Python examples use synthetic offline responses; that does not verify account access, quota, or live behavior.
+See [`examples/sources.json`](examples/sources.json) for provenance and verification states. The maintainer separately executed all seven complete files against the official API with the exact `deepseek-v4-pro` ID, including the documented `npx tsx` and Bash commands. Each passed its own completion checks. This covers only the inputs, parameters, and account used, not model quality, long-term availability, or throughput. Keys, model replies, raw records, and test times are not published.
 
 ## Capability notes
 

@@ -21,9 +21,9 @@ const FINISH_REASONS = new Set([
   "stop", "length", "tool_calls", "content_filter", "aborted",
   "insufficient_system_resource",
 ]);
-const MODELS = new Set([
+export const MODELS = new Set([
   "deepseek-flash", "DeepSeek-V4.1-Flash", "deepseek-v4.1-flash",
-  "deepseek-v4-flash", "MiniMax-M2.7",
+  "deepseek-v4-flash", "deepseek-v4-pro", "DeepSeek-V4-Pro-0813", "MiniMax-M2.7",
 ]);
 
 function object(value) {

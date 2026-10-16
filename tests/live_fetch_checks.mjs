@@ -7,7 +7,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import http from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { createFetchObserver } from "./live_fetch.mjs";
+import { createFetchObserver, MODELS } from "./live_fetch.mjs";
 
 const secret = "offline-private-key-fixture";
 const prompt = "offline-private-prompt-fixture";
@@ -15,6 +15,7 @@ const answer = "offline-private-answer-fixture";
 const reasoning = "offline-private-reasoning-fixture";
 const rawError = "offline-private-error-fixture";
 const responseId = "offline-private-response-id-fixture";
+assert(MODELS.has("deepseek-v4-pro"), "Pro requests must retain their exact model identity");
 const payload = JSON.stringify({
   model: "deepseek-flash", messages: [{ role: "user", content: prompt }],
   thinking: { type: "disabled", private: secret },

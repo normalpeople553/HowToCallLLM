@@ -70,13 +70,13 @@ Required reading: [parameter reference and file mapping](../../models/deepseek/d
 
 | Capability / file | Search key | Required environment | Official sources | Offline check / online records |
 |---|---|---|---|---|
-| [chat_completions · 01_basic.py](../../models/deepseek/deepseek-v4-pro/examples/01_basic.py) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | mock_tested / not_run |
-| [streaming · 02_streaming.py](../../models/deepseek/deepseek-v4-pro/examples/02_streaming.py) | `streaming` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | mock_tested / not_run |
-| [thinking · 03_thinking.py](../../models/deepseek/deepseek-v4-pro/examples/03_thinking.py) | `thinking` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/thinking_mode/) | mock_tested / not_run |
-| [json_object · 04_json_output.py](../../models/deepseek/deepseek-v4-pro/examples/04_json_output.py) | `json_object` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/json_mode/) | mock_tested / not_run |
-| [tool_calling · 05_tool_calling.py](../../models/deepseek/deepseek-v4-pro/examples/05_tool_calling.py) | `tool_calling` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/tool_calls/) | mock_tested / not_run |
-| [chat_completions · 07_typescript.ts](../../models/deepseek/deepseek-v4-pro/examples/07_typescript.ts) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | not_run / not_run |
-| [chat_completions · 08_curl.sh](../../models/deepseek/deepseek-v4-pro/examples/08_curl.sh) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | compile_checked / not_run |
+| [chat_completions · 01_basic.py](../../models/deepseek/deepseek-v4-pro/examples/01_basic.py) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | mock_tested / private |
+| [streaming · 02_streaming.py](../../models/deepseek/deepseek-v4-pro/examples/02_streaming.py) | `streaming` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | mock_tested / private |
+| [thinking · 03_thinking.py](../../models/deepseek/deepseek-v4-pro/examples/03_thinking.py) | `thinking` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/thinking_mode/) | mock_tested / private |
+| [json_object · 04_json_output.py](../../models/deepseek/deepseek-v4-pro/examples/04_json_output.py) | `json_object` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/json_mode/) | mock_tested / private |
+| [tool_calling · 05_tool_calling.py](../../models/deepseek/deepseek-v4-pro/examples/05_tool_calling.py) | `tool_calling` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/guides/tool_calls/) | mock_tested / private |
+| [chat_completions · 07_typescript.ts](../../models/deepseek/deepseek-v4-pro/examples/07_typescript.ts) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | not_run / private |
+| [chat_completions · 08_curl.sh](../../models/deepseek/deepseek-v4-pro/examples/08_curl.sh) | `chat_completions` | DEEPSEEK_API_KEY | [Official source 1](https://api-docs.deepseek.com/api/create-chat-completion/) | compile_checked / private |
 
 ### Integration gaps and model-specific boundaries
 

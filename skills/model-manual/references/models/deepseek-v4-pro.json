@@ -10,7 +10,7 @@
   },
   "last_checked_at": "2026-10-15",
   "verification": null,
-  "verification_scope": "not_run",
+  "verification_scope": "private",
   "identity": {
     "api_model_id": {
       "value": "deepseek-v4-pro",
@@ -274,13 +274,13 @@
       }
     },
     "verification_scope": {
-      "value": "本批次未使用真实 DEEPSEEK_API_KEY 调用；生成器组合、离线模拟和官方文档均不构成线上实测。",
+      "value": "本型号的七份完整示例已按准确 ID 分别真实调用，测试记录不公开；生成器新组合、改写参数与输入不继承实测结果。",
       "source": "project_generation"
     }
   },
   "sources": {
     "project_generation": {
-      "title": "项目代码生成约定：unknown 表示该型号预算语义未确认；不设置默认预算，不声称新增流程已实测",
+      "title": "项目代码生成约定：unknown 表示该型号预算语义未确认；不设置默认预算，生成器新组合不继承现有示例的实测结果",
       "url": "../../scripts/generate_snippet.py"
     },
     "first_call": {

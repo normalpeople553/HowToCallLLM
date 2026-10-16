@@ -24,7 +24,7 @@ OFFICIAL_ENDPOINTS = frozenset({
 })
 MODELS = frozenset({
     "deepseek-flash", "DeepSeek-V4.1-Flash", "deepseek-v4.1-flash",
-    "deepseek-v4-flash", "MiniMax-M2.7",
+    "deepseek-v4-flash", "deepseek-v4-pro", "DeepSeek-V4-Pro-0813", "MiniMax-M2.7",
 })
 FINISH_REASONS = frozenset({
     "stop", "length", "tool_calls", "content_filter", "aborted",

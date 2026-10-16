@@ -134,7 +134,7 @@
     {
       "source": "models/deepseek/deepseek-v4-pro/README.md",
       "target": "models/deepseek/deepseek-v4-pro/README.en.md",
-      "source_sha256": "1e9a5c36a2331f4cb47d4e84313c8a782501202aac40a918176d9f4c8676e611"
+      "source_sha256": "2d04df0f39a4f0bcbf49bde643988b98b97d61f0279ad43fb274056a5a53b4bd"
     },
     {
       "source": "models/deepseek/deepseek-v4-pro/parameters.md",
