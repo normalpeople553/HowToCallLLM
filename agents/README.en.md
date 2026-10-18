@@ -6,6 +6,8 @@ This page brings together integration rules, query and code tools, migration, de
 
 Use the [model-manual skill](../skills/model-manual/SKILL.en.md) when an agent needs to execute a task. Looking up models or browsing manuals does not require reading the skill first. This page does not maintain another six-provider model table.
 
+For reuse across projects, the optional [call-llm skill](../en/docs/call-llm-skill.md) creates a `keyenv` in the user's home directory, refreshes this repository's guidance, and directs an agent to modify the current project under the rules below. Installing it is a user choice.
+
 ## Start a task
 
 Project defaults and maintained examples use paid models only. Read the card's `billing.type` and official pricing source; do not silently fall back to a free model after an error. [Selection policy](../en/docs/evidence-policy.md)

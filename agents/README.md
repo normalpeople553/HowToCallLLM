@@ -6,6 +6,8 @@
 
 需要 Agent 执行任务时，按需进入 [model-manual Skill](../skills/model-manual/SKILL.md)；只查型号或浏览说明书，不必先读 Skill。本页不重复维护六家的型号表。
 
+跨项目复用时可选装 [call-llm Skill](../docs/call-llm-skill.md)：它在用户主目录创建 `keyenv`，从本仓库更新资料后让 Agent 按下述规范修改当前项目。安装是用户选择，不是阅读本仓库的前提。
+
 ## 开始一个任务
 
 项目默认型号与维护示例全部采用付费型号，读取卡片 `billing.type` 和官方价格来源；遇到失败不静默回退免费型号。[选型规则](../docs/来源与核验规则.md)

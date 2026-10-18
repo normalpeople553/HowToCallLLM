@@ -4,12 +4,12 @@
     "zh-CN",
     "en"
   ],
-  "reviewed_at": "2026-10-14",
+  "reviewed_at": "2026-10-18",
   "translations": [
     {
       "source": "README.md",
       "target": "README.en.md",
-      "source_sha256": "8bf122d230980c9fe7772f7c249c673fe9b828b6425fe2226ea46e96cd34d679"
+      "source_sha256": "1f00efaacd1f2cf637ecb0e88c51579e7d766253322462dc7c9bcb53af627559"
     },
     {
       "source": "human/README.md",
@@ -19,7 +19,12 @@
     {
       "source": "agents/README.md",
       "target": "agents/README.en.md",
-      "source_sha256": "08b9dc3a62d1cbe617094a373dd5e6f3406ad3d2cab94e3fb98f7e383988e9aa"
+      "source_sha256": "466d7f63568f67728b5aab2385b4f3e8fa2aa77b9662dc59c8933ec75ce7605a"
+    },
+    {
+      "source": "docs/call-llm-skill.md",
+      "target": "en/docs/call-llm-skill.md",
+      "source_sha256": "dd0beb9e36d7b37bfab027a1832e4be7413b467fb43ba676a52cd95ab9e1ded9"
     },
     {
       "source": "models/README.md",
@@ -64,7 +69,7 @@
     {
       "source": "docs/05-新手必会与报错速查.md",
       "target": "en/docs/troubleshooting.md",
-      "source_sha256": "88db347453af0fff28be9b6c3fee4067919eb75c0c13f07ec9a170634e42aa74"
+      "source_sha256": "6a60cdc1431d3ab1917d161788b77599cf9335e8741b472b683a3b67f4147894"
     },
     {
       "source": "docs/06-真实踩雷与生产检查.md",

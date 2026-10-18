@@ -1,0 +1,4 @@
+interface:
+  display_name: "call_llm"
+  short_description: "Add LLM calls to a project using HowToCallLLM"
+  default_prompt: "Use $call-llm to add the requested LLM capability to my current project."

@@ -12,6 +12,8 @@ A model API handbook for people and an implementation guide for agents. Start wi
 | [Model directory](models/README.en.md) | Manuals, parameters, examples, official prices and calling code by provider and exact model |
 | [Agent integration instructions](agents/README.en.md) | Resource lookup, code generation, migration and debugging rules for coding agents |
 
+To reuse this integration workflow across projects, you can choose to install the [call-llm skill](en/docs/call-llm-skill.md). It creates a local `keyenv` in your home directory and reads the current repository guidance as needed. The handbook also works without installing the skill.
+
 Want to learn how to build an Agent? Continue in the standalone **[Agent Manual](https://github.com/normalpeople553/HowToBuildAgent)**, starting with tool calls, message history and stop conditions.
 
 The human guide and Agent integration instructions share official model cards and calling code. Both languages use the same source; execution records stay local and are not published.
@@ -30,7 +32,7 @@ Preserve the language and dependency management of an existing project; for a ne
 
 Project defaults and maintained examples use paid models, with no silent free-model fallback after an error. Prices link to official pages through the model directory. Existing execution evidence does not verify an Agent's rewrite or arbitrary parameter combinations; the evidence policy defines the boundaries.
 
-Keep keys in environment variables or a Git-ignored .env, never in code, chat, reports or commits. Do not overwrite an existing .env with a template. [Ignore rules](.gitignore) · [Safety and evidence policy](en/docs/evidence-policy.md)
+Keep keys in environment variables, a Git-ignored project `.env`, or the optional skill's `keyenv` in the user's home directory. Never put them in code, chat, reports or commits, and do not overwrite an existing file with a template. [Ignore rules](.gitignore) · [Safety and evidence policy](en/docs/evidence-policy.md)
 
 Installation and checks are documented in verification and reproduction. The [CI template](ci/offline-checks.yml) is not enabled as GitHub Actions.
 

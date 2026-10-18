@@ -25,7 +25,7 @@ Interpret errors using the vendor's response and official documentation. This pa
 
 ## API key safety
 
-Project rule: read keys only from environment variables or a `.env` excluded by [.gitignore](../../.gitignore). Never retain complete keys in code, Issues, chat, screenshots, or logs. [Project policy](evidence-policy.md)
+Project rule: read keys only from environment variables, a project `.env` excluded by [.gitignore](../../.gitignore), or the optional [call-llm skill's](call-llm-skill.md) `keyenv` in the user's home directory. Never retain complete keys in code, Issues, chat, screenshots, or logs. [Project policy](evidence-policy.md)
 
 ```bash
 # Check presence only; never print the value.
@@ -34,4 +34,4 @@ test -n "$DEEPSEEK_API_KEY" && echo "set" || echo "not set"
 
 If a key may have leaked, delete and recreate it in the relevant vendor's key-management page: [DeepSeek](https://platform.deepseek.com/api_keys), [Kimi](https://platform.moonshot.cn/console/api-keys), [Zhipu](https://bigmodel.cn/usercenter/apikeys), [Qwen](https://bailian.console.aliyun.com/?apiKey=1#/api-key), or [Doubao](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey).
 
-Persisting a key in shell configuration makes it available to processes running as the same user. Whether that is acceptable depends on your security boundary; the project prefers a project-local `.env` together with ignore rules. [Project policy](evidence-policy.md)
+Persisting a key in shell configuration makes it available to processes running as the same user. Whether that is acceptable depends on your security boundary. This project supports a Git-ignored project `.env`; for use across projects, the optional `keyenv` wrapper loads only the provider keys requested for a run. [Project policy](evidence-policy.md) · [Skill usage](call-llm-skill.md)
